@@ -74,8 +74,15 @@
     frag.appendChild(C.back(item.back || '/bronya/', item.backText || 'Назад в категорию: Броня'));
     frag.appendChild(C.el('h1', 'page__title', item.name || ''));
 
-    /* Две колонки, как на эталоне: слева картинка, справа все данные. */
-    var row = C.el('div', 'wcard__row armor__row');
+    /* Строки разной ширины, без общей сетки:
+         1) строка из двух колонок   — картинка | данные (4 части стопкой)
+         2) строка из одной колонки  — описание
+         3) строка из одной колонки  — «Особенность»
+         4) строка из двух колонок   — текст | таблица
+         5) строка целиком           — спойлеры модификаций
+       Колонки задаются классом строки, а не положением в разметке. */
+
+    var row1 = C.el('div', 'armor-row armor-row--2');
     var media = C.el('div', 'wcard__media armor__media');
     if (item.image) {
       var img = document.createElement('img');
@@ -86,46 +93,61 @@
     } else {
       media.className += ' wcard__media--empty';
     }
-    row.appendChild(media);
+    row1.appendChild(media);
 
     var side = C.el('div', 'armor__data');
     (item.pieces || []).forEach(function (piece) {
       side.appendChild(C.el('h2', 'armor__part', piece.area || piece.areaName || ''));
       side.appendChild(statsTable(piece.stats));
     });
-    row.appendChild(side);
-    frag.appendChild(row);
+    row1.appendChild(side);
+    frag.appendChild(row1);
 
     if (item.description) {
-      frag.appendChild(C.el('p', 'armor__text', item.description));
+      var row2 = C.el('div', 'armor-row armor-row--1');
+      row2.appendChild(C.el('p', 'armor__text', item.description));
+      frag.appendChild(row2);
     }
     if (item.feature) {
+      var row3 = C.el('div', 'armor-row armor-row--1');
       var feature = C.el('p', 'armor__text');
       feature.appendChild(C.el('strong', 'armor__label', 'Особенность: '));
       feature.appendChild(withDice(item.feature));
-      frag.appendChild(feature);
+      row3.appendChild(feature);
+      frag.appendChild(row3);
     }
 
-    /* свои блоки: текст, таблица, спойлер — в любом количестве */
+    /* свои блоки: split (текст | таблица), text, table, spoiler — в любом количестве */
     (item.sections || []).forEach(function (section) {
-      if (section.title) {
-        frag.appendChild(C.el('h2', 'wcard__sub', section.title));
+      var row;
+      if (section.type === 'split') {
+        if (section.title) { frag.appendChild(C.el('h2', 'wcard__sub', section.title)); }
+        row = C.el('div', 'armor-row armor-row--2');
+        var colText = C.el('div', 'armor__col');
+        colText.appendChild(C.el('p', 'armor__text', section.text || ''));
+        row.appendChild(colText);
+        var colTable = C.el('div', 'armor__col armor__col--table');
+        colTable.appendChild(divTable(section.head || [], section.rows || []));
+        row.appendChild(colTable);
+        frag.appendChild(row);
+        return;
       }
-      if (section.text) {
-        frag.appendChild(C.el('p', 'armor__text', section.text));
-      }
+      row = C.el('div', 'armor-row armor-row--1');
+      if (section.title) { row.appendChild(C.el('h2', 'wcard__sub', section.title)); }
+      if (section.text) { row.appendChild(C.el('p', 'armor__text', section.text)); }
       if (section.type === 'table' && section.rows) {
-        frag.appendChild(divTable(section.head || [], section.rows));
+        row.appendChild(divTable(section.head || [], section.rows));
       }
       if (section.type === 'spoiler' && section.rows) {
-        frag.appendChild(C.spoiler(section.title, section.rows.length,
-                                   divTable(section.head || [], section.rows)));
+        row.appendChild(C.spoiler(section.title, section.rows.length,
+                                  divTable(section.head || [], section.rows)));
       }
+      frag.appendChild(row);
     });
 
     /* модификации: слот — спойлер, внутри общая для всех таблица */
     if ((item.mods || []).length) {
-      var mods = C.el('section', 'wcard__mods');
+      var mods = C.el('section', 'wcard__mods armor-row armor-row--1');
       mods.appendChild(C.el('h2', 'wcard__sub', 'Поддерживаемые модификации'));
       var head = item.modHead || ['Модификация', 'Эффект', 'Часть брони', 'Вес', 'Цена', 'Перки', 'Навык'];
       item.mods.forEach(function (group) {
