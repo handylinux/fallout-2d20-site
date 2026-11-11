@@ -1,350 +1,1061 @@
 {
-  "note": "Дерево оффканвас-меню (бургер) — снято с живой страницы fallout-2d20.ru: порядок, вложенность и подписи пунктов как в mod_menu Helix. Верхнее меню (#sp-topmenu) берётся отдельно из модуля «Fallout menu» (jos_sppagebuilder id 101).",
-  "items": [
+ "note": "Дерево оффканвас-меню (бургер) — снято с живой страницы fallout-2d20.ru: порядок, вложенность и подписи пунктов как в mod_menu Helix. Верхнее меню (#sp-topmenu) берётся отдельно из модуля «Fallout menu» (jos_sppagebuilder id 101).",
+ "items": [
+  {
+   "title": "Правила игры",
+   "url": "/",
+   "children": [
     {
-      "title": "Правила игры",
-      "url": "/",
-      "children": [
-        { "title": "Что нужно для игры", "url": "/blog/igra" },
-        { "title": "Атрибуты S.P.E.C.I.A.L", "url": "/blog/atributy-s-p-e-c-i-a-l" },
-        { "title": "Как работает Удача", "url": "/blog/kak-rabotaet-udacha" }
-      ]
+     "title": "Что нужно для игры",
+     "url": "/blog/igra"
     },
     {
-      "title": "Происхождения",
-      "url": "/proiskhozhdeniya",
-      "children": [
-        { "title": "Выживший", "url": "/proiskhozhdeniya/vyzhivshij" },
-        { "title": "Посвящённый в Братство Стали", "url": "/proiskhozhdeniya/posvyashchjonnyj-v-bratstvo-stali" },
-        { "title": "Гуль", "url": "/proiskhozhdeniya/gul" },
-        { "title": "Супермутант", "url": "/proiskhozhdeniya/supermutant" },
-        { "title": "Обитатель убежища", "url": "/proiskhozhdeniya/obitatel-ubezhishcha" },
-        { "title": "Мистер Помощник", "url": "/proiskhozhdeniya/mister-pomoshchnik" },
-        { "title": "Штурмотрон", "url": "/proiskhozhdeniya/shturmotron" },
-        { "title": "Изгой Братства", "url": "/proiskhozhdeniya/izgoj-bratstva" },
-        { "title": "Дикарь", "url": "/proiskhozhdeniya/dikar" },
-        { "title": "Дитя Атома", "url": "/proiskhozhdeniya/ditya-atoma" },
-        { "title": "Тень", "url": "/proiskhozhdeniya/ten" },
-        { "title": "Житель НКР", "url": "/proiskhozhdeniya/zhitel-nkr" },
-        { "title": "Минитмен", "url": "/proiskhozhdeniya/minitmen" },
-        { "title": "Робомозг", "url": "/proiskhozhdeniya/robomozg" },
-        { "title": "Протектрон", "url": "/proiskhozhdeniya/protektron" },
-        { "title": "Осколок Анклава", "url": "/proiskhozhdeniya/oskolok-anklava" }
-      ]
-    },
-    { "title": "ПЕРКИ", "url": "/perki26" },
-    {
-      "title": "Оружие",
-      "url": "/oruzhie",
-      "children": [
-        {
-          "title": "Стрелковое оружие",
-          "url": "/oruzhie/strelkovoe-oruzhie",
-          "children": [
-            { "title": "10-мм Пистолет", "url": "/oruzhie/strelkovoe-oruzhie/10-mm-pistolet" },
-            { "title": "12,7-мм пистолет", "url": "/oruzhie/strelkovoe-oruzhie/12-7-mm-pistolet" },
-            { "title": "12,7-мм пистолет-пулемёт", "url": "/oruzhie/strelkovoe-oruzhie/12-7-mm-pistolet-pulemjot" },
-            { "title": "Противопехотный 25-мм гранатомёт", "url": "/oruzhie/strelkovoe-oruzhie/protivopekhotnyj-25-mm-granatomjot" },
-            { "title": "Крупнокалиберная снайперская винтовка", "url": "/oruzhie/strelkovoe-oruzhie/krupnokalibernaya-snajperskaya-vintovka" },
-            { "title": "Самозарядная винтовка", "url": "/oruzhie/strelkovoe-oruzhie/samozaryadnaya-vintovka" },
-            { "title": "Пороховой мушкетон", "url": "/oruzhie/strelkovoe-oruzhie/porokhovoj-mushketon" },
-            { "title": "Пороховой пистолет", "url": "/oruzhie/strelkovoe-oruzhie/porokhovoj-pistolet" },
-            { "title": "Пороховой карабин", "url": "/oruzhie/strelkovoe-oruzhie/porokhovoj-karabin" },
-            { "title": "Пистолет Гаусса", "url": "/oruzhie/strelkovoe-oruzhie/pistolet-gaussa" },
-            { "title": "Дробовик Гаусса", "url": "/oruzhie/strelkovoe-oruzhie/drobovik-gaussa" },
-            { "title": "Карабин с рычажным затвором", "url": "/oruzhie/strelkovoe-oruzhie/karabin-s-rychazhnym-zatvorom" },
-            { "title": "Лёгкий пулемёт", "url": "/oruzhie/strelkovoe-oruzhie/ljogkij-pulemjot" },
-            { "title": "Помповый дробовик", "url": "/oruzhie/strelkovoe-oruzhie/pompovyj-drobovik" },
-            { "title": "Радиевый карабин", "url": "/oruzhie/strelkovoe-oruzhie/radievyj-karabin" },
-            { "title": "Снайперская винтовка", "url": "/oruzhie/strelkovoe-oruzhie/snajperskaya-vintovka" },
-            { "title": "Гранатомёт M79", "url": "/oruzhie/strelkovoe-oruzhie/granatomjot-m79" },
-            { "title": "Стен", "url": "/oruzhie/strelkovoe-oruzhie/sten" },
-            { "title": "Пистолет Гуля", "url": "/oruzhie/strelkovoe-oruzhie/pistolet-gulya" },
-            { "title": "Карабин Гуля", "url": "/oruzhie/strelkovoe-oruzhie/karabin-gulya" },
-            { "title": "Инъекционный пистолет", "url": "/oruzhie/strelkovoe-oruzhie/karabin-gulya-2" },
-            { "title": "Револьвер Калибра .44", "url": "/oruzhie/strelkovoe-oruzhie/revolver-kalibra-44" },
-            { "title": "Сигнальный пистолет", "url": "/oruzhie/strelkovoe-oruzhie/signalnyj-pistolet" },
-            { "title": "Штурмовая винтовка", "url": "/oruzhie/strelkovoe-oruzhie/shturmovaya-vintovka" },
-            { "title": "Боевой карабин", "url": "/oruzhie/strelkovoe-oruzhie/boevoj-karabin" },
-            { "title": "Карабин гаусса", "url": "/oruzhie/strelkovoe-oruzhie/karabin-gaussa" },
-            { "title": "ПП Томпсона", "url": "/oruzhie/strelkovoe-oruzhie/tommi-gan" },
-            { "title": "Боевой дробовик", "url": "/oruzhie/strelkovoe-oruzhie/boevoj-drobovik" },
-            { "title": "Двуствольный дробовик", "url": "/oruzhie/strelkovoe-oruzhie/dvustvolnyj-drobovik" },
-            { "title": "Гладкоствол с болтовым затвором", "url": "/oruzhie/strelkovoe-oruzhie/gladkostvol-s-boltovym-zatvorom" },
-            { "title": "Гладкоствольный револьвер", "url": "/oruzhie/strelkovoe-oruzhie/gladkostvolnyj-revolver" },
-            { "title": "Инъекционный карабин", "url": "/oruzhie/strelkovoe-oruzhie/inektsionnyj-karabin" },
-            { "title": "Железнодорожная винтовка", "url": "/oruzhie/strelkovoe-oruzhie/zheleznodorozhnaya-vintovka" },
-            { "title": "9-мм пистолет", "url": "/oruzhie/strelkovoe-oruzhie/9-mm-pistolet" },
-            { "title": "Охотничья винтовка", "url": "/oruzhie/strelkovoe-oruzhie/okhotnichya-vintovka" },
-            { "title": "Гладкоствол", "url": "/oruzhie/strelkovoe-oruzhie/gladkostvol" },
-            { "title": "Револьвер «Магнум» кал. 357", "url": "/oruzhie/strelkovoe-oruzhie/revolver-magnum-kal-357" },
-            { "title": "Пистолет-инъектор", "url": "/oruzhie/strelkovoe-oruzhie/pistolet-inektor" },
-            { "title": "Абордажный пистолет", "url": "/oruzhie/strelkovoe-oruzhie/abordazhnyj-pistolet" },
-            { "title": "Гранатомет со слезоточивым газом", "url": "/oruzhie/strelkovoe-oruzhie/granatomet-so-slezotochivym-gazom" },
-            { "title": "Магнумномикон", "url": "/oruzhie/strelkovoe-oruzhie/magnumnomikon" },
-            { "title": "Китайский автомат", "url": "/oruzhie/strelkovoe-oruzhie/kitajskij-avtomat" }
-          ]
-        },
-        {
-          "title": "Атлетическое оружие",
-          "url": "/oruzhie/atleticheskoe-oruzhie",
-          "children": [
-            { "title": "Лук", "url": "/oruzhie/atleticheskoe-oruzhie/luk" },
-            { "title": "Арбалет", "url": "/oruzhie/atleticheskoe-oruzhie/arbalet" }
-          ]
-        },
-        {
-          "title": "Метательное оружие",
-          "url": "/oruzhie/metatelnoe-oruzhie",
-          "children": [
-            { "title": "Самодельное лассо", "url": "/oruzhie/metatelnoe-oruzhie/samodelnoe-lasso" },
-            { "title": "Метательные ножи", "url": "/oruzhie/metatelnoe-oruzhie/metatelnye-nozhi" },
-            { "title": "Томагавк", "url": "/oruzhie/metatelnoe-oruzhie/tomagavk" },
-            { "title": "Дротик", "url": "/oruzhie/metatelnoe-oruzhie/drotik" }
-          ]
-        },
-        {
-          "title": "Оружие ближнего боя",
-          "url": "/oruzhie/oruzhie-blizhnego-boya",
-          "children": [
-            { "title": "Выкидной нож", "url": "/oruzhie/oruzhie-blizhnego-boya/vykidnoj-nozh" },
-            { "title": "Дубинка", "url": "/oruzhie/oruzhie-blizhnego-boya/dubinka" },
-            { "title": "Меч", "url": "/oruzhie/oruzhie-blizhnego-boya/mech" },
-            { "title": "Боевой нож", "url": "/oruzhie/oruzhie-blizhnego-boya/boevoj-nozh" },
-            { "title": "Мачете", "url": "/oruzhie/oruzhie-blizhnego-boya/machete" },
-            { "title": "Потрошитель", "url": "/oruzhie/oruzhie-blizhnego-boya/potroshitel" },
-            { "title": "Шиш-кебаб", "url": "/oruzhie/oruzhie-blizhnego-boya/shish-kebab" },
-            { "title": "Бейсбольная бита", "url": "/oruzhie/oruzhie-blizhnego-boya/bejsbolnaya-bita" },
-            { "title": "Алюминиевая бейсбольная бита", "url": "/oruzhie/oruzhie-blizhnego-boya/alyuminievaya-bejsbolnaya-bita" },
-            { "title": "Дрын", "url": "/oruzhie/oruzhie-blizhnego-boya/dryn" },
-            { "title": "Свинцовая труба", "url": "/oruzhie/oruzhie-blizhnego-boya/svintsovaya-truba" },
-            { "title": "Разводной ключ", "url": "/oruzhie/oruzhie-blizhnego-boya/razvodnoj-klyuch" },
-            { "title": "Бильярдный кий", "url": "/oruzhie/oruzhie-blizhnego-boya/bilyardnyj-kij" },
-            { "title": "Скалка", "url": "/oruzhie/oruzhie-blizhnego-boya/skalka" },
-            { "title": "Кувалда", "url": "/oruzhie/oruzhie-blizhnego-boya/kuvalda" },
-            { "title": "Супермолот", "url": "/oruzhie/oruzhie-blizhnego-boya/supermolot" },
-            { "title": "Балонный ключ", "url": "/oruzhie/oruzhie-blizhnego-boya/balonnyj-klyuch" },
-            { "title": "Трость", "url": "/oruzhie/oruzhie-blizhnego-boya/trost" },
-            { "title": "Боксерская перчатка", "url": "/oruzhie/oruzhie-blizhnego-boya/bokserskaya-perchatka" },
-            { "title": "Перчатка когтя смерти", "url": "/oruzhie/oruzhie-blizhnego-boya/perchatka-kogtya-smerti" },
-            { "title": "Кастет", "url": "/oruzhie/oruzhie-blizhnego-boya/kastet" },
-            { "title": "Силовой кастет", "url": "/oruzhie/oruzhie-blizhnego-boya/silovoj-kastet" },
-            { "title": "Клинок штурмотрона", "url": "/oruzhie/oruzhie-blizhnego-boya/klinok-shturmotrona" },
-            { "title": "Автотопор", "url": "/oruzhie/oruzhie-blizhnego-boya/avtotopor" },
-            { "title": "Баллистический кулак", "url": "/oruzhie/oruzhie-blizhnego-boya/ballisticheskij-kulak" },
-            { "title": "Большой меч", "url": "/oruzhie/oruzhie-blizhnego-boya/bolshoj-mech" },
-            { "title": "Электрошокер", "url": "/oruzhie/oruzhie-blizhnego-boya/elektroshoker" },
-            { "title": "Бензопила", "url": "/oruzhie/oruzhie-blizhnego-boya/benzopila" },
-            { "title": "Танбо смерти", "url": "/oruzhie/oruzhie-blizhnego-boya/tanbo-smerti" },
-            { "title": "Перчатка-вытеснитель", "url": "/oruzhie/oruzhie-blizhnego-boya/perchatka-vytesnitel" },
-            { "title": "Гитара-меч", "url": "/oruzhie/oruzhie-blizhnego-boya/gitara-mech" },
-            { "title": "Циркулярный резак Мистера Помощника", "url": "/oruzhie/oruzhie-blizhnego-boya/tsirkulyarnyj-rezak-mistera-pomoshchnika" },
-            { "title": "Универсальный топор", "url": "/oruzhie/oruzhie-blizhnego-boya/universalnyj-topor" },
-            { "title": "Протонный топор", "url": "/oruzhie/oruzhie-blizhnego-boya/protonnyj-topor" },
-            { "title": "Военный барабан", "url": "/oruzhie/oruzhie-blizhnego-boya/voennyj-baraban" },
-            { "title": "Посох Атома", "url": "/oruzhie/oruzhie-blizhnego-boya/posokh-atoma" },
-            { "title": "Шахтерский перфоратор", "url": "/oruzhie/oruzhie-blizhnego-boya/shakhterskij-perforator" },
-            { "title": "Сварочная горелка", "url": "/oruzhie/oruzhie-blizhnego-boya/svarochnaya-gorelka" }
-          ]
-        },
-        {
-          "title": "Взрывчатка",
-          "url": "/oruzhie/vzryvchatka",
-          "children": [
-            { "title": "Бейсбольная граната", "url": "/oruzhie/vzryvchatka/bejsbolnaya-granata" },
-            { "title": "Осколочная граната", "url": "/oruzhie/vzryvchatka/oskolochnaya-granata" },
-            { "title": "Коктейль молотова", "url": "/oruzhie/vzryvchatka/koktejl-molotova" },
-            { "title": "Ядерная граната", "url": "/oruzhie/vzryvchatka/yadernaya-granata" },
-            { "title": "Плазменная граната", "url": "/oruzhie/vzryvchatka/plazmennaya-granata" },
-            { "title": "Импульсная граната", "url": "/oruzhie/vzryvchatka/impulsnaya-granata" },
-            { "title": "Криогенная граната", "url": "/oruzhie/vzryvchatka/kriogennaya-granata" },
-            { "title": "Крышкомина", "url": "/oruzhie/vzryvchatka/kryshkomina" },
-            { "title": "Осколочная мина", "url": "/oruzhie/vzryvchatka/oskolochnaya-mina" },
-            { "title": "Ядерная мина", "url": "/oruzhie/vzryvchatka/yadernaya-mina" },
-            { "title": "Плазменная мина", "url": "/oruzhie/vzryvchatka/plazmennaya-mina" },
-            { "title": "Импульсная мина", "url": "/oruzhie/vzryvchatka/impulsnaya-mina" },
-            { "title": "Криомина", "url": "/oruzhie/vzryvchatka/kriomina" },
-            { "title": "Детонатор", "url": "/oruzhie/vzryvchatka/detonator" },
-            { "title": "Динамит", "url": "/oruzhie/vzryvchatka/dinamit" },
-            { "title": "Связка динамита", "url": "/oruzhie/vzryvchatka/svyazka-dinamita" },
-            { "title": "Светошумовая граната", "url": "/oruzhie/vzryvchatka/svetoshumovaya-granata" },
-            { "title": "«Умная» осколочная граната", "url": "/oruzhie/vzryvchatka/umnaya-oskolochnaya-granata" },
-            { "title": "Пластиковая взрывчатка", "url": "/oruzhie/vzryvchatka/plastikovaya-vzryvchatka" },
-            { "title": "Пороховой заряд", "url": "/oruzhie/vzryvchatka/porokhovoj-zaryad" },
-            { "title": "Дымовая граната", "url": "/oruzhie/vzryvchatka/dymovaya-granata" }
-          ]
-        },
-        {
-          "title": "Энергооружие",
-          "url": "/oruzhie/energooruzhie",
-          "children": [
-            { "title": "Лазерный мушкет", "url": "/oruzhie/energooruzhie/lazernyj-mushket" },
-            { "title": "Лазерный пистолет", "url": "/oruzhie/energooruzhie/lazernyj-pistolet" },
-            { "title": "Плазменный пистолет", "url": "/oruzhie/energooruzhie/lazernyj-pistolet-2" },
-            { "title": "Гамма-пушка", "url": "/oruzhie/energooruzhie/gamma-pushka" },
-            { "title": "Атомайзер инопланетян", "url": "/oruzhie/energooruzhie/atomajzer-inoplanetyan" },
-            { "title": "Дезинтегратор Чужого", "url": "/oruzhie/energooruzhie/dezintegrator-chuzhogo" },
-            { "title": "Электросварка", "url": "/oruzhie/energooruzhie/elektrosvarka" },
-            { "title": "Головной лазер штурмотрона", "url": "/oruzhie/energooruzhie/golovnoj-lazer-shturmotrona" },
-            { "title": "Микроволновый эмиттер", "url": "/oruzhie/energooruzhie/mikrovolnovyj-emitter" },
-            { "title": "Карабин Теслы", "url": "/oruzhie/energooruzhie/karabin-tesly" },
-            { "title": "Кислоплюй", "url": "/oruzhie/energooruzhie/kisloplyuj" },
-            { "title": "Бластер Чужих", "url": "/oruzhie/energooruzhie/blaster-chuzhikh" },
-            { "title": "Гипнотрон", "url": "/oruzhie/energooruzhie/gipnotron" },
-            { "title": "Плазмакастер", "url": "/oruzhie/energooruzhie/plazmakaster" },
-            { "title": "Лазерное ружьё WATTZ 2000", "url": "/oruzhie/energooruzhie/lazernoe-ruzhjo-wattz-2000" }
-          ]
-        },
-        {
-          "title": "Тяжёлое оружие",
-          "url": "/oruzhie/tyazhjoloe-oruzhie",
-          "children": [
-            { "title": "Толстяк", "url": "/oruzhie/tyazhjoloe-oruzhie/tolstyak" },
-            { "title": "Огнемет", "url": "/oruzhie/tyazhjoloe-oruzhie/ognemet" },
-            { "title": "Гатлинг-лазер", "url": "/oruzhie/tyazhjoloe-oruzhie/gatling-lazer" },
-            { "title": "Тяжёлый инсинератор", "url": "/oruzhie/tyazhjoloe-oruzhie/tyazhjolyj-insinerator" },
-            { "title": "Хламотрон", "url": "/oruzhie/tyazhjoloe-oruzhie/khlamotron" },
-            { "title": "Миниган", "url": "/oruzhie/tyazhjoloe-oruzhie/minigan" },
-            { "title": "Ракетная установка", "url": "/oruzhie/tyazhjoloe-oruzhie/raketnaya-ustanovka" },
-            { "title": "Пулемёт калибра .50", "url": "/oruzhie/tyazhjoloe-oruzhie/pulemjot-kalibra-50" },
-            { "title": "Автоматический гранатомёт", "url": "/oruzhie/tyazhjoloe-oruzhie/avtomaticheskij-granatomjot" },
-            { "title": "Пушка робота", "url": "/oruzhie/tyazhjoloe-oruzhie/pushka-robota" },
-            { "title": "Гатлинг", "url": "/oruzhie/tyazhjoloe-oruzhie/gatling" },
-            { "title": "Гатлинг-плазма", "url": "/oruzhie/tyazhjoloe-oruzhie/gatling-plazma" },
-            { "title": "Миниган Гаусса", "url": "/oruzhie/tyazhjoloe-oruzhie/minigan-gaussa" },
-            { "title": "Плазмакастер", "url": "/oruzhie/tyazhjoloe-oruzhie/plazmakaster" },
-            { "title": "Пушка Теслы", "url": "/oruzhie/tyazhjoloe-oruzhie/pushka-tesly" },
-            { "title": "Залп", "url": "/oruzhie/tyazhjoloe-oruzhie/zalp" },
-            { "title": "Криолятор", "url": "/oruzhie/tyazhjoloe-oruzhie/kriolyator" },
-            { "title": "Гарпуномёт", "url": "/oruzhie/tyazhjoloe-oruzhie/garpunomjot" },
-            { "title": "Стен-Инъектор", "url": "/oruzhie/tyazhjoloe-oruzhie/sten-inektor" },
-            { "title": "Гранатомет со слезоточивым газом", "url": "/oruzhie/tyazhjoloe-oruzhie/granatomet-so-slezotochivym-gazom" },
-            { "title": "Юджин", "url": "/oruzhie/tyazhjoloe-oruzhie/yudzhin" }
-          ]
-        }
-      ]
-    },
-    { "title": "Карты оружия β", "url": "/karty-oruzhiya-b" },
-    {
-      "title": "БРОНЯ",
-      "url": "/bronya",
-      "children": [
-        {
-          "title": "Силовая броня",
-          "url": "/bronya/silovaya-bronya",
-          "children": [
-            { "title": "Экскаваторная силовая броня", "url": "/bronya/silovaya-bronya/ekskavatornaya-silovaya-bronya" },
-            { "title": "Силовая броня Т-45", "url": "/bronya/silovaya-bronya/silovaya-bronya-t-45" }
-          ]
-        }
-      ]
-    },
-    { "title": "РАЗНОЕ", "url": "/dopolneniya" },
-    { "title": "СЦЕНАРИИ", "url": "/stsenarii" },
-    { "title": "ДОБЫЧА", "url": "/generator-dobychi" },
-    {
-      "title": "Еда",
-      "url": "/eda",
-      "children": [
-        { "title": "Мутафрукт", "url": "/eda/mutafrukt" },
-        { "title": "Макароны с Сыром \"БламКо\"", "url": "/eda/makarony-s-syrom-blamko" },
-        { "title": "Мясо Дутня", "url": "/eda/myaso-dutnya" },
-        { "title": "Мясо Гнуса", "url": "/eda/myaso-gnusa" },
-        { "title": "Стейк из Гнуса", "url": "/eda/stejk-iz-gnusa" },
-        { "title": "Мясо Брамина", "url": "/eda/myaso-bramina" },
-        { "title": "Мозговой Гриб", "url": "/eda/mozgovoj-grib" },
-        { "title": "Собачьи Консервы", "url": "/eda/sobachi-konservy" },
-        { "title": "Морковь", "url": "/eda/morkov" },
-        { "title": "Приготовленное мясо болотника с мягким панцирем", "url": "/eda/prigotovlennoe-myaso-bolotnika-s-myagkim-pantsirem" },
-        { "title": "Кукуруза", "url": "/eda/kukuruza" },
-        { "title": "СРАМ", "url": "/eda/cram" },
-        { "title": "Хрустящие кусочки белки", "url": "/eda/khrustyashchie-kusochki-belki" },
-        { "title": "Наливные яблоки", "url": "/eda/nalivnye-yabloki" },
-        { "title": "Яйцо Когтя Смерти", "url": "/eda/yajtso-kogtya-smerti" },
-        { "title": "Омлет из яиц Когтя смерти", "url": "/eda/omlet-iz-yaits-kogtya-smerti" },
-        { "title": "Стейк из Когтя смерти", "url": "/eda/stejk-iz-kogtya-smerti" },
-        { "title": "Кексы \"Веселые ребята\"", "url": "/eda/keksy-veselye-rebyata" },
-        { "title": "Пищевая паста", "url": "/eda/pishchevaya-pasta" },
-        { "title": "Тыква", "url": "/eda/tykva" },
-        { "title": "Радтаракан гриль", "url": "/eda/radtarakan-gril" },
-        { "title": "Радолень гриль", "url": "/eda/radolen-gril" },
-        { "title": "Жевательные пастилки", "url": "/eda/zhevatelnye-pastilki" },
-        { "title": "Кусочки игуаны", "url": "/eda/kusochki-iguany" },
-        { "title": "Игуана на палочке", "url": "/eda/iguana-na-palochke" },
-        { "title": "Суп из игуаны", "url": "/eda/sup-iz-iguany" },
-        { "title": "Пюре быстрого приготовления", "url": "/eda/pyure-bystrogo-prigotovleniya" },
-        { "title": "Продуктовый набор Института", "url": "/eda/produktovyj-nabor-instituta" },
-        { "title": "Дыня", "url": "/eda/dynya" },
-        { "title": "Кекс из Болотника", "url": "/eda/keks-iz-bolotnika" },
-        { "title": "Яйцо болотника", "url": "/eda/yajtso-bolotnika" },
-        { "title": "Омлет из яйца Болотника", "url": "/eda/omlet-iz-yajtsa-bolotnika" },
-        { "title": "Стейк из Матки Болотника", "url": "/eda/stejk-iz-matki-bolotnika" },
-        { "title": "Мясо когтя смерти", "url": "/eda/myaso-kogtya-smerti" },
-        { "title": "Мясо Болотника", "url": "/eda/myaso-bolotnika" },
-        { "title": "Собачатина", "url": "/eda/sobachatina" },
-        { "title": "Отбивная из гончей мутанта", "url": "/eda/otbivnaya-iz-gonchej-mutanta" },
-        { "title": "Мясо гончей мутанта", "url": "/eda/myaso-gonchej-mutanta" },
-        { "title": "Отбивные из дворняги", "url": "/eda/otbivnye-iz-dvornyagi" },
-        { "title": "Чашка с лапшой", "url": "/eda/chashka-s-lapshoj" },
-        { "title": "Идеально сохранившийся пирог", "url": "/eda/idealno-sokhranivshijsya-pirog" },
-        { "title": "Свинина с бобами", "url": "/eda/svinina-s-bobami" },
-        { "title": "Картофельные чипсы", "url": "/eda/kartofelnye-chipsy" },
-        { "title": "Запеченный дутень", "url": "/eda/zapechennyj-duten" }
-      ]
+     "title": "Атрибуты S.P.E.C.I.A.L",
+     "url": "/blog/atributy-s-p-e-c-i-a-l"
     },
     {
-      "title": "Обзоры официальных сценариев",
-      "url": "/obzory-ofitsialnykh-stsenariev",
-      "children": [
-        { "title": "Обзор приключения \"В бездну\"", "url": "/obzory-ofitsialnykh-stsenariev/obzor-priklyucheniya-v-bezdnu" }
-      ]
-    },
-    {
-      "title": "Бестиарий",
-      "url": "/bestiarij",
-      "children": [
-        {
-          "title": "Животные и насекомые",
-          "url": "/bestiarij/zhivotnye-i-nasekomye",
-          "children": [
-            { "title": "Гнус", "url": "/bestiarij/zhivotnye-i-nasekomye/gnus" },
-            { "title": "Дутень", "url": "/bestiarij/zhivotnye-i-nasekomye/duten" },
-            { "title": "Брамин", "url": "/bestiarij/zhivotnye-i-nasekomye/bramin" },
-            { "title": "Коготь смерти", "url": "/bestiarij/zhivotnye-i-nasekomye/kogot-smerti" },
-            { "title": "Собака", "url": "/bestiarij/zhivotnye-i-nasekomye/sobaka" },
-            { "title": "Дворняга", "url": "/bestiarij/zhivotnye-i-nasekomye/dvornyaga" },
-            { "title": "Личинка болотника", "url": "/bestiarij/zhivotnye-i-nasekomye/lichinka-bolotnika" },
-            { "title": "Болотник", "url": "/bestiarij/zhivotnye-i-nasekomye/bolotnik" },
-            { "title": "Болотник охотник", "url": "/bestiarij/zhivotnye-i-nasekomye/bolotnik-okhotnik" },
-            { "title": "Матка болотников", "url": "/bestiarij/zhivotnye-i-nasekomye/matka-bolotnikov" },
-            { "title": "Кротокрыс", "url": "/bestiarij/zhivotnye-i-nasekomye/krotokrys" },
-            { "title": "Гончая-мутант", "url": "/bestiarij/zhivotnye-i-nasekomye/gonchaya-mutant" },
-            { "title": "Радтаракан", "url": "/bestiarij/zhivotnye-i-nasekomye/radtarakan" },
-            { "title": "Радскорпион", "url": "/bestiarij/zhivotnye-i-nasekomye/radskorpion" },
-            { "title": "Радолень", "url": "/bestiarij/zhivotnye-i-nasekomye/radolen" },
-            { "title": "Жалокрыл", "url": "/bestiarij/zhivotnye-i-nasekomye/zhalokryl" },
-            { "title": "Яо Гуай", "url": "/bestiarij/zhivotnye-i-nasekomye/yao-guaj" }
-          ]
-        },
-        {
-          "title": "Рейдеры",
-          "url": "/bestiarij/raiders",
-          "children": [
-            { "title": "Рейдер", "url": "/bestiarij/raiders/rejder" },
-            { "title": "Рейдер-Босс", "url": "/bestiarij/raiders/rejder-boss" },
-            { "title": "Рейдер-псих", "url": "/bestiarij/raiders/rejder-psikh" },
-            { "title": "Рейдер-падальщик", "url": "/bestiarij/raiders/rejder-padalshchik" },
-            { "title": "Рейдер-ветеран", "url": "/bestiarij/raiders/rejder-veteran" }
-          ]
-        },
-        {
-          "title": "Супермутанты",
-          "url": "/bestiarij/supermutanty",
-          "children": [
-            { "title": "Супермутант", "url": "/bestiarij/supermutanty/supermutant" }
-          ]
-        }
-      ]
+     "title": "Как работает Удача",
+     "url": "/blog/kak-rabotaet-udacha"
     }
-  ]
+   ]
+  },
+  {
+   "title": "Происхождения",
+   "url": "/proiskhozhdeniya",
+   "children": [
+    {
+     "title": "Выживший",
+     "url": "/proiskhozhdeniya/vyzhivshij"
+    },
+    {
+     "title": "Посвящённый в Братство Стали",
+     "url": "/proiskhozhdeniya/posvyashchjonnyj-v-bratstvo-stali"
+    },
+    {
+     "title": "Гуль",
+     "url": "/proiskhozhdeniya/gul"
+    },
+    {
+     "title": "Супермутант",
+     "url": "/proiskhozhdeniya/supermutant"
+    },
+    {
+     "title": "Обитатель убежища",
+     "url": "/proiskhozhdeniya/obitatel-ubezhishcha"
+    },
+    {
+     "title": "Мистер Помощник",
+     "url": "/proiskhozhdeniya/mister-pomoshchnik"
+    },
+    {
+     "title": "Штурмотрон",
+     "url": "/proiskhozhdeniya/shturmotron"
+    },
+    {
+     "title": "Изгой Братства",
+     "url": "/proiskhozhdeniya/izgoj-bratstva"
+    },
+    {
+     "title": "Дикарь",
+     "url": "/proiskhozhdeniya/dikar"
+    },
+    {
+     "title": "Дитя Атома",
+     "url": "/proiskhozhdeniya/ditya-atoma"
+    },
+    {
+     "title": "Тень",
+     "url": "/proiskhozhdeniya/ten"
+    },
+    {
+     "title": "Житель НКР",
+     "url": "/proiskhozhdeniya/zhitel-nkr"
+    },
+    {
+     "title": "Минитмен",
+     "url": "/proiskhozhdeniya/minitmen"
+    },
+    {
+     "title": "Робомозг",
+     "url": "/proiskhozhdeniya/robomozg"
+    },
+    {
+     "title": "Протектрон",
+     "url": "/proiskhozhdeniya/protektron"
+    },
+    {
+     "title": "Осколок Анклава",
+     "url": "/proiskhozhdeniya/oskolok-anklava"
+    }
+   ]
+  },
+  {
+   "title": "ПЕРКИ",
+   "url": "/perki26"
+  },
+  {
+   "title": "Оружие",
+   "url": "/snaryazhenie/oruzhie",
+   "children": [
+    {
+     "title": "Стрелковое оружие",
+     "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie",
+     "children": [
+      {
+       "title": "10-мм Пистолет",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/10-mm-pistolet"
+      },
+      {
+       "title": "12,7-мм пистолет",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/12-7-mm-pistolet"
+      },
+      {
+       "title": "12,7-мм пистолет-пулемёт",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/12-7-mm-pistolet-pulemjot"
+      },
+      {
+       "title": "Противопехотный 25-мм гранатомёт",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/protivopekhotnyj-25-mm-granatomjot"
+      },
+      {
+       "title": "Крупнокалиберная снайперская винтовка",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/krupnokalibernaya-snajperskaya-vintovka"
+      },
+      {
+       "title": "Самозарядная винтовка",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/samozaryadnaya-vintovka"
+      },
+      {
+       "title": "Пороховой мушкетон",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/porokhovoj-mushketon"
+      },
+      {
+       "title": "Пороховой пистолет",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/porokhovoj-pistolet"
+      },
+      {
+       "title": "Пороховой карабин",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/porokhovoj-karabin"
+      },
+      {
+       "title": "Пистолет Гаусса",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/pistolet-gaussa"
+      },
+      {
+       "title": "Дробовик Гаусса",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/drobovik-gaussa"
+      },
+      {
+       "title": "Карабин с рычажным затвором",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/karabin-s-rychazhnym-zatvorom"
+      },
+      {
+       "title": "Лёгкий пулемёт",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/ljogkij-pulemjot"
+      },
+      {
+       "title": "Помповый дробовик",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/pompovyj-drobovik"
+      },
+      {
+       "title": "Радиевый карабин",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/radievyj-karabin"
+      },
+      {
+       "title": "Снайперская винтовка",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/snajperskaya-vintovka"
+      },
+      {
+       "title": "Гранатомёт M79",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/granatomjot-m79"
+      },
+      {
+       "title": "Стен",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/sten"
+      },
+      {
+       "title": "Пистолет Гуля",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/pistolet-gulya"
+      },
+      {
+       "title": "Карабин Гуля",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/karabin-gulya"
+      },
+      {
+       "title": "Инъекционный пистолет",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/karabin-gulya-2"
+      },
+      {
+       "title": "Револьвер Калибра .44",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/revolver-kalibra-44"
+      },
+      {
+       "title": "Сигнальный пистолет",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/signalnyj-pistolet"
+      },
+      {
+       "title": "Штурмовая винтовка",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/shturmovaya-vintovka"
+      },
+      {
+       "title": "Боевой карабин",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/boevoj-karabin"
+      },
+      {
+       "title": "Карабин гаусса",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/karabin-gaussa"
+      },
+      {
+       "title": "ПП Томпсона",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/tommi-gan"
+      },
+      {
+       "title": "Боевой дробовик",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/boevoj-drobovik"
+      },
+      {
+       "title": "Двуствольный дробовик",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/dvustvolnyj-drobovik"
+      },
+      {
+       "title": "Гладкоствол с болтовым затвором",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/gladkostvol-s-boltovym-zatvorom"
+      },
+      {
+       "title": "Гладкоствольный револьвер",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/gladkostvolnyj-revolver"
+      },
+      {
+       "title": "Инъекционный карабин",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/inektsionnyj-karabin"
+      },
+      {
+       "title": "Железнодорожная винтовка",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/zheleznodorozhnaya-vintovka"
+      },
+      {
+       "title": "9-мм пистолет",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/9-mm-pistolet"
+      },
+      {
+       "title": "Охотничья винтовка",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/okhotnichya-vintovka"
+      },
+      {
+       "title": "Гладкоствол",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/gladkostvol"
+      },
+      {
+       "title": "Револьвер «Магнум» кал. 357",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/revolver-magnum-kal-357"
+      },
+      {
+       "title": "Пистолет-инъектор",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/pistolet-inektor"
+      },
+      {
+       "title": "Абордажный пистолет",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/abordazhnyj-pistolet"
+      },
+      {
+       "title": "Гранатомет со слезоточивым газом",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/granatomet-so-slezotochivym-gazom"
+      },
+      {
+       "title": "Магнумномикон",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/magnumnomikon"
+      },
+      {
+       "title": "Китайский автомат",
+       "url": "/snaryazhenie/oruzhie/strelkovoe-oruzhie/kitajskij-avtomat"
+      }
+     ]
+    },
+    {
+     "title": "Атлетическое оружие",
+     "url": "/snaryazhenie/oruzhie/atleticheskoe-oruzhie",
+     "children": [
+      {
+       "title": "Лук",
+       "url": "/snaryazhenie/oruzhie/atleticheskoe-oruzhie/luk"
+      },
+      {
+       "title": "Арбалет",
+       "url": "/snaryazhenie/oruzhie/atleticheskoe-oruzhie/arbalet"
+      }
+     ]
+    },
+    {
+     "title": "Метательное оружие",
+     "url": "/snaryazhenie/oruzhie/metatelnoe-oruzhie",
+     "children": [
+      {
+       "title": "Самодельное лассо",
+       "url": "/snaryazhenie/oruzhie/metatelnoe-oruzhie/samodelnoe-lasso"
+      },
+      {
+       "title": "Метательные ножи",
+       "url": "/snaryazhenie/oruzhie/metatelnoe-oruzhie/metatelnye-nozhi"
+      },
+      {
+       "title": "Томагавк",
+       "url": "/snaryazhenie/oruzhie/metatelnoe-oruzhie/tomagavk"
+      },
+      {
+       "title": "Дротик",
+       "url": "/snaryazhenie/oruzhie/metatelnoe-oruzhie/drotik"
+      }
+     ]
+    },
+    {
+     "title": "Оружие ближнего боя",
+     "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya",
+     "children": [
+      {
+       "title": "Выкидной нож",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/vykidnoj-nozh"
+      },
+      {
+       "title": "Дубинка",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/dubinka"
+      },
+      {
+       "title": "Меч",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/mech"
+      },
+      {
+       "title": "Боевой нож",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/boevoj-nozh"
+      },
+      {
+       "title": "Мачете",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/machete"
+      },
+      {
+       "title": "Потрошитель",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/potroshitel"
+      },
+      {
+       "title": "Шиш-кебаб",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/shish-kebab"
+      },
+      {
+       "title": "Бейсбольная бита",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/bejsbolnaya-bita"
+      },
+      {
+       "title": "Алюминиевая бейсбольная бита",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/alyuminievaya-bejsbolnaya-bita"
+      },
+      {
+       "title": "Дрын",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/dryn"
+      },
+      {
+       "title": "Свинцовая труба",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/svintsovaya-truba"
+      },
+      {
+       "title": "Разводной ключ",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/razvodnoj-klyuch"
+      },
+      {
+       "title": "Бильярдный кий",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/bilyardnyj-kij"
+      },
+      {
+       "title": "Скалка",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/skalka"
+      },
+      {
+       "title": "Кувалда",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/kuvalda"
+      },
+      {
+       "title": "Супермолот",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/supermolot"
+      },
+      {
+       "title": "Балонный ключ",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/balonnyj-klyuch"
+      },
+      {
+       "title": "Трость",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/trost"
+      },
+      {
+       "title": "Боксерская перчатка",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/bokserskaya-perchatka"
+      },
+      {
+       "title": "Перчатка когтя смерти",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/perchatka-kogtya-smerti"
+      },
+      {
+       "title": "Кастет",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/kastet"
+      },
+      {
+       "title": "Силовой кастет",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/silovoj-kastet"
+      },
+      {
+       "title": "Клинок штурмотрона",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/klinok-shturmotrona"
+      },
+      {
+       "title": "Автотопор",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/avtotopor"
+      },
+      {
+       "title": "Баллистический кулак",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/ballisticheskij-kulak"
+      },
+      {
+       "title": "Большой меч",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/bolshoj-mech"
+      },
+      {
+       "title": "Электрошокер",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/elektroshoker"
+      },
+      {
+       "title": "Бензопила",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/benzopila"
+      },
+      {
+       "title": "Танбо смерти",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/tanbo-smerti"
+      },
+      {
+       "title": "Перчатка-вытеснитель",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/perchatka-vytesnitel"
+      },
+      {
+       "title": "Гитара-меч",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/gitara-mech"
+      },
+      {
+       "title": "Циркулярный резак Мистера Помощника",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/tsirkulyarnyj-rezak-mistera-pomoshchnika"
+      },
+      {
+       "title": "Универсальный топор",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/universalnyj-topor"
+      },
+      {
+       "title": "Протонный топор",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/protonnyj-topor"
+      },
+      {
+       "title": "Военный барабан",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/voennyj-baraban"
+      },
+      {
+       "title": "Посох Атома",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/posokh-atoma"
+      },
+      {
+       "title": "Шахтерский перфоратор",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/shakhterskij-perforator"
+      },
+      {
+       "title": "Сварочная горелка",
+       "url": "/snaryazhenie/oruzhie/oruzhie-blizhnego-boya/svarochnaya-gorelka"
+      }
+     ]
+    },
+    {
+     "title": "Взрывчатка",
+     "url": "/snaryazhenie/oruzhie/vzryvchatka",
+     "children": [
+      {
+       "title": "Бейсбольная граната",
+       "url": "/snaryazhenie/oruzhie/vzryvchatka/bejsbolnaya-granata"
+      },
+      {
+       "title": "Осколочная граната",
+       "url": "/snaryazhenie/oruzhie/vzryvchatka/oskolochnaya-granata"
+      },
+      {
+       "title": "Коктейль молотова",
+       "url": "/snaryazhenie/oruzhie/vzryvchatka/koktejl-molotova"
+      },
+      {
+       "title": "Ядерная граната",
+       "url": "/snaryazhenie/oruzhie/vzryvchatka/yadernaya-granata"
+      },
+      {
+       "title": "Плазменная граната",
+       "url": "/snaryazhenie/oruzhie/vzryvchatka/plazmennaya-granata"
+      },
+      {
+       "title": "Импульсная граната",
+       "url": "/snaryazhenie/oruzhie/vzryvchatka/impulsnaya-granata"
+      },
+      {
+       "title": "Криогенная граната",
+       "url": "/snaryazhenie/oruzhie/vzryvchatka/kriogennaya-granata"
+      },
+      {
+       "title": "Крышкомина",
+       "url": "/snaryazhenie/oruzhie/vzryvchatka/kryshkomina"
+      },
+      {
+       "title": "Осколочная мина",
+       "url": "/snaryazhenie/oruzhie/vzryvchatka/oskolochnaya-mina"
+      },
+      {
+       "title": "Ядерная мина",
+       "url": "/snaryazhenie/oruzhie/vzryvchatka/yadernaya-mina"
+      },
+      {
+       "title": "Плазменная мина",
+       "url": "/snaryazhenie/oruzhie/vzryvchatka/plazmennaya-mina"
+      },
+      {
+       "title": "Импульсная мина",
+       "url": "/snaryazhenie/oruzhie/vzryvchatka/impulsnaya-mina"
+      },
+      {
+       "title": "Криомина",
+       "url": "/snaryazhenie/oruzhie/vzryvchatka/kriomina"
+      },
+      {
+       "title": "Детонатор",
+       "url": "/snaryazhenie/oruzhie/vzryvchatka/detonator"
+      },
+      {
+       "title": "Динамит",
+       "url": "/snaryazhenie/oruzhie/vzryvchatka/dinamit"
+      },
+      {
+       "title": "Связка динамита",
+       "url": "/snaryazhenie/oruzhie/vzryvchatka/svyazka-dinamita"
+      },
+      {
+       "title": "Светошумовая граната",
+       "url": "/snaryazhenie/oruzhie/vzryvchatka/svetoshumovaya-granata"
+      },
+      {
+       "title": "«Умная» осколочная граната",
+       "url": "/snaryazhenie/oruzhie/vzryvchatka/umnaya-oskolochnaya-granata"
+      },
+      {
+       "title": "Пластиковая взрывчатка",
+       "url": "/snaryazhenie/oruzhie/vzryvchatka/plastikovaya-vzryvchatka"
+      },
+      {
+       "title": "Пороховой заряд",
+       "url": "/snaryazhenie/oruzhie/vzryvchatka/porokhovoj-zaryad"
+      },
+      {
+       "title": "Дымовая граната",
+       "url": "/snaryazhenie/oruzhie/vzryvchatka/dymovaya-granata"
+      }
+     ]
+    },
+    {
+     "title": "Энергооружие",
+     "url": "/snaryazhenie/oruzhie/energooruzhie",
+     "children": [
+      {
+       "title": "Лазерный мушкет",
+       "url": "/snaryazhenie/oruzhie/energooruzhie/lazernyj-mushket"
+      },
+      {
+       "title": "Лазерный пистолет",
+       "url": "/snaryazhenie/oruzhie/energooruzhie/lazernyj-pistolet"
+      },
+      {
+       "title": "Плазменный пистолет",
+       "url": "/snaryazhenie/oruzhie/energooruzhie/lazernyj-pistolet-2"
+      },
+      {
+       "title": "Гамма-пушка",
+       "url": "/snaryazhenie/oruzhie/energooruzhie/gamma-pushka"
+      },
+      {
+       "title": "Атомайзер инопланетян",
+       "url": "/snaryazhenie/oruzhie/energooruzhie/atomajzer-inoplanetyan"
+      },
+      {
+       "title": "Дезинтегратор Чужого",
+       "url": "/snaryazhenie/oruzhie/energooruzhie/dezintegrator-chuzhogo"
+      },
+      {
+       "title": "Электросварка",
+       "url": "/snaryazhenie/oruzhie/energooruzhie/elektrosvarka"
+      },
+      {
+       "title": "Головной лазер штурмотрона",
+       "url": "/snaryazhenie/oruzhie/energooruzhie/golovnoj-lazer-shturmotrona"
+      },
+      {
+       "title": "Микроволновый эмиттер",
+       "url": "/snaryazhenie/oruzhie/energooruzhie/mikrovolnovyj-emitter"
+      },
+      {
+       "title": "Карабин Теслы",
+       "url": "/snaryazhenie/oruzhie/energooruzhie/karabin-tesly"
+      },
+      {
+       "title": "Кислоплюй",
+       "url": "/snaryazhenie/oruzhie/energooruzhie/kisloplyuj"
+      },
+      {
+       "title": "Бластер Чужих",
+       "url": "/snaryazhenie/oruzhie/energooruzhie/blaster-chuzhikh"
+      },
+      {
+       "title": "Гипнотрон",
+       "url": "/snaryazhenie/oruzhie/energooruzhie/gipnotron"
+      },
+      {
+       "title": "Плазмакастер",
+       "url": "/snaryazhenie/oruzhie/energooruzhie/plazmakaster"
+      },
+      {
+       "title": "Лазерное ружьё WATTZ 2000",
+       "url": "/snaryazhenie/oruzhie/energooruzhie/lazernoe-ruzhjo-wattz-2000"
+      }
+     ]
+    },
+    {
+     "title": "Тяжёлое оружие",
+     "url": "/snaryazhenie/oruzhie/tyazhjoloe-oruzhie",
+     "children": [
+      {
+       "title": "Толстяк",
+       "url": "/snaryazhenie/oruzhie/tyazhjoloe-oruzhie/tolstyak"
+      },
+      {
+       "title": "Огнемет",
+       "url": "/snaryazhenie/oruzhie/tyazhjoloe-oruzhie/ognemet"
+      },
+      {
+       "title": "Гатлинг-лазер",
+       "url": "/snaryazhenie/oruzhie/tyazhjoloe-oruzhie/gatling-lazer"
+      },
+      {
+       "title": "Тяжёлый инсинератор",
+       "url": "/snaryazhenie/oruzhie/tyazhjoloe-oruzhie/tyazhjolyj-insinerator"
+      },
+      {
+       "title": "Хламотрон",
+       "url": "/snaryazhenie/oruzhie/tyazhjoloe-oruzhie/khlamotron"
+      },
+      {
+       "title": "Миниган",
+       "url": "/snaryazhenie/oruzhie/tyazhjoloe-oruzhie/minigan"
+      },
+      {
+       "title": "Ракетная установка",
+       "url": "/snaryazhenie/oruzhie/tyazhjoloe-oruzhie/raketnaya-ustanovka"
+      },
+      {
+       "title": "Пулемёт калибра .50",
+       "url": "/snaryazhenie/oruzhie/tyazhjoloe-oruzhie/pulemjot-kalibra-50"
+      },
+      {
+       "title": "Автоматический гранатомёт",
+       "url": "/snaryazhenie/oruzhie/tyazhjoloe-oruzhie/avtomaticheskij-granatomjot"
+      },
+      {
+       "title": "Пушка робота",
+       "url": "/snaryazhenie/oruzhie/tyazhjoloe-oruzhie/pushka-robota"
+      },
+      {
+       "title": "Гатлинг",
+       "url": "/snaryazhenie/oruzhie/tyazhjoloe-oruzhie/gatling"
+      },
+      {
+       "title": "Гатлинг-плазма",
+       "url": "/snaryazhenie/oruzhie/tyazhjoloe-oruzhie/gatling-plazma"
+      },
+      {
+       "title": "Миниган Гаусса",
+       "url": "/snaryazhenie/oruzhie/tyazhjoloe-oruzhie/minigan-gaussa"
+      },
+      {
+       "title": "Плазмакастер",
+       "url": "/snaryazhenie/oruzhie/tyazhjoloe-oruzhie/plazmakaster"
+      },
+      {
+       "title": "Пушка Теслы",
+       "url": "/snaryazhenie/oruzhie/tyazhjoloe-oruzhie/pushka-tesly"
+      },
+      {
+       "title": "Залп",
+       "url": "/snaryazhenie/oruzhie/tyazhjoloe-oruzhie/zalp"
+      },
+      {
+       "title": "Криолятор",
+       "url": "/snaryazhenie/oruzhie/tyazhjoloe-oruzhie/kriolyator"
+      },
+      {
+       "title": "Гарпуномёт",
+       "url": "/snaryazhenie/oruzhie/tyazhjoloe-oruzhie/garpunomjot"
+      },
+      {
+       "title": "Стен-Инъектор",
+       "url": "/snaryazhenie/oruzhie/tyazhjoloe-oruzhie/sten-inektor"
+      },
+      {
+       "title": "Гранатомет со слезоточивым газом",
+       "url": "/snaryazhenie/oruzhie/tyazhjoloe-oruzhie/granatomet-so-slezotochivym-gazom"
+      },
+      {
+       "title": "Юджин",
+       "url": "/snaryazhenie/oruzhie/tyazhjoloe-oruzhie/yudzhin"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Карты оружия β",
+   "url": "/karty-oruzhiya-b"
+  },
+  {
+   "title": "БРОНЯ",
+   "url": "/bronya",
+   "children": [
+    {
+     "title": "Силовая броня",
+     "url": "/bronya/silovaya-bronya",
+     "children": [
+      {
+       "title": "Экскаваторная силовая броня",
+       "url": "/bronya/silovaya-bronya/ekskavatornaya-silovaya-bronya"
+      },
+      {
+       "title": "Силовая броня Т-45",
+       "url": "/bronya/silovaya-bronya/silovaya-bronya-t-45"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "РАЗНОЕ",
+   "url": "/dopolneniya"
+  },
+  {
+   "title": "СЦЕНАРИИ",
+   "url": "/stsenarii"
+  },
+  {
+   "title": "ДОБЫЧА",
+   "url": "/generator-dobychi"
+  },
+  {
+   "title": "Еда",
+   "url": "/eda",
+   "children": [
+    {
+     "title": "Мутафрукт",
+     "url": "/eda/mutafrukt"
+    },
+    {
+     "title": "Макароны с Сыром \"БламКо\"",
+     "url": "/eda/makarony-s-syrom-blamko"
+    },
+    {
+     "title": "Мясо Дутня",
+     "url": "/eda/myaso-dutnya"
+    },
+    {
+     "title": "Мясо Гнуса",
+     "url": "/eda/myaso-gnusa"
+    },
+    {
+     "title": "Стейк из Гнуса",
+     "url": "/eda/stejk-iz-gnusa"
+    },
+    {
+     "title": "Мясо Брамина",
+     "url": "/eda/myaso-bramina"
+    },
+    {
+     "title": "Мозговой Гриб",
+     "url": "/eda/mozgovoj-grib"
+    },
+    {
+     "title": "Собачьи Консервы",
+     "url": "/eda/sobachi-konservy"
+    },
+    {
+     "title": "Морковь",
+     "url": "/eda/morkov"
+    },
+    {
+     "title": "Приготовленное мясо болотника с мягким панцирем",
+     "url": "/eda/prigotovlennoe-myaso-bolotnika-s-myagkim-pantsirem"
+    },
+    {
+     "title": "Кукуруза",
+     "url": "/eda/kukuruza"
+    },
+    {
+     "title": "СРАМ",
+     "url": "/eda/cram"
+    },
+    {
+     "title": "Хрустящие кусочки белки",
+     "url": "/eda/khrustyashchie-kusochki-belki"
+    },
+    {
+     "title": "Наливные яблоки",
+     "url": "/eda/nalivnye-yabloki"
+    },
+    {
+     "title": "Яйцо Когтя Смерти",
+     "url": "/eda/yajtso-kogtya-smerti"
+    },
+    {
+     "title": "Омлет из яиц Когтя смерти",
+     "url": "/eda/omlet-iz-yaits-kogtya-smerti"
+    },
+    {
+     "title": "Стейк из Когтя смерти",
+     "url": "/eda/stejk-iz-kogtya-smerti"
+    },
+    {
+     "title": "Кексы \"Веселые ребята\"",
+     "url": "/eda/keksy-veselye-rebyata"
+    },
+    {
+     "title": "Пищевая паста",
+     "url": "/eda/pishchevaya-pasta"
+    },
+    {
+     "title": "Тыква",
+     "url": "/eda/tykva"
+    },
+    {
+     "title": "Радтаракан гриль",
+     "url": "/eda/radtarakan-gril"
+    },
+    {
+     "title": "Радолень гриль",
+     "url": "/eda/radolen-gril"
+    },
+    {
+     "title": "Жевательные пастилки",
+     "url": "/eda/zhevatelnye-pastilki"
+    },
+    {
+     "title": "Кусочки игуаны",
+     "url": "/eda/kusochki-iguany"
+    },
+    {
+     "title": "Игуана на палочке",
+     "url": "/eda/iguana-na-palochke"
+    },
+    {
+     "title": "Суп из игуаны",
+     "url": "/eda/sup-iz-iguany"
+    },
+    {
+     "title": "Пюре быстрого приготовления",
+     "url": "/eda/pyure-bystrogo-prigotovleniya"
+    },
+    {
+     "title": "Продуктовый набор Института",
+     "url": "/eda/produktovyj-nabor-instituta"
+    },
+    {
+     "title": "Дыня",
+     "url": "/eda/dynya"
+    },
+    {
+     "title": "Кекс из Болотника",
+     "url": "/eda/keks-iz-bolotnika"
+    },
+    {
+     "title": "Яйцо болотника",
+     "url": "/eda/yajtso-bolotnika"
+    },
+    {
+     "title": "Омлет из яйца Болотника",
+     "url": "/eda/omlet-iz-yajtsa-bolotnika"
+    },
+    {
+     "title": "Стейк из Матки Болотника",
+     "url": "/eda/stejk-iz-matki-bolotnika"
+    },
+    {
+     "title": "Мясо когтя смерти",
+     "url": "/eda/myaso-kogtya-smerti"
+    },
+    {
+     "title": "Мясо Болотника",
+     "url": "/eda/myaso-bolotnika"
+    },
+    {
+     "title": "Собачатина",
+     "url": "/eda/sobachatina"
+    },
+    {
+     "title": "Отбивная из гончей мутанта",
+     "url": "/eda/otbivnaya-iz-gonchej-mutanta"
+    },
+    {
+     "title": "Мясо гончей мутанта",
+     "url": "/eda/myaso-gonchej-mutanta"
+    },
+    {
+     "title": "Отбивные из дворняги",
+     "url": "/eda/otbivnye-iz-dvornyagi"
+    },
+    {
+     "title": "Чашка с лапшой",
+     "url": "/eda/chashka-s-lapshoj"
+    },
+    {
+     "title": "Идеально сохранившийся пирог",
+     "url": "/eda/idealno-sokhranivshijsya-pirog"
+    },
+    {
+     "title": "Свинина с бобами",
+     "url": "/eda/svinina-s-bobami"
+    },
+    {
+     "title": "Картофельные чипсы",
+     "url": "/eda/kartofelnye-chipsy"
+    },
+    {
+     "title": "Запеченный дутень",
+     "url": "/eda/zapechennyj-duten"
+    }
+   ]
+  },
+  {
+   "title": "Обзоры официальных сценариев",
+   "url": "/obzory-ofitsialnykh-stsenariev",
+   "children": [
+    {
+     "title": "Обзор приключения \"В бездну\"",
+     "url": "/obzory-ofitsialnykh-stsenariev/obzor-priklyucheniya-v-bezdnu"
+    }
+   ]
+  },
+  {
+   "title": "Бестиарий",
+   "url": "/bestiarij",
+   "children": [
+    {
+     "title": "Животные и насекомые",
+     "url": "/bestiarij/zhivotnye-i-nasekomye",
+     "children": [
+      {
+       "title": "Гнус",
+       "url": "/bestiarij/zhivotnye-i-nasekomye/gnus"
+      },
+      {
+       "title": "Дутень",
+       "url": "/bestiarij/zhivotnye-i-nasekomye/duten"
+      },
+      {
+       "title": "Брамин",
+       "url": "/bestiarij/zhivotnye-i-nasekomye/bramin"
+      },
+      {
+       "title": "Коготь смерти",
+       "url": "/bestiarij/zhivotnye-i-nasekomye/kogot-smerti"
+      },
+      {
+       "title": "Собака",
+       "url": "/bestiarij/zhivotnye-i-nasekomye/sobaka"
+      },
+      {
+       "title": "Дворняга",
+       "url": "/bestiarij/zhivotnye-i-nasekomye/dvornyaga"
+      },
+      {
+       "title": "Личинка болотника",
+       "url": "/bestiarij/zhivotnye-i-nasekomye/lichinka-bolotnika"
+      },
+      {
+       "title": "Болотник",
+       "url": "/bestiarij/zhivotnye-i-nasekomye/bolotnik"
+      },
+      {
+       "title": "Болотник охотник",
+       "url": "/bestiarij/zhivotnye-i-nasekomye/bolotnik-okhotnik"
+      },
+      {
+       "title": "Матка болотников",
+       "url": "/bestiarij/zhivotnye-i-nasekomye/matka-bolotnikov"
+      },
+      {
+       "title": "Кротокрыс",
+       "url": "/bestiarij/zhivotnye-i-nasekomye/krotokrys"
+      },
+      {
+       "title": "Гончая-мутант",
+       "url": "/bestiarij/zhivotnye-i-nasekomye/gonchaya-mutant"
+      },
+      {
+       "title": "Радтаракан",
+       "url": "/bestiarij/zhivotnye-i-nasekomye/radtarakan"
+      },
+      {
+       "title": "Радскорпион",
+       "url": "/bestiarij/zhivotnye-i-nasekomye/radskorpion"
+      },
+      {
+       "title": "Радолень",
+       "url": "/bestiarij/zhivotnye-i-nasekomye/radolen"
+      },
+      {
+       "title": "Жалокрыл",
+       "url": "/bestiarij/zhivotnye-i-nasekomye/zhalokryl"
+      },
+      {
+       "title": "Яо Гуай",
+       "url": "/bestiarij/zhivotnye-i-nasekomye/yao-guaj"
+      }
+     ]
+    },
+    {
+     "title": "Рейдеры",
+     "url": "/bestiarij/raiders",
+     "children": [
+      {
+       "title": "Рейдер",
+       "url": "/bestiarij/raiders/rejder"
+      },
+      {
+       "title": "Рейдер-Босс",
+       "url": "/bestiarij/raiders/rejder-boss"
+      },
+      {
+       "title": "Рейдер-псих",
+       "url": "/bestiarij/raiders/rejder-psikh"
+      },
+      {
+       "title": "Рейдер-падальщик",
+       "url": "/bestiarij/raiders/rejder-padalshchik"
+      },
+      {
+       "title": "Рейдер-ветеран",
+       "url": "/bestiarij/raiders/rejder-veteran"
+      }
+     ]
+    },
+    {
+     "title": "Супермутанты",
+     "url": "/bestiarij/supermutanty",
+     "children": [
+      {
+       "title": "Супермутант",
+       "url": "/bestiarij/supermutanty/supermutant"
+      }
+     ]
+    }
+   ]
+  }
+ ]
 }

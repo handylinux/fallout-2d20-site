@@ -15,6 +15,7 @@ import html
 import json
 import base64
 import os
+import re
 import sys
 import shutil
 import urllib.parse
@@ -111,6 +112,7 @@ def origin_plate(item):
     url = item.get('url') or '#'
     return ('<div class="cell cell--shadow">'
             '<h2 class="cell__title"><a href="%s">%s</a></h2>'
+            # ссылки происхождений берутся из данных — BASE добавляем сразу
             '<p class="cell__text">%s</p>'
             '<div class="cell__chevron">%s</div>'
             '</div>' % (esc(u(url)), esc(item['title']), esc(item.get('text')), cta(url)))
@@ -269,6 +271,10 @@ def read_css():
 
 def page(title, body, active='', nav_items=None, search_data=None):
     logo = u('/assets/img/logos.png')
+    if BASE:
+        # все внутренние абсолютные ссылки получают префикс BASE (GitHub Pages)
+        body = re.sub(r'href="/(?!%s)(?!/)' % re.escape(BASE.lstrip('/')),
+                      'href="%s/' % BASE, body)
     styles = read_css()
     return f"""<!DOCTYPE html>
 <html lang="ru">
@@ -300,7 +306,7 @@ def page(title, body, active='', nav_items=None, search_data=None):
       <span></span><span></span>
     </button>
   </div>
-  <ul>{drawer(nav_items or [])}</ul>
+  <ul>{drawer(globals().get('NAV_ITEMS') or nav_items or [])}</ul>
 </aside>
 
 <main class="page">
@@ -349,6 +355,62 @@ PERKS_HUB = [
     {'title': 'Перки по атрибутам', 'url': '/perki26/'},
     {'title': 'Требования и ранги', 'url': '/perki26/'},
 ]
+
+
+ORIGINS_STUB = """<p class="wcard__back"><a href="/proiskhozhdeniya/">Назад к происхождениям</a></p>
+<h1 class="page__title">{title}</h1>
+<div class="wcard"><div class="wcard__row">
+  <div class="wcard__media">{art}</div>
+  <div class="wcard__stats"><p class="page__lead">{text}</p></div>
+</div></div>
+"""
+
+
+def with_weapon_nav(nav_items, cats):
+    """Подменяет ветку меню «Оружие» списком из json: категория → оружие."""
+    children = [{
+        'title': title,
+        'url': '/snaryazhenie/oruzhie/%s/' % cat_slug,
+        'children': [{'title': it['name'],
+                      'url': '/snaryazhenie/oruzhie/%s/%s/' % (cat_slug, it['slug'])}
+                     for it in group],
+    } for cat_slug, title, group in cats]
+    branch = {'title': 'Оружие', 'url': '/snaryazhenie/oruzhie/', 'children': children}
+
+    def walk(items):
+        out = []
+        for item in items:
+            if (item.get('title') or '').lower() == 'оружие':
+                out.append(branch)
+            else:
+                out.append(dict(item, children=walk(item.get('children') or [])))
+        return out
+
+    return walk(nav_items)
+
+
+def write_origin_pages(nav_items):
+    """Страница на каждое происхождение из data/origins.json + пункты меню.
+
+    Иначе карточка происхождения ведёт в 404. Текст черновой — из данных.
+    """
+    with open(os.path.join(DATA, 'origins.json'), encoding='utf-8') as f:
+        cards = json.load(f)['cards']
+    seen = set()
+    for card in cards:
+        url = (card.get('url') or '').rstrip('/')
+        if not url or url in seen:
+            continue
+        seen.add(url)
+        slug = url.rsplit('/', 1)[-1]
+        art = origin_art(url) or card.get('image') or ''
+        media = img_tag(art, card.get('alt') or card['title']) if art else ''
+        body = ORIGINS_STUB.format(
+            title=esc(card['title']),
+            art=media or '<div class="media-cell media-cell--empty"></div>',
+            text=esc(card.get('text') or ''))
+        write('proiskhozhdeniya/%s/index.html' % slug,
+              page(card['title'], body, '/proiskhozhdeniya/', nav_items))
 
 
 def page_perks(nav_items):
@@ -428,16 +490,20 @@ def main():
         for name in files:
             shutil.copy(os.path.join(root, name), os.path.join(dst, name))
 
-    # один поисковый индекс на весь сайт — из тех же json, что и страницы
+
+    # данные и меню — до первой страницы, иначе шапка останется старой
     items = weapons.load()
     cats = weapons.by_category(items)
     os.makedirs(os.path.join(OUT, 'assets/data'), exist_ok=True)
     with open(os.path.join(OUT, 'assets/data/search.json'), 'w', encoding='utf-8') as f:
         f.write(weapon_pages.search_index(items))
+    nav_items = with_weapon_nav(nav_items, cats)
+    globals()['NAV_ITEMS'] = nav_items
 
     write('index.html', page('Правила игры', '<h1 class="page__title">Правила игры</h1>',
                              '/', nav_items))
     write('proiskhozhdeniya/index.html', page_origins(nav_items))
+    write_origin_pages(nav_items)
     write('perki/index.html', page_perks(nav_items))
     # страница-эталон не публикуется в docs/, только для локальной сверки
     if os.environ.get('DEMO'):
