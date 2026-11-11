@@ -19,6 +19,8 @@ import sys
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))
 OUT = os.path.join(ROOT, 'public')
+# на GitHub Pages сайт в подкаталоге /fallout-2d20-site/ — префикс задаётся при сборке
+BASE = (os.environ.get('BASE') or '').rstrip('/')
 
 
 # --------------------------------------------------------------------------- данные
@@ -102,7 +104,7 @@ a:hover { text-decoration: underline; }
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    background-image: linear-gradient(rgba(150, 150, 150, 0.2), rgba(150, 150, 150, 0.2)), url('/assets/img/food-truck-pattern.jpg');
+    background-image: linear-gradient(rgba(150, 150, 150, 0.2), rgba(150, 150, 150, 0.2)), url('{BASE}/assets/img/food-truck-pattern.jpg');
     background-repeat: repeat;
     background-position: center;
     box-shadow: 7px 5px 0px 0px #C3C3C3 !important;
@@ -155,8 +157,8 @@ JS = """
 document.addEventListener("DOMContentLoaded", function() {
     const container = document.getElementById('cards-container');
     if (!container) { return; }
-    const jsonUrl = '/images/perks/perks.json';
-    const imagesFolder = '/images/perks/images/';
+    const jsonUrl = '__BASE__/images/perks/perks.json';
+    const imagesFolder = '__BASE__/images/perks/images/';
     const attributes = ['СИЛ', 'ВОС', 'ВЫН', 'ХАР', 'ИНТ', 'ЛОВ', 'УДЧ'];
 
     let filterDiv = document.getElementById('filter-attributes');
@@ -170,7 +172,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 const cardElement = document.createElement('div');
                 cardElement.classList.add('perk-card');
                 cardElement.dataset.requirements = card.requirements || '';
-                const diceIcon = '<img src="/assets/img/CD.png" alt="Боевой Кубик" style="height:1.2em; vertical-align:middle; display:inline-block; margin:0 2px;">';
+                const diceIcon = '<img src="__BASE__/assets/img/CD.png" alt="Боевой Кубик" style="height:1.2em; vertical-align:middle; display:inline-block; margin:0 2px;">';
                 const formattedDescription = (card.description || '').replace(/\\bDC\\b/g, diceIcon);
                 const imageSrc = `${imagesFolder}${card.id}.png`;
                 cardElement.innerHTML = `
@@ -233,7 +235,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 def render_page(perks):
-    with open(os.path.join(ROOT, 'public', 'perki', 'template.html'), encoding='utf-8') as f:
+    tpl = os.path.join(ROOT, 'public', 'perki', 'template.html')
+    if not os.path.exists(tpl):
+        sys.exit('нет %s — сначала запустите tools/sitegen/build.py' % tpl)
+    with open(tpl, encoding='utf-8') as f:
         shell = f.read()
     content = ('<div class="com-content-article item-page"><div class="article-details">'
                '<div class="article-header"><h1>Перки 2026</h1></div>'
@@ -242,8 +247,8 @@ def render_page(perks):
                '<div id="cards-container" class="cards-grid"></div>'
                '</div></div></div>')
     out = shell.replace('<!--PERKS_CONTENT-->', content)
-    out = out.replace('</head>', '<style>%s</style>\n</head>' % CSS)
-    out = out.replace('</body>', JS + '\n</body>')
+    out = out.replace('</head>', '<style>%s</style>\n</head>' % CSS.replace('{BASE}', BASE))
+    out = out.replace('</body>', JS.replace('__BASE__', BASE) + '\n</body>')
     return out
 
 

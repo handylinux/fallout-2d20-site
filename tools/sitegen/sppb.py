@@ -123,6 +123,34 @@ def parent_of(node):
     return None
 
 
+# --------------------------------------------------------------------------- layout сетки
+def layout_ratios(layout, count):
+    """'3+3+3+3' / '4,8' / '6.0+6.0' → [25.0, 25.0, 25.0, 25.0] (проценты ширины колонки)."""
+    if not layout or not count:
+        return []
+    parts = [p for p in str(layout).replace(',', '+').split('+') if p.strip()]
+    try:
+        nums = [float(p) for p in parts]
+    except ValueError:
+        return []
+    if len(nums) != count:
+        return []
+    total = sum(nums)
+    if total <= 0:
+        return []
+    return [round(n / total * 100, 6) for n in nums]
+
+
+def col_class(pct):
+    """25.0 → 'sppb-col-md-3' (сетка SPPB 12 колонок)."""
+    if pct is None:
+        return ''
+    n = int(round(pct / 100 * 12))
+    if n < 1 or n > 12:
+        return ''
+    return 'sppb-col-md-%d' % n
+
+
 # --------------------------------------------------------------------------- CSS utils
 def spacing_decl(prop, value, important=False):
     """'15px 0px 15px 0px' -> 'padding-top:15px;padding-right:0px;…'"""
@@ -312,20 +340,21 @@ class Renderer:
         if str(s.get('columns_align_center', 0)) in ('1', 'true'):
             rclasses.append('sppb-row-align-center')
         cols = []
-        for col in row.get('columns', []):
-            cols.append(self.column(col))
+        ratios = layout_ratios(row.get('layout'), len(row.get('columns') or []))
+        for i, col in enumerate(row.get('columns', [])):
+            cols.append(self.column(col, ratios[i] if i < len(ratios) else None))
         return '<div class="%s">%s</div>' % (' '.join(rclasses), ''.join(cols))
 
-    def column(self, col):
-        s = col.get('settings') or {}
+    def column(self, col, pct=None):
         cid = col.get('id')
         addons = []
         for a in col.get('addons', []):
             addons.append(self.addon(a))
         inner = ''.join(addons)
-        return ('<div id="column-wrap-id-%s" class="sppb-row-column sppb-col">'
+        classes = 'sppb-row-column sppb-col' + (' ' + col_class(pct) if col_class(pct) else '')
+        return ('<div id="column-wrap-id-%s" class="%s">'
                 '<div id="column-id-%s" class="sppb-column"><div class="sppb-column-addons">%s</div></div></div>'
-                % (esc(cid), esc(cid), inner))
+                % (esc(cid), classes, esc(cid), inner))
 
     def addon(self, addon):
         name = addon.get('name')
@@ -369,12 +398,14 @@ class Renderer:
             css += num_responsive(sid + '>.sppb-row-container', 'min-width', s.get('row_min_width'))
         if s.get('columns_content_alignment'):
             css += '%s .sppb-column-addons{justify-content:%s;}' % (sid, s['columns_content_alignment'])
-        cols_css = ''.join(self.column_css(c) for c in row.get('columns', []))
+        ratios = layout_ratios(row.get('layout'), len(row.get('columns') or []))
+        cols_css = ''.join(self.column_css(c, ratios[i] if i < len(ratios) else None)
+                           for i, c in enumerate(row.get('columns', [])))
         addons_css = ''.join(self.addon_css(a) for c in row.get('columns', [])
                              for a in c.get('addons', []))
         return css + cols_css + addons_css
 
-    def column_css(self, col):
+    def column_css(self, col, pct=None):
         s = col.get('settings') or {}
         cid = col.get('id')
         sel = '#column-id-%s' % cid
@@ -386,6 +417,9 @@ class Renderer:
         w = s.get('width') or {}
         if isinstance(w, dict):
             base = w.get('xl')
+            if base in ('0%', '', None) and pct:
+                # SPPB хранит ширину строкой layout секции, а в колонке — нули
+                base = '%s%%' % (round(pct, 6))
             if base and base not in ('0%', ''):
                 css += '%s{max-width:%s;flex-basis:%s;}' % (wrap, base, base)
             for bp in ('lg', 'md', 'sm', 'xs'):

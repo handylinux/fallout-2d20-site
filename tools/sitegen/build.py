@@ -32,9 +32,21 @@ import sppb  # noqa: E402
 from sppb import Renderer, clean, esc  # noqa: E402
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))
+# На GitHub Pages сайт живёт в подкаталоге /fallout-2d20-site/: абсолютные пути
+# (/assets/…) ломаются, поэтому префикс задаётся при сборке: BASE=/fallout-2d20-site
 OUT = os.path.join(ROOT, 'public')
 SRC = os.path.join(ROOT, 'src')
 URLS = json.load(open(os.path.join(SRC, 'nav', 'urls.json'), encoding='utf-8'))
+BASE = (os.environ.get('BASE') or '').rstrip('/')   # '' локально, '/repo' на GitHub Pages
+
+
+def hp(url):
+    """Внутренний абсолютный адрес → адрес с префиксом BASE."""
+    if not BASE or not url.startswith('/'):
+        return url
+    if url.startswith('//'):
+        return url
+    return BASE + url
 
 
 # --------------------------------------------------------------------------- данные дампа
@@ -238,10 +250,12 @@ class Site:
             u = self.resolve(u) or '#'
             return u
 
-        out = re.sub(r'href="([^"]*)"', lambda m: 'href="%s"' % esc(absolute(m.group(1))), blob)
+        out = re.sub(r'href="([^"]*)"',
+                     lambda m: 'href="%s"' % esc(hp(absolute(m.group(1)))), blob)
         out = re.sub(r'src="([^"]*)"',
-                     lambda m: 'src="%s"' % esc(img_src(m.group(1))), out)
-        out = re.sub(r'(url\(["\']?)(/images/[^"\')]+)', lambda m: m.group(1) + img_src(m.group(2)), out)
+                     lambda m: 'src="%s"' % esc(hp(img_src(m.group(1)))), out)
+        out = re.sub(r'(url\(["\']?)(/images/[^"\')]+)',
+                     lambda m: m.group(1) + hp(img_src(m.group(2))), out)
         return out
 
 
@@ -250,15 +264,61 @@ BODY_CLASSES = ('site helix-ultimate hu com-content view-article layout-default 
                 'itemid-172 ru-ru ltr layout-fluid offcanvas-init offcanvs-position-right')
 
 
-def render_sppb_row(site, sp_id, extra_class=''):
+def render_sppb_row(site, sp_id, extra_class='', scope=None):
+    """Рендер строки SPPB. scope='#sp-topmenu' изолирует её CSS от стилей страницы:
+    у шапки и у контента одинаковые id секций, и без scope правила «дерутся»."""
     row = site.sp.get(sp_id)
     rows = layout_of(row)
     r = Renderer(rows, getattr(site, 'ctx_d', None) or site.ctx())
     body = r.render()
     css = ''.join(r.css)
+    if scope:
+        css = scope_css(css, scope)
     if extra_class:
         body = body.replace('class="sppb-section', 'class="%s sppb-section' % extra_class, 1)
     return body, css
+
+
+def scope_css(css, scope):
+    """Префиксовать селекторы правил заданным контейнером (#sp-topmenu …)."""
+    out = []
+    i = 0
+    n = len(css)
+    while i < n:
+        at = css.find('@media', i)
+        brace = css.find('{', i)
+        if brace < 0:
+            out.append(css[i:])
+            break
+        if 0 <= at < brace:                      # медиа-блок: рекурсивно
+            inner_start = css.find('{', at) + 1
+            depth, j = 1, inner_start
+            while j < n and depth:
+                if css[j] == '{':
+                    depth += 1
+                elif css[j] == '}':
+                    depth -= 1
+                j += 1
+            head_txt = css[at:inner_start]
+            out.append(head_txt + scope_css(css[inner_start:j - 1], scope) + '}')
+            i = j
+            continue
+        sel = css[i:brace].strip()
+        depth, j = 1, brace + 1
+        while j < n and depth:
+            if css[j] == '{':
+                depth += 1
+            elif css[j] == '}':
+                depth -= 1
+            j += 1
+        body = css[brace:j]
+        if sel:
+            sels = ', '.join(
+                (x.strip() if x.strip().startswith(scope) else scope + ' ' + x.strip())
+                for x in sel.split(',') if x.strip())
+            out.append(sels + body)
+        i = j
+    return ''.join(out)
 
 
 def head(title, css_blocks, page_css=''):
@@ -269,18 +329,18 @@ def head(title, css_blocks, page_css=''):
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="generator" content="Helix Ultimate - The Most Popular Joomla! Template Framework.">
 <title>{esc(title)}</title>
-<link href="/assets/vendor/bootstrap.min.css" rel="stylesheet">
-<link href="/assets/css/template.css" rel="stylesheet">
-<link href="/assets/css/presets-default.css" rel="stylesheet">
-<link href="/assets/css/animate.min.css" rel="stylesheet">
-<link href="/assets/css/sppagebuilder.css" rel="stylesheet">
+<link href="{BASE}/assets/vendor/bootstrap.min.css" rel="stylesheet">
+<link href="{BASE}/assets/css/template.css" rel="stylesheet">
+<link href="{BASE}/assets/css/presets-default.css" rel="stylesheet">
+<link href="{BASE}/assets/css/animate.min.css" rel="stylesheet">
+<link href="{BASE}/assets/css/sppagebuilder.css" rel="stylesheet">
 <style>:root {{--sppb-topbar-bg-color: #333333; --sppb-topbar-text-color: #aaaaaa; --sppb-header-bg-color: #000000; --sppb-logo-text-color: #2b2b2b; --sppb-menu-text-color: #fee9a6; --sppb-menu-text-hover-color: #000000; --sppb-menu-text-active-color: #000000; --sppb-menu-dropdown-bg-color: #ffffff; --sppb-menu-dropdown-text-color: #252525; --sppb-menu-dropdown-text-hover-color: #fee9a6; --sppb-offcanvas-menu-icon-color: #ffc500; --sppb-offcanvas-menu-bg-color: #4f4b4b; --sppb-offcanvas-menu-items-and-items-color: #fee9a6; --sppb-offcanvas-menu-active-menu-item-color: #ffc500; --sppb-text-color: #000000; --sppb-bg-color: #ffffff; --sppb-link-color: #b15b23; --sppb-link-hover-color: #042615; --sppb-footer-bg-color: #171717; --sppb-footer-text-color: #ffffff; --sppb-footer-link-color: #a2a2a2; --sppb-footer-link-hover-color: #ffffff}}</style>
 <style>.logo-image {{height:60px;}}.logo-image-phone {{height:60px;}}
 @media(max-width: 992px) {{.logo-image {{height: 36px;}}.logo-image-phone {{height: 36px;}}}}
 @media(max-width: 576px) {{.logo-image {{height: 36px;}}.logo-image-phone {{height: 36px;}}}}</style>
-<style>#sp-section-1{{background-image:url("/assets/img/bg-main.jpg");background-repeat:no-repeat;background-size:cover;background-attachment:fixed;background-position:50% 50%;padding:30px 0px 20px 0px;}}
-#sp-section-2{{background-image:url("/assets/img/bg-main.jpg");background-repeat:no-repeat;background-size:cover;background-attachment:fixed;background-position:50% 50%;padding:10px 0px;margin:0px 0px 0px 0px;}}
-#sp-main-body{{background-image:url("/assets/img/bg-main.jpg");background-repeat:no-repeat;background-size:cover;background-attachment:fixed;background-position:0 0;}}
+<style>#sp-section-1{{background-image:url("{BASE}/assets/img/bg-main.jpg");background-repeat:no-repeat;background-size:cover;background-attachment:fixed;background-position:50% 50%;padding:30px 0px 20px 0px;}}
+#sp-section-2{{background-image:url("{BASE}/assets/img/bg-main.jpg");background-repeat:no-repeat;background-size:cover;background-attachment:fixed;background-position:50% 50%;padding:10px 0px;margin:0px 0px 0px 0px;}}
+#sp-main-body{{background-image:url("{BASE}/assets/img/bg-main.jpg");background-repeat:no-repeat;background-size:cover;background-attachment:fixed;background-position:0 0;}}
 @media(min-width: 1400px) {{.sppb-row-container {{max-width: 1400px;}}}}
 .container,.sppb-row-container{{max-width:1400px;}}</style>
 <style>body,.sp-preloader{{font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.5;}}
@@ -303,7 +363,7 @@ def offcanvas_tree(items, level=0):
     out = []
     for it in items:
         kids = it.get('children') or []
-        url = esc(it.get('url') or '#')
+        url = esc(hp(it.get('url') or '#'))
         title = esc(it.get('title') or '')
         if kids:
             out.append('<li class="menu-parent">')
@@ -339,7 +399,7 @@ def offcanvas(site):
 <div class="offcanvas-overlay"></div>
 <div class="offcanvas-menu" tabindex="-1" inert>
   <div class="d-flex align-items-center justify-content-between p-3 pt-4">
-    <a href="/" class="offcanvas-logo"><img src="/assets/img/logos.png" alt="Fallout 2D20"></a>
+    <a href="{BASE}/" class="offcanvas-logo"><img src="{BASE}/assets/img/logos.png" alt="Fallout 2D20"></a>
     <a href="#" class="close-offcanvas" role="button" aria-label="Закрыть меню">
       <div class="burger-icon" aria-hidden="true"><span></span><span></span><span></span></div>
     </a>
@@ -349,16 +409,76 @@ def offcanvas(site):
       <ul class="menu">{offcanvas_tree(site.nav.get('items') or [])}</ul>
     </div>
     <div class="sp-module">
-      <ul class="menu">{''.join('<li class="sp-menu-item"><a href="%s">%s</a></li>' % (esc(i['url']), esc(i['title'])) for i in site.nav.get('extra') or [])}</ul>
+      <ul class="menu">{''.join('<li class="sp-menu-item"><a href="%s">%s</a></li>' % (esc(hp(i['url'])), esc(i['title'])) for i in site.nav.get('extra') or [])}</ul>
     </div>
   </div>
 </div>
 <a href="#" class="sp-scroll-up" aria-label="Scroll to top"><span class="fas fa-angle-up" aria-hidden="true">&#9650;</span></a>
-<script src="/assets/vendor/bootstrap.bundle.min.js"></script>
-<script src="/assets/js/main.js"></script>
+<script src="{BASE}/assets/vendor/bootstrap.bundle.min.js"></script>
+<script src="{BASE}/assets/js/main.js"></script>
 </body>
 </html>
 """
+
+
+
+
+# ------------------------------------------------------------------ заглушки для меню
+STUB = """<!DOCTYPE html>
+<html lang="ru-ru" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>{title}</title>
+<link href="{base}/assets/vendor/bootstrap.min.css" rel="stylesheet">
+<link href="{base}/assets/css/template.css" rel="stylesheet">
+<link href="{base}/assets/css/presets-default.css" rel="stylesheet">
+<style>body{{font-family:Helvetica,Arial,sans-serif;}}#sp-section-1{{background:url("{base}/assets/img/bg-main.jpg") fixed/cover;padding:30px 0 20px;}}</style>
+</head>
+<body class="site helix-ultimate ru-ru ltr layout-fluid">
+<div class="body-wrapper"><div class="body-innerwrapper"><main id="sp-main">
+<section id="sp-section-1"><div class="container"><div class="container-inner">
+  <div class="d-flex align-items-center justify-content-between">
+    <a href="{base}/" class="logo-image"><img src="{base}/assets/img/logos.png" alt="Fallout 2D20" class="logo-image"></a>
+    <a href="{base}/" class="btn btn-sm btn-light">На главную</a>
+  </div>
+</div></div></section>
+<section id="sp-main-body"><div class="container"><div class="container-inner">
+  <div class="bg-white p-4 my-4">
+    <h1 class="h3">{title}</h1>
+    <p class="mb-2">Страница раздела «{title}» ещё не включена в статическую сборку.</p>
+    <p class="mb-0 text-muted">Этот этап — скелет из шести разделов верхнего меню. Адрес сохранён из структуры сайта,
+    поэтому все ссылки меню рабочие; страница появится на следующем этапе.</p>
+    <p class="mt-3 mb-0"><a href="{base}/">← Правила игры</a></p>
+  </div>
+</div></div></section>
+</main></div></div>
+</body>
+</html>
+"""
+
+
+def write_stubs(site):
+    """Для каждого пункта меню без собранной страницы — заглушка по тому же адресу."""
+    made = []
+
+    def walk(items):
+        for it in items:
+            yield it
+            yield from walk(it.get('children') or [])
+
+    for it in walk(site.nav.get('items') or []):
+        url = (it.get('url') or '').strip()
+        if not url.startswith('/') or url in ('/', '/perki26'):
+            continue
+        target = os.path.join(OUT, url.strip('/'), 'index.html')
+        if os.path.exists(target):
+            continue
+        os.makedirs(os.path.dirname(target), exist_ok=True)
+        with open(target, 'w', encoding='utf-8') as f:
+            f.write(STUB.format(title=esc(it.get('title') or ''), base=BASE))
+        made.append(url)
+    return made
 
 
 # --------------------------------------------------------------------------- сборка
@@ -411,7 +531,7 @@ def main():
 
     # --- шапка: лого Helix + бургер; горизонтальное меню = модуль «Fallout menu» (строка 101)
     header_html, header_css = '', ''
-    topmenu_html, topmenu_css = render_sppb_row(site, '101')
+    topmenu_html, topmenu_css = render_sppb_row(site, '101', scope='#sp-topmenu')
     topmenu_html = re.sub(r'<h([1-6])', '<span class="sp-menu-title"', topmenu_html)
     topmenu_html = re.sub(r'</h[1-6]>', '</span>', topmenu_html)
 
@@ -422,6 +542,7 @@ def main():
         os.makedirs(outdir, exist_ok=True)
 
         page = head(title, [header_css, topmenu_css, css])
+        page = page.replace('{BASE}', BASE)
         page += f"""
 <body class="{BODY_CLASSES}">
 <div class="body-wrapper">
@@ -431,7 +552,7 @@ def main():
         <div class="container"><div class="container-inner">
           <div class="row align-items-center">
             <div id="sp-logo" class="col"><div class="sp-column">
-              <div class="logo"><a href="/" class="logo-image"><img src="/assets/img/logos.png" alt="Fallout 2D20"></a></div>
+              <div class="logo"><a href="{BASE}/" class="logo-image"><img src="{BASE}/assets/img/logos.png" alt="Fallout 2D20" class="logo-image"></a></div>
             </div></div>
             <div id="sp-menu" class="col-auto"><div class="sp-column d-flex justify-content-end">{burger()}</div></div>
           </div>
@@ -487,8 +608,19 @@ def main():
         if os.path.exists(src):
             shutil.copy(src, os.path.join(OUT, 'assets', 'js', name))
 
+    stubs = write_stubs(site)
+    # /perki26 — тот же контент, что /perki (живой сайт держит перки на /perki26)
+    alt = os.path.join(OUT, 'perki26')
+    os.makedirs(alt, exist_ok=True)
+    with open(os.path.join(alt, 'index.html'), 'w', encoding='utf-8') as f:
+        f.write('<!DOCTYPE html><html lang="ru-ru"><head><meta charset="utf-8">'
+                '<meta http-equiv="refresh" content="0; url=%s/perki/">'
+                '<link rel="canonical" href="%s/perki/"><title>Перки</title></head>'
+                '<body><p><a href="%s/perki/">Перки</a></p></body></html>'
+                % (BASE, BASE, BASE))
     for folder, sp_id, h, c in report:
         print('%-18s sppb#%-4s html=%-7s css=%s' % (folder, sp_id, h, c))
+    print('заглушек для пунктов меню: %d' % len(stubs))
     if MISSING_IMAGES:
         print('\nКартинки, которых ещё нет в репозитории (%d):' % len(MISSING_IMAGES))
         for m in sorted(MISSING_IMAGES)[:40]:
