@@ -82,6 +82,20 @@ for path in pages:
         if not (os.path.exists(target) or os.path.exists(target.rstrip('/') + '/index.html')):
             errors.append('%s: битая ссылка %s' % (path, href))
 
+# --- навигация не должна исчезать на планшете (меню скрывается только на телефоне)
+hidden = re.search(r'@media \(max-width: (\d+)px\) \{\s*\.top-menu \{ display: none;', css)
+if not hidden:
+    errors.append('CSS: не найдено правило скрытия меню на телефоне')
+elif int(hidden.group(1)) > 767:
+    errors.append('CSS: меню скрывается уже с %spx — навигация пропадает' % hidden.group(1))
+
+# --- меню на каждой странице ведёт на существующие разделы
+for label, expect in (('Главная', '/'), ('Происхождения', '/proiskhozhdeniya/'),
+                      ('Снаряжение', '/snaryazhenie/'), ('Перки', '/perki/'),
+                      ('Бестиарий', '/bestiarij/')):
+    if BASE + expect not in read(os.path.join(DOCS, 'index.html')):
+        errors.append('навигация: нет пункта «%s»' % label)
+
 print('страниц проверено: %d' % len(pages))
 for w in warnings:
     print('  предупреждение:', w)

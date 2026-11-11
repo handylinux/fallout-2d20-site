@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Кусочки белки — Fallout 2D20</title>
+<title>Хрустящие кусочки белки — Fallout 2D20</title>
 <link rel="stylesheet" href="/fallout-2d20-site/assets/vendor/bootstrap.min.css">
 <style>/* ============================================================================
    Fallout 2D20 — свои стили. Только классы проекта, никаких sppb-*/helix-*.
@@ -197,9 +197,17 @@ body {
   background: #fee9a6;
 }
 
-@media (max-width: 1199px) {
+/* Меню не скрываем до последнего: шесть плашек влезают и на планшете,
+   иначе навигация пропадает совсем. Бургер — только на телефоне. */
+@media (max-width: 767px) {
   .top-menu { display: none; }
   .burger { display: block; margin-left: auto; }
+  .top-menu > li { flex: 0 0 16.666667%; max-width: 16.666667%; }
+  .top-menu a { font-size: 13px; line-height: 15px; }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .top-menu a { font-size: 14px; line-height: 15px; padding: 8px 0; }
 }
 
 /* --------------------------------------------------------------- offcanvas  */
@@ -1223,7 +1231,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <main class="page">
   <div class="wrap">
-<div class="sp-page"><h1 class="sp-page__title">Кусочки белки</h1><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:75px 0px 75px 0px"><div class="sp-col sp-col--center" style="flex:0 0 100%;max-width:100%"><div class="sp-col__body"><h4 class="sp-heading"><a href="/fallout-2d20-site/eda/">Назад в категорию: Еда</a></h4><h2 class="sp-heading">Кусочки белки</h2></div></div></div></section><section class="sp-row sp-row--4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center sp-col--vcenter" style="flex:0 0 66.666667%;max-width:66.666667%"><div class="sp-col__body"><div class="sp-text"><p>Несколько обрезков и кусочков беличьего мяса. Белки - небольшие существа, поэтому и мяса с них можно получить немного.</p><p>Из кусочков белки можно приготовить Шашлык из белки или Рагу из белки.</p></div></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:15px 0px 15px 0px"><div class="sp-col sp-col--center sp-col--vcenter" style="flex:0 0 100%;max-width:100%"><div class="sp-col__body"><div class="sp-table-wrap"><table class="sp-table"><thead><tr><th><p>НАЗВАНИЕ</p></th><th><p>ВОСПОЛНЯЕТ ЖИЗНЕЙ</p></th><th><p>ПРОЧИЕ ЭФФЕКТЫ</p></th><th><p>ОБЛУЧЕНА?</p></th><th><p>ВЕС</p></th><th><p>ЦЕНА</p></th><th><p>РЕДКОСТЬ</p></th></tr></thead><tbody><tr><td><p>Кусочки белки</p></td><td><p>4</p></td><td><p>-</p></td><td><p>1 {/CD}</p></td><td><p>&lt;1</p></td><td><p>4</p></td><td><p>1</p></td></tr></tbody></table></div></div></div></div></section></div>
+<div class="sp-page"><h1 class="sp-page__title">Хрустящие кусочки белки</h1><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:75px 0px 75px 0px"><div class="sp-col sp-col--center" style="flex:0 0 100%;max-width:100%"><div class="sp-col__body"><h4 class="sp-heading"><a href="/fallout-2d20-site/eda/">Назад в категорию: Еда</a></h4><h2 class="sp-heading">Хрустящие кусочки белки</h2></div></div></div></section><section class="sp-row sp-row--4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center sp-col--vcenter" style="flex:0 0 66.666667%;max-width:66.666667%"><div class="sp-col__body"><div class="sp-text"><p>Кусочки беличьего мяса, обжаренные до хрустящей корочки, часто насаженные на шампур. Легкий способ подкрепиться, при этом не настолько жирное блюдо, чтобы отягощало вас, пока вы его перевариваете. </p></div></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:15px 0px 15px 0px"><div class="sp-col sp-col--center sp-col--vcenter" style="flex:0 0 100%;max-width:100%"><div class="sp-col__body"><div class="sp-table-wrap"><table class="sp-table"><thead><tr><th><p>НАЗВАНИЕ</p></th><th><p>ВОСПОЛНЯЕТ ЖИЗНЕЙ</p></th><th><p>ПРОЧИЕ ЭФФЕКТЫ</p></th><th><p>ОБЛУЧЕНА?</p></th><th><p>ВЕС</p></th><th><p>ЦЕНА</p></th><th><p>РЕДКОСТЬ</p></th></tr></thead><tbody><tr><td><p>Хрустящие кусочки белки</p></td><td><p>6</p></td><td><p>-</p></td><td><p>-</p></td><td><p>&lt;1</p></td><td><p>6</p></td><td><p>2</p></td></tr></tbody></table></div></div></div></div></section></div>
   </div>
 </main>
 
@@ -1237,6 +1245,6 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <script src="/fallout-2d20-site/assets/vendor/bootstrap.bundle.min.js"></script>
 <script src="/fallout-2d20-site/assets/js/search.js"></script>
-<script src="/fallout-2d20-site/assets/js/site.js?v=33235792"></script>
+<script src="/fallout-2d20-site/assets/js/site.js?v=16a7659d"></script>
 </body>
 </html>

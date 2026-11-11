@@ -197,9 +197,17 @@ body {
   background: #fee9a6;
 }
 
-@media (max-width: 1199px) {
+/* Меню не скрываем до последнего: шесть плашек влезают и на планшете,
+   иначе навигация пропадает совсем. Бургер — только на телефоне. */
+@media (max-width: 767px) {
   .top-menu { display: none; }
   .burger { display: block; margin-left: auto; }
+  .top-menu > li { flex: 0 0 16.666667%; max-width: 16.666667%; }
+  .top-menu a { font-size: 13px; line-height: 15px; }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .top-menu a { font-size: 14px; line-height: 15px; padding: 8px 0; }
 }
 
 /* --------------------------------------------------------------- offcanvas  */
@@ -1228,7 +1236,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 <p>Когда вы бежали из Анклава, вы спрятали остатки своей прошлой жизни в нескольких тайниках вокруг Пустоши. Тайники готовы для восстановления, когда будет необходимо.</p>
 <p>Когда вы создадите своего персонажа, после определения вашего атрибута Удачи создайте количество тайников с припасами, равное половине вашей удачи (округление в большую сторону). Чтобы создать запасы, выберите три категории предметов (или сделайте бросок по таблице ниже) или обсудите с вашим ГМом один предмет из каждой категории, который имеет смысл находиться в тайнике, либо случайным образом сгенерируйте по одному предмету из каждой категории.</p>
 <p>Один раз за квест (или игровой сеанс для более длительных приключений) вы можете потратить 1 очко удачи, чтобы объявить, что один из ваших тайников с припасами находится поблизости, что позволит вам посетить его и получить предметы внутри. Однако, если ваша предыдущая личность стала общедоступной, по прибытии в тайник выполните проверку на <strong>УДЧ + Скрытность со сложностью 1</strong>. Если вы провалили проверку или выпало осложнение, то ваш тайник был раскрыт.</p>
-<p>Вы много лет жили в укрытии, во избежании тех, кто с радостью вздёрнул бы любого бывшего члена Анклава, предварительно прострелив ему голову. Ваше прошлое, хотя и было оставлено позади, не исчезло бесследно. Ваши навыки, возможно, немного утратили свою остроту, но их ценность всё ещё велика. Ведь ваше прошлое — это не то, что можно просто забыть или выбросить.</p></div></div></div></div></section><section class="sp-row sp-row--6-6"><div class="sp-row__inner" style="padding:25px 0px 15px 0px"><div class="sp-col sp-col--center" style="flex:0 0 50%;max-width:50%;padding:5px 5px 5px 5px"><div class="sp-col__body"><div class="sp-acc"><details class="sp-acc__item"><summary class="sp-acc__head">БЫВШИЙ УЧЕНЫЙ АНКЛАВА</summary><div class="sp-acc__body"><div class="sp-inner-row"></div></div></details></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 50%;max-width:50%;padding:5px 5px 5px 5px"><div class="sp-col__body"><div class="sp-acc"><details class="sp-acc__item"><summary class="sp-acc__head">БЫВШИЙ СОЛДАТ АНКЛАВА</summary><div class="sp-acc__body"><div class="sp-inner-row"></div></div></details></div></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 100%;max-width:100%"><div class="sp-col__body"><div class="sp-text"><div class="sp-table-wrap"><table class="sp-table">
+<p>Вы много лет жили в укрытии, во избежании тех, кто с радостью вздёрнул бы любого бывшего члена Анклава, предварительно прострелив ему голову. Ваше прошлое, хотя и было оставлено позади, не исчезло бесследно. Ваши навыки, возможно, немного утратили свою остроту, но их ценность всё ещё велика. Ведь ваше прошлое — это не то, что можно просто забыть или выбросить.</p></div></div></div></div></section><section class="sp-row sp-row--6-6"><div class="sp-row__inner" style="padding:25px 0px 15px 0px"><div class="sp-col sp-col--center" style="flex:0 0 50%;max-width:50%"><div class="sp-col__body" style="padding:5px 5px 5px 5px"><div class="sp-acc"><details class="sp-acc__item"><summary class="sp-acc__head">БЫВШИЙ УЧЕНЫЙ АНКЛАВА</summary><div class="sp-acc__body"><div class="sp-inner-row"></div></div></details></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 50%;max-width:50%"><div class="sp-col__body" style="padding:5px 5px 5px 5px"><div class="sp-acc"><details class="sp-acc__item"><summary class="sp-acc__head">БЫВШИЙ СОЛДАТ АНКЛАВА</summary><div class="sp-acc__body"><div class="sp-inner-row"></div></div></details></div></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 100%;max-width:100%"><div class="sp-col__body"><div class="sp-text"><div class="sp-table-wrap"><table class="sp-table">
 <thead>
 <tr><th scope="col">
 <h6><span>D20</span></h6>
@@ -1288,6 +1296,6 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <script src="/fallout-2d20-site/assets/vendor/bootstrap.bundle.min.js"></script>
 <script src="/fallout-2d20-site/assets/js/search.js"></script>
-<script src="/fallout-2d20-site/assets/js/site.js?v=33235792"></script>
+<script src="/fallout-2d20-site/assets/js/site.js?v=16a7659d"></script>
 </body>
 </html>

@@ -197,9 +197,17 @@ body {
   background: #fee9a6;
 }
 
-@media (max-width: 1199px) {
+/* Меню не скрываем до последнего: шесть плашек влезают и на планшете,
+   иначе навигация пропадает совсем. Бургер — только на телефоне. */
+@media (max-width: 767px) {
   .top-menu { display: none; }
   .burger { display: block; margin-left: auto; }
+  .top-menu > li { flex: 0 0 16.666667%; max-width: 16.666667%; }
+  .top-menu a { font-size: 13px; line-height: 15px; }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .top-menu a { font-size: 14px; line-height: 15px; padding: 8px 0; }
 }
 
 /* --------------------------------------------------------------- offcanvas  */
@@ -1223,7 +1231,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <main class="page">
   <div class="wrap">
-<div class="sp-page"><h1 class="sp-page__title">ЖИВОТНЫЕ И НАСЕКОМЫЕ</h1><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/gnus/">Гнус</a></h2><div class="sp-raw"><div class="wrapper">
+<div class="sp-page"><h1 class="sp-page__title">ЖИВОТНЫЕ И НАСЕКОМЫЕ</h1><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/gnus/">Гнус</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/gnus/">
     <span>Подробнее</span>
     <span>
@@ -1236,7 +1244,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/duten/">Дутень</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/duten/">Дутень</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/duten/">
     <span>Подробнее</span>
     <span>
@@ -1249,7 +1257,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/bramin/">Брамин</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/bramin/">Брамин</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/bramin/">
     <span>Подробнее</span>
     <span>
@@ -1262,7 +1270,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/kogot-smerti/">Коготь смерти</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/kogot-smerti/">Коготь смерти</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/kogot-smerti/">
     <span>Подробнее</span>
     <span>
@@ -1275,7 +1283,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/sobaka/">Собака</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/sobaka/">Собака</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/sobaka/">
     <span>Подробнее</span>
     <span>
@@ -1288,7 +1296,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/dvornyaga/">Дворняга</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/dvornyaga/">Дворняга</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/dvornyaga/">
     <span>Подробнее</span>
     <span>
@@ -1301,7 +1309,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/lichinka-bolotnika/">Личинка болотника</a></h2><a class="sp-img" href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/lichinka-bolotnika/"><img src="/fallout-2d20-site/assets/img/gear/raznoe.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/lichinka-bolotnika/">Личинка болотника</a></h2><a class="sp-img" href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/lichinka-bolotnika/"><img src="/fallout-2d20-site/assets/img/gear/raznoe.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/lichinka-bolotnika/">
     <span>Подробнее</span>
     <span>
@@ -1314,7 +1322,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/bolotnik/">Болотник</a></h2><a class="sp-img" href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/bolotnik/"><img src="/fallout-2d20-site/assets/img/gear/raznoe.png" alt="Image" style="max-width:230px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/bolotnik/">Болотник</a></h2><a class="sp-img" href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/bolotnik/"><img src="/fallout-2d20-site/assets/img/gear/raznoe.png" alt="Image" style="max-width:230px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/bolotnik/">
     <span>Подробнее</span>
     <span>
@@ -1327,7 +1335,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/bolotnik-okhotnik/">Болотник-охотник</a></h2><a class="sp-img" href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/bolotnik-okhotnik/"><img src="/fallout-2d20-site/assets/img/gear/raznoe.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/bolotnik-okhotnik/">Болотник-охотник</a></h2><a class="sp-img" href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/bolotnik-okhotnik/"><img src="/fallout-2d20-site/assets/img/gear/raznoe.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/bolotnik-okhotnik/">
     <span>Подробнее</span>
     <span>
@@ -1340,7 +1348,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/matka-bolotnikov/">Матка болотников</a></h2><a class="sp-img" href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/matka-bolotnikov/"><img src="/fallout-2d20-site/assets/img/gear/raznoe.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/matka-bolotnikov/">Матка болотников</a></h2><a class="sp-img" href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/matka-bolotnikov/"><img src="/fallout-2d20-site/assets/img/gear/raznoe.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/matka-bolotnikov/">
     <span>Подробнее</span>
     <span>
@@ -1353,7 +1361,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/krotokrys/">Кротокрыс</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/krotokrys/">Кротокрыс</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/krotokrys/">
     <span>Подробнее</span>
     <span>
@@ -1366,7 +1374,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/gonchaya-mutant/">Гончая-мутант</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/gonchaya-mutant/">Гончая-мутант</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/gonchaya-mutant/">
     <span>Подробнее</span>
     <span>
@@ -1379,7 +1387,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/radtarakan/">Радтаракан</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/radtarakan/">Радтаракан</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/radtarakan/">
     <span>Подробнее</span>
     <span>
@@ -1392,7 +1400,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/radskorpion/">Радскорпион</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/radskorpion/">Радскорпион</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/radskorpion/">
     <span>Подробнее</span>
     <span>
@@ -1405,7 +1413,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/radolen/">Радолень</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/radolen/">Радолень</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/radolen/">
     <span>Подробнее</span>
     <span>
@@ -1418,7 +1426,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/zhalokryl/">Жалокрыл</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/zhalokryl/">Жалокрыл</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/zhalokryl/">
     <span>Подробнее</span>
     <span>
@@ -1431,7 +1439,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/yao-guaj/"> Яо Гуай</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/yao-guaj/"> Яо Гуай</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/yao-guaj/">
     <span>Подробнее</span>
     <span>
@@ -1458,6 +1466,6 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <script src="/fallout-2d20-site/assets/vendor/bootstrap.bundle.min.js"></script>
 <script src="/fallout-2d20-site/assets/js/search.js"></script>
-<script src="/fallout-2d20-site/assets/js/site.js?v=33235792"></script>
+<script src="/fallout-2d20-site/assets/js/site.js?v=16a7659d"></script>
 </body>
 </html>

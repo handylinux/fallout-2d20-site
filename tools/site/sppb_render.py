@@ -150,10 +150,6 @@ def col_style(col):
     st = col.get('settings') or {}
     css = ['flex:0 0 %s' % width_of(col), 'max-width:%s' % width_of(col)]
 
-    pad = px(st.get('padding'))
-    if pad:
-        css.append('padding:%s' % pad)
-
     if st.get('use_border'):
         width = px(st.get('border_width')) or '1'
         width = re.sub(r'[^0-9.]', '', width) or '1'
@@ -316,7 +312,7 @@ def r_raw(a):
     raw = setting(a, 'html') or ''
     if not raw.strip():
         return ''
-    return '<div class="sp-raw">%s</div>' % raw
+    return '<div class="sp-raw">%s</div>' % clean_html(raw)
 
 
 def r_divider(a):
@@ -370,12 +366,14 @@ def render_tree(tree):
                 extra += ' sp-col--center'
             if (st.get('items_align_center')):
                 extra += ' sp-col--vcenter'
+            pad = px(st.get('padding'))
+            body_style = ' style="padding:%s"' % pad if pad else ''
             overlay = st.get('overlay')
             under = ''
             if overlay and str(overlay).lower() not in ('none', ''):
                 under = '<div class="sp-col__overlay" style="background:%s"></div>' % overlay
-            parts.append('<div class="sp-col%s" style="%s">%s<div class="sp-col__body">%s</div></div>'
-                         % (extra, col_style(col), under, body))
+            parts.append('<div class="sp-col%s" style="%s">%s<div class="sp-col__body"%s>%s</div></div>'
+                         % (extra, col_style(col), under, body_style, body))
         if not parts:
             continue
         pad = px((row.get('settings') or {}).get('padding'))

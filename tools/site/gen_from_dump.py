@@ -142,6 +142,9 @@ def fix_links(fragment, umap, articles, textmap=None):
             if 'fallout-2d20.ru' not in href:
                 href = 'https://www.fallout-2d20.ru/' + href.lstrip('/')
             return re.sub(r'href="[^"]*"', 'href="%s"' % href, whole, count=1)
+        # абсолютные ссылки на исходный сайт → наши адреса (раньше их тут не было)
+        if href.startswith('http') and 'fallout-2d20.ru' not in href:
+            return whole
         if 'index.php' in href or href == '#':
             label = re.sub(r'<[^>]+>', '', m.group(2) if m.lastindex and m.lastindex > 1 else '')
             label = re.sub(r'\s+', ' ', html.unescape(label)).strip().lower()
@@ -440,8 +443,11 @@ def main():
             write(url, shell(title, body), umap, articles)
             print('хаб %-16s из дампа id %s' % (url, pid))
 
-    # 3. Страницы-записи: всё, что нашлось в дампе и имеет адрес в живых страницах
+    # 3. Страницы-записи: всё, что нашлось в дампе и имеет адрес в живых страницах.
+    #    На один адрес может приходиться несколько записей (короткая и полная
+    #    версия статьи): берём самую полную, а не последнюю попавшуюся.
     made = 0
+    by_url = {}
     for rid, rec in sp.items():
         if str(rec.get('active')) != '1':
             continue
@@ -456,7 +462,11 @@ def main():
         body = R.page_from_dump(rec)
         if not body:
             continue
-        write(url, shell(rec['title'], body), umap, articles)
+        prev = by_url.get(url)
+        if prev is None or len(body) > len(prev[1]):
+            by_url[url] = (rec['title'], body)
+    for url, (title, body) in by_url.items():
+        write(url, shell(title, body), umap, articles)
         made += 1
     print('страниц из дампа SPPB:', made)
 

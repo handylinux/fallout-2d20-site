@@ -190,9 +190,17 @@ body {
   background: #fee9a6;
 }
 
-@media (max-width: 1199px) {
+/* Меню не скрываем до последнего: шесть плашек влезают и на планшете,
+   иначе навигация пропадает совсем. Бургер — только на телефоне. */
+@media (max-width: 767px) {
   .top-menu { display: none; }
   .burger { display: block; margin-left: auto; }
+  .top-menu > li { flex: 0 0 16.666667%; max-width: 16.666667%; }
+  .top-menu a { font-size: 13px; line-height: 15px; }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .top-menu a { font-size: 14px; line-height: 15px; padding: 8px 0; }
 }
 
 /* --------------------------------------------------------------- offcanvas  */
