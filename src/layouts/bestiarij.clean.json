@@ -1,0 +1,1024 @@
+[
+ {
+  "id": "95fac350-1956-4564-8883-a53c6f1b358c",
+  "visibility": true,
+  "settings": {
+   "fit_columns": {
+    "xl": true
+   },
+   "background_type": "none",
+   "background_repeat": "no-repeat",
+   "background_size": "cover",
+   "background_attachment": "fixed",
+   "background_position": "0 0",
+   "padding": {
+    "xl": "25px 0px 25px 0px"
+   },
+   "margin": {
+    "xl": "0px 0px 0px 0px"
+   },
+   "overlay_type": "overlay_none",
+   "columns_align_center": 0,
+   "columns_content_alignment": "center",
+   "fullscreen": 0,
+   "no_gutter": 0,
+   "heading_selector": "h3"
+  },
+  "layout": "4+4+4",
+  "columns": [
+   {
+    "id": "2d9f4492-c43f-4dd4-b32c-a1ddff78ec6d",
+    "class_name": "row-column",
+    "visibility": true,
+    "settings": {
+     "background_type": "none",
+     "background_image": {
+      "src": "images/food-truck-pattern.jpg"
+     },
+     "background_repeat": "repeat",
+     "background_size": "inherit",
+     "background_attachment": "fixed",
+     "background_position": "0 0",
+     "overlay_type": "overlay_none",
+     "use_border": 1,
+     "border_width": {
+      "xl": "1"
+     },
+     "items_align_center": 0,
+     "items_content_alignment": "center",
+     "width": {
+      "xl": "33.333333%",
+      "lg": "33.333333%",
+      "md": "33.333333%",
+      "sm": "100%",
+      "xs": "100%",
+      "unit": "33.333333%"
+     },
+     "padding": {
+      "xl": "30px 0px 20px 0px"
+     },
+     "overlay": "RGBA(203, 203, 203, 0.4)",
+     "boder_style": "solid",
+     "border_color": "rgb(110, 110, 110)"
+    },
+    "addons": [
+     {
+      "id": "c9dd5d21-bca5-412e-8067-91cc1ea9103f",
+      "type": "content",
+      "name": "heading",
+      "visibility": true,
+      "title": "Heading",
+      "settings": {
+       "global_background_type": "none",
+       "global_background_repeat": "no-repeat",
+       "global_background_size": "cover",
+       "global_background_attachment": "inherit",
+       "global_background_position": "50% 50%",
+       "global_overlay_type": "overlay_none",
+       "hidden_xl": "0",
+       "hidden_lg": "0",
+       "hidden_md": "0",
+       "hidden_sm": "0",
+       "hidden_xs": "0",
+       "title": "ЖИВОТНЫЕ И НАСЕКОМЫЕ",
+       "heading_selector": "h3",
+       "title_text_shadow": "0 0 0 #ffffff",
+       "alignment": {
+        "xl": "center"
+       },
+       "title_margin": {
+        "xl": "0px 0px 0px 0px"
+       },
+       "title_padding": {
+        "xl": "0px 0px 0px 0px"
+       },
+       "title_link": {
+        "type": "menu",
+        "menu": "index.php?option=com_content&view=article&id=370&Itemid=544",
+        "page": 84
+       },
+       "heading_typography": {
+        "type": "google"
+       },
+       "global_link_color": "#000000",
+       "global_link_hover_color": "#000000"
+      }
+     },
+     {
+      "id": "131853b0-b81e-48b5-9214-4108356e1890",
+      "type": "content",
+      "name": "image",
+      "visibility": true,
+      "title": "Image",
+      "settings": {
+       "global_padding": {
+        "xl": "20px 0px 20px 0px"
+       },
+       "global_background_type": "none",
+       "global_background_repeat": "no-repeat",
+       "global_background_size": "cover",
+       "global_background_attachment": "inherit",
+       "global_background_position": "50% 50%",
+       "global_overlay_type": "overlay_none",
+       "hidden_xl": "0",
+       "hidden_lg": "0",
+       "hidden_md": "0",
+       "hidden_sm": "0",
+       "hidden_xs": "0",
+       "image": {
+        "src": "images/2025/05/02/e9797784-48b3-420f-9211-f5c4be2aaf2f_removalai_preview.png",
+        "height": 553,
+        "width": 600
+       },
+       "alt_text": "Image",
+       "border_radius": 0,
+       "open_lightbox": 0,
+       "overlay_color": "rgba(119, 219, 31, .5)",
+       "link": {
+        "type": "menu",
+        "menu": "index.php?option=com_content&view=article&id=370&Itemid=544",
+        "page": 84
+       },
+       "heading_selector": "h3",
+       "position": {
+        "xl": "center"
+       },
+       "image_width": {
+        "xl": "300"
+       },
+       "title_typography": {
+        "type": "google"
+       }
+      }
+     },
+     {
+      "id": "074c3439-9347-475f-93a7-6d3ff02b7fea",
+      "type": "content",
+      "name": "raw_html",
+      "visibility": true,
+      "title": "Raw HTML",
+      "settings": {
+       "global_padding": {
+        "xl": "60px 0px 0px 0px"
+       },
+       "global_background_type": "none",
+       "global_background_repeat": "no-repeat",
+       "global_background_size": "cover",
+       "global_background_attachment": "inherit",
+       "global_background_position": "50% 50%",
+       "global_overlay_type": "overlay_none",
+       "global_custom_css": "@import url('https://fonts.googleapis.com/css?family=Poppins:900i');\n\n* {\n  box-sizing: border-box;\n}\n\nbody {\n  height: 100vh;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n\n.wrapper {\n  display: flex;\n  justify-content: center;\n}\n\n.cta {\n    display: flex;\n    padding: 10px 45px;\n    text-decoration: none;\n    font-family: 'Poppins', sans-serif;\n    font-size: 20px;\n    color: white;\n    background: #000;\n    transition: 1s;\n    box-shadow: 6px 6px 0 gray;\n    transform: skewX(-15deg);\n}\n\n.cta:focus {\n   outline: none; \n}\n\n.cta:hover {\n    transition: 0.5s;\n    box-shadow: 10px 10px 0 #FBC638;\n}\n\n.cta span:nth-child(2) {\n    transition: 0.5s;\n    margin-right: 0px;\n}\n\n.cta:hover  span:nth-child(2) {\n    transition: 0.5s;\n    margin-right: 45px;\n}\n\n  span {\n    transform: skewX(15deg) \n  }\n\n  span:nth-child(2) {\n    width: 20px;\n    margin-left: 30px;\n    position: relative;\n    top: 12%;\n  }\n  \n/**************SVG****************/\n\npath.one {\n    transition: 0.4s;\n    transform: translateX(-60%);\n}\n\npath.two {\n    transition: 0.5s;\n    transform: translateX(-30%);\n}\n\n.cta:hover path.three {\n    animation: color_anim 1s infinite 0.2s;\n}\n\n.cta:hover path.one {\n    transform: translateX(0%);\n    animation: color_anim 1s infinite 0.6s;\n}\n\n.cta:hover path.two {\n    transform: translateX(0%);\n    animation: color_anim 1s infinite 0.4s;\n}\n\n/* SVG animations */\n\n@keyframes color_anim {\n    0% {\n        fill: white;\n    }\n    50% {\n        fill: #FBC638;\n    }\n    100% {\n        fill: white;\n    }\n}",
+       "hidden_xl": "0",
+       "hidden_lg": "0",
+       "hidden_md": "0",
+       "hidden_sm": "0",
+       "hidden_xs": "0",
+       "html": "<div class=\"wrapper\">\n  <a class=\"cta\" href=\"https://www.fallout-2d20.ru/bestiarij/zhivotnye-i-nasekomye\">\n    <span>Подробнее</span>\n    <span>\n      <svg width=\"36px\" height=\"23px\" viewBox=\"0 0 66 43\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n        <g id=\"arrow\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\">\n          <path class=\"one\" d=\"M40.1543933,3.89485454 L43.9763149,0.139296592 C44.1708311,-0.0518420739 44.4826329,-0.0518571125 44.6771675,0.139262789 L65.6916134,20.7848311 C66.0855801,21.1718824 66.0911863,21.8050225 65.704135,22.1989893 C65.7000188,22.2031791 65.6958657,22.2073326 65.6916762,22.2114492 L44.677098,42.8607841 C44.4825957,43.0519059 44.1708242,43.0519358 43.9762853,42.8608513 L40.1545186,39.1069479 C39.9575152,38.9134427 39.9546793,38.5968729 40.1481845,38.3998695 C40.1502893,38.3977268 40.1524132,38.395603 40.1545562,38.3934985 L56.9937789,21.8567812 C57.1908028,21.6632968 57.193672,21.3467273 57.0001876,21.1497035 C56.9980647,21.1475418 56.9959223,21.1453995 56.9937605,21.1432767 L40.1545208,4.60825197 C39.9574869,4.41477773 39.9546013,4.09820839 40.1480756,3.90117456 C40.1501626,3.89904911 40.1522686,3.89694235 40.1543933,3.89485454 Z\" fill=\"#FFFFFF\"></path>\n          <path class=\"two\" d=\"M20.1543933,3.89485454 L23.9763149,0.139296592 C24.1708311,-0.0518420739 24.4826329,-0.0518571125 24.6771675,0.139262789 L45.6916134,20.7848311 C46.0855801,21.1718824 46.0911863,21.8050225 45.704135,22.1989893 C45.7000188,22.2031791 45.6958657,22.2073326 45.6916762,22.2114492 L24.677098,42.8607841 C24.4825957,43.0519059 24.1708242,43.0519358 23.9762853,42.8608513 L20.1545186,39.1069479 C19.9575152,38.9134427 19.9546793,38.5968729 20.1481845,38.3998695 C20.1502893,38.3977268 20.1524132,38.395603 20.1545562,38.3934985 L36.9937789,21.8567812 C37.1908028,21.6632968 37.193672,21.3467273 37.0001876,21.1497035 C36.9980647,21.1475418 36.9959223,21.1453995 36.9937605,21.1432767 L20.1545208,4.60825197 C19.9574869,4.41477773 19.9546013,4.09820839 20.1480756,3.90117456 C20.1501626,3.89904911 20.1522686,3.89694235 20.1543933,3.89485454 Z\" fill=\"#FFFFFF\"></path>\n          <path class=\"three\" d=\"M0.154393339,3.89485454 L3.97631488,0.139296592 C4.17083111,-0.0518420739 4.48263286,-0.0518571125 4.67716753,0.139262789 L25.6916134,20.7848311 C26.0855801,21.1718824 26.0911863,21.8050225 25.704135,22.1989893 C25.7000188,22.2031791 25.6958657,22.2073326 25.6916762,22.2114492 L4.67709797,42.8607841 C4.48259567,43.0519059 4.17082418,43.0519358 3.97628526,42.8608513 L0.154518591,39.1069479 C-0.0424848215,38.9134427 -0.0453206733,38.5968729 0.148184538,38.3998695 C0.150289256,38.3977268 0.152413239,38.395603 0.154556228,38.3934985 L16.9937789,21.8567812 C17.1908028,21.6632968 17.193672,21.3467273 17.0001876,21.1497035 C16.9980647,21.1475418 16.9959223,21.1453995 16.9937605,21.1432767 L0.15452076,4.60825197 C-0.0425130651,4.41477773 -0.0453986756,4.09820839 0.148075568,3.90117456 C0.150162624,3.89904911 0.152268631,3.89694235 0.154393339,3.89485454 Z\" fill=\"#FFFFFF\"></path>\n        </g>\n      </svg>\n    </span> \n  </a>\n</div>",
+       "heading_selector": "h3",
+       "title_typography": {
+        "type": "google"
+       }
+      }
+     }
+    ],
+    "width": {
+     "xl": "0%",
+     "lg": "100%",
+     "md": "100%",
+     "sm": "100%",
+     "xs": "100%"
+    }
+   },
+   {
+    "id": "a8bd042b-63b6-48f0-9937-8a69ffca58dd",
+    "class_name": "row-column",
+    "visibility": true,
+    "settings": {
+     "background_type": "none",
+     "background_repeat": "no-repeat",
+     "background_size": "cover",
+     "background_attachment": "scroll",
+     "background_position": "0 0",
+     "overlay_type": "overlay_color",
+     "use_border": 1,
+     "border_width": {
+      "xl": "1"
+     },
+     "items_align_center": 0,
+     "items_content_alignment": "center",
+     "width": {
+      "xl": "33.333333%",
+      "lg": "33.333333%",
+      "md": "33.333333%",
+      "sm": "100%",
+      "xs": "100%",
+      "unit": "33.333333%"
+     },
+     "padding": {
+      "xl": "30px 0px 20px 0px"
+     },
+     "boder_style": "solid",
+     "border_color": "rgb(110, 110, 110)"
+    },
+    "addons": [
+     {
+      "id": "d6db6746-1ebb-42cf-a5c3-22a2f4312e5b",
+      "type": "content",
+      "name": "heading",
+      "visibility": true,
+      "title": "Heading",
+      "settings": {
+       "global_background_type": "none",
+       "global_background_repeat": "no-repeat",
+       "global_background_size": "cover",
+       "global_background_attachment": "inherit",
+       "global_background_position": "50% 50%",
+       "global_overlay_type": "overlay_none",
+       "hidden_xl": "0",
+       "hidden_lg": "0",
+       "hidden_md": "0",
+       "hidden_sm": "0",
+       "hidden_xs": "0",
+       "title": "ГУЛИ",
+       "heading_selector": "h3",
+       "title_text_shadow": "0 0 0 #ffffff",
+       "alignment": {
+        "xl": "center"
+       },
+       "title_margin": {
+        "xl": "0px 0px 0px 0px"
+       },
+       "title_padding": {
+        "xl": "0px 0px 0px 0px"
+       },
+       "title_link": {
+        "type": "url",
+        "menu": "index.php?option=com_content&view=article&id=190&Itemid=399",
+        "page": 95
+       },
+       "heading_typography": {
+        "type": "google"
+       },
+       "global_link_color": "#000000"
+      }
+     },
+     {
+      "id": "22bebaeb-89d1-4a11-919c-2a7dd79ae597",
+      "type": "content",
+      "name": "image",
+      "visibility": true,
+      "title": "Image",
+      "settings": {
+       "global_padding": {
+        "xl": "20px 0px 20px 0px"
+       },
+       "global_background_type": "none",
+       "global_background_repeat": "no-repeat",
+       "global_background_size": "cover",
+       "global_background_attachment": "inherit",
+       "global_background_position": "50% 50%",
+       "global_overlay_type": "overlay_none",
+       "hidden_xl": "0",
+       "hidden_lg": "0",
+       "hidden_md": "0",
+       "hidden_sm": "0",
+       "hidden_xs": "0",
+       "image": {
+        "src": "images/2025/05/06/ghoul.webp",
+        "height": 1032,
+        "width": 618
+       },
+       "alt_text": "Image",
+       "border_radius": 0,
+       "open_lightbox": 0,
+       "overlay_color": "rgba(119, 219, 31, .5)",
+       "link": {
+        "type": "url",
+        "menu": "index.php?option=com_content&view=article&id=190&Itemid=399",
+        "page": 95
+       },
+       "heading_selector": "h3",
+       "position": {
+        "xl": "center"
+       },
+       "image_width": {
+        "xl": "180"
+       },
+       "title_typography": {
+        "type": "google"
+       },
+       "global_link_color": "#000000",
+       "global_link_hover_color": "#000000"
+      }
+     },
+     {
+      "id": "1f456c4b-3971-4fb5-b8d8-5cf1ab28f0b1",
+      "type": "content",
+      "name": "raw_html",
+      "title": "Raw HTML",
+      "settings": {
+       "global_padding": {
+        "xl": "60px 0px 0px 0px"
+       },
+       "global_background_type": "none",
+       "global_background_repeat": "no-repeat",
+       "global_background_size": "cover",
+       "global_background_attachment": "inherit",
+       "global_background_position": "50% 50%",
+       "global_overlay_type": "overlay_none",
+       "global_custom_css": "@import url('https://fonts.googleapis.com/css?family=Poppins:900i');\n\n* {\n  box-sizing: border-box;\n}\n\nbody {\n  height: 100vh;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n\n.wrapper {\n  display: flex;\n  justify-content: center;\n}\n\n.cta {\n    display: flex;\n    padding: 10px 45px;\n    text-decoration: none;\n    font-family: 'Poppins', sans-serif;\n    font-size: 20px;\n    color: white;\n    background: #000;\n    transition: 1s;\n    box-shadow: 6px 6px 0 gray;\n    transform: skewX(-15deg);\n}\n\n.cta:focus {\n   outline: none; \n}\n\n.cta:hover {\n    transition: 0.5s;\n    box-shadow: 10px 10px 0 #FBC638;\n}\n\n.cta span:nth-child(2) {\n    transition: 0.5s;\n    margin-right: 0px;\n}\n\n.cta:hover  span:nth-child(2) {\n    transition: 0.5s;\n    margin-right: 45px;\n}\n\n  span {\n    transform: skewX(15deg) \n  }\n\n  span:nth-child(2) {\n    width: 20px;\n    margin-left: 30px;\n    position: relative;\n    top: 12%;\n  }\n  \n/**************SVG****************/\n\npath.one {\n    transition: 0.4s;\n    transform: translateX(-60%);\n}\n\npath.two {\n    transition: 0.5s;\n    transform: translateX(-30%);\n}\n\n.cta:hover path.three {\n    animation: color_anim 1s infinite 0.2s;\n}\n\n.cta:hover path.one {\n    transform: translateX(0%);\n    animation: color_anim 1s infinite 0.6s;\n}\n\n.cta:hover path.two {\n    transform: translateX(0%);\n    animation: color_anim 1s infinite 0.4s;\n}\n\n/* SVG animations */\n\n@keyframes color_anim {\n    0% {\n        fill: white;\n    }\n    50% {\n        fill: #FBC638;\n    }\n    100% {\n        fill: white;\n    }\n}",
+       "hidden_xl": "0",
+       "hidden_lg": "0",
+       "hidden_md": "0",
+       "hidden_sm": "0",
+       "hidden_xs": "0",
+       "html": "<div class=\"wrapper\">\n  <a class=\"cta\" href=\"https://www.fallout-2d20.ru/oruzhie/strelkovoe-oruzhie/10-mm-pistolet\">\n    <span>Подробнее</span>\n    <span>\n      <svg width=\"36px\" height=\"23px\" viewBox=\"0 0 66 43\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n        <g id=\"arrow\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\">\n          <path class=\"one\" d=\"M40.1543933,3.89485454 L43.9763149,0.139296592 C44.1708311,-0.0518420739 44.4826329,-0.0518571125 44.6771675,0.139262789 L65.6916134,20.7848311 C66.0855801,21.1718824 66.0911863,21.8050225 65.704135,22.1989893 C65.7000188,22.2031791 65.6958657,22.2073326 65.6916762,22.2114492 L44.677098,42.8607841 C44.4825957,43.0519059 44.1708242,43.0519358 43.9762853,42.8608513 L40.1545186,39.1069479 C39.9575152,38.9134427 39.9546793,38.5968729 40.1481845,38.3998695 C40.1502893,38.3977268 40.1524132,38.395603 40.1545562,38.3934985 L56.9937789,21.8567812 C57.1908028,21.6632968 57.193672,21.3467273 57.0001876,21.1497035 C56.9980647,21.1475418 56.9959223,21.1453995 56.9937605,21.1432767 L40.1545208,4.60825197 C39.9574869,4.41477773 39.9546013,4.09820839 40.1480756,3.90117456 C40.1501626,3.89904911 40.1522686,3.89694235 40.1543933,3.89485454 Z\" fill=\"#FFFFFF\"></path>\n          <path class=\"two\" d=\"M20.1543933,3.89485454 L23.9763149,0.139296592 C24.1708311,-0.0518420739 24.4826329,-0.0518571125 24.6771675,0.139262789 L45.6916134,20.7848311 C46.0855801,21.1718824 46.0911863,21.8050225 45.704135,22.1989893 C45.7000188,22.2031791 45.6958657,22.2073326 45.6916762,22.2114492 L24.677098,42.8607841 C24.4825957,43.0519059 24.1708242,43.0519358 23.9762853,42.8608513 L20.1545186,39.1069479 C19.9575152,38.9134427 19.9546793,38.5968729 20.1481845,38.3998695 C20.1502893,38.3977268 20.1524132,38.395603 20.1545562,38.3934985 L36.9937789,21.8567812 C37.1908028,21.6632968 37.193672,21.3467273 37.0001876,21.1497035 C36.9980647,21.1475418 36.9959223,21.1453995 36.9937605,21.1432767 L20.1545208,4.60825197 C19.9574869,4.41477773 19.9546013,4.09820839 20.1480756,3.90117456 C20.1501626,3.89904911 20.1522686,3.89694235 20.1543933,3.89485454 Z\" fill=\"#FFFFFF\"></path>\n          <path class=\"three\" d=\"M0.154393339,3.89485454 L3.97631488,0.139296592 C4.17083111,-0.0518420739 4.48263286,-0.0518571125 4.67716753,0.139262789 L25.6916134,20.7848311 C26.0855801,21.1718824 26.0911863,21.8050225 25.704135,22.1989893 C25.7000188,22.2031791 25.6958657,22.2073326 25.6916762,22.2114492 L4.67709797,42.8607841 C4.48259567,43.0519059 4.17082418,43.0519358 3.97628526,42.8608513 L0.154518591,39.1069479 C-0.0424848215,38.9134427 -0.0453206733,38.5968729 0.148184538,38.3998695 C0.150289256,38.3977268 0.152413239,38.395603 0.154556228,38.3934985 L16.9937789,21.8567812 C17.1908028,21.6632968 17.193672,21.3467273 17.0001876,21.1497035 C16.9980647,21.1475418 16.9959223,21.1453995 16.9937605,21.1432767 L0.15452076,4.60825197 C-0.0425130651,4.41477773 -0.0453986756,4.09820839 0.148075568,3.90117456 C0.150162624,3.89904911 0.152268631,3.89694235 0.154393339,3.89485454 Z\" fill=\"#FFFFFF\"></path>\n        </g>\n      </svg>\n    </span> \n  </a>\n</div>",
+       "heading_selector": "h3",
+       "title_typography": {
+        "type": "google"
+       }
+      }
+     }
+    ],
+    "width": {
+     "xl": "0%",
+     "lg": "100%",
+     "md": "100%",
+     "sm": "100%",
+     "xs": "100%"
+    }
+   },
+   {
+    "id": "30804c18-2674-4940-95cc-e523878a9609",
+    "class_name": "row-column",
+    "visibility": true,
+    "settings": {
+     "background_type": "none",
+     "background_repeat": "no-repeat",
+     "background_size": "cover",
+     "background_attachment": "scroll",
+     "background_position": "0 0",
+     "overlay_type": "overlay_color",
+     "use_border": 1,
+     "border_width": {
+      "xl": "1"
+     },
+     "items_align_center": 0,
+     "items_content_alignment": "center",
+     "width": {
+      "xl": "33.333333%",
+      "lg": "33.333333%",
+      "md": "33.333333%",
+      "sm": "100%",
+      "xs": "100%",
+      "unit": "33.333333%"
+     },
+     "padding": {
+      "xl": "30px 0px 20px 0px"
+     },
+     "boder_style": "solid",
+     "border_color": "rgb(110, 110, 110)"
+    },
+    "addons": [
+     {
+      "id": "a9785a49-40af-4607-bc46-bbc54fa65292",
+      "type": "content",
+      "name": "heading",
+      "visibility": true,
+      "title": "Heading",
+      "settings": {
+       "global_background_type": "none",
+       "global_background_repeat": "no-repeat",
+       "global_background_size": "cover",
+       "global_background_attachment": "inherit",
+       "global_background_position": "50% 50%",
+       "global_overlay_type": "overlay_none",
+       "hidden_xl": "0",
+       "hidden_lg": "0",
+       "hidden_md": "0",
+       "hidden_sm": "0",
+       "hidden_xs": "0",
+       "title": "РОБОТЫ",
+       "heading_selector": "h3",
+       "title_text_shadow": "0 0 0 #ffffff",
+       "alignment": {
+        "xl": "center"
+       },
+       "title_margin": {
+        "xl": "0px 0px 0px 0px"
+       },
+       "title_padding": {
+        "xl": "0px 0px 0px 0px"
+       },
+       "title_link": {
+        "type": "url",
+        "menu": "index.php?option=com_content&view=article&id=192&Itemid=400",
+        "page": 97
+       },
+       "heading_typography": {
+        "type": "google"
+       },
+       "global_link_color": "#000000",
+       "global_link_hover_color": "#000000"
+      }
+     },
+     {
+      "id": "b2f2ec1c-62e6-4709-ade0-2330e1b859d0",
+      "type": "content",
+      "name": "image",
+      "visibility": true,
+      "title": "Image",
+      "settings": {
+       "global_padding": {
+        "xl": "20px 0px 20px 0px"
+       },
+       "global_background_type": "none",
+       "global_background_repeat": "no-repeat",
+       "global_background_size": "cover",
+       "global_background_attachment": "inherit",
+       "global_background_position": "50% 50%",
+       "global_overlay_type": "overlay_none",
+       "hidden_xl": "0",
+       "hidden_lg": "0",
+       "hidden_md": "0",
+       "hidden_sm": "0",
+       "hidden_xs": "0",
+       "image": {
+        "src": "images/2025/05/06/protectron-infobox-fallout4.webp",
+        "height": 1016,
+        "width": 829
+       },
+       "alt_text": "Image",
+       "border_radius": 0,
+       "open_lightbox": 0,
+       "overlay_color": "rgba(119, 219, 31, .5)",
+       "link": {
+        "type": "url",
+        "menu": "index.php?option=com_content&view=article&id=192&Itemid=400",
+        "page": 97
+       },
+       "heading_selector": "h3",
+       "position": {
+        "xl": "center"
+       },
+       "image_width": {
+        "xl": "230"
+       },
+       "title_typography": {
+        "type": "google"
+       },
+       "global_link_color": "#000000",
+       "global_link_hover_color": "#000000"
+      }
+     },
+     {
+      "id": "6c50545a-4925-4c62-adef-1c59516ed2de",
+      "type": "content",
+      "name": "raw_html",
+      "title": "Raw HTML",
+      "settings": {
+       "global_padding": {
+        "xl": "60px 0px 0px 0px"
+       },
+       "global_background_type": "none",
+       "global_background_repeat": "no-repeat",
+       "global_background_size": "cover",
+       "global_background_attachment": "inherit",
+       "global_background_position": "50% 50%",
+       "global_overlay_type": "overlay_none",
+       "global_custom_css": "@import url('https://fonts.googleapis.com/css?family=Poppins:900i');\n\n* {\n  box-sizing: border-box;\n}\n\nbody {\n  height: 100vh;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n\n.wrapper {\n  display: flex;\n  justify-content: center;\n}\n\n.cta {\n    display: flex;\n    padding: 10px 45px;\n    text-decoration: none;\n    font-family: 'Poppins', sans-serif;\n    font-size: 20px;\n    color: white;\n    background: #000;\n    transition: 1s;\n    box-shadow: 6px 6px 0 gray;\n    transform: skewX(-15deg);\n}\n\n.cta:focus {\n   outline: none; \n}\n\n.cta:hover {\n    transition: 0.5s;\n    box-shadow: 10px 10px 0 #FBC638;\n}\n\n.cta span:nth-child(2) {\n    transition: 0.5s;\n    margin-right: 0px;\n}\n\n.cta:hover  span:nth-child(2) {\n    transition: 0.5s;\n    margin-right: 45px;\n}\n\n  span {\n    transform: skewX(15deg) \n  }\n\n  span:nth-child(2) {\n    width: 20px;\n    margin-left: 30px;\n    position: relative;\n    top: 12%;\n  }\n  \n/**************SVG****************/\n\npath.one {\n    transition: 0.4s;\n    transform: translateX(-60%);\n}\n\npath.two {\n    transition: 0.5s;\n    transform: translateX(-30%);\n}\n\n.cta:hover path.three {\n    animation: color_anim 1s infinite 0.2s;\n}\n\n.cta:hover path.one {\n    transform: translateX(0%);\n    animation: color_anim 1s infinite 0.6s;\n}\n\n.cta:hover path.two {\n    transform: translateX(0%);\n    animation: color_anim 1s infinite 0.4s;\n}\n\n/* SVG animations */\n\n@keyframes color_anim {\n    0% {\n        fill: white;\n    }\n    50% {\n        fill: #FBC638;\n    }\n    100% {\n        fill: white;\n    }\n}",
+       "hidden_xl": "0",
+       "hidden_lg": "0",
+       "hidden_md": "0",
+       "hidden_sm": "0",
+       "hidden_xs": "0",
+       "html": "<div class=\"wrapper\">\n  <a class=\"cta\" href=\"https://www.fallout-2d20.ru/oruzhie/strelkovoe-oruzhie/signalnyj-pistolet\">\n    <span>Подробнее</span>\n    <span>\n      <svg width=\"36px\" height=\"23px\" viewBox=\"0 0 66 43\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n        <g id=\"arrow\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\">\n          <path class=\"one\" d=\"M40.1543933,3.89485454 L43.9763149,0.139296592 C44.1708311,-0.0518420739 44.4826329,-0.0518571125 44.6771675,0.139262789 L65.6916134,20.7848311 C66.0855801,21.1718824 66.0911863,21.8050225 65.704135,22.1989893 C65.7000188,22.2031791 65.6958657,22.2073326 65.6916762,22.2114492 L44.677098,42.8607841 C44.4825957,43.0519059 44.1708242,43.0519358 43.9762853,42.8608513 L40.1545186,39.1069479 C39.9575152,38.9134427 39.9546793,38.5968729 40.1481845,38.3998695 C40.1502893,38.3977268 40.1524132,38.395603 40.1545562,38.3934985 L56.9937789,21.8567812 C57.1908028,21.6632968 57.193672,21.3467273 57.0001876,21.1497035 C56.9980647,21.1475418 56.9959223,21.1453995 56.9937605,21.1432767 L40.1545208,4.60825197 C39.9574869,4.41477773 39.9546013,4.09820839 40.1480756,3.90117456 C40.1501626,3.89904911 40.1522686,3.89694235 40.1543933,3.89485454 Z\" fill=\"#FFFFFF\"></path>\n          <path class=\"two\" d=\"M20.1543933,3.89485454 L23.9763149,0.139296592 C24.1708311,-0.0518420739 24.4826329,-0.0518571125 24.6771675,0.139262789 L45.6916134,20.7848311 C46.0855801,21.1718824 46.0911863,21.8050225 45.704135,22.1989893 C45.7000188,22.2031791 45.6958657,22.2073326 45.6916762,22.2114492 L24.677098,42.8607841 C24.4825957,43.0519059 24.1708242,43.0519358 23.9762853,42.8608513 L20.1545186,39.1069479 C19.9575152,38.9134427 19.9546793,38.5968729 20.1481845,38.3998695 C20.1502893,38.3977268 20.1524132,38.395603 20.1545562,38.3934985 L36.9937789,21.8567812 C37.1908028,21.6632968 37.193672,21.3467273 37.0001876,21.1497035 C36.9980647,21.1475418 36.9959223,21.1453995 36.9937605,21.1432767 L20.1545208,4.60825197 C19.9574869,4.41477773 19.9546013,4.09820839 20.1480756,3.90117456 C20.1501626,3.89904911 20.1522686,3.89694235 20.1543933,3.89485454 Z\" fill=\"#FFFFFF\"></path>\n          <path class=\"three\" d=\"M0.154393339,3.89485454 L3.97631488,0.139296592 C4.17083111,-0.0518420739 4.48263286,-0.0518571125 4.67716753,0.139262789 L25.6916134,20.7848311 C26.0855801,21.1718824 26.0911863,21.8050225 25.704135,22.1989893 C25.7000188,22.2031791 25.6958657,22.2073326 25.6916762,22.2114492 L4.67709797,42.8607841 C4.48259567,43.0519059 4.17082418,43.0519358 3.97628526,42.8608513 L0.154518591,39.1069479 C-0.0424848215,38.9134427 -0.0453206733,38.5968729 0.148184538,38.3998695 C0.150289256,38.3977268 0.152413239,38.395603 0.154556228,38.3934985 L16.9937789,21.8567812 C17.1908028,21.6632968 17.193672,21.3467273 17.0001876,21.1497035 C16.9980647,21.1475418 16.9959223,21.1453995 16.9937605,21.1432767 L0.15452076,4.60825197 C-0.0425130651,4.41477773 -0.0453986756,4.09820839 0.148075568,3.90117456 C0.150162624,3.89904911 0.152268631,3.89694235 0.154393339,3.89485454 Z\" fill=\"#FFFFFF\"></path>\n        </g>\n      </svg>\n    </span> \n  </a>\n</div>",
+       "heading_selector": "h3",
+       "title_typography": {
+        "type": "google"
+       }
+      }
+     }
+    ],
+    "width": {
+     "xl": "0%",
+     "lg": "100%",
+     "md": "100%",
+     "sm": "100%",
+     "xs": "100%"
+    }
+   }
+  ]
+ },
+ {
+  "id": "f95f3327-b4cd-4839-920e-25ececd6dbfe",
+  "visibility": true,
+  "settings": {
+   "fit_columns": {
+    "xl": true
+   },
+   "background_type": "none",
+   "background_repeat": "no-repeat",
+   "background_size": "cover",
+   "background_attachment": "fixed",
+   "background_position": "0 0",
+   "padding": {
+    "xl": "25px 0px 25px 0px"
+   },
+   "margin": {
+    "xl": "0px 0px 0px 0px"
+   },
+   "overlay_type": "overlay_none",
+   "columns_align_center": 0,
+   "columns_content_alignment": "center",
+   "fullscreen": 0,
+   "no_gutter": 0,
+   "heading_selector": "h3"
+  },
+  "layout": "4+4+4",
+  "columns": [
+   {
+    "id": "61578113-3854-47be-8176-56c21e873418",
+    "class_name": "row-column",
+    "visibility": true,
+    "settings": {
+     "background_type": "none",
+     "background_image": {
+      "src": "images/food-truck-pattern.jpg"
+     },
+     "background_repeat": "repeat",
+     "background_size": "inherit",
+     "background_attachment": "fixed",
+     "background_position": "0 0",
+     "overlay_type": "overlay_none",
+     "use_border": 1,
+     "border_width": {
+      "xl": "1"
+     },
+     "items_align_center": 0,
+     "items_content_alignment": "center",
+     "width": {
+      "xl": "33.333333%",
+      "lg": "33.333333%",
+      "md": "33.333333%",
+      "sm": "100%",
+      "xs": "100%",
+      "unit": "33.333333%"
+     },
+     "padding": {
+      "xl": "30px 0px 20px 0px"
+     },
+     "overlay": "RGBA(203, 203, 203, 0.4)",
+     "boder_style": "solid",
+     "border_color": "rgb(110, 110, 110)"
+    },
+    "addons": [
+     {
+      "id": "e305d80d-6cce-4430-8ab2-e97102947693",
+      "type": "content",
+      "name": "heading",
+      "visibility": true,
+      "title": "Heading",
+      "settings": {
+       "global_background_type": "none",
+       "global_background_repeat": "no-repeat",
+       "global_background_size": "cover",
+       "global_background_attachment": "inherit",
+       "global_background_position": "50% 50%",
+       "global_overlay_type": "overlay_none",
+       "hidden_xl": "0",
+       "hidden_lg": "0",
+       "hidden_md": "0",
+       "hidden_sm": "0",
+       "hidden_xs": "0",
+       "title": "РЕЙДЕРЫ",
+       "heading_selector": "h3",
+       "title_text_shadow": "0 0 0 #ffffff",
+       "alignment": {
+        "xl": "center"
+       },
+       "title_margin": {
+        "xl": "0px 0px 0px 0px"
+       },
+       "title_padding": {
+        "xl": "0px 0px 0px 0px"
+       },
+       "title_link": {
+        "type": "menu",
+        "menu": "index.php?option=com_content&view=article&id=454&Itemid=637",
+        "page": 84
+       },
+       "heading_typography": {
+        "type": "google"
+       },
+       "global_link_color": "#000000",
+       "global_link_hover_color": "#000000"
+      }
+     },
+     {
+      "id": "819214fc-dc1d-4ae1-9f59-8fcba799dd74",
+      "type": "content",
+      "name": "image",
+      "visibility": true,
+      "title": "Image",
+      "settings": {
+       "global_padding": {
+        "xl": "20px 0px 20px 0px"
+       },
+       "global_background_type": "none",
+       "global_background_repeat": "no-repeat",
+       "global_background_size": "cover",
+       "global_background_attachment": "inherit",
+       "global_background_position": "50% 50%",
+       "global_overlay_type": "overlay_none",
+       "hidden_xl": "0",
+       "hidden_lg": "0",
+       "hidden_md": "0",
+       "hidden_sm": "0",
+       "hidden_xs": "0",
+       "image": {
+        "src": "images/2025/06/19/1fe7bf85-6db4-43ec-8c60-3d8ab7df3182_removalai_preview-2.png",
+        "height": 600,
+        "width": 317
+       },
+       "alt_text": "Image",
+       "border_radius": 0,
+       "open_lightbox": 0,
+       "overlay_color": "rgba(119, 219, 31, .5)",
+       "link": {
+        "type": "menu",
+        "menu": "index.php?option=com_content&view=article&id=454&Itemid=637",
+        "page": 84
+       },
+       "heading_selector": "h3",
+       "position": {
+        "xl": "center"
+       },
+       "image_width": {
+        "xl": "180"
+       },
+       "title_typography": {
+        "type": "google"
+       }
+      }
+     },
+     {
+      "id": "a1960f9b-f995-4bd6-b223-360fd1062c62",
+      "type": "content",
+      "name": "raw_html",
+      "visibility": true,
+      "title": "Raw HTML",
+      "settings": {
+       "global_padding": {
+        "xl": "60px 0px 0px 0px"
+       },
+       "global_background_type": "none",
+       "global_background_repeat": "no-repeat",
+       "global_background_size": "cover",
+       "global_background_attachment": "inherit",
+       "global_background_position": "50% 50%",
+       "global_overlay_type": "overlay_none",
+       "global_custom_css": "@import url('https://fonts.googleapis.com/css?family=Poppins:900i');\n\n* {\n  box-sizing: border-box;\n}\n\nbody {\n  height: 100vh;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n\n.wrapper {\n  display: flex;\n  justify-content: center;\n}\n\n.cta {\n    display: flex;\n    padding: 10px 45px;\n    text-decoration: none;\n    font-family: 'Poppins', sans-serif;\n    font-size: 20px;\n    color: white;\n    background: #000;\n    transition: 1s;\n    box-shadow: 6px 6px 0 gray;\n    transform: skewX(-15deg);\n}\n\n.cta:focus {\n   outline: none; \n}\n\n.cta:hover {\n    transition: 0.5s;\n    box-shadow: 10px 10px 0 #FBC638;\n}\n\n.cta span:nth-child(2) {\n    transition: 0.5s;\n    margin-right: 0px;\n}\n\n.cta:hover  span:nth-child(2) {\n    transition: 0.5s;\n    margin-right: 45px;\n}\n\n  span {\n    transform: skewX(15deg) \n  }\n\n  span:nth-child(2) {\n    width: 20px;\n    margin-left: 30px;\n    position: relative;\n    top: 12%;\n  }\n  \n/**************SVG****************/\n\npath.one {\n    transition: 0.4s;\n    transform: translateX(-60%);\n}\n\npath.two {\n    transition: 0.5s;\n    transform: translateX(-30%);\n}\n\n.cta:hover path.three {\n    animation: color_anim 1s infinite 0.2s;\n}\n\n.cta:hover path.one {\n    transform: translateX(0%);\n    animation: color_anim 1s infinite 0.6s;\n}\n\n.cta:hover path.two {\n    transform: translateX(0%);\n    animation: color_anim 1s infinite 0.4s;\n}\n\n/* SVG animations */\n\n@keyframes color_anim {\n    0% {\n        fill: white;\n    }\n    50% {\n        fill: #FBC638;\n    }\n    100% {\n        fill: white;\n    }\n}",
+       "hidden_xl": "0",
+       "hidden_lg": "0",
+       "hidden_md": "0",
+       "hidden_sm": "0",
+       "hidden_xs": "0",
+       "html": "<div class=\"wrapper\">\n  <a class=\"cta\" https://www.fallout-2d20.ru/bestiarij/raiders\">\n    <span>Подробнее</span>\n    <span>\n      <svg width=\"36px\" height=\"23px\" viewBox=\"0 0 66 43\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n        <g id=\"arrow\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\">\n          <path class=\"one\" d=\"M40.1543933,3.89485454 L43.9763149,0.139296592 C44.1708311,-0.0518420739 44.4826329,-0.0518571125 44.6771675,0.139262789 L65.6916134,20.7848311 C66.0855801,21.1718824 66.0911863,21.8050225 65.704135,22.1989893 C65.7000188,22.2031791 65.6958657,22.2073326 65.6916762,22.2114492 L44.677098,42.8607841 C44.4825957,43.0519059 44.1708242,43.0519358 43.9762853,42.8608513 L40.1545186,39.1069479 C39.9575152,38.9134427 39.9546793,38.5968729 40.1481845,38.3998695 C40.1502893,38.3977268 40.1524132,38.395603 40.1545562,38.3934985 L56.9937789,21.8567812 C57.1908028,21.6632968 57.193672,21.3467273 57.0001876,21.1497035 C56.9980647,21.1475418 56.9959223,21.1453995 56.9937605,21.1432767 L40.1545208,4.60825197 C39.9574869,4.41477773 39.9546013,4.09820839 40.1480756,3.90117456 C40.1501626,3.89904911 40.1522686,3.89694235 40.1543933,3.89485454 Z\" fill=\"#FFFFFF\"></path>\n          <path class=\"two\" d=\"M20.1543933,3.89485454 L23.9763149,0.139296592 C24.1708311,-0.0518420739 24.4826329,-0.0518571125 24.6771675,0.139262789 L45.6916134,20.7848311 C46.0855801,21.1718824 46.0911863,21.8050225 45.704135,22.1989893 C45.7000188,22.2031791 45.6958657,22.2073326 45.6916762,22.2114492 L24.677098,42.8607841 C24.4825957,43.0519059 24.1708242,43.0519358 23.9762853,42.8608513 L20.1545186,39.1069479 C19.9575152,38.9134427 19.9546793,38.5968729 20.1481845,38.3998695 C20.1502893,38.3977268 20.1524132,38.395603 20.1545562,38.3934985 L36.9937789,21.8567812 C37.1908028,21.6632968 37.193672,21.3467273 37.0001876,21.1497035 C36.9980647,21.1475418 36.9959223,21.1453995 36.9937605,21.1432767 L20.1545208,4.60825197 C19.9574869,4.41477773 19.9546013,4.09820839 20.1480756,3.90117456 C20.1501626,3.89904911 20.1522686,3.89694235 20.1543933,3.89485454 Z\" fill=\"#FFFFFF\"></path>\n          <path class=\"three\" d=\"M0.154393339,3.89485454 L3.97631488,0.139296592 C4.17083111,-0.0518420739 4.48263286,-0.0518571125 4.67716753,0.139262789 L25.6916134,20.7848311 C26.0855801,21.1718824 26.0911863,21.8050225 25.704135,22.1989893 C25.7000188,22.2031791 25.6958657,22.2073326 25.6916762,22.2114492 L4.67709797,42.8607841 C4.48259567,43.0519059 4.17082418,43.0519358 3.97628526,42.8608513 L0.154518591,39.1069479 C-0.0424848215,38.9134427 -0.0453206733,38.5968729 0.148184538,38.3998695 C0.150289256,38.3977268 0.152413239,38.395603 0.154556228,38.3934985 L16.9937789,21.8567812 C17.1908028,21.6632968 17.193672,21.3467273 17.0001876,21.1497035 C16.9980647,21.1475418 16.9959223,21.1453995 16.9937605,21.1432767 L0.15452076,4.60825197 C-0.0425130651,4.41477773 -0.0453986756,4.09820839 0.148075568,3.90117456 C0.150162624,3.89904911 0.152268631,3.89694235 0.154393339,3.89485454 Z\" fill=\"#FFFFFF\"></path>\n        </g>\n      </svg>\n    </span> \n  </a>\n</div>",
+       "heading_selector": "h3",
+       "title_typography": {
+        "type": "google"
+       }
+      }
+     }
+    ],
+    "width": {
+     "xl": "0%",
+     "lg": "100%",
+     "md": "100%",
+     "sm": "100%",
+     "xs": "100%"
+    }
+   },
+   {
+    "id": "ca9972f1-043d-419a-b0bf-96de066a067f",
+    "class_name": "row-column",
+    "visibility": true,
+    "settings": {
+     "background_type": "none",
+     "background_repeat": "no-repeat",
+     "background_size": "cover",
+     "background_attachment": "scroll",
+     "background_position": "0 0",
+     "overlay_type": "overlay_color",
+     "use_border": 1,
+     "border_width": {
+      "xl": "1"
+     },
+     "items_align_center": 0,
+     "items_content_alignment": "center",
+     "width": {
+      "xl": "33.333333%",
+      "lg": "33.333333%",
+      "md": "33.333333%",
+      "sm": "100%",
+      "xs": "100%",
+      "unit": "33.333333%"
+     },
+     "padding": {
+      "xl": "30px 0px 20px 0px"
+     },
+     "boder_style": "solid",
+     "border_color": "rgb(110, 110, 110)"
+    },
+    "addons": [
+     {
+      "id": "78cf2e94-f0cb-4bc4-94db-61e5d2b0cd05",
+      "type": "content",
+      "name": "heading",
+      "visibility": true,
+      "title": "Heading",
+      "settings": {
+       "global_background_type": "none",
+       "global_background_repeat": "no-repeat",
+       "global_background_size": "cover",
+       "global_background_attachment": "inherit",
+       "global_background_position": "50% 50%",
+       "global_overlay_type": "overlay_none",
+       "hidden_xl": "0",
+       "hidden_lg": "0",
+       "hidden_md": "0",
+       "hidden_sm": "0",
+       "hidden_xs": "0",
+       "title": "Супермутанты",
+       "heading_selector": "h3",
+       "title_text_shadow": "0 0 0 #ffffff",
+       "alignment": {
+        "xl": "center"
+       },
+       "title_margin": {
+        "xl": "0px 0px 0px 0px"
+       },
+       "title_padding": {
+        "xl": "0px 0px 0px 0px"
+       },
+       "title_link": {
+        "type": "menu",
+        "menu": "index.php?option=com_content&view=article&id=458&Itemid=658",
+        "page": 95,
+        "close_popup": 293
+       },
+       "heading_typography": {
+        "type": "google"
+       },
+       "global_link_color": "#000000"
+      }
+     },
+     {
+      "id": "3bbb131b-246e-4a45-ac63-789ce41cfe98",
+      "type": "content",
+      "name": "image",
+      "visibility": true,
+      "title": "Image",
+      "settings": {
+       "global_padding": {
+        "xl": "20px 0px 20px 0px"
+       },
+       "global_background_type": "none",
+       "global_background_repeat": "no-repeat",
+       "global_background_size": "cover",
+       "global_background_attachment": "inherit",
+       "global_background_position": "50% 50%",
+       "global_overlay_type": "overlay_none",
+       "hidden_xl": "0",
+       "hidden_lg": "0",
+       "hidden_md": "0",
+       "hidden_sm": "0",
+       "hidden_xs": "0",
+       "image": {
+        "src": "images/2025/06/30/eb2c6cdb-a71f-421a-9270-d83813192bd2_removalai_preview.png",
+        "height": 600,
+        "width": 335
+       },
+       "alt_text": "Image",
+       "border_radius": 0,
+       "open_lightbox": 0,
+       "overlay_color": "rgba(119, 219, 31, .5)",
+       "link": {
+        "type": "menu",
+        "menu": "index.php?option=com_content&view=article&id=458&Itemid=658",
+        "page": 95,
+        "close_popup": 293
+       },
+       "heading_selector": "h3",
+       "position": {
+        "xl": "center"
+       },
+       "image_width": {
+        "xl": "180"
+       },
+       "title_typography": {
+        "type": "google"
+       }
+      }
+     },
+     {
+      "id": "9d714014-8048-4a76-9dd0-2ffc599482c7",
+      "type": "content",
+      "name": "raw_html",
+      "visibility": true,
+      "title": "Raw HTML",
+      "settings": {
+       "global_padding": {
+        "xl": "85px 0px 0px 0px"
+       },
+       "global_background_type": "none",
+       "global_background_repeat": "no-repeat",
+       "global_background_size": "cover",
+       "global_background_attachment": "inherit",
+       "global_background_position": "50% 50%",
+       "global_overlay_type": "overlay_none",
+       "global_custom_css": "@import url('https://fonts.googleapis.com/css?family=Poppins:900i');\n\n* {\n  box-sizing: border-box;\n}\n\nbody {\n  height: 100vh;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n\n.wrapper {\n  display: flex;\n  justify-content: center;\n}\n\n.cta {\n    display: flex;\n    padding: 10px 45px;\n    text-decoration: none;\n    font-family: 'Poppins', sans-serif;\n    font-size: 20px;\n    color: white;\n    background: #000;\n    transition: 1s;\n    box-shadow: 6px 6px 0 gray;\n    transform: skewX(-15deg);\n}\n\n.cta:focus {\n   outline: none; \n}\n\n.cta:hover {\n    transition: 0.5s;\n    box-shadow: 10px 10px 0 #FBC638;\n}\n\n.cta span:nth-child(2) {\n    transition: 0.5s;\n    margin-right: 0px;\n}\n\n.cta:hover  span:nth-child(2) {\n    transition: 0.5s;\n    margin-right: 45px;\n}\n\n  span {\n    transform: skewX(15deg) \n  }\n\n  span:nth-child(2) {\n    width: 20px;\n    margin-left: 30px;\n    position: relative;\n    top: 12%;\n  }\n  \n/**************SVG****************/\n\npath.one {\n    transition: 0.4s;\n    transform: translateX(-60%);\n}\n\npath.two {\n    transition: 0.5s;\n    transform: translateX(-30%);\n}\n\n.cta:hover path.three {\n    animation: color_anim 1s infinite 0.2s;\n}\n\n.cta:hover path.one {\n    transform: translateX(0%);\n    animation: color_anim 1s infinite 0.6s;\n}\n\n.cta:hover path.two {\n    transform: translateX(0%);\n    animation: color_anim 1s infinite 0.4s;\n}\n\n/* SVG animations */\n\n@keyframes color_anim {\n    0% {\n        fill: white;\n    }\n    50% {\n        fill: #FBC638;\n    }\n    100% {\n        fill: white;\n    }\n}",
+       "hidden_xl": "0",
+       "hidden_lg": "0",
+       "hidden_md": "0",
+       "hidden_sm": "0",
+       "hidden_xs": "0",
+       "html": "<div class=\"wrapper\">\n  <a class=\"cta\" href=\"https://www.fallout-2d20.ru/bestiarij/supermutanty\">\n    <span>Подробнее</span>\n    <span>\n      <svg width=\"36px\" height=\"23px\" viewBox=\"0 0 66 43\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n        <g id=\"arrow\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\">\n          <path class=\"one\" d=\"M40.1543933,3.89485454 L43.9763149,0.139296592 C44.1708311,-0.0518420739 44.4826329,-0.0518571125 44.6771675,0.139262789 L65.6916134,20.7848311 C66.0855801,21.1718824 66.0911863,21.8050225 65.704135,22.1989893 C65.7000188,22.2031791 65.6958657,22.2073326 65.6916762,22.2114492 L44.677098,42.8607841 C44.4825957,43.0519059 44.1708242,43.0519358 43.9762853,42.8608513 L40.1545186,39.1069479 C39.9575152,38.9134427 39.9546793,38.5968729 40.1481845,38.3998695 C40.1502893,38.3977268 40.1524132,38.395603 40.1545562,38.3934985 L56.9937789,21.8567812 C57.1908028,21.6632968 57.193672,21.3467273 57.0001876,21.1497035 C56.9980647,21.1475418 56.9959223,21.1453995 56.9937605,21.1432767 L40.1545208,4.60825197 C39.9574869,4.41477773 39.9546013,4.09820839 40.1480756,3.90117456 C40.1501626,3.89904911 40.1522686,3.89694235 40.1543933,3.89485454 Z\" fill=\"#FFFFFF\"></path>\n          <path class=\"two\" d=\"M20.1543933,3.89485454 L23.9763149,0.139296592 C24.1708311,-0.0518420739 24.4826329,-0.0518571125 24.6771675,0.139262789 L45.6916134,20.7848311 C46.0855801,21.1718824 46.0911863,21.8050225 45.704135,22.1989893 C45.7000188,22.2031791 45.6958657,22.2073326 45.6916762,22.2114492 L24.677098,42.8607841 C24.4825957,43.0519059 24.1708242,43.0519358 23.9762853,42.8608513 L20.1545186,39.1069479 C19.9575152,38.9134427 19.9546793,38.5968729 20.1481845,38.3998695 C20.1502893,38.3977268 20.1524132,38.395603 20.1545562,38.3934985 L36.9937789,21.8567812 C37.1908028,21.6632968 37.193672,21.3467273 37.0001876,21.1497035 C36.9980647,21.1475418 36.9959223,21.1453995 36.9937605,21.1432767 L20.1545208,4.60825197 C19.9574869,4.41477773 19.9546013,4.09820839 20.1480756,3.90117456 C20.1501626,3.89904911 20.1522686,3.89694235 20.1543933,3.89485454 Z\" fill=\"#FFFFFF\"></path>\n          <path class=\"three\" d=\"M0.154393339,3.89485454 L3.97631488,0.139296592 C4.17083111,-0.0518420739 4.48263286,-0.0518571125 4.67716753,0.139262789 L25.6916134,20.7848311 C26.0855801,21.1718824 26.0911863,21.8050225 25.704135,22.1989893 C25.7000188,22.2031791 25.6958657,22.2073326 25.6916762,22.2114492 L4.67709797,42.8607841 C4.48259567,43.0519059 4.17082418,43.0519358 3.97628526,42.8608513 L0.154518591,39.1069479 C-0.0424848215,38.9134427 -0.0453206733,38.5968729 0.148184538,38.3998695 C0.150289256,38.3977268 0.152413239,38.395603 0.154556228,38.3934985 L16.9937789,21.8567812 C17.1908028,21.6632968 17.193672,21.3467273 17.0001876,21.1497035 C16.9980647,21.1475418 16.9959223,21.1453995 16.9937605,21.1432767 L0.15452076,4.60825197 C-0.0425130651,4.41477773 -0.0453986756,4.09820839 0.148075568,3.90117456 C0.150162624,3.89904911 0.152268631,3.89694235 0.154393339,3.89485454 Z\" fill=\"#FFFFFF\"></path>\n        </g>\n      </svg>\n    </span> \n  </a>\n</div>",
+       "heading_selector": "h3",
+       "title_typography": {
+        "type": "google"
+       }
+      }
+     }
+    ],
+    "width": {
+     "xl": "0%",
+     "lg": "100%",
+     "md": "100%",
+     "sm": "100%",
+     "xs": "100%"
+    }
+   },
+   {
+    "id": "5c6da0db-08f9-4e2c-aa5e-d076702e4fbc",
+    "class_name": "row-column",
+    "settings": {
+     "background_type": "none",
+     "background_repeat": "no-repeat",
+     "background_size": "cover",
+     "background_attachment": "scroll",
+     "background_position": "0 0",
+     "overlay_type": "overlay_color",
+     "use_border": 1,
+     "border_width": {
+      "xl": "1"
+     },
+     "items_align_center": 0,
+     "items_content_alignment": "center",
+     "width": {
+      "xl": "33.333333%",
+      "lg": "33.333333%",
+      "md": "33.333333%",
+      "sm": "100%",
+      "xs": "100%",
+      "unit": "33.333333%"
+     },
+     "padding": {
+      "xl": "30px 0px 20px 0px"
+     },
+     "boder_style": "solid",
+     "border_color": "rgb(110, 110, 110)"
+    },
+    "addons": [
+     {
+      "id": "4a8f5c40-3483-4a9a-b573-442572b9e139",
+      "type": "content",
+      "name": "heading",
+      "visibility": true,
+      "title": "Heading",
+      "settings": {
+       "global_background_type": "none",
+       "global_background_repeat": "no-repeat",
+       "global_background_size": "cover",
+       "global_background_attachment": "inherit",
+       "global_background_position": "50% 50%",
+       "global_overlay_type": "overlay_none",
+       "hidden_xl": "0",
+       "hidden_lg": "0",
+       "hidden_md": "0",
+       "hidden_sm": "0",
+       "hidden_xs": "0",
+       "title": "РОБОТЫ",
+       "heading_selector": "h3",
+       "title_text_shadow": "0 0 0 #ffffff",
+       "alignment": {
+        "xl": "center"
+       },
+       "title_margin": {
+        "xl": "0px 0px 0px 0px"
+       },
+       "title_padding": {
+        "xl": "0px 0px 0px 0px"
+       },
+       "title_link": {
+        "type": "url",
+        "menu": "index.php?option=com_content&view=article&id=192&Itemid=400",
+        "page": 97
+       },
+       "heading_typography": {
+        "type": "google"
+       },
+       "global_link_color": "#000000",
+       "global_link_hover_color": "#000000"
+      }
+     },
+     {
+      "id": "e126ae93-534d-4fea-a032-b49312f96e14",
+      "type": "content",
+      "name": "image",
+      "visibility": true,
+      "title": "Image",
+      "settings": {
+       "global_padding": {
+        "xl": "20px 0px 20px 0px"
+       },
+       "global_background_type": "none",
+       "global_background_repeat": "no-repeat",
+       "global_background_size": "cover",
+       "global_background_attachment": "inherit",
+       "global_background_position": "50% 50%",
+       "global_overlay_type": "overlay_none",
+       "hidden_xl": "0",
+       "hidden_lg": "0",
+       "hidden_md": "0",
+       "hidden_sm": "0",
+       "hidden_xs": "0",
+       "image": {
+        "src": "images/2025/05/06/protectron-infobox-fallout4.webp",
+        "height": 1016,
+        "width": 829
+       },
+       "alt_text": "Image",
+       "border_radius": 0,
+       "open_lightbox": 0,
+       "overlay_color": "rgba(119, 219, 31, .5)",
+       "link": {
+        "type": "url",
+        "menu": "index.php?option=com_content&view=article&id=192&Itemid=400",
+        "page": 97
+       },
+       "heading_selector": "h3",
+       "position": {
+        "xl": "center"
+       },
+       "image_width": {
+        "xl": "230"
+       },
+       "title_typography": {
+        "type": "google"
+       },
+       "global_link_color": "#000000",
+       "global_link_hover_color": "#000000"
+      }
+     },
+     {
+      "id": "54a510f3-5849-4ddb-8f5e-1550fe5d578d",
+      "type": "content",
+      "name": "raw_html",
+      "title": "Raw HTML",
+      "settings": {
+       "global_padding": {
+        "xl": "60px 0px 0px 0px"
+       },
+       "global_background_type": "none",
+       "global_background_repeat": "no-repeat",
+       "global_background_size": "cover",
+       "global_background_attachment": "inherit",
+       "global_background_position": "50% 50%",
+       "global_overlay_type": "overlay_none",
+       "global_custom_css": "@import url('https://fonts.googleapis.com/css?family=Poppins:900i');\n\n* {\n  box-sizing: border-box;\n}\n\nbody {\n  height: 100vh;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n\n.wrapper {\n  display: flex;\n  justify-content: center;\n}\n\n.cta {\n    display: flex;\n    padding: 10px 45px;\n    text-decoration: none;\n    font-family: 'Poppins', sans-serif;\n    font-size: 20px;\n    color: white;\n    background: #000;\n    transition: 1s;\n    box-shadow: 6px 6px 0 gray;\n    transform: skewX(-15deg);\n}\n\n.cta:focus {\n   outline: none; \n}\n\n.cta:hover {\n    transition: 0.5s;\n    box-shadow: 10px 10px 0 #FBC638;\n}\n\n.cta span:nth-child(2) {\n    transition: 0.5s;\n    margin-right: 0px;\n}\n\n.cta:hover  span:nth-child(2) {\n    transition: 0.5s;\n    margin-right: 45px;\n}\n\n  span {\n    transform: skewX(15deg) \n  }\n\n  span:nth-child(2) {\n    width: 20px;\n    margin-left: 30px;\n    position: relative;\n    top: 12%;\n  }\n  \n/**************SVG****************/\n\npath.one {\n    transition: 0.4s;\n    transform: translateX(-60%);\n}\n\npath.two {\n    transition: 0.5s;\n    transform: translateX(-30%);\n}\n\n.cta:hover path.three {\n    animation: color_anim 1s infinite 0.2s;\n}\n\n.cta:hover path.one {\n    transform: translateX(0%);\n    animation: color_anim 1s infinite 0.6s;\n}\n\n.cta:hover path.two {\n    transform: translateX(0%);\n    animation: color_anim 1s infinite 0.4s;\n}\n\n/* SVG animations */\n\n@keyframes color_anim {\n    0% {\n        fill: white;\n    }\n    50% {\n        fill: #FBC638;\n    }\n    100% {\n        fill: white;\n    }\n}",
+       "hidden_xl": "0",
+       "hidden_lg": "0",
+       "hidden_md": "0",
+       "hidden_sm": "0",
+       "hidden_xs": "0",
+       "html": "<div class=\"wrapper\">\n  <a class=\"cta\" href=\"https://www.fallout-2d20.ru/oruzhie/strelkovoe-oruzhie/signalnyj-pistolet\">\n    <span>Подробнее</span>\n    <span>\n      <svg width=\"36px\" height=\"23px\" viewBox=\"0 0 66 43\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n        <g id=\"arrow\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\">\n          <path class=\"one\" d=\"M40.1543933,3.89485454 L43.9763149,0.139296592 C44.1708311,-0.0518420739 44.4826329,-0.0518571125 44.6771675,0.139262789 L65.6916134,20.7848311 C66.0855801,21.1718824 66.0911863,21.8050225 65.704135,22.1989893 C65.7000188,22.2031791 65.6958657,22.2073326 65.6916762,22.2114492 L44.677098,42.8607841 C44.4825957,43.0519059 44.1708242,43.0519358 43.9762853,42.8608513 L40.1545186,39.1069479 C39.9575152,38.9134427 39.9546793,38.5968729 40.1481845,38.3998695 C40.1502893,38.3977268 40.1524132,38.395603 40.1545562,38.3934985 L56.9937789,21.8567812 C57.1908028,21.6632968 57.193672,21.3467273 57.0001876,21.1497035 C56.9980647,21.1475418 56.9959223,21.1453995 56.9937605,21.1432767 L40.1545208,4.60825197 C39.9574869,4.41477773 39.9546013,4.09820839 40.1480756,3.90117456 C40.1501626,3.89904911 40.1522686,3.89694235 40.1543933,3.89485454 Z\" fill=\"#FFFFFF\"></path>\n          <path class=\"two\" d=\"M20.1543933,3.89485454 L23.9763149,0.139296592 C24.1708311,-0.0518420739 24.4826329,-0.0518571125 24.6771675,0.139262789 L45.6916134,20.7848311 C46.0855801,21.1718824 46.0911863,21.8050225 45.704135,22.1989893 C45.7000188,22.2031791 45.6958657,22.2073326 45.6916762,22.2114492 L24.677098,42.8607841 C24.4825957,43.0519059 24.1708242,43.0519358 23.9762853,42.8608513 L20.1545186,39.1069479 C19.9575152,38.9134427 19.9546793,38.5968729 20.1481845,38.3998695 C20.1502893,38.3977268 20.1524132,38.395603 20.1545562,38.3934985 L36.9937789,21.8567812 C37.1908028,21.6632968 37.193672,21.3467273 37.0001876,21.1497035 C36.9980647,21.1475418 36.9959223,21.1453995 36.9937605,21.1432767 L20.1545208,4.60825197 C19.9574869,4.41477773 19.9546013,4.09820839 20.1480756,3.90117456 C20.1501626,3.89904911 20.1522686,3.89694235 20.1543933,3.89485454 Z\" fill=\"#FFFFFF\"></path>\n          <path class=\"three\" d=\"M0.154393339,3.89485454 L3.97631488,0.139296592 C4.17083111,-0.0518420739 4.48263286,-0.0518571125 4.67716753,0.139262789 L25.6916134,20.7848311 C26.0855801,21.1718824 26.0911863,21.8050225 25.704135,22.1989893 C25.7000188,22.2031791 25.6958657,22.2073326 25.6916762,22.2114492 L4.67709797,42.8607841 C4.48259567,43.0519059 4.17082418,43.0519358 3.97628526,42.8608513 L0.154518591,39.1069479 C-0.0424848215,38.9134427 -0.0453206733,38.5968729 0.148184538,38.3998695 C0.150289256,38.3977268 0.152413239,38.395603 0.154556228,38.3934985 L16.9937789,21.8567812 C17.1908028,21.6632968 17.193672,21.3467273 17.0001876,21.1497035 C16.9980647,21.1475418 16.9959223,21.1453995 16.9937605,21.1432767 L0.15452076,4.60825197 C-0.0425130651,4.41477773 -0.0453986756,4.09820839 0.148075568,3.90117456 C0.150162624,3.89904911 0.152268631,3.89694235 0.154393339,3.89485454 Z\" fill=\"#FFFFFF\"></path>\n        </g>\n      </svg>\n    </span> \n  </a>\n</div>",
+       "heading_selector": "h3",
+       "title_typography": {
+        "type": "google"
+       }
+      }
+     }
+    ],
+    "width": {
+     "xl": "0%",
+     "lg": "100%",
+     "md": "100%",
+     "sm": "100%",
+     "xs": "100%"
+    }
+   }
+  ]
+ }
+]

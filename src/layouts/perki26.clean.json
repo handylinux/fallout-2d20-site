@@ -1,0 +1,79 @@
+[
+ {
+  "id": "28838d82-626b-4e12-a8bd-f79ca2251342",
+  "visibility": true,
+  "settings": {
+   "fit_columns": {
+    "xl": true
+   },
+   "background_type": "none",
+   "background_repeat": "no-repeat",
+   "background_size": "cover",
+   "background_attachment": "fixed",
+   "background_position": "0 0",
+   "padding": {
+    "xl": "75px 0px 75px 0px"
+   },
+   "margin": {
+    "xl": "0px 0px 0px 0px"
+   },
+   "overlay_type": "overlay_none",
+   "columns_align_center": 0,
+   "columns_content_alignment": "center",
+   "fullscreen": 0,
+   "no_gutter": 0,
+   "heading_selector": "h3"
+  },
+  "layout": "12",
+  "columns": [
+   {
+    "id": "d80ed43f-7fad-450a-9248-035b821b6cbb",
+    "class_name": "row-column",
+    "visibility": true,
+    "settings": {
+     "background_type": "none",
+     "background_repeat": "no-repeat",
+     "background_size": "cover",
+     "background_attachment": "scroll",
+     "background_position": "0 0",
+     "overlay_type": "overlay_color",
+     "use_border": 0,
+     "items_align_center": 0,
+     "items_content_alignment": "center",
+     "width": {
+      "xl": "100%",
+      "lg": "100%",
+      "md": "100%",
+      "sm": "100%",
+      "xs": "100%"
+     }
+    },
+    "addons": [
+     {
+      "id": "acddbffd-b060-4857-bed0-e22f315a3947",
+      "type": "content",
+      "name": "module",
+      "visibility": true,
+      "title": "Joomla Module",
+      "settings": {
+       "global_background_type": "none",
+       "global_background_repeat": "no-repeat",
+       "global_background_size": "cover",
+       "global_background_attachment": "inherit",
+       "global_background_position": "50% 50%",
+       "global_overlay_type": "overlay_none",
+       "hidden_xl": "0",
+       "hidden_lg": "0",
+       "hidden_md": "0",
+       "hidden_sm": "0",
+       "hidden_xs": "0",
+       "module_type": "module",
+       "heading_selector": "h3",
+       "id": "175"
+      }
+     }
+    ]
+   }
+  ]
+ }
+]

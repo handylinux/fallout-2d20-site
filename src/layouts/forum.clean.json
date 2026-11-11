@@ -1,0 +1,81 @@
+[
+ {
+  "id": "719990f2-4a0c-4caf-8364-135f1404830d",
+  "visibility": true,
+  "settings": {
+   "fit_columns": {
+    "xl": true
+   },
+   "background_type": "none",
+   "background_repeat": "no-repeat",
+   "background_size": "cover",
+   "background_attachment": "fixed",
+   "background_position": "0 0",
+   "padding": {
+    "xl": "0px 0px 0px 0px"
+   },
+   "margin": {
+    "xl": "0px 0px 0px 0px"
+   },
+   "overlay_type": "overlay_none",
+   "columns_align_center": 0,
+   "columns_content_alignment": "center",
+   "stretch_section": 0,
+   "fullscreen": 1,
+   "no_gutter": 0,
+   "heading_selector": "h3",
+   "container_width": "1200"
+  },
+  "layout": "12",
+  "columns": [
+   {
+    "id": "19b051d7-fc86-4af6-86a1-d8909809689d",
+    "class_name": "row-column",
+    "visibility": true,
+    "settings": {
+     "background_type": "none",
+     "background_repeat": "no-repeat",
+     "background_size": "cover",
+     "background_attachment": "scroll",
+     "background_position": "0 0",
+     "overlay_type": "overlay_color",
+     "use_border": 0,
+     "items_align_center": 0,
+     "items_content_alignment": "center",
+     "width": {
+      "xl": "100%",
+      "lg": "100%",
+      "md": "100%",
+      "sm": "100%",
+      "xs": "100%"
+     }
+    },
+    "addons": [
+     {
+      "id": "5c2ac31a-b865-4745-95e4-e085f89efdb4",
+      "type": "content",
+      "name": "raw_html",
+      "visibility": true,
+      "title": "Raw HTML",
+      "settings": {
+       "global_background_type": "none",
+       "global_background_repeat": "no-repeat",
+       "global_background_size": "cover",
+       "global_background_attachment": "inherit",
+       "global_background_position": "50% 50%",
+       "global_overlay_type": "overlay_none",
+       "global_custom_css": "/* Убираем отступы у основного контейнера Joomla на этой странице, \n   чтобы форум касался краев */\nbody.com-sppagebuilder #sp-main-body {\n    padding: 0 !important;\n    margin: 0 !important;\n}\n\n/* Настройки контейнера */\n.forum-container {\n    width: 100%;\n    /* Высота = 100% экрана минус высота шапки и футера. \n       Подставьте свои значения вместо 80px и 100px */\n    height: calc(100vh - 210px); \n    overflow: hidden;\n}\n\n/* Настройки самого iframe */\n#flarum-frame {\n    width: 100%;\n    height: 100%;\n    border: none;\n    display: block;\n}\n\n/* ВАЖНО: Убираем скролл у самой страницы Joomla, \n   чтобы скроллился ТОЛЬКО форум */\nbody {\n    overflow-y: hidden; \n}",
+       "hidden_xl": "0",
+       "hidden_lg": "0",
+       "hidden_md": "0",
+       "hidden_sm": "0",
+       "hidden_xs": "0",
+       "html": "<div class=\"forum-container\">\n    <iframe src=\"https://forum.fallout-2d20.ru\" id=\"flarum-frame\" allowfullscreen></iframe>\n</div>",
+       "heading_selector": "h3"
+      }
+     }
+    ]
+   }
+  ]
+ }
+]
