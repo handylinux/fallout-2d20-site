@@ -89,6 +89,9 @@
     { re: /^\/proiskhozhdeniya$/, data: 'origins', view: 'origins' },
     { re: /^\/proiskhozhdeniya\/([^/]+)$/, data: 'origins.pages', view: 'origin',
       bySlug: true },
+    /* /primery/ — примеры типов страниц */
+    { re: /^\/primery$/, data: 'variants', view: 'examples' },
+    { re: /^\/primery\/([^/]+)$/, data: 'variants', view: null, byExample: true },
     /* /blog/ и /blog/<slug>/ */
     { re: /^\/blog$/, data: 'blog', view: 'list' },
     { re: /^\/blog\/([^/]+)$/, data: 'blog', view: 'article', bySlug: true },
@@ -167,6 +170,17 @@
     get(routeDef.data).then(function (data) {
       if (!data) { paint(notFound(), 'Не найдено'); return; }
       var page = data;
+      if (routeDef.byExample) {
+        var slug = matched.match[1];
+        var found = null;
+        ((data && data.examples) || []).forEach(function (row) {
+          if (row.slug === slug) { found = row; }
+        });
+        if (!found) { paint(notFound(), 'Не найдено'); return; }
+        var viewName = window.Views[found.view] ? found.view : 'weapon_item';
+        paint(window.Views[viewName]({ item: found, category: {}, section: {} }), found.name);
+        return;
+      }
       if (routeDef.bySlug) {
         var slug = matched.match[1];
         page = null;
