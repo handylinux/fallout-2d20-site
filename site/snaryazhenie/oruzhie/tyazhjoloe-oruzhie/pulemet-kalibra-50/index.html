@@ -638,49 +638,55 @@ body { background: transparent; }
 }
 
 /* ============================================================================
-   МОДЫ ОРУЖИЯ: каждый мод — спойлер внутри спойлера-слота.
-   На широком экране таблица на div в 8 колонок, на узком — 2 колонки,
-   и каждый мод сам становится такой же таблицей «характеристика-значение».
+   МОДЫ ОРУЖИЯ.
+   Слот модов — спойлер; каждый мод — спойлер внутри него.
+   На десктопе строка мода — одна горизонтальная таблица (8 ячеек),
+   на мобильном та же строка становится сеткой 2 колонки.
    ========================================================================== */
-.wmods { border: 1px solid var(--f-plate-line); background: rgba(255, 255, 255, .5); }
+.wmods { border: 1px solid var(--f-plate-line); background: rgba(255, 255, 255, .55); }
 .wmods__head,
-.wmods__row { display: grid; grid-template-columns: 1.6fr .7fr .7fr 1fr .8fr 1.1fr .6fr .6fr; }
+.wmod__summary { display: grid; grid-template-columns: 1.6fr .7fr .7fr 1fr .8fr 1.1fr .6fr .6fr; }
 .wmods__head { background: #000; color: #fff; font-weight: 700; }
-.wmods__head > div,
-.wmods__row > .wmods__cell { padding: 8px 10px; border-right: 1px solid var(--f-plate-line); min-width: 0; }
-.wmods__head > div:last-child,
-.wmods__row > .wmods__cell:last-child { border-right: 0; }
-.wmods__row + .wmods__row { border-top: 1px solid var(--f-plate-line); }
-.wmods__label { display: none; }
+.wmods__head > div { padding: 8px 10px; border-right: 1px solid rgba(255, 255, 255, .25); }
+.wmods__head > div:last-child { border-right: 0; }
 
-/* спойлер мода: сводка = имя, внутри таблица характеристик */
-.wmod { border-top: 1px solid var(--f-plate-line); }
-.wmod:first-of-type { border-top: 0; }
+/* строка мода = summary спойлера */
 .wmod__summary {
-  display: flex; align-items: center; gap: 10px;
-  padding: 8px 10px; cursor: pointer; list-style: none;
+  align-items: stretch;
+  padding: 0;
+  cursor: pointer;
+  list-style: none;
+  border-top: 1px solid var(--f-plate-line);
 }
 .wmod__summary::-webkit-details-marker { display: none; }
-.wmod__summary::before {
-  content: ""; width: 7px; height: 7px; flex: 0 0 auto;
+.wmod__c { padding: 8px 10px; border-right: 1px solid var(--f-plate-line); min-width: 0;
+  overflow-wrap: anywhere; }
+.wmod__c:last-child { border-right: 0; }
+.wmod__summary:hover .wmod__c { background: rgba(177, 91, 35, .08); }
+/* маркер раскрытия — перед первой ячейкой */
+.wmod__summary > .wmod__c:first-child::before {
+  content: ""; display: inline-block; width: 7px; height: 7px;
+  margin-right: 8px; vertical-align: middle;
   border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
   transform: rotate(-45deg); transition: transform .2s;
 }
-.wmod[open] > .wmod__summary::before { transform: rotate(45deg); }
-.wmod__body { padding: 0 10px 10px; }
+.wmod[open] > .wmod__summary > .wmod__c:first-child::before { transform: rotate(45deg); }
+.wmod__body { padding: 8px 10px 12px; }
 
-/* таблица «характеристика — значение» внутри мода */
+.wmods__label { display: none; }
+
+/* таблица «характеристика — значение» внутри раскрытого мода */
 .wmod__table { width: 100%; border-collapse: collapse; border: 1px solid #000; }
 .wmod__table th,
 .wmod__table td { padding: 6px 10px; border: 1px solid #000; font-size: 15px; }
 .wmod__table th { width: 45%; background: #000; color: #fff; text-align: left; font-weight: 700; }
 .wmod__table td { background: #f0dea8; text-align: center; }
 
-@media (max-width: 900px) {
-  /* шапка не нужна: подписи и так внутри каждой строки */
+/* мобильный: шапка не нужна, строка мода — 2 колонки с подписями */
+@media (max-width: 760px) {
   .wmods__head { display: none; }
-  .wmods__row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .wmods__row > .wmods__cell { border-right: 0; border-bottom: 1px solid var(--f-plate-line); }
+  .wmod__summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .wmod__c { border-right: 0; border-bottom: 1px solid var(--f-plate-line); }
   .wmods__label {
     display: block; font-size: .72rem; font-weight: 700;
     letter-spacing: .02em; text-transform: uppercase; opacity: .7;
@@ -713,7 +719,7 @@ body { background: transparent; }
 
 <main class="page">
   <div class="wrap">
-<p class="wcard__back"><a href="/snaryazhenie/oruzhie/tyazhjoloe-oruzhie/">Назад в категорию: Тяжёлое оружие</a></p><h2 class="wcard__title">Пулемёт калибра .50</h2><div class="wcard"><div class="wcard__row"><div class="wcard__media wcard__media--empty"></div><div class="wcard__stats"><table class="wstats"><tbody><tr><th scope="row">ТИП ПАТРОНА</th><td>Патрон .50</td></tr><tr><th scope="row">ТИП УРОНА</th><td>Физический</td></tr><tr><th scope="row">УРОН</th><td>7 {/CD}</td></tr><tr><th scope="row">ЭФФЕКТ</th><td>Очередь</td></tr><tr><th scope="row">СКОРОСТЬ СТРЕЛЬБЫ</th><td>3</td></tr><tr><th scope="row">ДИСТАНЦИЯ</th><td>Средняя</td></tr><tr><th scope="row">КАЧЕСТВА</th><td>Двуручное, Неточное</td></tr><tr><th scope="row">ВЕС</th><td>31</td></tr><tr><th scope="row">ЦЕНА</th><td>350</td></tr><tr><th scope="row">РЕДКОСТЬ</th><td>Очень редкое</td></tr></tbody></table></div></div><p class="wcard__text">These machine guns, chambered for the powerful .50 round, are extremely effective against infantry, materiel, lightly armored vehicles, boats, buildings, aircraft, and a wide range of other targets. This design has been in use in one form or another since long before the Great War but finds a new lease of life when carried by Power Armored fighters who can wield the cumbersome gun.</p><section class="wcard__mods"><h2 class="wcard__sub">Модификации</h2><details class="spoiler wmods-group"><summary class="spoiler__summary">Ствол <span class="wmods-group__count">(1)</span></summary><div class="spoiler__body"><details class="wmod"><summary class="wmod__summary">Тяжелый</summary><div class="wmod__body"><table class="wmod__table"><tbody><tr><th scope="row">Урон</th><td>+1</td></tr><tr><th scope="row">Скорость</th><td>—</td></tr><tr><th scope="row">Патрон</th><td>—</td></tr><tr><th scope="row">Сложность</th><td>4</td></tr><tr><th scope="row">Перк</th><td>Gun Nut 2</td></tr><tr><th scope="row">Цена</th><td>35</td></tr><tr><th scope="row">Вес</th><td>3</td></tr></tbody></table></div></details></div></details></section></div>
+<p class="wcard__back"><a href="/snaryazhenie/oruzhie/tyazhjoloe-oruzhie/">Назад в категорию: Тяжёлое оружие</a></p><h2 class="wcard__title">Пулемёт калибра .50</h2><div class="wcard"><div class="wcard__row"><div class="wcard__media wcard__media--empty"></div><div class="wcard__stats"><table class="wstats"><tbody><tr><th scope="row">ТИП ПАТРОНА</th><td>Патрон .50</td></tr><tr><th scope="row">ТИП УРОНА</th><td>Физический</td></tr><tr><th scope="row">УРОН</th><td>7 {/CD}</td></tr><tr><th scope="row">ЭФФЕКТ</th><td>Очередь</td></tr><tr><th scope="row">СКОРОСТЬ СТРЕЛЬБЫ</th><td>3</td></tr><tr><th scope="row">ДИСТАНЦИЯ</th><td>Средняя</td></tr><tr><th scope="row">КАЧЕСТВА</th><td>Двуручное, Неточное</td></tr><tr><th scope="row">ВЕС</th><td>31</td></tr><tr><th scope="row">ЦЕНА</th><td>350</td></tr><tr><th scope="row">РЕДКОСТЬ</th><td>Очень редкое</td></tr></tbody></table></div></div><p class="wcard__text">These machine guns, chambered for the powerful .50 round, are extremely effective against infantry, materiel, lightly armored vehicles, boats, buildings, aircraft, and a wide range of other targets. This design has been in use in one form or another since long before the Great War but finds a new lease of life when carried by Power Armored fighters who can wield the cumbersome gun.</p><section class="wcard__mods"><h2 class="wcard__sub">Модификации</h2><details class="spoiler wmods-group"><summary class="spoiler__summary">Ствол <span class="wmods-group__count">(1)</span></summary><div class="spoiler__body wmods"><div class="wmods__head"><div>Модификация</div><div>Урон</div><div>Скорость</div><div>Патрон</div><div>Сложность</div><div>Перк</div><div>Цена</div><div>Вес</div></div><details class="wmod"><summary class="wmod__summary"><span class="wmod__c"><span class="wmods__label">Модификация</span>Тяжелый</span><span class="wmod__c"><span class="wmods__label">Урон</span>+1</span><span class="wmod__c"><span class="wmods__label">Скорость</span>—</span><span class="wmod__c"><span class="wmods__label">Патрон</span>—</span><span class="wmod__c"><span class="wmods__label">Сложность</span>4</span><span class="wmod__c"><span class="wmods__label">Перк</span>Gun Nut 2</span><span class="wmod__c"><span class="wmods__label">Цена</span>35</span><span class="wmod__c"><span class="wmods__label">Вес</span>3</span></summary><div class="wmod__body"><table class="wmod__table"><tbody><tr><th scope="row">Урон</th><td>+1</td></tr><tr><th scope="row">Скорость</th><td>—</td></tr><tr><th scope="row">Патрон</th><td>—</td></tr><tr><th scope="row">Сложность</th><td>4</td></tr><tr><th scope="row">Перк</th><td>Gun Nut 2</td></tr><tr><th scope="row">Цена</th><td>35</td></tr><tr><th scope="row">Вес</th><td>3</td></tr></tbody></table></div></details></div></details></section></div>
   </div>
 </main>
 
