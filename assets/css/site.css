@@ -24,10 +24,12 @@
   /* цвет заголовков-ссылок карточек: #b15b23 из template.css эталона */
   --f-link-title: #b15b23;
 
-  /* Ширина сайта = body-innerwrapper эталона: max-width 1240px, по центру
-     (template.css). 1400px у .sppb-row-container — только внутренняя секция,
-     она уже внутри этих 1240px. */
-  --f-site-max: 1240px;
+  /* Ширина сайта по замерам эталона:
+       #sp-main-body  width 1425 (= 1370 контента + 2*30 полей), padding 0 30
+       контейнер      1370, padding 0
+       строка         1370, карточка 426.664 = 1370/3 - 30 (по 15px гуттера на сторону) */
+  --f-site-max: 1430px;
+  --f-site-pad: 30px;
   --f-content: 100%;
   --f-gap: 20px;
 }
@@ -64,7 +66,7 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
   max-width: none;
   margin: 0 auto;
-  padding: 0 15px;
+  padding: 0;
 }
 
 body {
@@ -355,7 +357,12 @@ body {
    ========================================================================== */
 /* Ряд плиток = .sppb-row: гуттер 30px (карточки идут с шагом 410 при ширине
    380 на скриншоте), отрицательные поля -15px, как у bootstrap .row. */
-.tiles-row { --bs-gutter-x: 30px; --bs-gutter-y: 30px; }
+.tiles-row {
+  --bs-gutter-x: 30px;
+  --bs-gutter-y: 30px;
+  margin-left: 0;
+  margin-right: 0;
+}
 .tiles-row > [class*="col-"] { display: flex; }
 .tiles-row > [class*="col-"] > .tile { width: 100%; }
 
@@ -375,7 +382,7 @@ body {
   align-items: stretch;
   gap: 0;
   height: 100%;
-  padding: 30px 0 20px;
+  padding: 15px 0;
   text-align: center;
   border: 1px solid #6e6e6e;
   /* фона нет: у карточек эталона только рамка 1px #6e6e6e (фон колонки
@@ -649,14 +656,14 @@ body { background: transparent; }
 
 /* ============================================================================
    ШИРИНА САЙТА.
-   Сайт = 100% окна до 1240px, свыше — фиксируется на 1240px и центрируется.
-   Снято с живого сайта: `.body-innerwrapper{max-width:1240px;margin:0 auto}`
-   (template.css). Внутри — `.container{padding:0 15px}`.
+   Сайт = 100% окна до 1430px, свыше — фиксируется и центрируется.
+   Внутри — поля 30px, контент 1370px (замеры #sp-main-body эталона).
    ========================================================================== */
 .site {
   width: var(--f-content);
   max-width: var(--f-site-max);
   margin: 0 auto;
+  padding: 0 var(--f-site-pad);
 }
 
 /* ============================================================================
