@@ -833,12 +833,23 @@ body { background: transparent; }
   .armor-block__split { grid-template-columns: 1fr; gap: 16px; }
   .armor-block__title { font-size: 1.3rem; }
   .armor-mods__title { font-size: 1.4rem; }
-  /* модификации на узком экране — вертикальная карточка, как у оружия */
+  /* модификации на узком экране: подпись — чёрная плашка слева,
+     значение — справа на кремовом фоне, между ячейками зазор */
+  .wmods--armor { border: 0; background: transparent; }
   .wmods--armor .wmods__head { display: none; }
-  .wmods--armor .wmods__row { grid-template-columns: 1fr; }
-  .wmods--armor .wmods__c { display: grid; grid-template-columns: 42% 58%;
-    gap: 10px; align-items: baseline; border-right: 0;
-    border-bottom: 1px solid #000; text-align: left; }
-  .wmods--armor .wmods__c:last-child { border-bottom: 0; }
+  .wmods--armor .wmods__row { display: grid; grid-template-columns: 1fr;
+    gap: 14px; background: transparent; border: 0; }
+  .wmods--armor .wmods__c { display: grid; grid-template-columns: 38% minmax(0, 1fr);
+    gap: 14px; align-items: stretch; padding: 0; border: 0;
+    background: transparent; text-align: left; font-size: 15px; }
+  .wmods--armor .wmods__c > *:not(.wmods__label) { display: none; }
+  .wmods--armor .wmods__label { display: flex; align-items: center;
+    justify-content: center; min-height: 86px; padding: 10px 8px;
+    background: #000; color: #fff; font-size: 13px; font-weight: 700;
+    letter-spacing: .03em; text-transform: uppercase; text-align: center;
+    opacity: 1; line-height: 1.25; }
+  .wmods--armor .wmods__c:nth-child(3),
+  .wmods--armor .wmods__c:nth-child(4),
+  .wmods--armor .wmods__c:nth-child(5) { text-align: left; }
   .armor__stats { max-width: 240px; }
 }
