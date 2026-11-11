@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Дикарь — Fallout 2D20</title>
+<link rel="stylesheet" href="/fallout-2d20-site/assets/vendor/bootstrap.min.css">
 <style>/* ============================================================================
    Fallout 2D20 — свои стили. Только классы проекта, никаких sppb-*/helix-*.
    Токены собраны из живого сайта (цвета, тени, паттерны).
@@ -222,7 +223,9 @@ h1, h2, h3, h4, h5, h6 {
    Каркас — «книжная страница»: набор строк, в каждой 2, 3 или 4 столбца.
    На мобильном столбцы складываются в один, медиа уходит наверх.
    ========================================================================== */
-.row {
+/* свои grid-строки не должны перебивать .row из Bootstrap */
+.row.row--2, .row.row--3, .row.row--4,
+.row.row--1-2, .row.row--2-1, .row.row--origins {
   display: grid;
   gap: var(--f-gap);
   margin-bottom: var(--f-gap);
@@ -239,16 +242,11 @@ h1, h2, h3, h4, h5, h6 {
 @media (max-width: 1100px) {
   .row--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-@media (max-width: 1100px) {
-  /* две пары в строке уже не читаются — складываем в пары */
-  .row--origins { grid-template-columns: 1fr 2fr; }
-}
+
 @media (max-width: 800px) {
   .row--2, .row--3, .row--4, .row--1-2, .row--2-1 { grid-template-columns: 1fr; }
 }
-@media (max-width: 640px) {
-  .row--origins { grid-template-columns: 1fr; }
-}
+
 
 /* ------------------------------------------------------------- клетка (cell)
    Базовая «ячейка справочника»: рамка, паттерн, серый оверлей 20%.
@@ -338,19 +336,12 @@ h1, h2, h3, h4, h5, h6 {
    Страницы-хабы (категории оружия, брони, существ, еды): 3 столбца,
    каждая плитка — 3 строки: заголовок, картинка, шеврон.
    ========================================================================== */
-.tiles {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--f-gap);
-}
-@media (max-width: 1000px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 640px)  { .tiles { grid-template-columns: 1fr; } }
-
 .tile {
   position: relative;
   display: grid;
   grid-template-rows: auto 1fr auto;
   gap: 10px;
+  height: 100%;
   padding: 18px 14px;
   text-align: center;
   border: 1px solid var(--f-plate-line);
@@ -538,8 +529,7 @@ h1, h2, h3, h4, h5, h6 {
    Раскладка: явные правила в конце файла, чтобы никакие более ранние
    определения не могли их перебить.
    ========================================================================== */
-.row { display: grid; gap: var(--f-gap); margin-bottom: var(--f-gap); }
-.row--origins { grid-template-columns: 1fr 2fr 1fr 2fr; }
+.row.row--origins { grid-template-columns: 1fr 2fr 1fr 2fr; }
 .row--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .row--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .row--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -547,13 +537,13 @@ h1, h2, h3, h4, h5, h6 {
 .row--2-1 { grid-template-columns: 2fr 1fr; }
 
 @media (max-width: 1100px) {
-  .row--origins { grid-template-columns: 1fr 2fr; }
-  .row--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .row.row--origins { grid-template-columns: 1fr 2fr; }
+  .row.row--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 800px) {
-  .row--origins,
-  .row--2, .row--3, .row--4,
-  .row--1-2, .row--2-1 { grid-template-columns: 1fr; }
+  .row.row--origins,
+  .row.row--2, .row.row--3, .row.row--4,
+  .row.row--1-2, .row.row--2-1 { grid-template-columns: 1fr; }
 }
 
 /* Плашка происхождения: три строки, шеврон прижат к низу */
@@ -563,6 +553,25 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 7px 5px 0 #c3c3c3;
 }
 .cell__chevron { display: flex; justify-content: flex-end; margin-top: auto; padding-top: 12px; }
+
+/* ============================================================================
+   СЕТКА — Bootstrap 5 (col-3 = 25%, col-4 = 33.3%, col-6 = 50%).
+   Свои обёртки только для оформления, раскладку держит Bootstrap.
+   ========================================================================== */
+/* строка происхождений: 4 колонки по 3 из 12 */
+.origins-row > [class*="col-"] { display: flex; }
+
+/* медиа-секция и плашка тянутся на всю высоту колонки */
+.media-cell,
+.cell--shadow { width: 100%; }
+
+/* адаптив: на планшете пара в 2 столбца, на телефоне — в один */
+@media (max-width: 991.98px) {
+  .origins-row > [class*="col-"] { flex: 0 0 50%; max-width: 50%; }
+}
+@media (max-width: 767.98px) {
+  .origins-row > [class*="col-"] { flex: 0 0 100%; max-width: 100%; }
+}
 </style>
 </head>
 <body>
@@ -603,6 +612,7 @@ h1, h2, h3, h4, h5, h6 {
   </div>
 </footer>
 
+<script src="/fallout-2d20-site/assets/vendor/bootstrap.bundle.min.js"></script>
 <script src="/fallout-2d20-site/assets/js/site.js"></script>
 </body>
 </html>

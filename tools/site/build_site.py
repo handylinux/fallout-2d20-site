@@ -91,12 +91,15 @@ def origin_plate(item):
 
 
 def origins_block(items):
-    """Строка = один div из четырёх: аватар, плашка, аватар, плашка."""
+    """Строка Bootstrap: 4 колонки по col-3 — аватар, плашка, аватар, плашка."""
     out = []
     for i in range(0, len(items), 2):
         pair = items[i:i + 2]
-        cells = ''.join(origin_media(it) + origin_plate(it) for it in pair)
-        out.append('<div class="row row--origins">%s</div>' % cells)
+        cols = ''.join(
+            '<div class="col-12 col-sm-6 col-lg-3">%s</div>' % origin_media(it) +
+            '<div class="col-12 col-sm-6 col-lg-3">%s</div>' % origin_plate(it)
+            for it in pair)
+        out.append('<div class="row g-3 origins-row mb-3">%s</div>' % cols)
     return ''.join(out)
 
 
@@ -113,8 +116,23 @@ def tile(title, href, image=None, alt=None):
 
 
 def tiles(items):
-    return '<div class="tiles">%s</div>' % ''.join(
-        tile(i['title'], i.get('url') or '#', i.get('image'), i.get('alt')) for i in items)
+    """Хаб: 3 колонки (col-lg-4), на планшете 2, на телефоне 1."""
+    cols = ''.join(
+        '<div class="col-12 col-md-6 col-lg-4">%s</div>' %
+        tile(i['title'], i.get('url') or '#', i.get('image'), i.get('alt'))
+        for i in items)
+    return '<div class="row g-3 tiles-row">%s</div>' % cols
+
+
+def cell(content, shadow=False):
+    return '<div class="cell%s">%s</div>' % (' cell--shadow' if shadow else '', content)
+
+
+def columns(cells_list, sizes=None):
+    """Ряд ячеек на сетке Bootstrap. sizes — список классов ширины на колонку."""
+    sizes = sizes or ['col-12 col-md-6 col-lg-4'] * len(cells_list)
+    return '<div class="row g-3">%s</div>' % ''.join(
+        '<div class="%s">%s</div>' % (sizes[i], c) for i, c in enumerate(cells_list))
 
 
 ARROW_SMALL = (
@@ -212,6 +230,7 @@ def page(title, body, active='', nav_items=None):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)} — Fallout 2D20</title>
+<link rel="stylesheet" href="{u('/assets/vendor/bootstrap.min.css')}">
 <style>{styles}</style>
 </head>
 <body>
@@ -249,6 +268,7 @@ def page(title, body, active='', nav_items=None):
   </div>
 </footer>
 
+<script src="{u('/assets/vendor/bootstrap.bundle.min.js')}"></script>
 <script src="{u('/assets/js/site.js')}"></script>
 </body>
 </html>
@@ -296,24 +316,19 @@ def page_layout(nav_items):
               'image': '', 'url': '#'}
     parts = ['<h1 class="page__title">Эталон раскладки</h1>']
 
-    parts.append('<h2>1. Одна строка происхождений: 4 элемента</h2>')
-    parts.append('<div class="row row--origins">%s</div>' % (
-        origin_media(sample) + origin_plate(sample) +
-        origin_media(sample) + origin_plate(sample)))
+    parts.append('<h2>1. Одна строка происхождений: 4 элемента (col-3 × 4)</h2>')
+    parts.append(origins_block([sample, sample]))
 
     parts.append('<h2>2. Два столбца: слева картинка, справа текст</h2>')
-    parts.append('<div class="row row--1-2">%s<div class="cell"><p>Текст справа от картинки.</p></div></div>'
-                 % origin_media(sample))
+    parts.append(columns([origin_media(sample), cell('<p>Текст справа от картинки.</p>')],
+                         ['col-12 col-md-5', 'col-12 col-md-7']))
 
-    parts.append('<h2>3. Три столбца (ячейки)</h2>')
-    parts.append('<div class="row row--3">%s</div>' % (
-        '<div class="cell"><p>Ячейка 1</p></div>'
-        '<div class="cell"><p>Ячейка 2</p></div>'
-        '<div class="cell"><p>Ячейка 3</p></div>'))
+    parts.append('<h2>3. Три столбца (ячейки, col-lg-4)</h2>')
+    parts.append(columns([cell('<p>Ячейка %d</p>' % i) for i in (1, 2, 3)]))
 
-    parts.append('<h2>4. Четыре столбца</h2>')
-    parts.append('<div class="row row--4">%s</div>' % ''.join(
-        '<div class="cell"><p>Колонка %d</p></div>' % i for i in range(1, 5)))
+    parts.append('<h2>4. Четыре столбца (col-lg-3)</h2>')
+    parts.append(columns([cell('<p>Колонка %d</p>' % i) for i in (1, 2, 3, 4)],
+                         ['col-12 col-sm-6 col-lg-3'] * 4))
 
     parts.append('<h2>5. Хаб из плиток: 3 столбца</h2>')
     parts.append(tiles([{'title': 'Оружие', 'url': '#'},
@@ -351,6 +366,10 @@ def main():
     # статика: свои css/js + картинки и bootstrap из src
     shutil.copy(os.path.join(SRC, 'site', 'css', 'site.css'), os.path.join(OUT, 'assets/css/site.css'))
     shutil.copy(os.path.join(SRC, 'site', 'js', 'site.js'), os.path.join(OUT, 'assets/js/site.js'))
+    for name in ('bootstrap.min.css', 'bootstrap.bundle.min.js'):
+        src = os.path.join(SRC, 'vendor', name)
+        if os.path.exists(src):
+            shutil.copy(src, os.path.join(OUT, 'assets/vendor', name))
     for root, _d, files in os.walk(os.path.join(SRC, 'img')):
         rel = os.path.relpath(root, os.path.join(SRC, 'img'))
         dst = os.path.join(OUT, 'assets/img') if rel == '.' else os.path.join(OUT, 'assets/img', rel)
