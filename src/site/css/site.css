@@ -629,6 +629,7 @@ body { background: transparent; }
 @media (max-width: 900px) {
   .wcard__row { grid-template-columns: 1fr; gap: 18px; }
   .armor__media { position: static; }
+  .armor-row--2 { grid-template-columns: 1fr; gap: 18px; }
 }
 
 /* ============================================================================
@@ -727,12 +728,19 @@ body { background: transparent; }
 /* ============================================================================
    БРОНЯ. Образец — fallout-2d20.ru/bronya/silovaya-bronya/…
    ========================================================================== */
-/* две колонки: слева картинка, справа данные (как на эталоне) */
-.armor__row { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); }
-.armor__media { position: sticky; top: 20px; align-self: start; }
-.armor__img { display: block; max-width: 100%; width: auto; max-height: 560px; }
+/* Строки страницы брони: ширина строки задаётся классом, а не разметкой.
+   --2 → две равные колонки (картинка|данные, текст|таблица), --1 → одна. */
+.armor-row { margin: 0 0 22px; }
+.armor-row:last-child { margin-bottom: 0; }
+.armor-row--2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 30px; align-items: start; }
+.armor-row--1 { display: block; }
+.armor__col { min-width: 0; }
+.armor__media { align-self: start; }
+.armor__img { display: block; max-width: 100%; width: auto; max-height: 460px; margin: 0 auto; }
 .armor__data { min-width: 0; }
+.armor__data .wstats { margin-bottom: 14px; }
 .armor__data .wstats:last-child { margin-bottom: 0; }
+.armor__col--table .wmods { margin: 0; }
 .armor__part {
   margin: 22px 0 10px; padding: 0 0 6px;
   font-size: 1.05rem; letter-spacing: .06em; text-transform: uppercase;
