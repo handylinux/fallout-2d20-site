@@ -13,6 +13,7 @@
 """
 import html
 import json
+import base64
 import os
 import shutil
 import urllib.parse
@@ -214,11 +215,25 @@ def drawer(items):
 
 
 # --------------------------------------------------------------------- каркас
+BG_URI = None
+
+
+def bg_data_uri():
+    """Фон сайта как data URI: файл bg-main.jpg на самом деле WebP,
+    и как обычный url() браузер его не рисует (неверный MIME)."""
+    global BG_URI
+    if BG_URI is None:
+        path = os.path.join(SRC, 'img', 'bg-main.jpg')
+        data = open(path, 'rb').read()
+        BG_URI = 'data:image/webp;base64,' + base64.b64encode(data).decode()
+    return BG_URI
+
+
 def read_css():
     with open(os.path.join(SRC, 'site', 'css', 'site.css'), encoding='utf-8') as f:
         css = f.read()
     # в инлайновом CSS абсолютные пути к картинкам тоже получают префикс
-    return css.replace('url("/assets/', 'url("%s/assets/' % BASE)
+    return css.replace('__BG_DATA_URI__', bg_data_uri()).replace('url("/assets/', 'url("%s/assets/' % BASE)
 
 
 def page(title, body, active='', nav_items=None):
