@@ -25,10 +25,9 @@
   /* Ширина сайта — как на fallout-2d20.ru: .container max-width 1400px
      (инлайн-правило страницы поверх bootstrap), по центру. Прежние
      80%/1600px отменены: в сохранённых страницах таких значений нет. */
-  /* Ширина контента — 1240px по центру: столько занимают карточки на
-     скриншоте эталона (197…1437 из 1574 px при окне 1574). Значение 1400px
-     выше — потолок .container, но фактические карточки уже него. */
-  --f-site-max: 1240px;
+  /* Ширина сайта — как на fallout-2d20.ru: .container max-width 1400px
+     (инлайн-CSS в public/*.html перекрывает bootstrap). */
+  --f-site-max: 1400px;
   --f-content: 100%;
   --f-gap: 20px;
 }
@@ -354,28 +353,31 @@ body {
    Страницы-хабы (категории оружия, брони, существ, еды): 3 столбца,
    каждая плитка — 3 строки: заголовок, картинка, шеврон.
    ========================================================================== */
-/* Ряд плиток: три равные колонки, зазор 16px — как на эталоне
-   (карточки идут с шагом 410px при ширине 394px). */
-.tiles-row { --bs-gutter-x: 16px; --bs-gutter-y: 16px; }
+/* Ряд плиток = .sppb-row: гуттер 30px (карточки идут с шагом 410 при ширине
+   380 на скриншоте), отрицательные поля -15px, как у bootstrap .row. */
+.tiles-row { --bs-gutter-x: 30px; --bs-gutter-y: 30px; }
 .tiles-row > [class*="col-"] { display: flex; }
 .tiles-row > [class*="col-"] > .tile { width: 100%; }
 
-/* Плитка = колонка SPPB: border 1px solid rgb(110,110,110), padding 30px 0 20px,
-   содержимое по центру (items_content_alignment: center), фон — food-truck-pattern
-   с наложением RGBA(203,203,203,.4). Заголовок и картинка — внутри, без внешних
-   отступов; кнопка «Подробнее» прижата к низу (row 25px сверху/снизу). */
+/* Плитка = колонка SPPB (публичный CSS public/snaryazhenie/index.html):
+     #column      padding: 30px 0 20px;
+                  border: 1px solid rgb(110,110,110);
+                  .sppb-addon-wrapper{text-align:center}
+     h2.addon-title  margin 0, padding 0
+     #addon-image padding: 20px 0;  img{width:200px}
+     #addon-html  padding: 60px 0 0 0;
+   Ряд: padding 25px 0, колонки justify-content:center.
+   Заголовок настоящий <h2> — размер берётся из темы эталона (h2 36px/36px). */
 .tile {
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   gap: 0;
   height: 100%;
   padding: 30px 0 20px;
   text-align: center;
   border: 1px solid #6e6e6e;
-  outline: 1px solid rgba(110, 110, 110, .45);
-  outline-offset: 4px;
   background-color: var(--f-plate-bg);
   background-image: var(--f-plate-pattern, url("/assets/img/food-truck-pattern.jpg"));
   background-repeat: repeat;
@@ -395,25 +397,31 @@ body {
 .tile > * { position: relative; z-index: 1; }
 .tile:hover { text-decoration: none; }
 .tile:hover .tile__title { color: var(--f-link); }
+/* h2.addon-title{font-size:36px;line-height:36px;margin-top:0} + margin 0 */
 .tile__title {
-  margin: 0 0 14px;
-  font-size: 1.55rem;
+  margin: 0;
+  padding: 0;
+  font-size: 36px;
+  line-height: 36px;
   font-weight: 700;
-  line-height: 1.2;
   text-transform: none;
   color: var(--f-ink);
 }
+.tile__title a { color: inherit; text-decoration: none; }
+.tile__title a:hover { text-decoration: underline; text-decoration-color: currentColor; }
+/* #addon-image{padding:20px 0} .sppb-addon-single-image-container{text-align:center} img{width:200px} */
 .tile__media {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 130px;
+  padding: 20px 0;
   width: 100%;
 }
-/* image_width из дампа: 200px, пропорции сохраняются */
-.tile__media img { display: block; max-height: 130px; max-width: 200px; width: auto; height: auto; }
-/* кнопка «Подробнее» по центру карточки, прижата к низу */
-.tile > .cta { margin-top: auto; }
+.tile__media img { display: block; width: 200px; max-width: 100%; height: auto; }
+/* #addon-html{padding-top:60px} — кнопка отделена от картинки 60px */
+.tile > .cta,
+.tile > .tile__soon { margin-top: 60px; }
+.tile > .cta { margin-left: auto; margin-right: auto; }
 .tile > .tile__arrow { margin-top: auto; }
 .tile__arrow { display: flex; justify-content: flex-end; }
 .tile__arrow svg { width: 28px; height: 18px; fill: #000; }
