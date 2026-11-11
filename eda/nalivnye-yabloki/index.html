@@ -174,12 +174,12 @@ body {
   transform: scale(1.05);
 }
 /* порядок текстур как в дампе */
-.top-menu li:nth-child(1) a { background-image: url("../img/plates/menu-item-bg-lblue2.png"); }
-.top-menu li:nth-child(2) a { background-image: url("../img/plates/menu-item-bg-orange2.png"); padding-bottom: 15px; }
-.top-menu li:nth-child(3) a { background-image: url("../img/plates/menu-item-bg-green2.png"); }
-.top-menu li:nth-child(4) a { background-image: url("../img/plates/menu-item-bg-pink.png"); }
-.top-menu li:nth-child(5) a { background-image: url("../img/plates/menu-item-bg-lblue.png"); padding-top: 15px; padding-bottom: 15px; }
-.top-menu li:nth-child(6) a { background-image: url("../img/plates/menu-item-bg-green.png"); padding-top: 15px; padding-bottom: 15px; }
+.top-menu li:nth-child(1) a { background-image: url("/fallout-2d20-site/assets/img/plates/menu-item-bg-lblue2.png"); }
+.top-menu li:nth-child(2) a { background-image: url("/fallout-2d20-site/assets/img/plates/menu-item-bg-orange2.png"); padding-bottom: 15px; }
+.top-menu li:nth-child(3) a { background-image: url("/fallout-2d20-site/assets/img/plates/menu-item-bg-green2.png"); }
+.top-menu li:nth-child(4) a { background-image: url("/fallout-2d20-site/assets/img/plates/menu-item-bg-pink.png"); }
+.top-menu li:nth-child(5) a { background-image: url("/fallout-2d20-site/assets/img/plates/menu-item-bg-lblue.png"); padding-top: 15px; padding-bottom: 15px; }
+.top-menu li:nth-child(6) a { background-image: url("/fallout-2d20-site/assets/img/plates/menu-item-bg-green.png"); padding-top: 15px; padding-bottom: 15px; }
 
 /* бургер */
 .burger {
@@ -1043,6 +1043,9 @@ html, body { overflow-x: hidden; }
   margin: 0 -15px;
 }
 .sp-col { min-width: 0; padding: 0 15px; position: relative; }
+/* внутренний блок колонки (.sppb-column в теме): фон, рамка, отступы.
+   Гуттер 15px остаётся снаружи — поэтому карточки не разъезжаются. */
+.sp-col__inner { position: relative; height: 100%; background-clip: padding-box; }
 .sp-col__body { position: relative; z-index: 1; }
 .sp-col__overlay {
   position: absolute;
@@ -1052,9 +1055,8 @@ html, body { overflow-x: hidden; }
 }
 .sp-col--center > .sp-col__body { text-align: center; }
 .sp-col--center > .sp-col__body .sp-img { display: flex; justify-content: center; }
-.sp-col--vcenter > .sp-col__body { display: flex; flex-direction: column; justify-content: center; }
-/* подложка карточки хаба: рамка у колонки, своего фона у неё нет */
-.sp-col[style*="border:"] > .sp-col__body { height: 100%; }
+.sp-col--vcenter > .sp-col__body { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+.sp-col__inner[style*="border:"] > .sp-col__body { height: 100%; }
 
 /* заголовки */
 .sp-heading { margin: 6px 0; font-weight: 700; }
@@ -1068,14 +1070,20 @@ h4.sp-heading { font-size: 20px; }
 /* текст */
 .sp-text { font-size: 16px; line-height: 1.55; }
 .sp-text p { margin: 0 0 .8em; }
-.sp-text ul, .sp-text ol { margin: 0 0 .8em 1.2em; padding: 0; }
+/* списки в тексте — как в теме: без маркеров и внешних отступов,
+   по центру (в дампе у колонки .sppb-addon-wrapper{text-align:center}) */
+.sp-text ul, .sp-text ol { margin: 0 0 .8em; padding: 0; list-style: none; }
+.sp-text li { margin: 0 0 2px; }
+.sp-col--center .sp-text ul, .sp-col--center .sp-text ol { margin-left: 0; }
 .sp-text a { color: #b15b23; }
 .sp-text table { width: 100%; border-collapse: collapse; margin: 0 0 .8em; }
 .sp-text th, .sp-text td { border: 1px solid #757575; padding: 6px 10px; }
 
 /* картинки */
-.sp-img { display: block; text-align: center; }
+.sp-img { display: block; text-align: center; padding: 20px 0; }
 .sp-img img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+/* у карточки хаба картинка ровно 200px, как в дампе (image_width xl=200) */
+.sp-col__inner .sp-img img[style*="max-width:200px"] { width: 200px; }
 
 /* таблицы из table_advanced */
 .sp-table-wrap { overflow-x: auto; }
@@ -1231,7 +1239,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <main class="page">
   <div class="wrap">
-<div class="sp-page"><h1 class="sp-page__title">Наливные яблоки</h1><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:75px 0px 75px 0px"><div class="sp-col sp-col--center" style="flex:0 0 100%;max-width:100%"><div class="sp-col__body"><h4 class="sp-heading"><a href="/fallout-2d20-site/eda/">Назад в категорию: Еда</a></h4><h2 class="sp-heading">Наливные яблоки</h2></div></div></div></section><section class="sp-row sp-row--4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center sp-col--vcenter" style="flex:0 0 66.666667%;max-width:66.666667%"><div class="sp-col__body"><div class="sp-text"><p>Засахаренные яблоки производства компании "Дэнди Бой". Очень сладкая закуска на основе фруктов, упакованная в картонную коробку. Обычно хорошо сохраняющиеся из-за выского содержания сахара, коробки с ними все еще можно найти в развалинах круглосуточных магазинов и бакалейных лавок по всей пустоши, а также у людей, недавно совершивших набег на эти разрушенные магазины и бакалейные лавки. </p></div></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:15px 0px 15px 0px"><div class="sp-col sp-col--center sp-col--vcenter" style="flex:0 0 100%;max-width:100%"><div class="sp-col__body"><div class="sp-table-wrap"><table class="sp-table"><thead><tr><th><p>НАЗВАНИЕ</p></th><th><p>ВОСПОЛНЯЕТ ЖИЗНЕЙ</p></th><th><p>ПРОЧИЕ ЭФФЕКТЫ</p></th><th><p>ОБЛУЧЕНА?</p></th><th><p>ВЕС</p></th><th><p>ЦЕНА</p></th><th><p>РЕДКОСТЬ</p></th></tr></thead><tbody><tr><td><p>Наливные яблоки</p></td><td><p>3</p></td><td><p>-</p></td><td><p>1 {/CD}</p></td><td><p>&lt;1</p></td><td><p>7</p></td><td><p>0</p></td></tr></tbody></table></div></div></div></div></section></div>
+<div class="sp-page"><h1 class="sp-page__title">Наливные яблоки</h1><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:75px 0px 75px 0px"><div class="sp-col" style="flex:0 0 100%;max-width:100%"><div class="sp-col__inner sp-col--center"><div class="sp-col__body"><h4 class="sp-heading"><a href="/fallout-2d20-site/eda/">Назад в категорию: Еда</a></h4><h2 class="sp-heading">Наливные яблоки</h2></div></div></div></div></section><section class="sp-row sp-row--4-8"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col" style="flex:0 0 33.333333%;max-width:33.333333%"><div class="sp-col__inner sp-col--center sp-col--vcenter"><div class="sp-col__body"><div class="sp-img"><img src="" alt="Image" style="max-width:200px"></div></div></div></div><div class="sp-col" style="flex:0 0 66.666667%;max-width:66.666667%"><div class="sp-col__inner sp-col--center sp-col--vcenter"><div class="sp-col__body"><div class="sp-text"><p>Засахаренные яблоки производства компании "Дэнди Бой". Очень сладкая закуска на основе фруктов, упакованная в картонную коробку. Обычно хорошо сохраняющиеся из-за выского содержания сахара, коробки с ними все еще можно найти в развалинах круглосуточных магазинов и бакалейных лавок по всей пустоши, а также у людей, недавно совершивших набег на эти разрушенные магазины и бакалейные лавки. </p></div></div></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:15px 0px 15px 0px"><div class="sp-col" style="flex:0 0 100%;max-width:100%"><div class="sp-col__inner sp-col--center sp-col--vcenter"><div class="sp-col__body"><div class="sp-table-wrap"><table class="sp-table"><thead><tr><th><p>НАЗВАНИЕ</p></th><th><p>ВОСПОЛНЯЕТ ЖИЗНЕЙ</p></th><th><p>ПРОЧИЕ ЭФФЕКТЫ</p></th><th><p>ОБЛУЧЕНА?</p></th><th><p>ВЕС</p></th><th><p>ЦЕНА</p></th><th><p>РЕДКОСТЬ</p></th></tr></thead><tbody><tr><td><p>Наливные яблоки</p></td><td><p>3</p></td><td><p>-</p></td><td><p>1 {/CD}</p></td><td><p>&lt;1</p></td><td><p>7</p></td><td><p>0</p></td></tr></tbody></table></div></div></div></div></div></section></div>
   </div>
 </main>
 
@@ -1245,6 +1253,6 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <script src="/fallout-2d20-site/assets/vendor/bootstrap.bundle.min.js"></script>
 <script src="/fallout-2d20-site/assets/js/search.js"></script>
-<script src="/fallout-2d20-site/assets/js/site.js?v=16a7659d"></script>
+<script src="/fallout-2d20-site/assets/js/site.js?v=fded1c8e"></script>
 </body>
 </html>
