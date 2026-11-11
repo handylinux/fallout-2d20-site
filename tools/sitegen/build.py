@@ -225,10 +225,10 @@ class Site:
 
     def link(self, link):
         if not isinstance(link, dict):
-            return self.resolve(link) if link else ''
+            return hp(self.resolve(link)) if link else ''
         if link.get('type') == 'menu' and link.get('menu'):
-            return self.resolve(link['menu']) or link.get('url') or ''
-        return self.resolve(link.get('url') or '') or ''
+            return hp(self.resolve(link['menu']) or link.get('url') or '')
+        return hp(self.resolve(link.get('url') or '') or '')
 
     def article_slug_url(self, ident):
         a = self.articles.get(str(ident))
@@ -534,6 +534,7 @@ def main():
     topmenu_html, topmenu_css = render_sppb_row(site, '101', scope='#sp-topmenu')
     topmenu_html = re.sub(r'<h([1-6])', '<span class="sp-menu-title"', topmenu_html)
     topmenu_html = re.sub(r'</h[1-6]>', '</span>', topmenu_html)
+    topmenu_html = re.sub(r'class="sp-menu-title" class="([^"]*)"', r'class="\1 sp-menu-title"', topmenu_html)
 
     report = []
     for folder, sp_id, title in PAGES:
