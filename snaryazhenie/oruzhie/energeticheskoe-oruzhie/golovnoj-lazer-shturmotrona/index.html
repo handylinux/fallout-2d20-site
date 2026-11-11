@@ -639,57 +639,37 @@ body { background: transparent; }
 
 /* ============================================================================
    МОДЫ ОРУЖИЯ.
-   Слот модов — спойлер; каждый мод — спойлер внутри него.
-   На десктопе строка мода — одна горизонтальная таблица (8 ячеек),
-   на мобильном та же строка становится сеткой 2 колонки.
+   Слот модов — спойлер. Внутри одна div-таблица: шапка и строки модов.
+   ПК: строка мода = 8 колонок под шапку.
+   Мобильный (<=760px): шапка скрыта, строка мода = 2 колонки
+   (название характеристики | значение) — подписи берутся из .wmods__label.
    ========================================================================== */
 .wmods { border: 1px solid var(--f-plate-line); background: rgba(255, 255, 255, .55); }
 .wmods__head,
-.wmod__summary { display: grid; grid-template-columns: 1.6fr .7fr .7fr 1fr .8fr 1.1fr .6fr .6fr; }
+.wmods__row { display: grid; grid-template-columns: 1.6fr .7fr .7fr 1fr .8fr 1.1fr .6fr .6fr; }
 .wmods__head { background: #000; color: #fff; font-weight: 700; }
 .wmods__head > div { padding: 8px 10px; border-right: 1px solid rgba(255, 255, 255, .25); }
 .wmods__head > div:last-child { border-right: 0; }
-
-/* строка мода = summary спойлера */
-.wmod__summary {
-  align-items: stretch;
-  padding: 0;
-  cursor: pointer;
-  list-style: none;
-  border-top: 1px solid var(--f-plate-line);
+.wmods__row { border-top: 1px solid var(--f-plate-line); }
+.wmods__row:nth-child(odd) { background: rgba(0, 0, 0, .03); }
+.wmods__c {
+  padding: 8px 10px; border-right: 1px solid var(--f-plate-line);
+  min-width: 0; overflow-wrap: anywhere;
 }
-.wmod__summary::-webkit-details-marker { display: none; }
-.wmod__c { padding: 8px 10px; border-right: 1px solid var(--f-plate-line); min-width: 0;
-  overflow-wrap: anywhere; }
-.wmod__c:last-child { border-right: 0; }
-.wmod__summary:hover .wmod__c { background: rgba(177, 91, 35, .08); }
-/* маркер раскрытия — перед первой ячейкой */
-.wmod__summary > .wmod__c:first-child::before {
-  content: ""; display: inline-block; width: 7px; height: 7px;
-  margin-right: 8px; vertical-align: middle;
-  border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
-  transform: rotate(-45deg); transition: transform .2s;
-}
-.wmod[open] > .wmod__summary > .wmod__c:first-child::before { transform: rotate(45deg); }
-.wmod__body { padding: 8px 10px 12px; }
-
+.wmods__c:last-child { border-right: 0; }
 .wmods__label { display: none; }
 
-/* таблица «характеристика — значение» внутри раскрытого мода */
-.wmod__table { width: 100%; border-collapse: collapse; border: 1px solid #000; }
-.wmod__table th,
-.wmod__table td { padding: 6px 10px; border: 1px solid #000; font-size: 15px; }
-.wmod__table th { width: 45%; background: #000; color: #fff; text-align: left; font-weight: 700; }
-.wmod__table td { background: #f0dea8; text-align: center; }
-
-/* мобильный: шапка не нужна, строка мода — 2 колонки с подписями */
 @media (max-width: 760px) {
   .wmods__head { display: none; }
-  .wmod__summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .wmod__c { border-right: 0; border-bottom: 1px solid var(--f-plate-line); }
+  .wmods__row { grid-template-columns: 1fr; }
+  .wmods__c {
+    display: grid; grid-template-columns: 45% 55%; gap: 10px; align-items: baseline;
+    border-right: 0; border-bottom: 1px solid var(--f-plate-line);
+  }
+  .wmods__c:last-child { border-bottom: 0; }
   .wmods__label {
-    display: block; font-size: .72rem; font-weight: 700;
-    letter-spacing: .02em; text-transform: uppercase; opacity: .7;
+    display: block; font-size: .78rem; font-weight: 700; text-transform: uppercase; opacity: .75;
+    letter-spacing: .02em;
   }
 }
 </style>
@@ -719,7 +699,7 @@ body { background: transparent; }
 
 <main class="page">
   <div class="wrap">
-<p class="wcard__back"><a href="/snaryazhenie/oruzhie/energeticheskoe-oruzhie/">Назад в категорию: Энергетическое оружие</a></p><h2 class="wcard__title">Головной лазер Штурмотрона</h2><div class="wcard"><div class="wcard__row"><div class="wcard__media wcard__media--empty"></div><div class="wcard__stats"><table class="wstats"><tbody><tr><th scope="row">ТИП ПАТРОНА</th><td>Ядерный блок</td></tr><tr><th scope="row">ТИП УРОНА</th><td>Энергетический</td></tr><tr><th scope="row">УРОН</th><td>5 {/CD}</td></tr><tr><th scope="row">ЭФФЕКТ</th><td>Проникающий</td></tr><tr><th scope="row">СКОРОСТЬ СТРЕЛЬБЫ</th><td>0</td></tr><tr><th scope="row">ДИСТАНЦИЯ</th><td>Близкая</td></tr><tr><th scope="row">КАЧЕСТВА</th><td>Двуручное</td></tr><tr><th scope="row">ВЕС</th><td>8</td></tr><tr><th scope="row">ЦЕНА</th><td>500</td></tr><tr><th scope="row">РЕДКОСТЬ</th><td>Очень редкое</td></tr></tbody></table></div></div><p class="wcard__text">The head of an Assaultron contains a high-yield laser emitter, shielded behind sturdy armor plating. Assaultrons use this laser to blast the enemy as they close into melee. The laser itself uses a capacitor that can build up an extremely powerful charge, but which requires considerable energy for each fully charged blast. Due to the solid design, destroyed Assaultrons sometimes have an intact head that can be used as an impromptu hand-held laser.</p><section class="wcard__mods"><h2 class="wcard__sub">Модификации</h2><details class="spoiler wmods-group"><summary class="spoiler__summary">Конденсатор <span class="wmods-group__count">(4)</span></summary><div class="spoiler__body wmods"><div class="wmods__head"><div>Модификация</div><div>Урон</div><div>Скорость</div><div>Патрон</div><div>Сложность</div><div>Перк</div><div>Цена</div><div>Вес</div></div><details class="wmod"><summary class="wmod__summary"><span class="wmod__c"><span class="wmods__label">Модификация</span>MK III</span><span class="wmod__c"><span class="wmods__label">Урон</span>+1</span><span class="wmod__c"><span class="wmods__label">Скорость</span>—</span><span class="wmod__c"><span class="wmods__label">Патрон</span>—</span><span class="wmod__c"><span class="wmods__label">Сложность</span>2</span><span class="wmod__c"><span class="wmods__label">Перк</span>—</span><span class="wmod__c"><span class="wmods__label">Цена</span>4</span><span class="wmod__c"><span class="wmods__label">Вес</span>0</span></summary><div class="wmod__body"><table class="wmod__table"><tbody><tr><th scope="row">Урон</th><td>+1</td></tr><tr><th scope="row">Скорость</th><td>—</td></tr><tr><th scope="row">Патрон</th><td>—</td></tr><tr><th scope="row">Сложность</th><td>2</td></tr><tr><th scope="row">Перк</th><td>—</td></tr><tr><th scope="row">Цена</th><td>4</td></tr><tr><th scope="row">Вес</th><td>0</td></tr></tbody></table></div></details><details class="wmod"><summary class="wmod__summary"><span class="wmod__c"><span class="wmods__label">Модификация</span>MK IV</span><span class="wmod__c"><span class="wmods__label">Урон</span>+2</span><span class="wmod__c"><span class="wmods__label">Скорость</span>—</span><span class="wmod__c"><span class="wmods__label">Патрон</span>—</span><span class="wmod__c"><span class="wmods__label">Сложность</span>2</span><span class="wmod__c"><span class="wmods__label">Перк</span>—</span><span class="wmod__c"><span class="wmods__label">Цена</span>8</span><span class="wmod__c"><span class="wmods__label">Вес</span>1</span></summary><div class="wmod__body"><table class="wmod__table"><tbody><tr><th scope="row">Урон</th><td>+2</td></tr><tr><th scope="row">Скорость</th><td>—</td></tr><tr><th scope="row">Патрон</th><td>—</td></tr><tr><th scope="row">Сложность</th><td>2</td></tr><tr><th scope="row">Перк</th><td>—</td></tr><tr><th scope="row">Цена</th><td>8</td></tr><tr><th scope="row">Вес</th><td>1</td></tr></tbody></table></div></details><details class="wmod"><summary class="wmod__summary"><span class="wmod__c"><span class="wmods__label">Модификация</span>MK V</span><span class="wmod__c"><span class="wmods__label">Урон</span>+3</span><span class="wmod__c"><span class="wmods__label">Скорость</span>—</span><span class="wmod__c"><span class="wmods__label">Патрон</span>—</span><span class="wmod__c"><span class="wmods__label">Сложность</span>3</span><span class="wmod__c"><span class="wmods__label">Перк</span>Science! 1</span><span class="wmod__c"><span class="wmods__label">Цена</span>12</span><span class="wmod__c"><span class="wmods__label">Вес</span>1</span></summary><div class="wmod__body"><table class="wmod__table"><tbody><tr><th scope="row">Урон</th><td>+3</td></tr><tr><th scope="row">Скорость</th><td>—</td></tr><tr><th scope="row">Патрон</th><td>—</td></tr><tr><th scope="row">Сложность</th><td>3</td></tr><tr><th scope="row">Перк</th><td>Science! 1</td></tr><tr><th scope="row">Цена</th><td>12</td></tr><tr><th scope="row">Вес</th><td>1</td></tr></tbody></table></div></details><details class="wmod"><summary class="wmod__summary"><span class="wmod__c"><span class="wmods__label">Модификация</span>MK VI</span><span class="wmod__c"><span class="wmods__label">Урон</span>+4</span><span class="wmod__c"><span class="wmods__label">Скорость</span>—</span><span class="wmod__c"><span class="wmods__label">Патрон</span>—</span><span class="wmod__c"><span class="wmods__label">Сложность</span>3</span><span class="wmod__c"><span class="wmods__label">Перк</span>Science! 1</span><span class="wmod__c"><span class="wmods__label">Цена</span>16</span><span class="wmod__c"><span class="wmods__label">Вес</span>2</span></summary><div class="wmod__body"><table class="wmod__table"><tbody><tr><th scope="row">Урон</th><td>+4</td></tr><tr><th scope="row">Скорость</th><td>—</td></tr><tr><th scope="row">Патрон</th><td>—</td></tr><tr><th scope="row">Сложность</th><td>3</td></tr><tr><th scope="row">Перк</th><td>Science! 1</td></tr><tr><th scope="row">Цена</th><td>16</td></tr><tr><th scope="row">Вес</th><td>2</td></tr></tbody></table></div></details></div></details></section></div>
+<p class="wcard__back"><a href="/snaryazhenie/oruzhie/energeticheskoe-oruzhie/">Назад в категорию: Энергетическое оружие</a></p><h2 class="wcard__title">Головной лазер Штурмотрона</h2><div class="wcard"><div class="wcard__row"><div class="wcard__media wcard__media--empty"></div><div class="wcard__stats"><table class="wstats"><tbody><tr><th scope="row">ТИП ПАТРОНА</th><td>Ядерный блок</td></tr><tr><th scope="row">ТИП УРОНА</th><td>Энергетический</td></tr><tr><th scope="row">УРОН</th><td>5 {/CD}</td></tr><tr><th scope="row">ЭФФЕКТ</th><td>Проникающий</td></tr><tr><th scope="row">СКОРОСТЬ СТРЕЛЬБЫ</th><td>0</td></tr><tr><th scope="row">ДИСТАНЦИЯ</th><td>Близкая</td></tr><tr><th scope="row">КАЧЕСТВА</th><td>Двуручное</td></tr><tr><th scope="row">ВЕС</th><td>8</td></tr><tr><th scope="row">ЦЕНА</th><td>500</td></tr><tr><th scope="row">РЕДКОСТЬ</th><td>Очень редкое</td></tr></tbody></table></div></div><p class="wcard__text">The head of an Assaultron contains a high-yield laser emitter, shielded behind sturdy armor plating. Assaultrons use this laser to blast the enemy as they close into melee. The laser itself uses a capacitor that can build up an extremely powerful charge, but which requires considerable energy for each fully charged blast. Due to the solid design, destroyed Assaultrons sometimes have an intact head that can be used as an impromptu hand-held laser.</p><section class="wcard__mods"><h2 class="wcard__sub">Модификации</h2><details class="spoiler wmods-group"><summary class="spoiler__summary">Конденсатор <span class="wmods-group__count">(4)</span></summary><div class="spoiler__body wmods"><div class="wmods__head"><div>Модификация</div><div>Урон</div><div>Скорость</div><div>Патрон</div><div>Сложность</div><div>Перк</div><div>Цена</div><div>Вес</div></div><div class="wmods__row"><div class="wmods__c"><span class="wmods__label">Модификация</span>MK III</div><div class="wmods__c"><span class="wmods__label">Урон</span>+1</div><div class="wmods__c"><span class="wmods__label">Скорость</span>—</div><div class="wmods__c"><span class="wmods__label">Патрон</span>—</div><div class="wmods__c"><span class="wmods__label">Сложность</span>2</div><div class="wmods__c"><span class="wmods__label">Перк</span>—</div><div class="wmods__c"><span class="wmods__label">Цена</span>4</div><div class="wmods__c"><span class="wmods__label">Вес</span>0</div></div><div class="wmods__row"><div class="wmods__c"><span class="wmods__label">Модификация</span>MK IV</div><div class="wmods__c"><span class="wmods__label">Урон</span>+2</div><div class="wmods__c"><span class="wmods__label">Скорость</span>—</div><div class="wmods__c"><span class="wmods__label">Патрон</span>—</div><div class="wmods__c"><span class="wmods__label">Сложность</span>2</div><div class="wmods__c"><span class="wmods__label">Перк</span>—</div><div class="wmods__c"><span class="wmods__label">Цена</span>8</div><div class="wmods__c"><span class="wmods__label">Вес</span>1</div></div><div class="wmods__row"><div class="wmods__c"><span class="wmods__label">Модификация</span>MK V</div><div class="wmods__c"><span class="wmods__label">Урон</span>+3</div><div class="wmods__c"><span class="wmods__label">Скорость</span>—</div><div class="wmods__c"><span class="wmods__label">Патрон</span>—</div><div class="wmods__c"><span class="wmods__label">Сложность</span>3</div><div class="wmods__c"><span class="wmods__label">Перк</span>Science! 1</div><div class="wmods__c"><span class="wmods__label">Цена</span>12</div><div class="wmods__c"><span class="wmods__label">Вес</span>1</div></div><div class="wmods__row"><div class="wmods__c"><span class="wmods__label">Модификация</span>MK VI</div><div class="wmods__c"><span class="wmods__label">Урон</span>+4</div><div class="wmods__c"><span class="wmods__label">Скорость</span>—</div><div class="wmods__c"><span class="wmods__label">Патрон</span>—</div><div class="wmods__c"><span class="wmods__label">Сложность</span>3</div><div class="wmods__c"><span class="wmods__label">Перк</span>Science! 1</div><div class="wmods__c"><span class="wmods__label">Цена</span>16</div><div class="wmods__c"><span class="wmods__label">Вес</span>2</div></div></div></details></section></div>
   </div>
 </main>
 
