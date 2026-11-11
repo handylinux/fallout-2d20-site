@@ -80,6 +80,9 @@ body {
 .site-header {
   background: #000;
   padding: 10px 0;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
 }
 .site-header__inner {
   display: flex;
@@ -91,23 +94,29 @@ body {
 .site-header__menu { margin-left: auto; }
 
 /* верхнее меню */
+/* Плашки меню — копия секции #sp-topmenu эталона (jos_sppagebuilder id со sp-topmenu):
+     колонки по 16.666667% (max-width:16.666667%; flex-basis:16.666667%)
+     ссылка: padding 10px 0 10px 0 (у оранжевой 15px снизу)
+     фон: url(plates/menu-item-bg-*.png) no-repeat, contain, 50% 50%
+     текст: Arial 600, 16px/16px, uppercase, #fff, text-shadow 1px 3px 5px #484848
+   Текстура растянута на всю колонку — именно так она выглядит клином. */
 .top-menu {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 0;
   margin: 0;
   padding: 0;
   list-style: none;
 }
-/* Плашки меню. Данные с живого сайта (#sp-topmenu):
-     фон  background-image: url(plates/menu-item-bg-*.png), no-repeat, contain, 50% 50%
-     текст 16px/16px, 600, uppercase, #fff, text-shadow 1px 3px 5px #484848
-     блок  padding-top 10-15 / padding-bottom 10-15
-   Ссылка — inline-block по размеру текста: текстура облегает надпись,
-   а не растягивается на всю колонку. */
+.top-menu > li {
+  flex: 1 1 0;
+  max-width: 16.666667%;
+  min-width: 0;
+  text-align: center;
+}
 .top-menu a {
-  display: inline-block;
-  padding: 12px 26px 14px;
+  display: block;
+  padding: 10px 0;
   font-family: var(--f-font-title);
   font-size: 16px;
   font-weight: 600;
@@ -120,21 +129,22 @@ body {
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: contain;
-  transition: filter .2s;
 }
 .top-menu a:hover,
-.top-menu a:focus { color: #fff; text-decoration: underline; filter: brightness(1.12); }
-/* порядок цветов как на эталоне: главная, происхождения, снаряжение,
-   перки, бестиарий, форум */
+.top-menu a:focus,
+.top-menu a:active { color: #fff; }
+.top-menu a:hover .top-menu__title { text-decoration: underline; text-decoration-color: currentColor; }
+/* порядок текстур как в дампе */
 .top-menu li:nth-child(1) a { background-image: url("../img/plates/menu-item-bg-lblue2.png"); }
-.top-menu li:nth-child(2) a { background-image: url("../img/plates/menu-item-bg-orange2.png"); }
+.top-menu li:nth-child(2) a { background-image: url("../img/plates/menu-item-bg-orange2.png"); padding-bottom: 15px; }
 .top-menu li:nth-child(3) a { background-image: url("../img/plates/menu-item-bg-green2.png"); }
 .top-menu li:nth-child(4) a { background-image: url("../img/plates/menu-item-bg-pink.png"); }
-.top-menu li:nth-child(5) a { background-image: url("../img/plates/menu-item-bg-lblue.png"); }
+.top-menu li:nth-child(5) a { background-image: url("../img/plates/menu-item-bg-lblue.png"); padding-top: 15px; padding-bottom: 15px; }
 .top-menu li:nth-child(6) a { background-image: url("../img/plates/menu-item-bg-green.png"); }
-/* у нас пунктов больше, чем цветов на эталоне (8 против 6) — дальше цикл */
+/* у нас 8 пунктов вместо 6 — дальше цикл цветов */
 .top-menu li:nth-child(7) a { background-image: url("../img/plates/menu-item-bg-lblue2.png"); }
 .top-menu li:nth-child(8) a { background-image: url("../img/plates/menu-item-bg-orange2.png"); }
+.site-header__menu { margin-left: auto; }
 
 /* бургер */
 .burger {
