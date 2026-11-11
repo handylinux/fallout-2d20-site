@@ -101,23 +101,47 @@ body {
 .top-menu {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
+/* Плашки меню. Данные с живого сайта (#sp-topmenu):
+     фон  background-image: url(plates/menu-item-bg-*.png), no-repeat, contain, 50% 50%
+     текст 16px/16px, 600, uppercase, #fff, text-shadow 1px 3px 5px #484848
+     блок  padding-top 10-15 / padding-bottom 10-15
+   Ссылка — inline-block по размеру текста: текстура облегает надпись,
+   а не растягивается на всю колонку. */
 .top-menu a {
-  display: block;
-  padding: 24px 18px;
+  display: inline-block;
+  padding: 12px 26px 14px;
   font-family: var(--f-font-title);
-  font-size: 20px;
-  font-weight: 700;
-  color: #fee9a6;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 16px;
+  color: #fff;
+  text-transform: uppercase;
+  text-align: center;
   text-decoration: none;
-  transition: background-color .2s, color .2s;
+  text-shadow: 1px 3px 5px #484848;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: contain;
+  transition: filter .2s;
 }
 .top-menu a:hover,
-.top-menu a:focus { color: #000; background: #fee9a6; }
+.top-menu a:focus { color: #fff; text-decoration: underline; filter: brightness(1.12); }
+/* порядок цветов как на эталоне: главная, происхождения, снаряжение,
+   перки, бестиарий, форум */
+.top-menu li:nth-child(1) a { background-image: url("../img/plates/menu-item-bg-lblue2.png"); }
+.top-menu li:nth-child(2) a { background-image: url("../img/plates/menu-item-bg-orange2.png"); }
+.top-menu li:nth-child(3) a { background-image: url("../img/plates/menu-item-bg-green2.png"); }
+.top-menu li:nth-child(4) a { background-image: url("../img/plates/menu-item-bg-pink.png"); }
+.top-menu li:nth-child(5) a { background-image: url("../img/plates/menu-item-bg-lblue.png"); }
+.top-menu li:nth-child(6) a { background-image: url("../img/plates/menu-item-bg-green.png"); }
+/* у нас пунктов больше, чем цветов на эталоне (8 против 6) — дальше цикл */
+.top-menu li:nth-child(7) a { background-image: url("../img/plates/menu-item-bg-lblue2.png"); }
+.top-menu li:nth-child(8) a { background-image: url("../img/plates/menu-item-bg-orange2.png"); }
 
 /* бургер */
 .burger {
@@ -994,6 +1018,6 @@ html, body { overflow-x: hidden; }
 
 <script src="/fallout-2d20-site/assets/vendor/bootstrap.bundle.min.js"></script>
 <script src="/fallout-2d20-site/assets/js/search.js"></script>
-<script src="/fallout-2d20-site/assets/js/site.js?v=498650d3"></script>
+<script src="/fallout-2d20-site/assets/js/site.js?v=87dcfb98"></script>
 </body>
 </html>
