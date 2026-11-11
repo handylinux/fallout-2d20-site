@@ -31,12 +31,15 @@
   /* цвет заголовков-ссылок карточек: #b15b23 из template.css эталона */
   --f-link-title: #b15b23;
 
-  /* Ширина сайта по замерам эталона:
-       #sp-main-body  width 1425 (= 1370 контента + 2*30 полей), padding 0 30
-       контейнер      1370, padding 0
-       строка         1370, карточка 426.664 = 1370/3 - 30 (по 15px гуттера на сторону) */
-  --f-site-max: 1430px;
-  --f-site-pad: 30px;
+  /* Ширина по замерам эталона:
+       оболочка  1425 (=1370+2*27.5 с border-box), padding 0 30
+       контейнер 1370, padding 0
+       строка    1370 = ширина контейнера, padding 0 25
+       карточка  426.664  =>  колонка (1370-50)/3 = 440, гуттер по 13.33
+       карточка  padding 15px 0 */
+  --f-site-max: 1425px;
+  --f-site-pad: 27.5px;
+  --f-row-pad: 25px;
   --f-content: 100%;
   --f-gap: 20px;
 }
@@ -364,11 +367,25 @@ body {
    ========================================================================== */
 /* Ряд плиток = .sppb-row: гуттер 30px (карточки идут с шагом 410 при ширине
    380 на скриншоте), отрицательные поля -15px, как у bootstrap .row. */
+/* Строка карточек по замерам эталона:
+     ширина     1370 (= ширина контейнера), padding 0 25
+     колонка    440     (1320 / 3)
+     карточка   426.664 (колонка 440 - 13.336 суммарного гуттера, по 6.668)
+   Ряд всегда из трёх колонок; складывается только на телефоне (<600px). */
 .tiles-row {
-  --bs-gutter-x: 30px;
-  --bs-gutter-y: 30px;
+  --bs-gutter-x: 13.336px;
+  --bs-gutter-y: 20px;
   margin-left: 0;
   margin-right: 0;
+  padding: 0 var(--f-row-pad);
+}
+.tiles-row > [class*="col-"] {
+  flex: 0 0 33.3333%;
+  max-width: 33.3333%;
+}
+@media (max-width: 600px) {
+  .tiles-row { --bs-gutter-x: 0px; padding: 0; }
+  .tiles-row > [class*="col-"] { flex: 0 0 100%; max-width: 100%; }
 }
 .tiles-row > [class*="col-"] { display: flex; }
 .tiles-row > [class*="col-"] > .tile { width: 100%; }
@@ -976,6 +993,6 @@ body { background: transparent; }
 
 <script src="/fallout-2d20-site/assets/vendor/bootstrap.bundle.min.js"></script>
 <script src="/fallout-2d20-site/assets/js/search.js"></script>
-<script src="/fallout-2d20-site/assets/js/site.js?v=3f8bd227"></script>
+<script src="/fallout-2d20-site/assets/js/site.js?v=31886f4b"></script>
 </body>
 </html>
