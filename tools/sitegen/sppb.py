@@ -295,6 +295,85 @@ def overlay_html(settings, cls='sppb-addon-overlayer'):
 
 
 # --------------------------------------------------------------------------- renderer
+# --- кнопка «Подробнее» -------------------------------------------------------
+# В исходном CSS (.cta span:nth-child(2){width:20px;margin-left:30px}) места под
+# выезд стрелки нет: при hover margin-right становится 45px, и кнопка растягивается.
+# Компенсируем это резервом справа (45px) в обычном состоянии и анимацией без
+# изменения ширины. Правила идут после CSS аддона и попадают в его контейнер.
+CTA_FIX = """
+<style>
+#sppb-addon-%(aid)s .cta { transition: box-shadow .5s; }
+#sppb-addon-%(aid)s .cta span:nth-child(2) { width: 20px; margin-left: 30px; margin-right: 45px; transition: transform .5s; }
+#sppb-addon-%(aid)s .cta:hover span:nth-child(2) { margin-right: 45px; transform: translateX(45px) skewX(15deg); }
+#sppb-addon-%(aid)s .cta span:nth-child(2) svg { display: block; overflow: hidden; }
+</style>
+"""
+
+CTA_PATCH = re.compile(r'<a class="cta"')
+
+
+def scope_custom_css(css, addon):
+    """Custom CSS аддона — локальный CSS кнопки. В SPPB он сохраняется как есть, но
+    содержит глобальные селекторы (`body{height:100vh;display:flex}`, `*{box-sizing}`),
+    которые применяются ко всей странице. Оборачиваем такие правила в контейнер аддона."""
+    host = '#sppb-addon-wrapper-%s' % addon.get('id')
+    out = []
+    i, n = 0, len(css)
+    while i < n:
+        at = css.find('@', i)
+        brace = css.find('{', i)
+        if brace < 0:
+            out.append(css[i:])
+            break
+        if 0 <= at < brace:                      # @import / @media / @keyframes
+            if css[at:at + 6] == '@media':
+                start = css.find('{', at) + 1
+                depth, j = 1, start
+                while j < n and depth:
+                    if css[j] == '{':
+                        depth += 1
+                    elif css[j] == '}':
+                        depth -= 1
+                    j += 1
+                out.append('@media' + css[at + 6:start])
+                out.append(scope_custom_css(css[start:j - 1], addon))
+                out.append('}')
+                i = j
+            else:
+                end = css.find(';', at)
+                k = css.find('{', at)
+                if k < 0 or (0 <= end < k):
+                    out.append(css[at:end + 1])   # @import url(...);
+                    i = end + 1
+                else:                             # @keyframes — оставляем как есть
+                    depth, j = 1, k + 1
+                    while j < n and depth:
+                        if css[j] == '{':
+                            depth += 1
+                        elif css[j] == '}':
+                            depth -= 1
+                        j += 1
+                    out.append(css[at:j])
+                    i = j
+            continue
+        selector = css[i:brace].strip()
+        if not selector:
+            out.append(css[i:brace])
+            i = brace
+            continue
+        close = css.find('}', brace)
+        if close < 0:
+            break
+        decls = css[brace:close + 1]
+        if selector.replace(' ', '').rstrip(',').endswith(('}', '')) or '\n' in selector:
+            pass
+        parts = [p.strip() for p in selector.split(',') if p.strip()]
+        scoped = ','.join('%s %s' % (host, p) for p in parts)
+        out.append(scoped + decls)
+        i = close + 1
+    return ''.join(out)
+
+
 class Renderer:
     def __init__(self, layout_rows, ctx):
         self.L = Layout(layout_rows)
@@ -469,7 +548,7 @@ class Renderer:
         if br not in (None, '', 0, '0', {}):
             css += num_responsive(sel, 'border-radius', br)
         if s.get('global_custom_css'):
-            css += s['global_custom_css']
+            css += scope_custom_css(s['global_custom_css'], addon)
         css += getattr(self, '_css_' + addon.get('name'), lambda a, s: '')(addon, s)
         return css
 
@@ -619,6 +698,8 @@ class Renderer:
         h = '<div class="sppb-addon sppb-addon-raw-html">'
         if title:
             h += '<%s class="sppb-addon-title">%s</%s>' % (tag, tr(title), tag)
+        body = CTA_PATCH.sub(
+            lambda m: m.group(0) + CTA_FIX % {'aid': addon.get('id')}, body, count=1)
         h += '<div class="sppb-addon-content">%s</div></div>' % body
         return h
 

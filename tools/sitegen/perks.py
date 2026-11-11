@@ -59,12 +59,19 @@ def parse_perks():
         nxt = texts[i + 1] if i + 1 < n else ''
         if nxt.startswith('Ранги'):
             title = t
-            rank = nxt.split(':', 1)[-1].strip()
+            rank_line = nxt.split(':', 1)[-1]
             req = ''
             j = i + 2
-            if j < n and texts[j].startswith('Требования'):
-                req = texts[j].split(':', 1)[-1].strip()
-                j += 1
+            # «Ранги:1\nТребования: Удача 5» — оба поля в одном абзаце
+            if 'Требования' in rank_line.replace('Ранги', ''):
+                head, tail = re.split(r'Требования\s*:', rank_line, maxsplit=1)
+                rank = head.strip()
+                req = tail.strip()
+            else:
+                rank = rank_line.strip()
+                if j < n and texts[j].startswith('Требования'):
+                    req = texts[j].split(':', 1)[-1].strip()
+                    j += 1
             desc = []
             while j < n and not (j + 1 < n and texts[j + 1].startswith('Ранги')):
                 # следующее название перка = строка, за которой идёт «Ранги:»
@@ -254,6 +261,7 @@ def render_page(perks):
                          content, shell, count=1, flags=re.S)
         if not n:
             sys.exit('в шаблоне /perki нет ни маркера, ни article-body')
+    out = out.replace('<title>Перки</title>', '<title>Перки 2026</title>')
     out = out.replace('</head>', '<style>%s</style>\n</head>' % CSS.replace('{BASE}', BASE))
     out = out.replace('</body>', JS.replace('__BASE__', BASE) + '\n</body>')
     return out
@@ -265,8 +273,11 @@ def main():
     os.makedirs(os.path.join(OUT, 'images', 'perks', 'images'), exist_ok=True)
     with open(os.path.join(OUT, 'images', 'perks', 'perks.json'), 'w', encoding='utf-8') as f:
         json.dump(perks, f, ensure_ascii=False, indent=1)
-    with open(os.path.join(OUT, 'perki', 'index.html'), 'w', encoding='utf-8') as f:
-        f.write(render_page(perks))
+    page = render_page(perks)
+    for folder in ('perki', 'perki26'):
+        os.makedirs(os.path.join(OUT, folder), exist_ok=True)
+        with open(os.path.join(OUT, folder, 'index.html'), 'w', encoding='utf-8') as f:
+            f.write(page)
     print('перков:', len(perks))
     for p in perks[:3]:
         print('  ', p['title'], '| ранги', p['rank'], '|', p['requirements'])

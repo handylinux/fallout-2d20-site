@@ -8,7 +8,7 @@ cd "$(dirname "$0")/.."
 
 BASE_PATH="/fallout-2d20-site"
 
-rm -rf public           # заглушки пишутся только для отсутствующих страниц
+rm -rf public/*         # заглушки пишутся только для отсутствующих страниц; assets/img остаётся
 
 # 1) сборка с префиксом пути
 BASE="$BASE_PATH" python3 tools/sitegen/build.py

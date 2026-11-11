@@ -599,8 +599,12 @@ def main():
     idir = os.path.join(OUT, 'assets', 'img')
     srcdir = os.path.join(SRC, 'img')
     if os.path.isdir(srcdir):
-        for name in os.listdir(srcdir):
-            shutil.copy(os.path.join(srcdir, name), os.path.join(idir, name))
+        for root, _dirs, files in os.walk(srcdir):
+            rel = os.path.relpath(root, srcdir)
+            dst = idir if rel == '.' else os.path.join(idir, rel)
+            os.makedirs(dst, exist_ok=True)
+            for name in files:
+                shutil.copy(os.path.join(root, name), os.path.join(dst, name))
     vdir = os.path.join(OUT, 'assets', 'vendor')
     os.makedirs(vdir, exist_ok=True)
     for name in ('bootstrap.min.css', 'bootstrap.bundle.min.js'):
