@@ -111,9 +111,9 @@ def img_src(src):
         return s
     key = s.lstrip('/')
     if key in IMG_MAP:
-        return IMG_MAP[key]
+        return hp('/' + IMG_MAP[key].lstrip('/'))
     MISSING_IMAGES.add(key)
-    return 'assets/img/' + key.split('/')[-1]
+    return hp('/assets/img/' + key.split('/')[-1])
 
 
 # --------------------------------------------------------------------------- ссылки
@@ -212,13 +212,16 @@ class Site:
                         or CATEGORY_PAGES.get(ident)
                         or self.itemid_url.get(q.get('Itemid'), '') or '')
             return self.itemid_url.get(q.get('Itemid'), '') or ''
+        # относительный адрес из контента («bestiarij/raiders») → корневой
+        if not u.startswith(('/', '#', 'mailto:', 'tel:', 'http://', 'https://', '//')):
+            u = '/' + u
         return u
 
     # --- контекст для рендерера SPPB
     def ctx(self):
         return {
             'link': self.link,
-            'raw_link': lambda u: self.resolve(u) or '#',
+            'raw_link': lambda u: hp(self.resolve(u) or '#'),
             'img': img_src,
             'text': lambda t: self.rewrite_html(t),
         }
