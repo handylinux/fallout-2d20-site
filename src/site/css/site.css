@@ -1031,7 +1031,7 @@ html, body { overflow-x: hidden; }
 .sp-row__inner {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
+  align-items: stretch;
   max-width: 1370px;
   margin: 0 -15px;
 }
