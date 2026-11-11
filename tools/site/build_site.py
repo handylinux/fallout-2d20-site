@@ -212,14 +212,14 @@ def load_nav():
         return json.load(f)['items']
 
 
+# 6 пунктов и порядок — из дампа SPPB id 101 «Fallout menu»
 TOP_MENU = [
     ('Главная', '/'),
     ('Происхождения', '/proiskhozhdeniya/'),
     ('Снаряжение', '/snaryazhenie/'),
-    ('Оружие', '/snaryazhenie/oruzhie/'),
     ('Перки', '/perki/'),
     ('Бестиарий', '/bestiarij/'),
-    ('Форум', '/forum/'),
+    ('Форум', '/primery/'),
 ]
 
 
@@ -227,7 +227,8 @@ def top_menu(active=''):
     out = []
     for title, href in TOP_MENU:
         cls = ' class="is-active"' if href == active else ''
-        out.append('<li%s><a href="%s">%s</a></li>' % (cls, esc(u(href)), esc(title)))
+        out.append('<li%s><a href="%s"><span class="top-menu__title">%s</span></a></li>'
+                   % (cls, esc(u(href)), esc(title)))
     return '<ul class="top-menu">%s</ul>' % ''.join(out)
 
 
@@ -317,9 +318,7 @@ def page(title, body, active='', nav_items=None, search_data=None):
 <div class="site">
 <header class="site-header">
   <div class="wrap site-header__inner">
-    <a class="site-header__logo" href="{u('/')}"><img src="{logo}" alt="Fallout 2D20"></a>
     <nav class="site-header__menu" aria-label="Основное меню">{top_menu(active)}</nav>
-    {search_box()}
     <button class="burger" type="button" aria-label="Открыть меню" aria-controls="drawer">
       <span></span><span></span><span></span>
     </button>
