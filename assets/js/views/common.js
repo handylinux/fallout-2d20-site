@@ -115,7 +115,9 @@
       cells.forEach(function (value, i) {
         var cell = C.el('div', 'wmods__c');
         cell.appendChild(C.el('span', 'wmods__label', head[i] || ''));
-        cell.appendChild(C.diceText(value));
+        var val = C.el('div', 'wmods__v');
+        val.appendChild(C.diceText(value));
+        cell.appendChild(val);
         row.appendChild(cell);
       });
       wrap.appendChild(row);
