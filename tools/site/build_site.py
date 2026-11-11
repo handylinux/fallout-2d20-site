@@ -84,11 +84,12 @@ def origin_media(item):
 
 def origin_plate(item):
     """Правая часть пары: заголовок, описание, шеврон."""
+    url = item.get('url') or '#'
     return ('<div class="cell cell--shadow">'
-            '<h2 class="cell__title">%s</h2>'
+            '<h2 class="cell__title"><a href="%s">%s</a></h2>'
             '<p class="cell__text">%s</p>'
             '<div class="cell__chevron">%s</div>'
-            '</div>' % (esc(item['title']), esc(item.get('text')), cta(item.get('url'))))
+            '</div>' % (esc(u(url)), esc(item['title']), esc(item.get('text')), cta(url)))
 
 
 def origins_block(items):
@@ -137,9 +138,14 @@ def columns(cells_list, sizes=None):
 
 
 ARROW_SMALL = (
-    '<svg viewBox="0 0 66 43" aria-hidden="true" focusable="false"><path d="M40.15 3.9 '
-    '43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0'
-    'l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/></svg>'
+    '<svg class="cta__arrow" viewBox="0 0 66 43" aria-hidden="true" focusable="false">'
+    '<path class="a1" d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43'
+    'L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71'
+    'L40.15 4.61a.66.66 0 0 1 0-.71Z"/>'
+    '<path class="a2" d="M20.15 3.9 23.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43'
+    'L24.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71'
+    'L20.15 4.61a.66.66 0 0 1 0-.71Z"/>'
+    '</svg>'
 )
 
 

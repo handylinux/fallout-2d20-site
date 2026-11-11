@@ -281,12 +281,15 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  height: 100%;
+  padding: 30px 20px;
   background-image: url("/fallout-2d20-site/assets/img/food-truck-pattern.jpg");
   background-repeat: repeat;
-  background-position: center;
+  background-size: cover;
+  background-position: 0 0;
   box-shadow: 7px 5px 0 #c3c3c3;
 }
-.cell--shadow::before { background: rgba(150, 150, 150, .28); }
+.cell--shadow::before { background: rgba(150, 150, 150, .2); }
 .cell--shadow .cell__chevron { margin-top: auto; padding-top: 12px; }
 
 /* ------------------------------------------------------------ медиа-ячейка
@@ -297,42 +300,46 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 260px;
-  padding: 20px;
-  border: 1px solid var(--f-plate-line);
-  background-color: transparent;
-  background-image: var(--f-media-bg, none);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+  height: 100%;
+  min-height: 240px;
+  padding: 0;
+  border: 0;
+  background: transparent;
 }
 .media-cell img {
   display: block;
-  max-width: 100%;
-  max-height: 300px;
-  width: auto;
+  width: 100%;
   height: auto;
+  max-height: 380px;
+  object-fit: contain;
 }
+.media-cell a { display: block; width: 100%; }
 /* когда файла картинки нет — просто фон, без пустой рамки */
-.media-cell--empty {
-  min-height: 200px;
-  background: rgba(255, 255, 255, .45);
-}
+/* файла картинки нет — колонка остаётся прозрачной, чтобы не выглядеть
+   пустой плашкой */
+.media-cell--empty { min-height: 240px; background: none; border: 0; }
+
+/* подложка-всплеск под аватаром (нет файла — просто не рисуется) */
+.media-cell { background-image: var(--f-media-bg, none); background-repeat: no-repeat; background-position: center; }
 
 /* ------------------------------------------------------------ текст в ячейке */
 .cell__title {
-  margin: 0 0 10px;
-  font-size: 1.5rem;
+  margin: 0 0 20px;
+  font-size: 1.6rem;
+  line-height: 1.2;
   text-align: center;
+  text-transform: uppercase;
 }
+.cell__title a { color: var(--f-link); }
+.cell__title a:hover { color: var(--f-link); text-decoration: underline; }
 .cell__text {
   margin: 0 0 18px;
-  text-align: center;
+  text-align: left;
 }
 .cell__text p { margin: 0; }
 .cell__actions,
 .cell__chevron { display: flex; justify-content: center; }
-.cell__chevron .cta { max-width: 100%; }
+.cell__chevron .cta { width: 100%; justify-content: center; }
 @media (max-width: 480px) {
   .cell__chevron .cta { padding: 10px 18px 10px 26px; font-size: 17px; gap: 10px; }
   .cell__chevron .cta__arrow { width: 28px; height: 18px; }
@@ -416,6 +423,10 @@ body {
 }
 .cta:hover .cta__arrow { transform: translateX(6px); }
 .cta__arrow path { transition: transform .4s, fill 1s; }
+.cta__arrow .a1 { transform: translateX(8px); }
+.cta__arrow .a2 { transform: translateX(0); }
+.cta:hover .cta__arrow .a1,
+.cta:hover .cta__arrow .a2 { transform: translateX(0); }
 .cta__arrow .a2 { transform: translateX(-30%); }
 .cta__arrow .a1 { transform: translateX(-60%); }
 .cta:hover .cta__arrow .a1,
