@@ -249,6 +249,7 @@ def page(title, body, active='', nav_items=None):
 <style>{styles}</style>
 </head>
 <body>
+<div class="site">
 <header class="site-header">
   <div class="wrap site-header__inner">
     <a class="site-header__logo" href="{u('/')}"><img src="{logo}" alt="Fallout 2D20"></a>
@@ -282,6 +283,7 @@ def page(title, body, active='', nav_items=None):
       Modiphius Entertainment. Неофициальный русскоязычный сайт.</p>
   </div>
 </footer>
+</div><!-- /.site -->
 
 <script src="{u('/assets/vendor/bootstrap.bundle.min.js')}"></script>
 <script src="{u('/assets/js/site.js')}"></script>

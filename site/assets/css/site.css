@@ -22,7 +22,8 @@
   --f-font: Helvetica, Arial, sans-serif;
   --f-font-title: Arial, Helvetica, sans-serif;
 
-  --f-container: 1400px;
+  --f-site-max: 1600px;   /* максимальная ширина сайта */
+  --f-content: 80%;       /* контент занимает 80% ширины сайта */
   --f-gap: 20px;
 }
 
@@ -55,10 +56,9 @@ h1, h2, h3, h4, h5, h6 {
    Свой класс .wrap — не пересекается с .container из Bootstrap.
    -------------------------------------------------------------------------- */
 .wrap {
-  width: 100%;
-  max-width: var(--f-container);
+  width: var(--f-content);
+  max-width: calc(var(--f-site-max) * .8);
   margin: 0 auto;
-  padding: 0 15px;
 }
 
 body {
@@ -588,3 +588,15 @@ html {
   background-attachment: fixed;
 }
 body { background: transparent; }
+
+
+/* ============================================================================
+   ШИРИНА САЙТА.
+   До 1600px: сайт = 100% окна, контент = 80% ширины сайта.
+   Свыше 1600px: сайт фиксируется на 1600px и центрируется.
+   ========================================================================== */
+.site {
+  width: 100%;
+  max-width: var(--f-site-max);
+  margin: 0 auto;
+}
