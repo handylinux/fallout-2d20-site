@@ -197,9 +197,17 @@ body {
   background: #fee9a6;
 }
 
-@media (max-width: 1199px) {
+/* Меню не скрываем до последнего: шесть плашек влезают и на планшете,
+   иначе навигация пропадает совсем. Бургер — только на телефоне. */
+@media (max-width: 767px) {
   .top-menu { display: none; }
   .burger { display: block; margin-left: auto; }
+  .top-menu > li { flex: 0 0 16.666667%; max-width: 16.666667%; }
+  .top-menu a { font-size: 13px; line-height: 15px; }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .top-menu a { font-size: 14px; line-height: 15px; padding: 8px 0; }
 }
 
 /* --------------------------------------------------------------- offcanvas  */
@@ -1223,7 +1231,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <main class="page">
   <div class="wrap">
-<div class="sp-page"><h1 class="sp-page__title">Стрелковое оружие</h1><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/revolver-kalibra-44/">Револьвер Калибра .44</a></h2><div class="sp-raw"><div class="wrapper">
+<div class="sp-page"><h1 class="sp-page__title">Стрелковое оружие</h1><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/revolver-kalibra-44/">Револьвер Калибра .44</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/revolver-kalibra-44/">
     <span>Подробнее</span>
     <span>
@@ -1236,7 +1244,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/">10-мм Пистолет</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/"><img src="/fallout-2d20-site/assets/img/weapons/10-mm-pistolet.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/">10-мм Пистолет</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/"><img src="/fallout-2d20-site/assets/img/weapons/10-mm-pistolet.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/10-mm-pistolet/">
     <span>Подробнее</span>
     <span>
@@ -1249,7 +1257,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/">Сигнальный пистолет</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/">Сигнальный пистолет</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/signalnyj-pistolet/">
     <span>Подробнее</span>
     <span>
@@ -1262,7 +1270,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/shturmovaya-vintovka/">Штурмовая винтовка</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/shturmovaya-vintovka/">Штурмовая винтовка</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/shturmovaya-vintovka/">
     <span>Подробнее</span>
     <span>
@@ -1275,7 +1283,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/boevoj-karabin/">Боевой карабин</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/boevoj-karabin/"><img src="/fallout-2d20-site/assets/img/weapons/bejsbolnaya-bita.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/boevoj-karabin/">Боевой карабин</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/boevoj-karabin/"><img src="/fallout-2d20-site/assets/img/weapons/bejsbolnaya-bita.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/boevoj-karabin/">
     <span>Подробнее</span>
     <span>
@@ -1288,7 +1296,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/karabin-gaussa/">Карабин Гаусса</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/karabin-gaussa/"><img src="/fallout-2d20-site/assets/img/weapons/lazernyj-pistolet.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/karabin-gaussa/">Карабин Гаусса</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/karabin-gaussa/"><img src="/fallout-2d20-site/assets/img/weapons/lazernyj-pistolet.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/karabin-gaussa/">
     <span>Подробнее</span>
     <span>
@@ -1301,7 +1309,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/okhotnichya-vintovka/">Охотничья винтовка</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/okhotnichya-vintovka/"><img src="/fallout-2d20-site/assets/img/weapons/tomagavk.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/okhotnichya-vintovka/">Охотничья винтовка</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/okhotnichya-vintovka/"><img src="/fallout-2d20-site/assets/img/weapons/tomagavk.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/okhotnichya-vintovka/">
     <span>Подробнее</span>
     <span>
@@ -1314,7 +1322,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/tommi-gan/">ПП Томпсона</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/tommi-gan/">ПП Томпсона</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/tommi-gan/">
     <span>Подробнее</span>
     <span>
@@ -1327,7 +1335,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/boevoj-drobovik/">Боевой дробовик</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/boevoj-drobovik/"><img src="/fallout-2d20-site/assets/img/weapons/bejsbolnaya-bita.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/boevoj-drobovik/">Боевой дробовик</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/boevoj-drobovik/"><img src="/fallout-2d20-site/assets/img/weapons/bejsbolnaya-bita.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/boevoj-drobovik/">
     <span>Подробнее</span>
     <span>
@@ -1340,7 +1348,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/dvustvolnyj-drobovik/">Двуствольный дробовик</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/dvustvolnyj-drobovik/"><img src="/fallout-2d20-site/assets/img/weapons/tomagavk.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/dvustvolnyj-drobovik/">Двуствольный дробовик</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/dvustvolnyj-drobovik/"><img src="/fallout-2d20-site/assets/img/weapons/tomagavk.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/dvustvolnyj-drobovik/">
     <span>Подробнее</span>
     <span>
@@ -1353,7 +1361,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/gladkostvol-s-boltovym-zatvorom/">Гладкоствол с болтовым затвором</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/gladkostvol-s-boltovym-zatvorom/">Гладкоствол с болтовым затвором</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/gladkostvol-s-boltovym-zatvorom/">
     <span>Подробнее</span>
     <span>
@@ -1366,7 +1374,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/gladkostvol/">Гладкоствол</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/gladkostvol/"><img src="/fallout-2d20-site/assets/img/weapons/10-mm-pistolet.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/gladkostvol/">Гладкоствол</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/gladkostvol/"><img src="/fallout-2d20-site/assets/img/weapons/10-mm-pistolet.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/gladkostvol/">
     <span>Подробнее</span>
     <span>
@@ -1379,7 +1387,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/gladkostvolnyj-revolver/">Гладкоствольный револьвер</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/gladkostvolnyj-revolver/"><img src="/fallout-2d20-site/assets/img/weapons/10-mm-pistolet.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/gladkostvolnyj-revolver/">Гладкоствольный револьвер</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/gladkostvolnyj-revolver/"><img src="/fallout-2d20-site/assets/img/weapons/10-mm-pistolet.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/gladkostvolnyj-revolver/">
     <span>Подробнее</span>
     <span>
@@ -1392,7 +1400,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/zheleznodorozhnaya-vintovka/">Железнодорожная винтовка</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/zheleznodorozhnaya-vintovka/"><img src="/fallout-2d20-site/assets/img/weapons/minigan.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/zheleznodorozhnaya-vintovka/">Железнодорожная винтовка</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/zheleznodorozhnaya-vintovka/"><img src="/fallout-2d20-site/assets/img/weapons/minigan.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/zheleznodorozhnaya-vintovka/">
     <span>Подробнее</span>
     <span>
@@ -1405,7 +1413,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/inektsionnyj-karabin/">Инъекционный карабин</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/inektsionnyj-karabin/"><img src="/fallout-2d20-site/assets/img/weapons/minigan.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/inektsionnyj-karabin/">Инъекционный карабин</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/inektsionnyj-karabin/"><img src="/fallout-2d20-site/assets/img/weapons/minigan.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/inektsionnyj-karabin/">
     <span>Подробнее</span>
     <span>
@@ -1418,7 +1426,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/revolver-magnum-kal-357/">Револьвер калибра 357 «Магнум»</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/revolver-magnum-kal-357/">Револьвер калибра 357 «Магнум»</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/revolver-magnum-kal-357/">
     <span>Подробнее</span>
     <span>
@@ -1431,7 +1439,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/12-7-mm-pistolet/">12,7-мм пистолет</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/12-7-mm-pistolet/">12,7-мм пистолет</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/12-7-mm-pistolet/">
     <span>Подробнее</span>
     <span>
@@ -1444,7 +1452,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/12-7-mm-pistolet-pulemjot/">12,7-мм пистолет-пулемёт</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/12-7-mm-pistolet-pulemjot/">12,7-мм пистолет-пулемёт</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/12-7-mm-pistolet-pulemjot/">
     <span>Подробнее</span>
     <span>
@@ -1457,7 +1465,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/protivopekhotnyj-25-mm-granatomjot/">Противопехотный 25-мм гранатомёт</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/protivopekhotnyj-25-mm-granatomjot/"><img src="/fallout-2d20-site/assets/img/weapons/oskolochnaya-granata.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/protivopekhotnyj-25-mm-granatomjot/">Противопехотный 25-мм гранатомёт</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/protivopekhotnyj-25-mm-granatomjot/"><img src="/fallout-2d20-site/assets/img/weapons/oskolochnaya-granata.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/protivopekhotnyj-25-mm-granatomjot/">
     <span>Подробнее</span>
     <span>
@@ -1470,7 +1478,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/9-mm-pistolet/">9-мм пистолет</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/9-mm-pistolet/">9-мм пистолет</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/9-mm-pistolet/">
     <span>Подробнее</span>
     <span>
@@ -1483,7 +1491,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/krupnokalibernaya-snajperskaya-vintovka/">Крупнокалиберная снайперская винтовка</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/krupnokalibernaya-snajperskaya-vintovka/">Крупнокалиберная снайперская винтовка</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/krupnokalibernaya-snajperskaya-vintovka/">
     <span>Подробнее</span>
     <span>
@@ -1496,7 +1504,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/samozaryadnaya-vintovka/">Самозарядная винтовка</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/samozaryadnaya-vintovka/"><img src="/fallout-2d20-site/assets/img/weapons/bejsbolnaya-bita.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/samozaryadnaya-vintovka/">Самозарядная винтовка</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/samozaryadnaya-vintovka/"><img src="/fallout-2d20-site/assets/img/weapons/bejsbolnaya-bita.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/samozaryadnaya-vintovka/">
     <span>Подробнее</span>
     <span>
@@ -1509,7 +1517,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/porokhovoj-mushketon/">Пороховой мушкетон</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/porokhovoj-mushketon/">Пороховой мушкетон</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/porokhovoj-mushketon/">
     <span>Подробнее</span>
     <span>
@@ -1522,7 +1530,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/porokhovoj-karabin/">Пороховой карабин</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/porokhovoj-karabin/">Пороховой карабин</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/porokhovoj-karabin/">
     <span>Подробнее</span>
     <span>
@@ -1535,7 +1543,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/pistolet-gaussa/"> Пистолет Гаусса</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/pistolet-gaussa/"><img src="/fallout-2d20-site/assets/img/weapons/lazernyj-pistolet.png" alt="Image" style="max-width:200px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/pistolet-gaussa/"> Пистолет Гаусса</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/pistolet-gaussa/"><img src="/fallout-2d20-site/assets/img/weapons/lazernyj-pistolet.png" alt="Image" style="max-width:200px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/pistolet-gaussa/">
     <span>Подробнее</span>
     <span>
@@ -1548,7 +1556,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/drobovik-gaussa/">Дробовик Гаусса</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/drobovik-gaussa/"><img src="/fallout-2d20-site/assets/img/weapons/lazernyj-pistolet.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/drobovik-gaussa/">Дробовик Гаусса</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/drobovik-gaussa/"><img src="/fallout-2d20-site/assets/img/weapons/lazernyj-pistolet.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/drobovik-gaussa/">
     <span>Подробнее</span>
     <span>
@@ -1561,7 +1569,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/karabin-s-rychazhnym-zatvorom/">Карабин с рычажным затвором</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/karabin-s-rychazhnym-zatvorom/">Карабин с рычажным затвором</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/karabin-s-rychazhnym-zatvorom/">
     <span>Подробнее</span>
     <span>
@@ -1574,7 +1582,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/ljogkij-pulemjot/">Лёгкий пулемёт</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/ljogkij-pulemjot/">Лёгкий пулемёт</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/ljogkij-pulemjot/">
     <span>Подробнее</span>
     <span>
@@ -1587,7 +1595,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/pompovyj-drobovik/">Помповый дробовик</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/pompovyj-drobovik/">Помповый дробовик</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/pompovyj-drobovik/">
     <span>Подробнее</span>
     <span>
@@ -1600,7 +1608,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/radievyj-karabin/">Радиевый карабин</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/radievyj-karabin/">Радиевый карабин</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/radievyj-karabin/">
     <span>Подробнее</span>
     <span>
@@ -1613,7 +1621,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/snajperskaya-vintovka/">Снайперская винтовка</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/snajperskaya-vintovka/">Снайперская винтовка</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/snajperskaya-vintovka/">
     <span>Подробнее</span>
     <span>
@@ -1626,7 +1634,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/granatomjot-m79/">Гранатомёт M79</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/granatomjot-m79/"><img src="/fallout-2d20-site/assets/img/weapons/oskolochnaya-granata.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/granatomjot-m79/">Гранатомёт M79</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/granatomjot-m79/"><img src="/fallout-2d20-site/assets/img/weapons/oskolochnaya-granata.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/granatomjot-m79/">
     <span>Подробнее</span>
     <span>
@@ -1639,7 +1647,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/porokhovoj-pistolet/">Пороховой пистолет</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/porokhovoj-pistolet/">Пороховой пистолет</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/porokhovoj-pistolet/">
     <span>Подробнее</span>
     <span>
@@ -1652,7 +1660,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/pistolet-inektor/">Пистолет-инъектор</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/pistolet-inektor/">Пистолет-инъектор</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/pistolet-inektor/">
     <span>Подробнее</span>
     <span>
@@ -1665,7 +1673,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/karabin-gulya/">Карабин Гуля</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/karabin-gulya/">Карабин Гуля</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/karabin-gulya/">
     <span>Подробнее</span>
     <span>
@@ -1678,7 +1686,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/pistolet-gulya/">Пистолет Гуля</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/pistolet-gulya/">Пистолет Гуля</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/pistolet-gulya/">
     <span>Подробнее</span>
     <span>
@@ -1691,7 +1699,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/sten/">ПП Стен</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/sten/">ПП Стен</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/sten/">
     <span>Подробнее</span>
     <span>
@@ -1704,7 +1712,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/abordazhnyj-pistolet/">Абордажный пистолет</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/abordazhnyj-pistolet/">Абордажный пистолет</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/abordazhnyj-pistolet/">
     <span>Подробнее</span>
     <span>
@@ -1717,7 +1725,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/pistolet-gulya/">Магнумномикон</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/pistolet-gulya/">Магнумномикон</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/pistolet-gulya/">
     <span>Подробнее</span>
     <span>
@@ -1744,6 +1752,6 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <script src="/fallout-2d20-site/assets/vendor/bootstrap.bundle.min.js"></script>
 <script src="/fallout-2d20-site/assets/js/search.js"></script>
-<script src="/fallout-2d20-site/assets/js/site.js?v=33235792"></script>
+<script src="/fallout-2d20-site/assets/js/site.js?v=16a7659d"></script>
 </body>
 </html>

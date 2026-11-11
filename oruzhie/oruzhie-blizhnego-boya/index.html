@@ -197,9 +197,17 @@ body {
   background: #fee9a6;
 }
 
-@media (max-width: 1199px) {
+/* Меню не скрываем до последнего: шесть плашек влезают и на планшете,
+   иначе навигация пропадает совсем. Бургер — только на телефоне. */
+@media (max-width: 767px) {
   .top-menu { display: none; }
   .burger { display: block; margin-left: auto; }
+  .top-menu > li { flex: 0 0 16.666667%; max-width: 16.666667%; }
+  .top-menu a { font-size: 13px; line-height: 15px; }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .top-menu a { font-size: 14px; line-height: 15px; padding: 8px 0; }
 }
 
 /* --------------------------------------------------------------- offcanvas  */
@@ -1223,7 +1231,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <main class="page">
   <div class="wrap">
-<div class="sp-page"><h1 class="sp-page__title">Оружие ближнего боя</h1><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/mech/">Меч</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/mech/"><img src="/fallout-2d20-site/assets/img/weapons/bejsbolnaya-bita.png" alt="Image" style="max-width:200px"></a><div class="sp-raw"><div class="wrapper">
+<div class="sp-page"><h1 class="sp-page__title">Оружие ближнего боя</h1><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/mech/">Меч</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/mech/"><img src="/fallout-2d20-site/assets/img/weapons/bejsbolnaya-bita.png" alt="Image" style="max-width:200px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/mech/">
     <span>Подробнее</span>
     <span>
@@ -1236,7 +1244,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/boevoj-nozh/">Боевой нож</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/boevoj-nozh/"><img src="/fallout-2d20-site/assets/img/weapons/bejsbolnaya-bita.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/boevoj-nozh/">Боевой нож</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/boevoj-nozh/"><img src="/fallout-2d20-site/assets/img/weapons/bejsbolnaya-bita.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/boevoj-nozh/">
     <span>Подробнее</span>
     <span>
@@ -1249,7 +1257,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/machete/">Мачете</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/machete/"><img src="/fallout-2d20-site/assets/img/weapons/bejsbolnaya-bita.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/machete/">Мачете</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/machete/"><img src="/fallout-2d20-site/assets/img/weapons/bejsbolnaya-bita.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/machete/">
     <span>Подробнее</span>
     <span>
@@ -1262,7 +1270,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/potroshitel/">Потрошитель</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/potroshitel/">Потрошитель</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/potroshitel/">
     <span>Подробнее</span>
     <span>
@@ -1275,7 +1283,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/shish-kebab/">Шиш-кебаб</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/shish-kebab/">Шиш-кебаб</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/shish-kebab/">
     <span>Подробнее</span>
     <span>
@@ -1288,7 +1296,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid #6E6E6E"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/vykidnoj-nozh/">Выкидной нож</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/vykidnoj-nozh/"><img src="/fallout-2d20-site/assets/img/weapons/bejsbolnaya-bita.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid #6E6E6E"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/vykidnoj-nozh/">Выкидной нож</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/vykidnoj-nozh/"><img src="/fallout-2d20-site/assets/img/weapons/bejsbolnaya-bita.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/vykidnoj-nozh/">
     <span>Подробнее</span>
     <span>
@@ -1301,7 +1309,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/bejsbolnaya-bita/">Бейсбольная бита</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/bejsbolnaya-bita/"><img src="/fallout-2d20-site/assets/img/weapons/bejsbolnaya-bita.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/bejsbolnaya-bita/">Бейсбольная бита</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/bejsbolnaya-bita/"><img src="/fallout-2d20-site/assets/img/weapons/bejsbolnaya-bita.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/bejsbolnaya-bita/">
     <span>Подробнее</span>
     <span>
@@ -1314,7 +1322,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/alyuminievaya-bejsbolnaya-bita/">Алюминиевая бита</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/alyuminievaya-bejsbolnaya-bita/">Алюминиевая бита</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/alyuminievaya-bejsbolnaya-bita/">
     <span>Подробнее</span>
     <span>
@@ -1327,7 +1335,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid #6E6E6E"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/skalka/">Скалка</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid #6E6E6E"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/skalka/">Скалка</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/skalka/">
     <span>Подробнее</span>
     <span>
@@ -1340,7 +1348,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/dryn/">Дрын</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/dryn/">Дрын</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/dryn/">
     <span>Подробнее</span>
     <span>
@@ -1353,7 +1361,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/svintsovaya-truba/">Свинцовая труба</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/svintsovaya-truba/">Свинцовая труба</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/svintsovaya-truba/">
     <span>Подробнее</span>
     <span>
@@ -1366,7 +1374,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid #6E6E6E"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/razvodnoj-klyuch/">Разводной ключ</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid #6E6E6E"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/razvodnoj-klyuch/">Разводной ключ</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/razvodnoj-klyuch/">
     <span>Подробнее</span>
     <span>
@@ -1379,7 +1387,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/bilyardnyj-kij/">Бильярдный кий</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/bilyardnyj-kij/">Бильярдный кий</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/bilyardnyj-kij/">
     <span>Подробнее</span>
     <span>
@@ -1392,7 +1400,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/dubinka/">Дубинка</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/dubinka/">Дубинка</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/dubinka/">
     <span>Подробнее</span>
     <span>
@@ -1405,7 +1413,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid #6E6E6E"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/kuvalda/">Кувалда</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid #6E6E6E"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/kuvalda/">Кувалда</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/kuvalda/">
     <span>Подробнее</span>
     <span>
@@ -1418,7 +1426,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/supermolot/">Супермолот</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/supermolot/">Супермолот</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/supermolot/">
     <span>Подробнее</span>
     <span>
@@ -1431,7 +1439,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/balonnyj-klyuch/">Балонный ключ</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/balonnyj-klyuch/">Балонный ключ</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/balonnyj-klyuch/">
     <span>Подробнее</span>
     <span>
@@ -1444,7 +1452,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid #6E6E6E"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/trost/">Трость</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid #6E6E6E"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/trost/">Трость</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/trost/">
     <span>Подробнее</span>
     <span>
@@ -1457,7 +1465,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/bokserskaya-perchatka/">Боксерская перчатка</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/bokserskaya-perchatka/">Боксерская перчатка</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/bokserskaya-perchatka/">
     <span>Подробнее</span>
     <span>
@@ -1470,7 +1478,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/perchatka-kogtya-smerti/">Перчатка когтя смерти</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/perchatka-kogtya-smerti/">Перчатка когтя смерти</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/perchatka-kogtya-smerti/">
     <span>Подробнее</span>
     <span>
@@ -1483,7 +1491,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid #6E6E6E"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/kastet/">Кастет</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid #6E6E6E"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/kastet/">Кастет</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/kastet/">
     <span>Подробнее</span>
     <span>
@@ -1496,7 +1504,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/silovoj-kastet/">Силовой кастет</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/silovoj-kastet/"><img src="/fallout-2d20-site/assets/img/weapons/silovoj-kastet.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/silovoj-kastet/">Силовой кастет</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/silovoj-kastet/"><img src="/fallout-2d20-site/assets/img/weapons/silovoj-kastet.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/silovoj-kastet/">
     <span>Подробнее</span>
     <span>
@@ -1509,7 +1517,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/klinok-shturmotrona/">Клинок штурмотрона</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/klinok-shturmotrona/"><img src="/fallout-2d20-site/assets/img/weapons/bejsbolnaya-bita.png" alt="Image" style="max-width:220px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/klinok-shturmotrona/">Клинок штурмотрона</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/klinok-shturmotrona/"><img src="/fallout-2d20-site/assets/img/weapons/bejsbolnaya-bita.png" alt="Image" style="max-width:220px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" data-href="/fallout-2d20-site/index.php?option=com_sppagebuilder&view=page&id=178">
     <span>Подробнее</span>
     <span>
@@ -1522,7 +1530,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid #6E6E6E"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/avtotopor/">Автотопор</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid #6E6E6E"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/avtotopor/">Автотопор</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/avtotopor/">
     <span>Подробнее</span>
     <span>
@@ -1535,7 +1543,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/ballisticheskij-kulak/">Баллистический кулак</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/ballisticheskij-kulak/">Баллистический кулак</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/ballisticheskij-kulak/">
     <span>Подробнее</span>
     <span>
@@ -1548,7 +1556,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/bolshoj-mech/">Меч из бампера</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/bolshoj-mech/"><img src="/fallout-2d20-site/assets/img/weapons/bejsbolnaya-bita.png" alt="Image" style="max-width:400px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/bolshoj-mech/">Меч из бампера</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/bolshoj-mech/"><img src="/fallout-2d20-site/assets/img/weapons/bejsbolnaya-bita.png" alt="Image" style="max-width:400px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/bolshoj-mech/">
     <span>Подробнее</span>
     <span>
@@ -1561,7 +1569,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid #6E6E6E"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/elektroshoker/">Электрошокер</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid #6E6E6E"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/elektroshoker/">Электрошокер</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/avtotopor/">
     <span>Подробнее</span>
     <span>
@@ -1574,7 +1582,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/benzopila/">Бензопила</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/benzopila/">Бензопила</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/benzopila/">
     <span>Подробнее</span>
     <span>
@@ -1587,7 +1595,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/tanbo-smerti/">Танбо смерти</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/tanbo-smerti/">Танбо смерти</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/tanbo-smerti/">
     <span>Подробнее</span>
     <span>
@@ -1600,7 +1608,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid #6E6E6E"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/perchatka-vytesnitel/">Перчатка-вытеснитель</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid #6E6E6E"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/perchatka-vytesnitel/">Перчатка-вытеснитель</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/perchatka-vytesnitel/">
     <span>Подробнее</span>
     <span>
@@ -1613,7 +1621,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/gitara-mech/">Гитара-меч</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/gitara-mech/"><img src="/fallout-2d20-site/assets/img/weapons/bejsbolnaya-bita.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/gitara-mech/">Гитара-меч</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/gitara-mech/"><img src="/fallout-2d20-site/assets/img/weapons/bejsbolnaya-bita.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/gitara-mech/">
     <span>Подробнее</span>
     <span>
@@ -1626,7 +1634,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/tsirkulyarnyj-rezak-mistera-pomoshchnika/">Циркулярный резак Мистера Помощника</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/tsirkulyarnyj-rezak-mistera-pomoshchnika/"><img src="/fallout-2d20-site/assets/img/weapons/bejsbolnaya-bita.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/tsirkulyarnyj-rezak-mistera-pomoshchnika/">Циркулярный резак Мистера Помощника</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/tsirkulyarnyj-rezak-mistera-pomoshchnika/"><img src="/fallout-2d20-site/assets/img/weapons/bejsbolnaya-bita.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/tsirkulyarnyj-rezak-mistera-pomoshchnika/">
     <span>Подробнее</span>
     <span>
@@ -1639,7 +1647,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid #6E6E6E"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/universalnyj-topor/">Универсальный топор</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid #6E6E6E"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/universalnyj-topor/">Универсальный топор</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/universalnyj-topor/">
     <span>Подробнее</span>
     <span>
@@ -1652,7 +1660,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/protonnyj-topor/">Протонный топор</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/protonnyj-topor/">Протонный топор</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/protonnyj-topor/">
     <span>Подробнее</span>
     <span>
@@ -1665,7 +1673,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/voennyj-baraban/">Военный барабан</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/voennyj-baraban/">Военный барабан</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/voennyj-baraban/">
     <span>Подробнее</span>
     <span>
@@ -1678,7 +1686,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid #6E6E6E"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/posokh-atoma/">Посох Атома</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid #6E6E6E"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/posokh-atoma/">Посох Атома</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/posokh-atoma/">
     <span>Подробнее</span>
     <span>
@@ -1691,7 +1699,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/shakhterskij-perforator/">Шахтерский перфоратор</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/shakhterskij-perforator/">Шахтерский перфоратор</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/shakhterskij-perforator/">
     <span>Подробнее</span>
     <span>
@@ -1704,7 +1712,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;padding:30px 0px 20px 0px;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/svarochnaya-gorelka/">Сварочная горелка</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/svarochnaya-gorelka/">Сварочная горелка</a></h2><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/svarochnaya-gorelka/">
     <span>Подробнее</span>
     <span>
@@ -1731,6 +1739,6 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <script src="/fallout-2d20-site/assets/vendor/bootstrap.bundle.min.js"></script>
 <script src="/fallout-2d20-site/assets/js/search.js"></script>
-<script src="/fallout-2d20-site/assets/js/site.js?v=33235792"></script>
+<script src="/fallout-2d20-site/assets/js/site.js?v=16a7659d"></script>
 </body>
 </html>
