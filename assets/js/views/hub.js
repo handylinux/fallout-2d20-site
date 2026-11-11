@@ -24,7 +24,16 @@
      (кнопка «Подробнее» у готового раздела или плашка «скоро» у будущего). */
   function card(tile, bottom) {
     var node = C.el('div', 'tile' + (tile.href ? '' : ' tile--soon'));
-    node.appendChild(C.el('h2', 'tile__title', tile.title));
+    var title = C.el('h2', 'tile__title', tile.title);
+    /* на эталоне заголовок — ссылка: <a href><h2> */
+    if (tile.href) {
+      var titleLink = C.el('a');
+      titleLink.setAttribute('href', C.href(tile.href));
+      titleLink.appendChild(title);
+      node.appendChild(titleLink);
+    } else {
+      node.appendChild(title);
+    }
     var media = C.el('div', 'tile__media');
     if (tile.image) {
       var img = document.createElement('img');
