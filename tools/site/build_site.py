@@ -269,6 +269,25 @@ def read_css():
     return css.replace('__BG_DATA_URI__', bg_data_uri()).replace('url("/assets/', 'url("%s/assets/' % BASE)
 
 
+SEARCH_BOX = ('<div class="site-search">'
+             '<button class="site-search__btn" type="button" id="search-open" '
+             'aria-label="Поиск по сайту" aria-expanded="false">'
+             '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" '
+             'fill="none" stroke="currentColor" stroke-width="2.2"/>'
+             '<path d="M15.4 15.4 21 21" fill="none" stroke="currentColor" stroke-width="2.2" '
+             'stroke-linecap="round"/></svg></button>'
+             '<div class="site-search__panel" id="search-panel" hidden>'
+             '<input class="site-search__input" type="search" id="search-input" '
+             'placeholder="Оружие, моды, навык…" autocomplete="off" '
+             'aria-label="Поиск по оружию и модам">'
+             '<div class="site-search__results" id="search-results" role="listbox"></div>'
+             '</div></div>')
+
+
+def search_box():
+    return SEARCH_BOX
+
+
 def page(title, body, active='', nav_items=None, search_data=None):
     logo = u('/assets/img/logos.png')
     if BASE:
@@ -291,7 +310,7 @@ def page(title, body, active='', nav_items=None, search_data=None):
   <div class="wrap site-header__inner">
     <a class="site-header__logo" href="{u('/')}"><img src="{logo}" alt="Fallout 2D20"></a>
     <nav class="site-header__menu" aria-label="Основное меню">{top_menu(active)}</nav>
-    {weapon_pages.search_box()}
+    {search_box()}
     <button class="burger" type="button" aria-label="Открыть меню" aria-controls="drawer">
       <span></span><span></span><span></span>
     </button>
@@ -478,7 +497,8 @@ def main():
     # статика: свои css/js + картинки и bootstrap из src
     shutil.copy(os.path.join(SRC, 'site', 'css', 'site.css'), os.path.join(OUT, 'assets/css/site.css'))
     shutil.copy(os.path.join(SRC, 'site', 'js', 'site.js'), os.path.join(OUT, 'assets/js/site.js'))
-    shutil.copy(os.path.join(SRC, 'site', 'js', 'search.js'), os.path.join(OUT, 'assets/js/search.js'))
+    for name in ('search.js', 'render.js', 'router.js'):
+        shutil.copy(os.path.join(SRC, 'site', 'js', name), os.path.join(OUT, 'assets/js', name))
     for name in ('bootstrap.min.css', 'bootstrap.bundle.min.js'):
         src = os.path.join(SRC, 'vendor', name)
         if os.path.exists(src):
@@ -490,49 +510,6 @@ def main():
         for name in files:
             shutil.copy(os.path.join(root, name), os.path.join(dst, name))
 
-
-    # данные и меню — до первой страницы, иначе шапка останется старой
-    items = weapons.load()
-    cats = weapons.by_category(items)
-    os.makedirs(os.path.join(OUT, 'assets/data'), exist_ok=True)
-    with open(os.path.join(OUT, 'assets/data/search.json'), 'w', encoding='utf-8') as f:
-        f.write(weapon_pages.search_index(items))
-    nav_items = with_weapon_nav(nav_items, cats)
-    globals()['NAV_ITEMS'] = nav_items
-
-    write('index.html', page('Правила игры', '<h1 class="page__title">Правила игры</h1>',
-                             '/', nav_items))
-    write('proiskhozhdeniya/index.html', page_origins(nav_items))
-    write_origin_pages(nav_items)
-    write('perki/index.html', page_perks(nav_items))
-    # страница-эталон не публикуется в docs/, только для локальной сверки
-    if os.environ.get('DEMO'):
-        write('layout/index.html', page_layout(nav_items))
-
-    # страницы оружия из данных приложения-компаньона
-    for cat_slug, cat_title, group in cats:
-        write('snaryazhenie/oruzhie/%s/index.html' % cat_slug,
-              page(cat_title, weapon_pages.category_page(group, cat_title, cat_slug),
-                   '/snaryazhenie/', nav_items))
-        for item in group:
-            write('snaryazhenie/oruzhie/%s/%s/index.html' % (cat_slug, item['slug']),
-                  page(item['name'], weapon_pages.card(item), '/snaryazhenie/', nav_items))
-    # хаб «Снаряжение»: категории оружия плитками
-    hub_tiles = [{'title': t, 'url': '/snaryazhenie/oruzhie/%s/' % sl} for sl, t, _g in cats]
-    write('snaryazhenie/oruzhie/index.html',
-          page('Оружие',
-               '<h1 class="page__title">Оружие</h1>'
-               '<p class="page__lead">%d единиц оружия в %d категориях. Данные — '
-               'справочник приложения-компаньона Fallout 2D20.</p>%s'
-               % (len(items), len(cats), tiles(hub_tiles)),
-               '/snaryazhenie/', nav_items))
-    write('snaryazhenie/index.html',
-          page('Снаряжение',
-               '<h1 class="page__title">Снаряжение</h1>'
-               '<p class="page__lead">Оружие из справочника приложения-компаньона: '
-               '%d единиц в %d категориях.</p>%s'
-               % (len(items), len(cats), tiles(hub_tiles)),
-               '/snaryazhenie/', nav_items))
 
     # заглушки для всех пунктов меню, чтобы ссылки не давали 404
     titles = {}

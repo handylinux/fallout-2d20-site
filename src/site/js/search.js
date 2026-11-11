@@ -8,7 +8,8 @@
   var results = document.getElementById('search-results');
   if (!openBtn || !panel || !input || !results) { return; }
 
-  var url = (document.body.getAttribute('data-base') || '') + '/assets/data/search.json';
+  var BASE = document.body.getAttribute('data-base') || '';
+  var url = BASE + '/assets/data/search.json';
   var data = null;
   var loading = null;
 
@@ -55,7 +56,7 @@
       return;
     }
     results.innerHTML = list.slice(0, 20).map(function (row) {
-      return '<a class="site-search__hit" href="' + row.u + '">' +
+      return '<a class="site-search__hit" href="' + BASE + row.u + '">' +
         '<span class="site-search__hit-title">' + row.n + '</span>' +
         '<span class="site-search__hit-meta">' + row.c +
         (row.d && row.d !== '—' ? ' · урон ' + row.d : '') + '</span></a>';

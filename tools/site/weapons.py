@@ -83,6 +83,20 @@ CATEGORIES = [
     ('metatelnoe', 'Метательное', ('THROWING',)),
 ]
 
+# строки таблицы характеристик на карточке
+STAT_LABELS = [
+    ('ammoName', 'ТИП ПАТРОНА'),
+    ('damageTypeName', 'ТИП УРОНА'),
+    ('damageText', 'УРОН'),
+    ('effectName', 'ЭФФЕКТ'),
+    ('fireRate', 'СКОРОСТЬ СТРЕЛЬБЫ'),
+    ('rangeName', 'ДИСТАНЦИЯ'),
+    ('qualityName', 'КАЧЕСТВА'),
+    ('weight', 'ВЕС'),
+    ('cost', 'ЦЕНА'),
+    ('rarityName', 'РЕДКОСТЬ'),
+]
+
 TRANSLIT = {
     'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'e', 'ж': 'zh',
     'з': 'z', 'и': 'i', 'й': 'j', 'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o',
@@ -165,6 +179,18 @@ def load():
             group = grouped.get(slot)
             if not group:
                 continue
+            rows = []
+            for m in group:
+                rows.append({
+                    'name': (mods_ru.get(m['id']) or {}).get('name') or m['id'],
+                    'damage': m.get('damageModifier'),
+                    'fireRate': m.get('fireRateModifier'),
+                    'ammo': ammo.get(m.get('ammoOverride') or '', ''),
+                    'complexity': m.get('complexity'),
+                    'perk': ', '.join(p for p in (m.get('perk1'), m.get('perk2')) if p),
+                    'cost': m.get('cost'),
+                    'weight': m.get('weight'),
+                })
             item['mod_groups'].append({
                 'slot': slot,
                 'slotName': SLOTS.get(slot, slot),
@@ -181,6 +207,11 @@ def load():
                     'materials': m.get('materials') or '',
                 } for m in group],
             })
+        item['stats'] = [
+            [label, ('—' if item.get(key) in (None, '') else item.get(key))]
+            for key, label in STAT_LABELS
+        ]
+        item['notes'] = note_for(item)
         items.append(item)
     items.sort(key=lambda i: i['name'].lower())
     return items
