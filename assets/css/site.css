@@ -295,26 +295,25 @@ body {
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding: 24px 8px;
+  padding: 20px 0;
   border: 0;
   background-color: transparent;
+  /* Значения — из дампа SPPB (колонка с bg-fon-3.png, страница «Происхождения»,
+     jos_sppagebuilder id 72): no-repeat / background_size: inherit / 50% 50% /
+     attachment: scroll / padding 20px 0. «inherit» = не задавать size, то есть
+     плитка встаёт в свой натуральный размер 200×177 и центрируется, а не
+     растягивается на ячейку. */
   background-image: var(--f-media-bg, none);
   background-repeat: no-repeat;
-  /* bg-fon-3.png — сама наклонная жёлтая плитка (срез слева и справа-снизу),
-     поэтому её растягиваем на всю ячейку, а не ставим картинкой по центру.
-     contain: плитка видна целиком, срезы не обрезаются. */
   background-position: 50% 50%;
-  background-size: contain;
+  background-attachment: scroll;
 }
-/* PNG 200×177 — мелкий: на большой ячейке плитка была бы крошечной,
-   поэтому тянем её вверх без потери гладкости (image-rendering — сглаженный) */
+/* картинка поверх плитки: ширина 300px, по центру (там же, addon content) */
 .media-cell img {
   display: block;
-  width: 78%;
-  max-width: 300px;
+  width: 300px;
+  max-width: 100%;
   height: auto;
-  max-height: 78%;
-  object-fit: contain;
   position: relative;
   z-index: 1;
 }
