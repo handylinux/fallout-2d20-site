@@ -677,11 +677,12 @@ body { background: transparent; }
    Внутри — поля 30px, контент 1370px (замеры #sp-main-body эталона).
    ========================================================================== */
 .site {
-  width: var(--f-content);
-  max-width: var(--f-site-max);
+  width: 100%;
+  max-width: 1425px;
   margin: 0 auto;
-  padding: 0 var(--f-site-pad);
+  padding: 0 27.5px;
 }
+html, body { overflow-x: hidden; }
 
 /* ============================================================================
    СТРАНИЦА ОРУЖИЯ (данные приложения-компаньона).
