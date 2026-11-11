@@ -182,8 +182,8 @@
     }).catch(function () { paint(notFound('Данные не загрузились'), 'Ошибка'); });
   }
 
+  /* первая отрисовка уже сделана предрендером; роутер включается при переходах */
+  if (app.getAttribute('data-prerendered') !== '1') { route(); }
   window.addEventListener('popstate', route);
-  if (document.readyState !== 'loading') { route(); } else {
-    document.addEventListener('DOMContentLoaded', route);
-  }
+
 }());

@@ -13,8 +13,8 @@ mkdir -p docs
 cp -a site/. docs/
 touch docs/.nojekyll
 
-# данные каталога + sitemap + оболочка на каждый адрес
+# данные каталога + sitemap + предрендер настоящих страниц
 BASE="$BASE_PATH" python3 tools/site/build_data.py
-python3 tools/site/build_router.py
+BASE="$BASE_PATH" node tools/site/prerender.js
 
 echo "готово: site/ + docs/ (BASE=$BASE_PATH)"

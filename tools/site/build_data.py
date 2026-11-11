@@ -143,21 +143,5 @@ def main():
         })
     write('search.json', {'items': rows})
 
-    # sitemap собирается сам из данных
-    urls = ['/']
-    for cat_slug, _title, group in cats:
-        urls.append('/snaryazhenie/oruzhie/%s/' % cat_slug)
-        urls += ['/snaryazhenie/oruzhie/%s/%s/' % (cat_slug, i['slug']) for i in group]
-    base = (os.environ.get('SITE_URL') or 'https://handylinux.github.io/fallout-2d20-site').rstrip('/')
-    lines = ['<?xml version="1.0" encoding="UTF-8"?>',
-             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
-    for url in sorted(set(urls)):
-        lines.append('  <url><loc>%s%s</loc></url>' % (base, url))
-    lines.append('</urlset>')
-    with open(os.path.join(ROOT, 'docs', 'sitemap.xml'), 'w', encoding='utf-8') as f:
-        f.write('\n'.join(lines) + '\n')
-    print('sitemap.xml            %d адресов' % len(set(urls)))
-
-
 if __name__ == '__main__':
     main()
