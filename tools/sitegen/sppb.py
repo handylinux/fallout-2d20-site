@@ -301,8 +301,8 @@ def overlay_html(settings, cls='sppb-addon-overlayer'):
 # с сеткой. Резервируем это место в padding кнопки и двигаем стрелку трансформом.
 CTA_CSS = """
 #%(sel)s .cta { transition: box-shadow .5s; }
-#%(sel)s .cta span:nth-child(2) { width: 20px; margin-left: 30px; margin-right: 45px; transition: transform .5s; }
-#%(sel)s .cta:hover span:nth-child(2) { margin-right: 45px; transform: translateX(45px) skewX(15deg); }
+#%(sel)s .cta span:nth-child(2) { margin-right: 0; transition: transform .5s; }
+#%(sel)s .cta:hover span:nth-child(2) { margin-right: 0; transform: translateX(6px) skewX(15deg); }
 """
 
 
@@ -505,6 +505,15 @@ class Renderer:
             css += '%s .sppb-addon-wrapper{text-align:%s;}' % (sel, s['items_content_alignment'])
         if str(s.get('items_align_center', 0)) in ('1', 'true'):
             css += '%s .sppb-column-addons{align-items:center;}' % sel
+        # границы колонки: в SPPB это use_border + border_width + boder_style + border_color
+        if str(s.get('use_border', 0)) in ('1', 'true'):
+            bw = s.get('border_width')
+            if isinstance(bw, dict):
+                bw = bw.get('xl')
+            style = s.get('boder_style') or s.get('border_style') or 'solid'
+            color = s.get('border_color') or '#6E6E6E'
+            if bw not in (None, ''):
+                css += '%s{border:%spx %s %s;}' % (sel, str(bw).replace('px', ''), style, color)
         if s.get('border_radius') not in (None, '', 0, '0'):
             css += num_responsive(sel, 'border-radius', s.get('border_radius'))
         bs = s.get('boxshadow')
