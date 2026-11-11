@@ -77,9 +77,12 @@ body {
 }
 
 /* ------------------------------------------------------------------- шапка  */
+/* Шапка = секция #sp-topmenu из дампа (jos_sppagebuilder id 101, «Fallout menu»):
+     section_height 100px, row padding 5px 0, background_type none,
+     логотипа внутри нет, 6 колонок по 16.666667%. */
 .site-header {
-  background: #000;
-  padding: 10px 0;
+  background: none;
+  padding: 5px 0;
   min-height: 100px;
   display: flex;
   align-items: center;
@@ -87,11 +90,18 @@ body {
 .site-header__inner {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 0;
+  position: relative;
 }
 .site-header__logo { display: block; flex: 0 0 auto; }
 .site-header__logo img { display: block; height: 60px; width: auto; }
-.site-header__menu { flex: 1 1 auto; min-width: 0; margin-left: 40px; }
+/* меню — по центру секции, 6 колонок по 16.666667% (columns_content_alignment: center) */
+.site-header__menu {
+  flex: 0 1 auto;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1370px;
+}
 
 /* верхнее меню */
 /* Плашки меню — копия секции #sp-topmenu эталона (jos_sppagebuilder id со sp-topmenu):
@@ -109,7 +119,8 @@ body {
   list-style: none;
 }
 .top-menu > li {
-  flex: 1 1 0;
+  flex: 0 0 16.666667%;
+  max-width: 16.666667%;
   min-width: 0;
   text-align: center;
 }
@@ -117,10 +128,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 46px;
-  padding: 10px 8px;
+  min-height: 0;
+  padding: 10px 0;
   font-family: var(--f-font-title);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   line-height: 16px;
   white-space: nowrap;
@@ -143,11 +154,7 @@ body {
 .top-menu li:nth-child(3) a { background-image: url("../img/plates/menu-item-bg-green2.png"); }
 .top-menu li:nth-child(4) a { background-image: url("../img/plates/menu-item-bg-pink.png"); }
 .top-menu li:nth-child(5) a { background-image: url("../img/plates/menu-item-bg-lblue.png"); padding-top: 15px; padding-bottom: 15px; }
-.top-menu li:nth-child(6) a { background-image: url("../img/plates/menu-item-bg-green.png"); }
-/* у нас 8 пунктов вместо 6 — дальше цикл цветов */
-.top-menu li:nth-child(7) a { background-image: url("../img/plates/menu-item-bg-lblue2.png"); }
-.top-menu li:nth-child(8) a { background-image: url("../img/plates/menu-item-bg-orange2.png"); }
-.site-header__menu { flex: 1 1 auto; min-width: 0; margin-left: 40px; }
+.top-menu li:nth-child(6) a { background-image: url("../img/plates/menu-item-bg-green.png"); padding-top: 15px; padding-bottom: 15px; }
 
 /* бургер */
 .burger {
