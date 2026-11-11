@@ -6,7 +6,7 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))
 SITE = os.path.join(ROOT, 'site')
-PORT = int(os.environ.get('PORT') or 8080)
+PORT = int(os.environ.get('PORT') or 8081)
 
 
 class Handler(SimpleHTTPRequestHandler):

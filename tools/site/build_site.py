@@ -289,6 +289,50 @@ def page_perks(nav_items):
     return page('Перки', body, '/perki/', nav_items)
 
 
+
+def page_layout(nav_items):
+    """Страница-эталон: все типы блоков каркаса рядом, для сверки глазами."""
+    sample = {'title': 'Пример', 'text': 'Короткое описание в одну-две строки.',
+              'image': '', 'url': '#'}
+    parts = ['<h1 class="page__title">Эталон раскладки</h1>']
+
+    parts.append('<h2>1. Одна строка происхождений: 4 элемента</h2>')
+    parts.append('<div class="row row--origins">%s</div>' % (
+        origin_media(sample) + origin_plate(sample) +
+        origin_media(sample) + origin_plate(sample)))
+
+    parts.append('<h2>2. Два столбца: слева картинка, справа текст</h2>')
+    parts.append('<div class="row row--1-2">%s<div class="cell"><p>Текст справа от картинки.</p></div></div>'
+                 % origin_media(sample))
+
+    parts.append('<h2>3. Три столбца (ячейки)</h2>')
+    parts.append('<div class="row row--3">%s</div>' % (
+        '<div class="cell"><p>Ячейка 1</p></div>'
+        '<div class="cell"><p>Ячейка 2</p></div>'
+        '<div class="cell"><p>Ячейка 3</p></div>'))
+
+    parts.append('<h2>4. Четыре столбца</h2>')
+    parts.append('<div class="row row--4">%s</div>' % ''.join(
+        '<div class="cell"><p>Колонка %d</p></div>' % i for i in range(1, 5)))
+
+    parts.append('<h2>5. Хаб из плиток: 3 столбца</h2>')
+    parts.append(tiles([{'title': 'Оружие', 'url': '#'},
+                        {'title': 'Броня', 'url': '#'},
+                        {'title': 'Еда', 'url': '#'}]))
+
+    parts.append('<h2>6. Таблица на div: 4 столбца → 2×N на мобильном</h2>')
+    parts.append(dtable(['Оружие', 'Урон', 'Вес', 'Цена'],
+                        [['10-мм пистолет', '1DC', '1', '100'],
+                         ['Лазерный пистолет', '2DC', '2', '120']]))
+
+    parts.append('<h2>7. Вложенный спойлер</h2>')
+    parts.append(spoiler('Внешний спойлер',
+                         spoiler('Внутренний спойлер', '<p>Текст внутри.</p>') +
+                         '<p>Текст на уровне внешнего.</p>', open_=True))
+
+    return page('Эталон раскладки', '\n'.join(parts), '', nav_items)
+
+
 def write(path, content):
     full = os.path.join(OUT, path)
     os.makedirs(os.path.dirname(full), exist_ok=True)
@@ -318,6 +362,9 @@ def main():
                              '/', nav_items))
     write('proiskhozhdeniya/index.html', page_origins(nav_items))
     write('perki/index.html', page_perks(nav_items))
+    # страница-эталон не публикуется в docs/, только для локальной сверки
+    if os.environ.get('DEMO'):
+        write('layout/index.html', page_layout(nav_items))
 
     # заглушки для всех пунктов меню, чтобы ссылки не давали 404
     titles = {}

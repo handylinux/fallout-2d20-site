@@ -302,7 +302,12 @@ h1, h2, h3, h4, h5, h6 {
   height: auto;
 }
 /* когда файла картинки нет — просто фон, без пустой рамки */
-.media-cell--empty { min-height: 200px; }
+.media-cell--empty {
+  min-height: 200px;
+  background-image: url("/assets/img/food-truck-pattern.jpg");
+  background-size: auto;
+  background-repeat: repeat;
+}
 
 /* ------------------------------------------------------------ текст в ячейке */
 .cell__title {
