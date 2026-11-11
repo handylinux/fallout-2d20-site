@@ -746,12 +746,18 @@ body { background: transparent; }
 .armor__part { min-width: 0; text-align: center; }
 .armor__part-title { margin: 0 0 8px; font-size: 1rem; font-weight: 700;
   letter-spacing: .09em; text-transform: uppercase; }
+/* границы как в образце: внешняя рамка чёрная, разделители строк внутри —
+   под чёрной подписью светлые, под бежевым значением чёрные */
 .armor__stats { margin: 0 auto; width: 100%; max-width: 210px;
   border-collapse: collapse; border: 1px solid #000; }
 .armor__stats th, .armor__stats td { padding: 2px 7px; font-size: 12.5px;
-  line-height: 1.5; border: 1px solid #000; }
-.armor__stats th { background: #000; color: #fff; text-align: left; font-weight: 700; }
-.armor__stats td { width: 34px; background: #f6e6b6; text-align: center; }
+  line-height: 1.5; border: 0; }
+.armor__stats th { background: #000; color: #fff; text-align: left; font-weight: 700;
+  border-bottom: 1px solid #dedede; }
+.armor__stats tr:last-child th { border-bottom: 0; }
+.armor__stats td { width: 34px; background: #ffebcd; text-align: center;
+  border-bottom: 1px solid #000; }
+.armor__stats tr:last-child td { border-bottom: 0; }
 
 /* абзацы */
 .armor__desc { margin-top: 4px; }
