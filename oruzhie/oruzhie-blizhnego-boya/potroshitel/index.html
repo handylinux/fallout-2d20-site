@@ -60,12 +60,23 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
 }
 
-/* ---------------------------------------------------------------- контейнер */
-.container {
+/* ---------------------------------------------------------------- контейнер
+   Свой класс .wrap — не пересекается с .container из Bootstrap.
+   -------------------------------------------------------------------------- */
+.wrap {
   width: 100%;
   max-width: var(--f-container);
   margin: 0 auto;
   padding: 0 15px;
+}
+
+/* фон сайта: держим на html и body, без привязки к прокрутке
+   (на мобильных и в Safari fixed-фон часто не рисуется) */
+html {
+  background: var(--f-page-bg) url("/fallout-2d20-site/assets/img/bg-main.jpg") no-repeat center top / cover;
+}
+body {
+  background: transparent;
 }
 
 /* ------------------------------------------------------------------- шапка  */
@@ -578,7 +589,7 @@ h1, h2, h3, h4, h5, h6 {
 </head>
 <body>
 <header class="site-header">
-  <div class="container site-header__inner">
+  <div class="wrap site-header__inner">
     <a class="site-header__logo" href="/fallout-2d20-site/"><img src="/fallout-2d20-site/assets/img/logos.png" alt="Fallout 2D20"></a>
     <nav class="site-header__menu" aria-label="Основное меню"><ul class="top-menu"><li><a href="/fallout-2d20-site/">Главная</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/">Происхождения</a></li><li><a href="/fallout-2d20-site/snaryazhenie/">Снаряжение</a></li><li><a href="/fallout-2d20-site/perki/">Перки</a></li><li><a href="/fallout-2d20-site/bestiarij/">Бестиарий</a></li><li><a href="/fallout-2d20-site/forum/">Форум</a></li></ul></nav>
     <button class="burger" type="button" aria-label="Открыть меню" aria-controls="drawer">
@@ -599,7 +610,7 @@ h1, h2, h3, h4, h5, h6 {
 </aside>
 
 <main class="page">
-  <div class="container">
+  <div class="wrap">
 <h1 class="page__title">Потрошитель</h1>
 <p class="page__lead">Страница ещё не перенесена в новый каркас.</p>
 <p class="page__lead"><a href="/fallout-2d20-site/">На главную</a></p>
@@ -608,7 +619,7 @@ h1, h2, h3, h4, h5, h6 {
 </main>
 
 <footer class="site-footer">
-  <div class="container">
+  <div class="wrap">
     <p class="site-footer__text">Fallout 2D20 — настольная ролевая игра по мотивам Fallout от
       Modiphius Entertainment. Неофициальный русскоязычный сайт.</p>
   </div>
