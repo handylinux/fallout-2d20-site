@@ -37,9 +37,7 @@ body {
   font-size: 16px;
   line-height: 1.5;
   color: var(--f-ink);
-  background: var(--f-page-bg) url("/assets/img/bg-main.jpg") no-repeat center top;
-  background-size: cover;
-  background-attachment: fixed;
+  background-color: var(--f-page-bg);
 }
 
 a { color: var(--f-link); text-decoration: none; }
@@ -63,11 +61,6 @@ h1, h2, h3, h4, h5, h6 {
   padding: 0 15px;
 }
 
-/* фон сайта: держим на html и body, без привязки к прокрутке
-   (на мобильных и в Safari fixed-фон часто не рисуется) */
-html {
-  background: var(--f-page-bg) url("/assets/img/bg-main.jpg") no-repeat center top / cover;
-}
 body {
   background: transparent;
 }
@@ -578,3 +571,20 @@ body {
 @media (max-width: 767.98px) {
   .origins-row > [class*="col-"] { flex: 0 0 100%; max-width: 100%; }
 }
+
+
+/* ============================================================================
+   ФОН САЙТА.
+   Файл bg-main.jpg на самом деле WebP, но с расширением .jpg: GitHub Pages
+   отдаёт его как image/jpeg, и браузер такой фон не рисует. Поэтому картинка
+   встроена в CSS как data URI — тогда MIME-тип файла не имеет значения.
+   ========================================================================== */
+html {
+  background-color: var(--f-page-bg);
+  background-image: url("__BG_DATA_URI__");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center top;
+  background-attachment: fixed;
+}
+body { background: transparent; }
