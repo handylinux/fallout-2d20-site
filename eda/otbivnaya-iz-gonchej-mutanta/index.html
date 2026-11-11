@@ -1025,15 +1025,16 @@ html, body { overflow-x: hidden; }
   text-transform: uppercase;
 }
 .sp-row { width: 100%; }
+/* сетка как в теме: 1370 контента, между колонками 30px (по 15px с каждой),
+   карточка 4+4+4 = 426.664 */
 .sp-row__inner {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
-  gap: 20px;
   max-width: 1370px;
-  margin: 0 auto;
+  margin: 0 -15px;
 }
-.sp-col { min-width: 0; }
+.sp-col { min-width: 0; padding: 0 15px; }
 
 /* заголовки */
 .sp-heading { margin: 6px 0; font-weight: 700; }
@@ -1210,7 +1211,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <main class="page">
   <div class="wrap">
-<div class="sp-page"><h1 class="sp-page__title">Отбивная из гончей мутанта</h1><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:75px 0px 75px 0px"><div class="sp-col" style="flex:0 0 100%;max-width:100%"><h4 class="sp-heading">Назад в категорию: Еда</h4><h2 class="sp-heading">Отбивная из гончей мутанта</h2></div></div></section><section class="sp-row sp-row--4-8"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col" style="flex:0 0 66.666667%;max-width:66.666667%"><div class="sp-text"><p>Приготовленный кусок мяса гончей-мутанта, чтобы сделать его более безопасным для употребления. </p><p>По неизвестным причинам, после приготовления мясо помогает поглотить радиацию, уже попавшую в организм, ослабляя последствия радиационного отравления. Этот эффект не сравнится с такими противорадиационными препаратами как "АнтиРадин", но иметь под рукой несколько штук, чтобы поглотить радиацию, полученную во время экспедиции, может быть полезно.</p></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:15px 0px 15px 0px"><div class="sp-col" style="flex:0 0 100%;max-width:100%"><div class="sp-table-wrap"><table class="sp-table"><thead><tr><th><p>НАЗВАНИЕ</p></th><th><p>ВОСПОЛНЯЕТ ЖИЗНЕЙ</p></th><th><p>ПРОЧИЕ ЭФФЕКТЫ</p></th><th><p>ОБЛУЧЕНА?</p></th><th><p>ВЕС</p></th><th><p>ЦЕНА</p></th><th><p>РЕДКОСТЬ</p></th></tr></thead><tbody><tr><td><p>Отбивная из гончей мутанта</p></td><td><p>8</p></td><td><p>Лечит 2 урона от радиации</p></td><td><p>-</p></td><td><p>&lt;1</p></td><td><p>12</p></td><td><p>3</p></td></tr></tbody></table></div></div></div></section></div>
+<div class="sp-page"><h1 class="sp-page__title">Отбивная из гончей мутанта</h1><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:75px 0px 75px 0px"><div class="sp-col" style="flex:0 0 100%;max-width:100%"><h4 class="sp-heading">Назад в категорию: Еда</h4><h2 class="sp-heading">Отбивная из гончей мутанта</h2></div></div></section><section class="sp-row sp-row--4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col" style="flex:0 0 66.666667%;max-width:66.666667%"><div class="sp-text"><p>Приготовленный кусок мяса гончей-мутанта, чтобы сделать его более безопасным для употребления. </p><p>По неизвестным причинам, после приготовления мясо помогает поглотить радиацию, уже попавшую в организм, ослабляя последствия радиационного отравления. Этот эффект не сравнится с такими противорадиационными препаратами как "АнтиРадин", но иметь под рукой несколько штук, чтобы поглотить радиацию, полученную во время экспедиции, может быть полезно.</p></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:15px 0px 15px 0px"><div class="sp-col" style="flex:0 0 100%;max-width:100%"><div class="sp-table-wrap"><table class="sp-table"><thead><tr><th><p>НАЗВАНИЕ</p></th><th><p>ВОСПОЛНЯЕТ ЖИЗНЕЙ</p></th><th><p>ПРОЧИЕ ЭФФЕКТЫ</p></th><th><p>ОБЛУЧЕНА?</p></th><th><p>ВЕС</p></th><th><p>ЦЕНА</p></th><th><p>РЕДКОСТЬ</p></th></tr></thead><tbody><tr><td><p>Отбивная из гончей мутанта</p></td><td><p>8</p></td><td><p>Лечит 2 урона от радиации</p></td><td><p>-</p></td><td><p>&lt;1</p></td><td><p>12</p></td><td><p>3</p></td></tr></tbody></table></div></div></div></section></div>
   </div>
 </main>
 
@@ -1224,6 +1225,6 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <script src="/fallout-2d20-site/assets/vendor/bootstrap.bundle.min.js"></script>
 <script src="/fallout-2d20-site/assets/js/search.js"></script>
-<script src="/fallout-2d20-site/assets/js/site.js?v=e6653915"></script>
+<script src="/fallout-2d20-site/assets/js/site.js?v=53dfa83e"></script>
 </body>
 </html>
