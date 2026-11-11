@@ -314,9 +314,17 @@ def render_tree(tree):
             continue
         pad = px((row.get('settings') or {}).get('padding'))
         style = ' style="padding:%s"' % pad if pad else ''
-        layout = str(row.get('layout') or len(parts))
+        # в дампе layout — раскладка Bootstrap: "4+4+4" = три колонки по 4
+        layout = str(row.get('layout') or '')
+        cols = [int(x) for x in re.findall(r'\d+', layout)]
+        if not cols:
+            per = max(1, round(12 / max(1, len(parts))))
+            cols = [per] * len(parts)
+        elif len(cols) == 1:
+            cols = cols * len(parts)
+        mods = '-'.join(str(c) for c in cols[:max(1, len(parts))])
         out.append('<section class="sp-row sp-row--%s"><div class="sp-row__inner"%s>%s</div></section>'
-                   % (re.sub(r'\D', '-', layout).strip('-'), style, ''.join(parts)))
+                   % (mods or '12', style, ''.join(parts)))
     return ''.join(out)
 
 
