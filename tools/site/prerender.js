@@ -16,6 +16,9 @@ const TEMPLATE = path.join(ROOT, 'src', 'site', 'template.html');
 /* ---------------------------------------------------------------- мини-DOM */
 function makeNode(tag) {
   const node = {
+    src: '',
+    alt: '',
+    loading: '',
     tagName: tag,
     children: [],
     attrs: {},
@@ -58,6 +61,9 @@ function serialize(node) {
 
   let out = '<' + tag;
   if (node.className) { out += ' class="' + esc(node.className) + '"'; }
+  ['src', 'alt', 'loading'].forEach((name) => {
+    if (node[name]) { out += ' ' + name + '="' + esc(node[name]) + '"'; }
+  });
   Object.keys(node.attrs).forEach((name) => {
     out += ' ' + name + '="' + esc(node.attrs[name]) + '"';
   });

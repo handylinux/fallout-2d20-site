@@ -74,22 +74,27 @@
     frag.appendChild(C.back(item.back || '/bronya/', item.backText || 'Назад в категорию: Броня'));
     frag.appendChild(C.el('h1', 'page__title', item.name || ''));
 
+    /* Две колонки, как на эталоне: слева картинка, справа все данные. */
+    var row = C.el('div', 'wcard__row armor__row');
+    var media = C.el('div', 'wcard__media armor__media');
     if (item.image) {
-      var media = C.el('div', 'armor__media');
       var img = document.createElement('img');
-      img.className = 'armor__img';
+      img.className = 'wcard__img armor__img';
       img.src = C.href(item.image);
       img.alt = item.name || '';
-      img.loading = 'lazy';
       media.appendChild(img);
-      frag.appendChild(media);
+    } else {
+      media.className += ' wcard__media--empty';
     }
+    row.appendChild(media);
 
-    /* части брони: каждая — заголовок + таблица характеристик */
+    var side = C.el('div', 'armor__data');
     (item.pieces || []).forEach(function (piece) {
-      frag.appendChild(C.el('h2', 'armor__part', piece.area || piece.areaName || ''));
-      frag.appendChild(statsTable(piece.stats));
+      side.appendChild(C.el('h2', 'armor__part', piece.area || piece.areaName || ''));
+      side.appendChild(statsTable(piece.stats));
     });
+    row.appendChild(side);
+    frag.appendChild(row);
 
     if (item.description) {
       frag.appendChild(C.el('p', 'armor__text', item.description));
