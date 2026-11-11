@@ -29,8 +29,11 @@
   --f-font: Helvetica, Arial, sans-serif;
   --f-font-title: Arial, Helvetica, sans-serif;
 
-  --f-site-max: 1600px;   /* максимальная ширина сайта */
-  --f-content: 80%;       /* контент занимает 80% ширины сайта */
+  /* Ширина сайта — как на fallout-2d20.ru: .container max-width 1400px
+     (инлайн-правило страницы поверх bootstrap), по центру. Прежние
+     80%/1600px отменены: в сохранённых страницах таких значений нет. */
+  --f-site-max: 1400px;
+  --f-content: 100%;
   --f-gap: 20px;
 }
 
@@ -618,12 +621,13 @@ body { background: transparent; }
 
 /* ============================================================================
    ШИРИНА САЙТА.
-   До 1600px: сайт = 100% окна, контент = 80% ширины сайта.
-   Свыше 1600px: сайт фиксируется на 1600px и центрируется.
+   Сайт = 100% окна до 1400px, свыше — фиксируется на 1400px и центрируется.
+   Значение снято с живого сайта: `.container,.sppb-row-container{max-width:1400px}`
+   в инлайн-стилях каждой страницы (перекрывает bootstrap-ные 1320px).
    ========================================================================== */
 .site {
-  width: var(--f-content);          /* 80% от ширины окна */
-  max-width: var(--f-site-max);     /* но не шире 1600px */
+  width: var(--f-content);
+  max-width: var(--f-site-max);
   margin: 0 auto;
 }
 
@@ -930,6 +934,6 @@ body { background: transparent; }
 
 <script src="/fallout-2d20-site/assets/vendor/bootstrap.bundle.min.js"></script>
 <script src="/fallout-2d20-site/assets/js/search.js"></script>
-<script src="/fallout-2d20-site/assets/js/site.js?v=4d54830c"></script>
+<script src="/fallout-2d20-site/assets/js/site.js?v=ea30a27d"></script>
 </body>
 </html>
