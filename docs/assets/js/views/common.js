@@ -41,7 +41,7 @@
     var media = C.el('div', 'tile__media' + (opts.image ? '' : ' tile__media--empty'));
     if (opts.image) {
       var img = document.createElement('img');
-      img.src = opts.image;
+      img.src = C.href(opts.image);
       img.alt = opts.title;
       img.loading = 'lazy';
       media.appendChild(img);

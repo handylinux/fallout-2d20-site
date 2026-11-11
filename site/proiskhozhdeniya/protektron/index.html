@@ -713,6 +713,22 @@ body { background: transparent; }
   .site-search__btn { width: 38px; height: 38px; }
   .site-search__panel { position: fixed; left: 5vw; right: 5vw; top: 70px; width: auto; }
 }
+
+/* ============================================================================
+   ТИПЫ СТРАНИЦ. Наборы блоков, из которых собираются разные страницы.
+   ========================================================================== */
+.page__date { margin: 0 0 16px; color: #8a8a8a; font-size: .9rem; }
+.rich-block { margin: 0 0 20px; padding: 22px 24px; font-size: 16px; line-height: 1.6; }
+.rich-block:last-child { margin-bottom: 0; }
+.rich-block .cell__title { margin: 0 0 12px; }
+.rich-block .cell__text { margin: 0 0 10px; }
+.rich-block .cell__text:last-child { margin-bottom: 0; }
+
+/* спойлер общего вида (данные «block.type = spoiler») */
+.spoiler { border: 1px solid var(--f-plate-line); background: rgba(255, 255, 255, .55);
+  margin: 0 0 10px; }
+.spoiler:last-child { margin-bottom: 0; }
+.spoiler__summary { padding: 10px 14px; cursor: pointer; font-weight: 700; }
 </style>
 </head>
 <body data-base="/fallout-2d20-site">

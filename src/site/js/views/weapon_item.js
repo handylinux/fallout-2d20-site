@@ -23,7 +23,7 @@
       var media = C.el('div', 'wcard__media');
       var img = document.createElement('img');
       img.className = 'wcard__img';
-      img.src = item.image;
+      img.src = C.href(item.image);
       img.alt = item.name;
       media.appendChild(img);
       row.appendChild(media);
