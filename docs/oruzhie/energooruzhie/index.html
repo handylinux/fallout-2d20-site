@@ -380,7 +380,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
   height: 100%;
+  min-height: 340px;
   padding: 20px 0;
   border: 0;
   background-color: transparent;
@@ -392,6 +394,7 @@ body {
   background-image: var(--f-media-bg, none);
   background-repeat: no-repeat;
   background-position: 50% 50%;
+  background-size: contain;
   background-attachment: scroll;
 }
 /* картинка поверх плитки: ширина 300px, по центру (там же, addon content) */
@@ -407,6 +410,7 @@ body {
 
 
 /* ------------------------------------------------------------ текст в ячейке */
+.origins-row .cell--shadow { width: 100%; padding: 24px 18px 30px; }
 .cell__title {
   margin: 0 0 20px;
   font-size: 1.6rem;
@@ -568,15 +572,12 @@ body {
 }
 .cta:hover .cta__arrow { transform: translateX(6px); }
 .cta__arrow path { transition: transform .4s, fill 1s; }
-.cta__arrow .a1 { transform: translateX(8px); }
-.cta__arrow .a2 { transform: translateX(0); }
-.cta:hover .cta__arrow .a1,
-.cta:hover .cta__arrow .a2 { transform: translateX(0); }
-.cta__arrow .a2 { transform: translateX(-30%); }
-.cta__arrow .a1 { transform: translateX(-60%); }
-.cta:hover .cta__arrow .a1,
-.cta:hover .cta__arrow .a2 { transform: translateX(0); }
-.cta:hover .cta__arrow path { animation: cta-color 1s infinite .3s; }
+/* стрелка-шеврон из трёх полос: в покое видны все три, при hover выезжают */
+.cta__arrow .a1,
+.cta__arrow .a2,
+.cta__arrow .a3 { transform: translateX(0); }
+.cta:hover .cta__arrow .a1 { transform: translateX(-10px); }
+.cta:hover .cta__arrow .a2 { transform: translateX(-5px); }
 
 @keyframes cta-color {
   0%   { fill: #fff; }
@@ -1038,14 +1039,14 @@ html, body { overflow-x: hidden; }
 .sp-row__inner {
   display: flex;
   flex-wrap: wrap;
-  align-items: stretch;
+  align-items: flex-start;
   max-width: 1370px;
   margin: 0 -15px;
 }
 .sp-col { min-width: 0; padding: 0 15px; position: relative; }
 /* внутренний блок колонки (.sppb-column в теме): фон, рамка, отступы.
    Гуттер 15px остаётся снаружи — поэтому карточки не разъезжаются. */
-.sp-col__inner { position: relative; height: 100%; background-clip: padding-box; }
+.sp-col__inner { position: relative; background-clip: padding-box; }
 .sp-col__body { position: relative; z-index: 1; }
 .sp-col__overlay {
   position: absolute;
@@ -1055,8 +1056,8 @@ html, body { overflow-x: hidden; }
 }
 .sp-col--center > .sp-col__body { text-align: center; }
 .sp-col--center > .sp-col__body .sp-img { display: flex; justify-content: center; }
-.sp-col--vcenter > .sp-col__body { display: flex; flex-direction: column; justify-content: center; height: 100%; }
-.sp-col__inner[style*="border:"] > .sp-col__body { height: 100%; }
+.sp-col--vcenter > .sp-col__body { display: flex; flex-direction: column; justify-content: center; }
+
 
 /* заголовки */
 .sp-heading { margin: 6px 0; font-weight: 700; }
@@ -1080,10 +1081,25 @@ h4.sp-heading { font-size: 20px; }
 .sp-text th, .sp-text td { border: 1px solid #757575; padding: 6px 10px; }
 
 /* картинки */
-.sp-img { display: block; text-align: center; padding: 20px 0; }
+.sp-img { display: block; text-align: center; padding: 20px 0; margin: 0; }
+.sp-col__inner .sp-raw { padding-top: 60px; margin: 0; }
 .sp-img img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
 /* у карточки хаба картинка ровно 200px, как в дампе (image_width xl=200) */
-.sp-col__inner .sp-img img[style*="max-width:200px"] { width: 200px; }
+/* картинка карточки: одна и та же область 200×200 (как image_width в дампе),
+   поэтому карточки в ряду выходят одинаковыми без пустот */
+.sp-col__inner .sp-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  padding: 0;
+}
+.sp-col__inner .sp-img img {
+  width: auto;
+  max-width: 200px;
+  max-height: 200px;
+  object-fit: contain;
+}
 
 /* таблицы из table_advanced */
 .sp-table-wrap { overflow-x: auto; }
@@ -1453,6 +1469,6 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <script src="/fallout-2d20-site/assets/vendor/bootstrap.bundle.min.js"></script>
 <script src="/fallout-2d20-site/assets/js/search.js"></script>
-<script src="/fallout-2d20-site/assets/js/site.js?v=a478aaca"></script>
+<script src="/fallout-2d20-site/assets/js/site.js?v=a918ab36"></script>
 </body>
 </html>
