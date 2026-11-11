@@ -174,12 +174,12 @@ body {
   transform: scale(1.05);
 }
 /* порядок текстур как в дампе */
-.top-menu li:nth-child(1) a { background-image: url("../img/plates/menu-item-bg-lblue2.png"); }
-.top-menu li:nth-child(2) a { background-image: url("../img/plates/menu-item-bg-orange2.png"); padding-bottom: 15px; }
-.top-menu li:nth-child(3) a { background-image: url("../img/plates/menu-item-bg-green2.png"); }
-.top-menu li:nth-child(4) a { background-image: url("../img/plates/menu-item-bg-pink.png"); }
-.top-menu li:nth-child(5) a { background-image: url("../img/plates/menu-item-bg-lblue.png"); padding-top: 15px; padding-bottom: 15px; }
-.top-menu li:nth-child(6) a { background-image: url("../img/plates/menu-item-bg-green.png"); padding-top: 15px; padding-bottom: 15px; }
+.top-menu li:nth-child(1) a { background-image: url("/fallout-2d20-site/assets/img/plates/menu-item-bg-lblue2.png"); }
+.top-menu li:nth-child(2) a { background-image: url("/fallout-2d20-site/assets/img/plates/menu-item-bg-orange2.png"); padding-bottom: 15px; }
+.top-menu li:nth-child(3) a { background-image: url("/fallout-2d20-site/assets/img/plates/menu-item-bg-green2.png"); }
+.top-menu li:nth-child(4) a { background-image: url("/fallout-2d20-site/assets/img/plates/menu-item-bg-pink.png"); }
+.top-menu li:nth-child(5) a { background-image: url("/fallout-2d20-site/assets/img/plates/menu-item-bg-lblue.png"); padding-top: 15px; padding-bottom: 15px; }
+.top-menu li:nth-child(6) a { background-image: url("/fallout-2d20-site/assets/img/plates/menu-item-bg-green.png"); padding-top: 15px; padding-bottom: 15px; }
 
 /* бургер */
 .burger {
@@ -1043,6 +1043,9 @@ html, body { overflow-x: hidden; }
   margin: 0 -15px;
 }
 .sp-col { min-width: 0; padding: 0 15px; position: relative; }
+/* внутренний блок колонки (.sppb-column в теме): фон, рамка, отступы.
+   Гуттер 15px остаётся снаружи — поэтому карточки не разъезжаются. */
+.sp-col__inner { position: relative; height: 100%; background-clip: padding-box; }
 .sp-col__body { position: relative; z-index: 1; }
 .sp-col__overlay {
   position: absolute;
@@ -1052,9 +1055,8 @@ html, body { overflow-x: hidden; }
 }
 .sp-col--center > .sp-col__body { text-align: center; }
 .sp-col--center > .sp-col__body .sp-img { display: flex; justify-content: center; }
-.sp-col--vcenter > .sp-col__body { display: flex; flex-direction: column; justify-content: center; }
-/* подложка карточки хаба: рамка у колонки, своего фона у неё нет */
-.sp-col[style*="border:"] > .sp-col__body { height: 100%; }
+.sp-col--vcenter > .sp-col__body { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+.sp-col__inner[style*="border:"] > .sp-col__body { height: 100%; }
 
 /* заголовки */
 .sp-heading { margin: 6px 0; font-weight: 700; }
@@ -1068,14 +1070,20 @@ h4.sp-heading { font-size: 20px; }
 /* текст */
 .sp-text { font-size: 16px; line-height: 1.55; }
 .sp-text p { margin: 0 0 .8em; }
-.sp-text ul, .sp-text ol { margin: 0 0 .8em 1.2em; padding: 0; }
+/* списки в тексте — как в теме: без маркеров и внешних отступов,
+   по центру (в дампе у колонки .sppb-addon-wrapper{text-align:center}) */
+.sp-text ul, .sp-text ol { margin: 0 0 .8em; padding: 0; list-style: none; }
+.sp-text li { margin: 0 0 2px; }
+.sp-col--center .sp-text ul, .sp-col--center .sp-text ol { margin-left: 0; }
 .sp-text a { color: #b15b23; }
 .sp-text table { width: 100%; border-collapse: collapse; margin: 0 0 .8em; }
 .sp-text th, .sp-text td { border: 1px solid #757575; padding: 6px 10px; }
 
 /* картинки */
-.sp-img { display: block; text-align: center; }
+.sp-img { display: block; text-align: center; padding: 20px 0; }
 .sp-img img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+/* у карточки хаба картинка ровно 200px, как в дампе (image_width xl=200) */
+.sp-col__inner .sp-img img[style*="max-width:200px"] { width: 200px; }
 
 /* таблицы из table_advanced */
 .sp-table-wrap { overflow-x: auto; }
@@ -1231,7 +1239,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <main class="page">
   <div class="wrap">
-<div class="sp-page"><h1 class="sp-page__title">ИЗГОЙ БРАТСТВА</h1><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:0px 0px 0px 0px"><div class="sp-col sp-col--center" style="flex:0 0 100%;max-width:100%"><div class="sp-col__body"><div class="sp-text"><p>Несмотря на все их героические образы, всю их помпезность и обстоятельства, Братство Стали не являются хорошими парнями. Они появляются в небе на Винтокрылах, одетые в сверкающие доспехи и несущие оружие, которое посылает вспышки света через поле битвы, чтобы выжечь зло из Пустошей - или они хотят, чтобы вы так думали. В то время как Братство считается гуманистами в некоторых частях Пустоши, в других его воспринимают как жадных до технологий грубиянов, больше озабоченных тем, чтобы заполучить в свои руки технологии старого мира и уничтожить местных супермутантов, чем помочь тем, кто в этом нуждается.</p><p>Многие члены выступали за миссию братства по обнаружению и изъятию утраченных довоенных технологий, когда местное руководство отклонилось от курса, невзирая на причину. Эти люди используют все накопленные ими знания, применяя их так, как они считают нужным. Некоторые даже продолжают миссию Братства самостоятельно. Многие становятся чем-то вроде странствующего инженера, используя свое знание о технологиях старого мира, чтобы помочь отремонтировать уцелевшие системы или помочь, где это возможно. Другие играют более активную роль, используя свою военную хватку и всю мощью лазерной винтовки, для защиты других от неконтролируемых технологий и тех, кто стремится их использовать.</p></div></div></div></div></section><section class="sp-row sp-row--6-6"><div class="sp-row__inner" style="padding:25px 0px 15px 0px"><div class="sp-col sp-col--center" style="flex:0 0 50%;max-width:50%"><div class="sp-col__body" style="padding:5px 5px 5px 5px"><div class="sp-acc"><details class="sp-acc__item"><summary class="sp-acc__head">ЭКС-РЫЦАРЬ</summary><div class="sp-acc__body"><div class="sp-inner-row"></div></div></details></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 50%;max-width:50%"><div class="sp-col__body" style="padding:5px 5px 5px 5px"><div class="sp-acc"><details class="sp-acc__item"><summary class="sp-acc__head">ЭКС-ПИСЕЦ</summary><div class="sp-acc__body"><div class="sp-inner-row"></div></div></details></div></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 100%;max-width:100%"><div class="sp-col__body"><div class="sp-text"><p><br></p><div class="sp-table-wrap"><table class="sp-table"><thead><tr><th scope="col"><h6><span>D20</span></h6></th><th scope="col"><h6><span>ЭФФЕКТ</span></h6></th></tr></thead><tbody><tr><td scope="row">1</td><td scope="row">Элитный набор инструментов</td></tr><tr><td>2</td><td scope="row">Фонарик</td></tr><tr><td>3</td><td scope="row">Копия журнала "Чиним вещи"</td></tr><tr><td>4</td><td scope="row">1 Антибиотики</td></tr><tr><td>5</td><td scope="row">Крышкомина</td></tr><tr><td>6</td><td scope="row">Радио</td></tr><tr><td>7</td><td scope="row">Нагрудник Боевой Брони</td></tr><tr><td>8</td><td scope="row">Карта с тайником выживальщиков старого мира</td></tr><tr><td>9</td><td scope="row">1 Стимпак</td></tr><tr><td>10</td><td scope="row">Наруч Боевой брони</td></tr><tr><td>11</td><td scope="row">Понож Боевой брони</td></tr><tr><td>12</td><td scope="row">Массив сенсоров</td></tr><tr><td>13</td><td scope="row">Рюкзак, маленький</td></tr><tr><td>14</td><td scope="row">Меч</td></tr><tr><td>15</td><td scope="row">Лазерный мушкет</td></tr><tr><td>16</td><td scope="row">1 Антирадин</td></tr><tr><td>17</td><td scope="row">Боевой дробовик</td></tr><tr><td>18</td><td scope="row">Силовой кулак</td></tr><tr><td>19</td><td scope="row">Крепкий Шлем Боевой брони</td></tr><tr><td>20</td><td scope="row">Пип-Бой</td></tr></tbody></table></div></div></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:0px 0px 0px 0px"><div class="sp-col sp-col--center" style="flex:0 0 100%;max-width:100%"><div class="sp-col__body"><div class="sp-text"><p>Более воинственно настроенный, чем некоторые изгои, вы отправились на пустошь с такой огневой мощью и защитой, какую только могли стащить, готовый встать между теми, кто нуждается в вашей помощи, и теми, кто ищет кровь.</p><ul><li>Лазерная винтовка и 8 + 6 {/CD} энергоячеек</li><li>Поношенная форма Братства Стали</li><li>Военная фляжка, заполненная водой</li><li>2 броска по таблице снаряжения Отступника</li><li>10 крышек</li></ul></div></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner"><div class="sp-col sp-col--center" style="flex:0 0 100%;max-width:100%"><div class="sp-col__body"><div class="sp-text"><p>У вас есть склонность к механике, а не к военному ремеслу. Когда вы покинули Братство, вы взяли с собой самое ценное, что могли взять с собой, - ваши знания, и в сочетании с теми немногими мелочами, которые вам удалось тайно вывезти, вы сумели достаточно хорошо экипироваться, чтобы путешествовать по дорогам до сих пор.</p><ul><li>Лазерный пистолет и 8 + 4 {/CD} Энергоячеек</li><li>Поношенная броня писца Братства</li><li>Мультитул</li><li>3 броска по таблице снаряжения Отступника</li><li>15 крышек</li></ul></div></div></div></div></section></div>
+<div class="sp-page"><h1 class="sp-page__title">ИЗГОЙ БРАТСТВА</h1><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:0px 0px 0px 0px"><div class="sp-col" style="flex:0 0 100%;max-width:100%"><div class="sp-col__inner sp-col--center"><div class="sp-col__body"><div class="sp-text"><p>Несмотря на все их героические образы, всю их помпезность и обстоятельства, Братство Стали не являются хорошими парнями. Они появляются в небе на Винтокрылах, одетые в сверкающие доспехи и несущие оружие, которое посылает вспышки света через поле битвы, чтобы выжечь зло из Пустошей - или они хотят, чтобы вы так думали. В то время как Братство считается гуманистами в некоторых частях Пустоши, в других его воспринимают как жадных до технологий грубиянов, больше озабоченных тем, чтобы заполучить в свои руки технологии старого мира и уничтожить местных супермутантов, чем помочь тем, кто в этом нуждается.</p><p>Многие члены выступали за миссию братства по обнаружению и изъятию утраченных довоенных технологий, когда местное руководство отклонилось от курса, невзирая на причину. Эти люди используют все накопленные ими знания, применяя их так, как они считают нужным. Некоторые даже продолжают миссию Братства самостоятельно. Многие становятся чем-то вроде странствующего инженера, используя свое знание о технологиях старого мира, чтобы помочь отремонтировать уцелевшие системы или помочь, где это возможно. Другие играют более активную роль, используя свою военную хватку и всю мощью лазерной винтовки, для защиты других от неконтролируемых технологий и тех, кто стремится их использовать.</p></div></div></div></div></div></section><section class="sp-row sp-row--6-6"><div class="sp-row__inner" style="padding:25px 0px 15px 0px"><div class="sp-col" style="flex:0 0 50%;max-width:50%"><div class="sp-col__inner sp-col--center" style="padding:5px 5px 5px 5px"><div class="sp-col__body"><div class="sp-acc"><details class="sp-acc__item"><summary class="sp-acc__head">ЭКС-РЫЦАРЬ</summary><div class="sp-acc__body"><div class="sp-inner-row"></div></div></details></div></div></div></div><div class="sp-col" style="flex:0 0 50%;max-width:50%"><div class="sp-col__inner sp-col--center" style="padding:5px 5px 5px 5px"><div class="sp-col__body"><div class="sp-acc"><details class="sp-acc__item"><summary class="sp-acc__head">ЭКС-ПИСЕЦ</summary><div class="sp-acc__body"><div class="sp-inner-row"></div></div></details></div></div></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col" style="flex:0 0 100%;max-width:100%"><div class="sp-col__inner sp-col--center"><div class="sp-col__body"><div class="sp-text"><p><br></p><div class="sp-table-wrap"><table class="sp-table"><thead><tr><th scope="col"><h6><span>D20</span></h6></th><th scope="col"><h6><span>ЭФФЕКТ</span></h6></th></tr></thead><tbody><tr><td scope="row">1</td><td scope="row">Элитный набор инструментов</td></tr><tr><td>2</td><td scope="row">Фонарик</td></tr><tr><td>3</td><td scope="row">Копия журнала "Чиним вещи"</td></tr><tr><td>4</td><td scope="row">1 Антибиотики</td></tr><tr><td>5</td><td scope="row">Крышкомина</td></tr><tr><td>6</td><td scope="row">Радио</td></tr><tr><td>7</td><td scope="row">Нагрудник Боевой Брони</td></tr><tr><td>8</td><td scope="row">Карта с тайником выживальщиков старого мира</td></tr><tr><td>9</td><td scope="row">1 Стимпак</td></tr><tr><td>10</td><td scope="row">Наруч Боевой брони</td></tr><tr><td>11</td><td scope="row">Понож Боевой брони</td></tr><tr><td>12</td><td scope="row">Массив сенсоров</td></tr><tr><td>13</td><td scope="row">Рюкзак, маленький</td></tr><tr><td>14</td><td scope="row">Меч</td></tr><tr><td>15</td><td scope="row">Лазерный мушкет</td></tr><tr><td>16</td><td scope="row">1 Антирадин</td></tr><tr><td>17</td><td scope="row">Боевой дробовик</td></tr><tr><td>18</td><td scope="row">Силовой кулак</td></tr><tr><td>19</td><td scope="row">Крепкий Шлем Боевой брони</td></tr><tr><td>20</td><td scope="row">Пип-Бой</td></tr></tbody></table></div></div></div></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:0px 0px 0px 0px"><div class="sp-col" style="flex:0 0 100%;max-width:100%"><div class="sp-col__inner sp-col--center"><div class="sp-col__body"><div class="sp-text"><p>Более воинственно настроенный, чем некоторые изгои, вы отправились на пустошь с такой огневой мощью и защитой, какую только могли стащить, готовый встать между теми, кто нуждается в вашей помощи, и теми, кто ищет кровь.</p><ul><li>Лазерная винтовка и 8 + 6 {/CD} энергоячеек</li><li>Поношенная форма Братства Стали</li><li>Военная фляжка, заполненная водой</li><li>2 броска по таблице снаряжения Отступника</li><li>10 крышек</li></ul></div></div></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner"><div class="sp-col" style="flex:0 0 100%;max-width:100%"><div class="sp-col__inner sp-col--center"><div class="sp-col__body"><div class="sp-text"><p>У вас есть склонность к механике, а не к военному ремеслу. Когда вы покинули Братство, вы взяли с собой самое ценное, что могли взять с собой, - ваши знания, и в сочетании с теми немногими мелочами, которые вам удалось тайно вывезти, вы сумели достаточно хорошо экипироваться, чтобы путешествовать по дорогам до сих пор.</p><ul><li>Лазерный пистолет и 8 + 4 {/CD} Энергоячеек</li><li>Поношенная броня писца Братства</li><li>Мультитул</li><li>3 броска по таблице снаряжения Отступника</li><li>15 крышек</li></ul></div></div></div></div></div></section></div>
   </div>
 </main>
 
@@ -1245,6 +1253,6 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <script src="/fallout-2d20-site/assets/vendor/bootstrap.bundle.min.js"></script>
 <script src="/fallout-2d20-site/assets/js/search.js"></script>
-<script src="/fallout-2d20-site/assets/js/site.js?v=16a7659d"></script>
+<script src="/fallout-2d20-site/assets/js/site.js?v=fded1c8e"></script>
 </body>
 </html>

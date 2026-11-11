@@ -100,6 +100,43 @@ IMG_MAP = {
 }
 
 
+ORIGIN_ALIASES = {
+    'браст стали': 'posvyashchjonnyj-v-bratstvo-stali',
+    'братство стали': 'posvyashchjonnyj-v-bratstvo-stali',
+    'житель нкр': 'zhitel-nkr',
+    'дитя атома': 'ditya-atoma',
+    'житель убежища': 'obitatel-ubezhishcha',
+    'минитмен': 'minitmen',
+    'гуль': 'gul',
+    'супермутант': 'supermutant',
+    'синт': 'sint',
+    'дикар': 'dikar',
+    'изгой братства': 'izgoj-bratstva',
+    'мистер помощник': 'mister-pomoshchnik',
+    'новобранец г адюк': 'novobranec-gadyuk',
+    'осколок анклава': 'oskolok-anklava',
+    'протектрон': 'protektron',
+    'робомозг': 'robomozg',
+    'секьюритрон': 'sekyuritron',
+    'штурмотрон': 'shturmotron',
+    'три семьи': 'tri-semi',
+    'выживший': 'vyzhivshiy',
+    'тен': 'ten',
+}
+
+
+def origin_image(alt):
+    """Картинка происхождения по подписи: в выгрузке файлов нет,
+    а в src/img/origins лежит весь набор."""
+    key = re.sub(r'\s+', ' ', (alt or '').strip().lower())
+    slug = ORIGIN_ALIASES.get(key) or re.sub(r'[^a-z0-9]+', '-', key).strip('-')
+    root = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(
+        os.path.abspath(__file__)))), 'src', 'img', 'origins')
+    if slug and os.path.exists(os.path.join(root, slug + '.png')):
+        return (BASE + '/' if BASE else '/') + 'assets/img/origins/' + slug + '.png'
+    return ''
+
+
 def img_url(src):
     """Ссылка на картинку.
 
@@ -149,6 +186,14 @@ def col_style(col):
     подложка (overlay), выравнивание содержимого по центру."""
     st = col.get('settings') or {}
     css = ['flex:0 0 %s' % width_of(col), 'max-width:%s' % width_of(col)]
+    return ';'.join(css)
+
+
+def col_inner_style(col):
+    """Фон, рамка, тень, отступы — как у .sppb-column внутри колонки.
+    Снаружи остаётся только ширина и гуттер 15px, иначе карточки разъезжаются."""
+    st = col.get('settings') or {}
+    css = []
 
     if st.get('use_border'):
         width = px(st.get('border_width')) or '1'
@@ -164,7 +209,9 @@ def col_style(col):
     url = img_url(src) if src else ''
     if url:
         size = st.get('background_size') or 'auto'
-        if size not in ('auto', 'cover', 'contain'):
+        if size not in ('auto', 'cover', 'contain', 'inherit'):
+            size = 'auto'
+        if size == 'inherit':
             size = 'auto'
         css.append('background:url(%s) %s %s/%s' % (
             url, st.get('background_position') or '0 0',
@@ -175,6 +222,10 @@ def col_style(col):
         css.append('box-shadow:%s %s %s %s %s' % (
             box.get('ho', 0), box.get('vo', 0), box.get('blur', 0),
             box.get('spread', 0), box.get('color') or '#c3c3c3'))
+
+    pad = px(st.get('padding'))
+    if pad:
+        css.append('padding:%s' % pad)
     return ';'.join(css)
 
 
@@ -241,9 +292,7 @@ def r_image(a):
         w = w.get('xl') or ''
     style = ' style="max-width:%spx"' % w if str(w).strip().isdigit() else ''
     href = resolve_link(setting(a, 'link'))
-    url = img_url(src)
-    if not url:
-        return ''
+    url = img_url(src) or origin_image(setting(a, 'alt_text'))
     out = '<img src="%s" alt="%s"%s>' % (esc(url), esc(setting(a, 'alt_text') or ''), style)
     if href:
         return '<a class="sp-img" href="%s">%s</a>' % (esc(href), out)
@@ -366,14 +415,15 @@ def render_tree(tree):
                 extra += ' sp-col--center'
             if (st.get('items_align_center')):
                 extra += ' sp-col--vcenter'
-            pad = px(st.get('padding'))
-            body_style = ' style="padding:%s"' % pad if pad else ''
+            inner_css = col_inner_style(col)
+            inner_attr = ' style="%s"' % inner_css if inner_css else ''
             overlay = st.get('overlay')
             under = ''
             if overlay and str(overlay).lower() not in ('none', ''):
                 under = '<div class="sp-col__overlay" style="background:%s"></div>' % overlay
-            parts.append('<div class="sp-col%s" style="%s">%s<div class="sp-col__body"%s>%s</div></div>'
-                         % (extra, col_style(col), under, body_style, body))
+            parts.append('<div class="sp-col" style="%s">'
+                         '<div class="sp-col__inner%s"%s>%s<div class="sp-col__body">%s</div></div></div>'
+                         % (col_style(col), extra, inner_attr, under, body))
         if not parts:
             continue
         pad = px((row.get('settings') or {}).get('padding'))

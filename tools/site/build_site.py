@@ -17,6 +17,7 @@ import json
 import base64
 import os
 import re
+import re
 import sys
 import shutil
 import urllib.parse
@@ -268,7 +269,11 @@ def read_css():
     with open(os.path.join(SRC, 'site', 'css', 'site.css'), encoding='utf-8') as f:
         css = f.read()
     # в инлайновом CSS абсолютные пути к картинкам тоже получают префикс
-    return css.replace('__BG_DATA_URI__', bg_data_uri()).replace('url("/assets/', 'url("%s/assets/' % BASE)
+    # любой url("/assets/…") получает префикс BASE — иначе на вложенных
+    # страницах (CSS вставлен инлайном) картинки не находятся
+    css = css.replace('__BG_DATA_URI__', bg_data_uri())
+    css = re.sub(r'url\("?/assets/', 'url("%s/assets/' % BASE, css)
+    return css
 
 
 SEARCH_BOX = ('<div class="site-search">'

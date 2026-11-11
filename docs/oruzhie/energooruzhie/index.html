@@ -174,12 +174,12 @@ body {
   transform: scale(1.05);
 }
 /* порядок текстур как в дампе */
-.top-menu li:nth-child(1) a { background-image: url("../img/plates/menu-item-bg-lblue2.png"); }
-.top-menu li:nth-child(2) a { background-image: url("../img/plates/menu-item-bg-orange2.png"); padding-bottom: 15px; }
-.top-menu li:nth-child(3) a { background-image: url("../img/plates/menu-item-bg-green2.png"); }
-.top-menu li:nth-child(4) a { background-image: url("../img/plates/menu-item-bg-pink.png"); }
-.top-menu li:nth-child(5) a { background-image: url("../img/plates/menu-item-bg-lblue.png"); padding-top: 15px; padding-bottom: 15px; }
-.top-menu li:nth-child(6) a { background-image: url("../img/plates/menu-item-bg-green.png"); padding-top: 15px; padding-bottom: 15px; }
+.top-menu li:nth-child(1) a { background-image: url("/fallout-2d20-site/assets/img/plates/menu-item-bg-lblue2.png"); }
+.top-menu li:nth-child(2) a { background-image: url("/fallout-2d20-site/assets/img/plates/menu-item-bg-orange2.png"); padding-bottom: 15px; }
+.top-menu li:nth-child(3) a { background-image: url("/fallout-2d20-site/assets/img/plates/menu-item-bg-green2.png"); }
+.top-menu li:nth-child(4) a { background-image: url("/fallout-2d20-site/assets/img/plates/menu-item-bg-pink.png"); }
+.top-menu li:nth-child(5) a { background-image: url("/fallout-2d20-site/assets/img/plates/menu-item-bg-lblue.png"); padding-top: 15px; padding-bottom: 15px; }
+.top-menu li:nth-child(6) a { background-image: url("/fallout-2d20-site/assets/img/plates/menu-item-bg-green.png"); padding-top: 15px; padding-bottom: 15px; }
 
 /* бургер */
 .burger {
@@ -1043,6 +1043,9 @@ html, body { overflow-x: hidden; }
   margin: 0 -15px;
 }
 .sp-col { min-width: 0; padding: 0 15px; position: relative; }
+/* внутренний блок колонки (.sppb-column в теме): фон, рамка, отступы.
+   Гуттер 15px остаётся снаружи — поэтому карточки не разъезжаются. */
+.sp-col__inner { position: relative; height: 100%; background-clip: padding-box; }
 .sp-col__body { position: relative; z-index: 1; }
 .sp-col__overlay {
   position: absolute;
@@ -1052,9 +1055,8 @@ html, body { overflow-x: hidden; }
 }
 .sp-col--center > .sp-col__body { text-align: center; }
 .sp-col--center > .sp-col__body .sp-img { display: flex; justify-content: center; }
-.sp-col--vcenter > .sp-col__body { display: flex; flex-direction: column; justify-content: center; }
-/* подложка карточки хаба: рамка у колонки, своего фона у неё нет */
-.sp-col[style*="border:"] > .sp-col__body { height: 100%; }
+.sp-col--vcenter > .sp-col__body { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+.sp-col__inner[style*="border:"] > .sp-col__body { height: 100%; }
 
 /* заголовки */
 .sp-heading { margin: 6px 0; font-weight: 700; }
@@ -1068,14 +1070,20 @@ h4.sp-heading { font-size: 20px; }
 /* текст */
 .sp-text { font-size: 16px; line-height: 1.55; }
 .sp-text p { margin: 0 0 .8em; }
-.sp-text ul, .sp-text ol { margin: 0 0 .8em 1.2em; padding: 0; }
+/* списки в тексте — как в теме: без маркеров и внешних отступов,
+   по центру (в дампе у колонки .sppb-addon-wrapper{text-align:center}) */
+.sp-text ul, .sp-text ol { margin: 0 0 .8em; padding: 0; list-style: none; }
+.sp-text li { margin: 0 0 2px; }
+.sp-col--center .sp-text ul, .sp-col--center .sp-text ol { margin-left: 0; }
 .sp-text a { color: #b15b23; }
 .sp-text table { width: 100%; border-collapse: collapse; margin: 0 0 .8em; }
 .sp-text th, .sp-text td { border: 1px solid #757575; padding: 6px 10px; }
 
 /* картинки */
-.sp-img { display: block; text-align: center; }
+.sp-img { display: block; text-align: center; padding: 20px 0; }
 .sp-img img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+/* у карточки хаба картинка ровно 200px, как в дампе (image_width xl=200) */
+.sp-col__inner .sp-img img[style*="max-width:200px"] { width: 200px; }
 
 /* таблицы из table_advanced */
 .sp-table-wrap { overflow-x: auto; }
@@ -1231,7 +1239,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <main class="page">
   <div class="wrap">
-<div class="sp-page"><h1 class="sp-page__title">Энергооружие</h1><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/energooruzhie/lazernyj-mushket/">Лазерный мушкет</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/energooruzhie/lazernyj-mushket/"><img src="/fallout-2d20-site/assets/img/weapons/lazernyj-pistolet.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+<div class="sp-page"><h1 class="sp-page__title">Энергооружие</h1><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col" style="flex:0 0 33.333333%;max-width:33.333333%"><div class="sp-col__inner sp-col--center" style="border:1px solid rgb(110, 110, 110);padding:30px 0px 20px 0px"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/energooruzhie/lazernyj-mushket/">Лазерный мушкет</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/energooruzhie/lazernyj-mushket/"><img src="/fallout-2d20-site/assets/img/weapons/lazernyj-pistolet.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/energooruzhie/lazernyj-mushket/">
     <span>Подробнее</span>
     <span>
@@ -1244,7 +1252,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/energooruzhie/lazernyj-pistolet/">Лазерный пистолет</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/energooruzhie/lazernyj-pistolet/"><img src="/fallout-2d20-site/assets/img/weapons/lazernyj-pistolet.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div><div class="sp-col" style="flex:0 0 33.333333%;max-width:33.333333%"><div class="sp-col__inner sp-col--center" style="border:1px solid rgb(110, 110, 110);padding:30px 0px 20px 0px"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/energooruzhie/lazernyj-pistolet/">Лазерный пистолет</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/energooruzhie/lazernyj-pistolet/"><img src="/fallout-2d20-site/assets/img/weapons/lazernyj-pistolet.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/energooruzhie/lazernyj-pistolet/">
     <span>Подробнее</span>
     <span>
@@ -1257,7 +1265,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/energooruzhie/lazernyj-pistolet-2/">Плазменный пистолет</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/energooruzhie/lazernyj-pistolet-2/"><img src="/fallout-2d20-site/assets/img/weapons/lazernyj-pistolet.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div><div class="sp-col" style="flex:0 0 33.333333%;max-width:33.333333%"><div class="sp-col__inner sp-col--center" style="border:1px solid rgb(110, 110, 110);padding:30px 0px 20px 0px"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/energooruzhie/lazernyj-pistolet-2/">Плазменный пистолет</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/energooruzhie/lazernyj-pistolet-2/"><img src="/fallout-2d20-site/assets/img/weapons/lazernyj-pistolet.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/energooruzhie/lazernyj-pistolet-2/">
     <span>Подробнее</span>
     <span>
@@ -1270,7 +1278,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/energooruzhie/gamma-pushka/">Гамма-пушка</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col" style="flex:0 0 33.333333%;max-width:33.333333%"><div class="sp-col__inner sp-col--center" style="border:1px solid rgb(110, 110, 110);padding:30px 0px 20px 0px"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/energooruzhie/gamma-pushka/">Гамма-пушка</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/energooruzhie/gamma-pushka/"><img src="" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/energooruzhie/gamma-pushka/">
     <span>Подробнее</span>
     <span>
@@ -1283,7 +1291,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/energooruzhie/atomajzer-inoplanetyan/">Атомайзер инопланетян</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div><div class="sp-col" style="flex:0 0 33.333333%;max-width:33.333333%"><div class="sp-col__inner sp-col--center" style="border:1px solid rgb(110, 110, 110);padding:30px 0px 20px 0px"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/energooruzhie/atomajzer-inoplanetyan/">Атомайзер инопланетян</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/energooruzhie/atomajzer-inoplanetyan/"><img src="" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/energooruzhie/atomajzer-inoplanetyan/">
     <span>Подробнее</span>
     <span>
@@ -1296,7 +1304,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/energooruzhie/dezintegrator-chuzhogo/">Дезинтегратор Чужого</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div><div class="sp-col" style="flex:0 0 33.333333%;max-width:33.333333%"><div class="sp-col__inner sp-col--center" style="border:1px solid rgb(110, 110, 110);padding:30px 0px 20px 0px"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/energooruzhie/dezintegrator-chuzhogo/">Дезинтегратор Чужого</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/energooruzhie/dezintegrator-chuzhogo/"><img src="" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/energooruzhie/lazernyj-pistolet-2/">
     <span>Подробнее</span>
     <span>
@@ -1309,7 +1317,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/energooruzhie/elektrosvarka/">Электросварка</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col" style="flex:0 0 33.333333%;max-width:33.333333%"><div class="sp-col__inner sp-col--center" style="border:1px solid rgb(110, 110, 110);padding:30px 0px 20px 0px"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/energooruzhie/elektrosvarka/">Электросварка</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/energooruzhie/elektrosvarka/"><img src="" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/energooruzhie/elektrosvarka/">
     <span>Подробнее</span>
     <span>
@@ -1322,7 +1330,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/energooruzhie/golovnoj-lazer-shturmotrona/">Головной лазер штурмотрона</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div><div class="sp-col" style="flex:0 0 33.333333%;max-width:33.333333%"><div class="sp-col__inner sp-col--center" style="border:1px solid rgb(110, 110, 110);padding:30px 0px 20px 0px"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/energooruzhie/golovnoj-lazer-shturmotrona/">Головной лазер штурмотрона</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/energooruzhie/golovnoj-lazer-shturmotrona/"><img src="" alt="Image" style="max-width:150px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/energooruzhie/golovnoj-lazer-shturmotrona/">
     <span>Подробнее</span>
     <span>
@@ -1335,7 +1343,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/energooruzhie/mikrovolnovyj-emitter/">Микроволновый эмиттер</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/energooruzhie/mikrovolnovyj-emitter/"><img src="/fallout-2d20-site/assets/img/weapons/minigan.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div><div class="sp-col" style="flex:0 0 33.333333%;max-width:33.333333%"><div class="sp-col__inner sp-col--center" style="border:1px solid rgb(110, 110, 110);padding:30px 0px 20px 0px"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/energooruzhie/mikrovolnovyj-emitter/">Микроволновый эмиттер</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/energooruzhie/mikrovolnovyj-emitter/"><img src="/fallout-2d20-site/assets/img/weapons/minigan.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/energooruzhie/mikrovolnovyj-emitter/">
     <span>Подробнее</span>
     <span>
@@ -1348,7 +1356,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/energooruzhie/karabin-tesly/">Карабин Теслы</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/energooruzhie/karabin-tesly/"><img src="/fallout-2d20-site/assets/img/weapons/lazernyj-pistolet.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col" style="flex:0 0 33.333333%;max-width:33.333333%"><div class="sp-col__inner sp-col--center" style="border:1px solid rgb(110, 110, 110);padding:30px 0px 20px 0px"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/energooruzhie/karabin-tesly/">Карабин Теслы</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/energooruzhie/karabin-tesly/"><img src="/fallout-2d20-site/assets/img/weapons/lazernyj-pistolet.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/energooruzhie/karabin-tesly/">
     <span>Подробнее</span>
     <span>
@@ -1361,7 +1369,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/energooruzhie/kisloplyuj/">Кислоплюй</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div><div class="sp-col" style="flex:0 0 33.333333%;max-width:33.333333%"><div class="sp-col__inner sp-col--center" style="border:1px solid rgb(110, 110, 110);padding:30px 0px 20px 0px"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/energooruzhie/kisloplyuj/">Кислоплюй</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/energooruzhie/kisloplyuj/"><img src="" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/energooruzhie/kisloplyuj/">
     <span>Подробнее</span>
     <span>
@@ -1374,7 +1382,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/energooruzhie/blaster-chuzhikh/">Бластер Чужих</a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div><div class="sp-col" style="flex:0 0 33.333333%;max-width:33.333333%"><div class="sp-col__inner sp-col--center" style="border:1px solid rgb(110, 110, 110);padding:30px 0px 20px 0px"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/energooruzhie/blaster-chuzhikh/">Бластер Чужих</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/energooruzhie/blaster-chuzhikh/"><img src="" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/energooruzhie/blaster-chuzhikh/">
     <span>Подробнее</span>
     <span>
@@ -1387,7 +1395,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section><section class="sp-row sp-row--4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/energooruzhie/gipnotron/">Гипнотрон</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/energooruzhie/gipnotron/"><img src="/fallout-2d20-site/assets/img/weapons/minigan.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></div></section><section class="sp-row sp-row--4-4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col" style="flex:0 0 33.333333%;max-width:33.333333%"><div class="sp-col__inner sp-col--center" style="border:1px solid rgb(110, 110, 110);padding:30px 0px 20px 0px"><div class="sp-col__overlay" style="background:RGBA(203, 203, 203, 0.4)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/energooruzhie/gipnotron/">Гипнотрон</a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/energooruzhie/gipnotron/"><img src="/fallout-2d20-site/assets/img/weapons/minigan.png" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/energooruzhie/gipnotron/">
     <span>Подробнее</span>
     <span>
@@ -1400,7 +1408,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%;border:1px solid rgb(110, 110, 110)"><div class="sp-col__body" style="padding:30px 0px 20px 0px"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/energooruzhie/lazernoe-ruzhjo-wattz-2000/">Лазерное ружьё WATTZ 2000 </a></h2><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div><div class="sp-col" style="flex:0 0 33.333333%;max-width:33.333333%"><div class="sp-col__inner sp-col--center" style="border:1px solid rgb(110, 110, 110);padding:30px 0px 20px 0px"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/oruzhie/energooruzhie/lazernoe-ruzhjo-wattz-2000/">Лазерное ружьё WATTZ 2000 </a></h2><a class="sp-img" href="/fallout-2d20-site/oruzhie/energooruzhie/lazernoe-ruzhjo-wattz-2000/"><img src="" alt="Image" style="max-width:300px"></a><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/oruzhie/energooruzhie/lazernoe-ruzhjo-wattz-2000/">
     <span>Подробнее</span>
     <span>
@@ -1413,7 +1421,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></div></section></div>
+</div></div></div></div></div></div></section></div>
   </div>
 </main>
 
@@ -1427,6 +1435,6 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <script src="/fallout-2d20-site/assets/vendor/bootstrap.bundle.min.js"></script>
 <script src="/fallout-2d20-site/assets/js/search.js"></script>
-<script src="/fallout-2d20-site/assets/js/site.js?v=16a7659d"></script>
+<script src="/fallout-2d20-site/assets/js/site.js?v=fded1c8e"></script>
 </body>
 </html>

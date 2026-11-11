@@ -174,12 +174,12 @@ body {
   transform: scale(1.05);
 }
 /* порядок текстур как в дампе */
-.top-menu li:nth-child(1) a { background-image: url("../img/plates/menu-item-bg-lblue2.png"); }
-.top-menu li:nth-child(2) a { background-image: url("../img/plates/menu-item-bg-orange2.png"); padding-bottom: 15px; }
-.top-menu li:nth-child(3) a { background-image: url("../img/plates/menu-item-bg-green2.png"); }
-.top-menu li:nth-child(4) a { background-image: url("../img/plates/menu-item-bg-pink.png"); }
-.top-menu li:nth-child(5) a { background-image: url("../img/plates/menu-item-bg-lblue.png"); padding-top: 15px; padding-bottom: 15px; }
-.top-menu li:nth-child(6) a { background-image: url("../img/plates/menu-item-bg-green.png"); padding-top: 15px; padding-bottom: 15px; }
+.top-menu li:nth-child(1) a { background-image: url("/fallout-2d20-site/assets/img/plates/menu-item-bg-lblue2.png"); }
+.top-menu li:nth-child(2) a { background-image: url("/fallout-2d20-site/assets/img/plates/menu-item-bg-orange2.png"); padding-bottom: 15px; }
+.top-menu li:nth-child(3) a { background-image: url("/fallout-2d20-site/assets/img/plates/menu-item-bg-green2.png"); }
+.top-menu li:nth-child(4) a { background-image: url("/fallout-2d20-site/assets/img/plates/menu-item-bg-pink.png"); }
+.top-menu li:nth-child(5) a { background-image: url("/fallout-2d20-site/assets/img/plates/menu-item-bg-lblue.png"); padding-top: 15px; padding-bottom: 15px; }
+.top-menu li:nth-child(6) a { background-image: url("/fallout-2d20-site/assets/img/plates/menu-item-bg-green.png"); padding-top: 15px; padding-bottom: 15px; }
 
 /* бургер */
 .burger {
@@ -1043,6 +1043,9 @@ html, body { overflow-x: hidden; }
   margin: 0 -15px;
 }
 .sp-col { min-width: 0; padding: 0 15px; position: relative; }
+/* внутренний блок колонки (.sppb-column в теме): фон, рамка, отступы.
+   Гуттер 15px остаётся снаружи — поэтому карточки не разъезжаются. */
+.sp-col__inner { position: relative; height: 100%; background-clip: padding-box; }
 .sp-col__body { position: relative; z-index: 1; }
 .sp-col__overlay {
   position: absolute;
@@ -1052,9 +1055,8 @@ html, body { overflow-x: hidden; }
 }
 .sp-col--center > .sp-col__body { text-align: center; }
 .sp-col--center > .sp-col__body .sp-img { display: flex; justify-content: center; }
-.sp-col--vcenter > .sp-col__body { display: flex; flex-direction: column; justify-content: center; }
-/* подложка карточки хаба: рамка у колонки, своего фона у неё нет */
-.sp-col[style*="border:"] > .sp-col__body { height: 100%; }
+.sp-col--vcenter > .sp-col__body { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+.sp-col__inner[style*="border:"] > .sp-col__body { height: 100%; }
 
 /* заголовки */
 .sp-heading { margin: 6px 0; font-weight: 700; }
@@ -1068,14 +1070,20 @@ h4.sp-heading { font-size: 20px; }
 /* текст */
 .sp-text { font-size: 16px; line-height: 1.55; }
 .sp-text p { margin: 0 0 .8em; }
-.sp-text ul, .sp-text ol { margin: 0 0 .8em 1.2em; padding: 0; }
+/* списки в тексте — как в теме: без маркеров и внешних отступов,
+   по центру (в дампе у колонки .sppb-addon-wrapper{text-align:center}) */
+.sp-text ul, .sp-text ol { margin: 0 0 .8em; padding: 0; list-style: none; }
+.sp-text li { margin: 0 0 2px; }
+.sp-col--center .sp-text ul, .sp-col--center .sp-text ol { margin-left: 0; }
 .sp-text a { color: #b15b23; }
 .sp-text table { width: 100%; border-collapse: collapse; margin: 0 0 .8em; }
 .sp-text th, .sp-text td { border: 1px solid #757575; padding: 6px 10px; }
 
 /* картинки */
-.sp-img { display: block; text-align: center; }
+.sp-img { display: block; text-align: center; padding: 20px 0; }
 .sp-img img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+/* у карточки хаба картинка ровно 200px, как в дампе (image_width xl=200) */
+.sp-col__inner .sp-img img[style*="max-width:200px"] { width: 200px; }
 
 /* таблицы из table_advanced */
 .sp-table-wrap { overflow-x: auto; }
@@ -1231,7 +1239,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <main class="page">
   <div class="wrap">
-<div class="sp-page"><h1 class="sp-page__title">Гамма-пушка</h1><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:75px 0px 75px 0px"><div class="sp-col sp-col--center" style="flex:0 0 100%;max-width:100%"><div class="sp-col__body"><h4 class="sp-heading"><a href="/fallout-2d20-site/oruzhie/energooruzhie/">Назад в категорию: Энергетическое оружие</a></h4><h2 class="sp-heading">Гамма-пушка</h2></div></div></div></section><section class="sp-row sp-row--6"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center sp-col--vcenter" style="flex:0 0 50%;max-width:50%"><div class="sp-col__body"><div class="sp-text"><p><br></p><div class="sp-table-wrap"><table class="sp-table"><tbody><tr><th scope="row"><span>ТИП ПАТРОНА</span></th><td scope="row">Патрон Гамма-пушки</td></tr><tr><th scope="row"><span>ТИП УРОНА</span></th><td scope="row">Радиационный</td></tr><tr><th scope="row"><span> УРОН</span></th><td scope="row"> 3 {/CD}</td></tr><tr><th scope="row"><span> ЭФФЕКТ</span></th><td scope="row">“Проникающий” 1, "Оглушающий"</td></tr><tr><th scope="row"><span>СКОРОСТЬ СТРЕЛЬБЫ</span></th><td scope="row">1</td></tr><tr><th scope="row"><span> ДИСТАНЦИЯ</span></th><td> Средняя</td></tr><tr><th scope="row"><span> КАЧЕСТВА</span></th><td>“Взрыв“, “Неточный”<br></td></tr><tr><th scope="row"><span> ВЕС</span></th><td> 4</td></tr><tr><th scope="row"><span>ЦЕНА</span></th><td>50</td></tr><tr><th scope="row"><span>РЕДКОСТЬ</span></th><td>2</td></tr></tbody></table></div><p><br></p><p><br></p></div></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center" style="flex:0 0 100%;max-width:100%"><div class="sp-col__body"><div class="sp-text"><p>Грубое на вид оружие, гамма-пушка испускает направленное, высокоинтенсивное ионизирующее излучение, которое может быть разрушительным для любого существа, не имеющего иммунитета или большой устойчивости к радиации, в то время как другие цели остаются практически невредимыми.</p></div></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:15px 0px 15px 0px"><div class="sp-col sp-col--center" style="flex:0 0 100%;max-width:100%"><div class="sp-col__body"><div class="sp-tabs"><details class="sp-tab"><summary class="sp-tab__title">Антенна</summary><div class="sp-inner-row"></div></details><details class="sp-tab"><summary class="sp-tab__title">Дуло</summary><div class="sp-inner-row"></div></details></div></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner"><div class="sp-col sp-col--center" style="flex:0 0 100%;max-width:100%"><div class="sp-col__body"><div class="sp-acc"><details class="sp-acc__item"><summary class="sp-acc__head">Глубокая антенна</summary><div class="sp-acc__body"><div class="sp-inner-row"></div></div></details></div></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:0px 0px 0px 0px"><div class="sp-col sp-col--center" style="flex:0 0 100%;max-width:100%"><div class="sp-col__body"><div class="sp-table-wrap"><table class="sp-table"><thead><tr><th></th><th></th><th></th><th></th><th></th><th></th></tr></thead><tbody><tr><td><p>Глубокая антенна</p></td><td><p>Глубокая </p></td><td><p>+1 {/CD} , увеличение дальности на 1</p></td><td><p>+2</p></td><td><p>+72</p></td><td><p>Наука 4</p></td></tr></tbody></table></div></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:0px 0px 0px px"><div class="sp-col sp-col--center" style="flex:0 0 100%;max-width:100%"><div class="sp-col__body"><div class="sp-acc"><details class="sp-acc__item"><summary class="sp-acc__head">Электросигнальные антенны</summary><div class="sp-acc__body"><div class="sp-inner-row"></div></div></details><details class="sp-acc__item"><summary class="sp-acc__head">Повторитель сигнала</summary><div class="sp-acc__body"><div class="sp-inner-row"></div></div></details></div></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:0px 0px 0px 0px"><div class="sp-col sp-col--center" style="flex:0 0 100%;max-width:100%"><div class="sp-col__body"><div class="sp-table-wrap"><table class="sp-table"><thead><tr><th></th><th></th><th></th><th></th><th></th><th></th></tr></thead><tbody><tr><td><p>Электросигнальные антенны</p></td><td><p>Электрофицированная </p></td><td><p>Измените урон на 7 {/CD} , Измените тип урона на "Энергетический", добавьте "Радиоактивность"</p></td><td><p>-</p></td><td><p>+30</p></td><td><p>Наука! 3</p></td></tr></tbody></table></div></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:0px 0px 0px 0px"><div class="sp-col sp-col--center" style="flex:0 0 100%;max-width:100%"><div class="sp-col__body"><div class="sp-table-wrap"><table class="sp-table"><thead><tr><th></th><th></th><th></th><th></th><th></th><th></th></tr></thead><tbody><tr><td><p>Повторитель сигнала</p></td><td><p>Автоматическая</p></td><td><p>+2 Скорострельности, Добавьте "Очередь", Уберите "Взрыв"</p></td><td><p>-</p></td><td><p>+60</p></td><td><p>Наука! 4</p></td></tr></tbody></table></div></div></div></div></section></div>
+<div class="sp-page"><h1 class="sp-page__title">Гамма-пушка</h1><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:75px 0px 75px 0px"><div class="sp-col" style="flex:0 0 100%;max-width:100%"><div class="sp-col__inner sp-col--center"><div class="sp-col__body"><h4 class="sp-heading"><a href="/fallout-2d20-site/oruzhie/energooruzhie/">Назад в категорию: Энергетическое оружие</a></h4><h2 class="sp-heading">Гамма-пушка</h2></div></div></div></div></section><section class="sp-row sp-row--6-6"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col" style="flex:0 0 50%;max-width:50%"><div class="sp-col__inner sp-col--center sp-col--vcenter"><div class="sp-col__body"><div class="sp-img"><img src="" alt="Image" style="max-width:450px"></div></div></div></div><div class="sp-col" style="flex:0 0 50%;max-width:50%"><div class="sp-col__inner sp-col--center sp-col--vcenter"><div class="sp-col__body"><div class="sp-text"><p><br></p><div class="sp-table-wrap"><table class="sp-table"><tbody><tr><th scope="row"><span>ТИП ПАТРОНА</span></th><td scope="row">Патрон Гамма-пушки</td></tr><tr><th scope="row"><span>ТИП УРОНА</span></th><td scope="row">Радиационный</td></tr><tr><th scope="row"><span> УРОН</span></th><td scope="row"> 3 {/CD}</td></tr><tr><th scope="row"><span> ЭФФЕКТ</span></th><td scope="row">“Проникающий” 1, "Оглушающий"</td></tr><tr><th scope="row"><span>СКОРОСТЬ СТРЕЛЬБЫ</span></th><td scope="row">1</td></tr><tr><th scope="row"><span> ДИСТАНЦИЯ</span></th><td> Средняя</td></tr><tr><th scope="row"><span> КАЧЕСТВА</span></th><td>“Взрыв“, “Неточный”<br></td></tr><tr><th scope="row"><span> ВЕС</span></th><td> 4</td></tr><tr><th scope="row"><span>ЦЕНА</span></th><td>50</td></tr><tr><th scope="row"><span>РЕДКОСТЬ</span></th><td>2</td></tr></tbody></table></div><p><br></p><p><br></p></div></div></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col" style="flex:0 0 100%;max-width:100%"><div class="sp-col__inner sp-col--center"><div class="sp-col__body"><div class="sp-text"><p>Грубое на вид оружие, гамма-пушка испускает направленное, высокоинтенсивное ионизирующее излучение, которое может быть разрушительным для любого существа, не имеющего иммунитета или большой устойчивости к радиации, в то время как другие цели остаются практически невредимыми.</p></div></div></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:15px 0px 15px 0px"><div class="sp-col" style="flex:0 0 100%;max-width:100%"><div class="sp-col__inner sp-col--center"><div class="sp-col__body"><div class="sp-tabs"><details class="sp-tab"><summary class="sp-tab__title">Антенна</summary><div class="sp-inner-row"></div></details><details class="sp-tab"><summary class="sp-tab__title">Дуло</summary><div class="sp-inner-row"></div></details></div></div></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner"><div class="sp-col" style="flex:0 0 100%;max-width:100%"><div class="sp-col__inner sp-col--center"><div class="sp-col__body"><div class="sp-acc"><details class="sp-acc__item"><summary class="sp-acc__head">Глубокая антенна</summary><div class="sp-acc__body"><div class="sp-inner-row"></div></div></details></div></div></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:0px 0px 0px 0px"><div class="sp-col" style="flex:0 0 100%;max-width:100%"><div class="sp-col__inner sp-col--center"><div class="sp-col__body"><div class="sp-table-wrap"><table class="sp-table"><thead><tr><th></th><th></th><th></th><th></th><th></th><th></th></tr></thead><tbody><tr><td><p>Глубокая антенна</p></td><td><p>Глубокая </p></td><td><p>+1 {/CD} , увеличение дальности на 1</p></td><td><p>+2</p></td><td><p>+72</p></td><td><p>Наука 4</p></td></tr></tbody></table></div></div></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:0px 0px 0px px"><div class="sp-col" style="flex:0 0 100%;max-width:100%"><div class="sp-col__inner sp-col--center"><div class="sp-col__body"><div class="sp-acc"><details class="sp-acc__item"><summary class="sp-acc__head">Электросигнальные антенны</summary><div class="sp-acc__body"><div class="sp-inner-row"></div></div></details><details class="sp-acc__item"><summary class="sp-acc__head">Повторитель сигнала</summary><div class="sp-acc__body"><div class="sp-inner-row"></div></div></details></div></div></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:0px 0px 0px 0px"><div class="sp-col" style="flex:0 0 100%;max-width:100%"><div class="sp-col__inner sp-col--center"><div class="sp-col__body"><div class="sp-table-wrap"><table class="sp-table"><thead><tr><th></th><th></th><th></th><th></th><th></th><th></th></tr></thead><tbody><tr><td><p>Электросигнальные антенны</p></td><td><p>Электрофицированная </p></td><td><p>Измените урон на 7 {/CD} , Измените тип урона на "Энергетический", добавьте "Радиоактивность"</p></td><td><p>-</p></td><td><p>+30</p></td><td><p>Наука! 3</p></td></tr></tbody></table></div></div></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:0px 0px 0px 0px"><div class="sp-col" style="flex:0 0 100%;max-width:100%"><div class="sp-col__inner sp-col--center"><div class="sp-col__body"><div class="sp-table-wrap"><table class="sp-table"><thead><tr><th></th><th></th><th></th><th></th><th></th><th></th></tr></thead><tbody><tr><td><p>Повторитель сигнала</p></td><td><p>Автоматическая</p></td><td><p>+2 Скорострельности, Добавьте "Очередь", Уберите "Взрыв"</p></td><td><p>-</p></td><td><p>+60</p></td><td><p>Наука! 4</p></td></tr></tbody></table></div></div></div></div></div></section></div>
   </div>
 </main>
 
@@ -1245,6 +1253,6 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <script src="/fallout-2d20-site/assets/vendor/bootstrap.bundle.min.js"></script>
 <script src="/fallout-2d20-site/assets/js/search.js"></script>
-<script src="/fallout-2d20-site/assets/js/site.js?v=16a7659d"></script>
+<script src="/fallout-2d20-site/assets/js/site.js?v=fded1c8e"></script>
 </body>
 </html>
