@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Эталон раскладки — Fallout 2D20</title>
+<style>/* ============================================================================
+   Fallout 2D20 — свои стили. Только классы проекта, никаких sppb-*/helix-*.
+   Токены собраны из живого сайта (цвета, тени, паттерны).
+   ========================================================================== */
+
+:root {
+  --f-link: #b15b23;
+  --f-link-hover: #042615;
+  --f-ink: #000;
+  --f-on-dark: #fff;
+
+  --f-page-bg: #dcdcd4;
+  --f-plate-bg: #e6e6e1;
+  --f-plate-overlay: rgba(150, 150, 150, .2);
+  --f-plate-line: #6e6e6e;
+
+  --f-footer-bg: #171717;
+  --f-footer-text: #fff;
+  --f-footer-link: #a2a2a2;
+  --f-footer-link-hover: #fff;
+
+  --f-font: Helvetica, Arial, sans-serif;
+  --f-font-title: Arial, Helvetica, sans-serif;
+
+  --f-container: 1400px;
+  --f-gap: 20px;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100%;
+  font-family: var(--f-font);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--f-ink);
+  background: var(--f-page-bg);
+}
+
+a { color: var(--f-link); text-decoration: none; }
+a:hover { color: var(--f-link-hover); text-decoration: underline; }
+
+img { max-width: 100%; height: auto; }
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 0 .5em;
+  font-family: var(--f-font-title);
+  font-weight: 700;
+}
+
+/* ---------------------------------------------------------------- контейнер */
+.container {
+  width: 100%;
+  max-width: var(--f-container);
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* ------------------------------------------------------------------- шапка  */
+.site-header {
+  background: #000;
+  padding: 10px 0;
+}
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.site-header__logo { display: block; flex: 0 0 auto; }
+.site-header__logo img { display: block; height: 60px; width: auto; }
+.site-header__menu { margin-left: auto; }
+
+/* верхнее меню */
+.top-menu {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.top-menu a {
+  display: block;
+  padding: 24px 18px;
+  font-family: var(--f-font-title);
+  font-size: 20px;
+  font-weight: 700;
+  color: #fee9a6;
+  text-decoration: none;
+  transition: background-color .2s, color .2s;
+}
+.top-menu a:hover,
+.top-menu a:focus { color: #000; background: #fee9a6; }
+
+/* бургер */
+.burger {
+  display: none;
+  padding: 8px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.burger span {
+  display: block;
+  width: 28px;
+  height: 3px;
+  margin: 5px 0;
+  background: #fee9a6;
+}
+
+@media (max-width: 1199px) {
+  .top-menu { display: none; }
+  .burger { display: block; margin-left: auto; }
+  .site-header__logo img { height: 36px; }
+}
+
+/* --------------------------------------------------------------- offcanvas  */
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  width: min(420px, 90vw);
+  padding: 16px 20px 40px;
+  overflow-y: auto;
+  background: #4f4b4b;
+  transform: translateX(100%);
+  transition: transform .3s ease;
+}
+.drawer.is-open { transform: none; }
+.drawer__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.drawer__logo img { display: block; height: 36px; width: auto; }
+.drawer__close {
+  padding: 6px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.drawer__close span {
+  display: block;
+  width: 26px;
+  height: 3px;
+  margin: 5px 0;
+  background: #fee9a6;
+}
+.drawer__close span:first-child { transform: translateY(8px) rotate(45deg); }
+.drawer__close span:last-child { transform: translateY(-8px) rotate(-45deg); }
+
+.drawer ul { margin: 0; padding: 0; list-style: none; }
+.drawer li { overflow: hidden; }
+.drawer a,
+.drawer .drawer__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 0;
+  font-size: 18px;
+  color: #fee9a6;
+  text-align: left;
+  text-decoration: none;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.drawer a:hover { color: #ffc500; }
+.drawer .drawer__toggle::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  margin-left: 8px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform .2s;
+}
+.drawer .drawer__toggle[aria-expanded="true"]::after { transform: rotate(-135deg); }
+.drawer .drawer__sub { display: none; padding-left: 14px; }
+.drawer .drawer__sub.is-open { display: block; }
+
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, .5);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s, visibility .3s;
+}
+.drawer-backdrop.is-open { opacity: 1; visibility: visible; }
+
+/* ------------------------------------------------------------------- тело  */
+.page { padding: 20px 0 40px; }
+
+.page__title {
+  margin: 0 0 12px;
+  font-size: 2rem;
+  text-align: center;
+}
+.page__lead {
+  max-width: 900px;
+  margin: 0 auto 28px;
+  text-align: center;
+}
+
+/* =========================================================== типы раскладок
+   Каркас — «книжная страница»: набор строк, в каждой 2, 3 или 4 столбца.
+   На мобильном столбцы складываются в один, медиа уходит наверх.
+   ========================================================================== */
+.row {
+  display: grid;
+  gap: var(--f-gap);
+  margin-bottom: var(--f-gap);
+}
+.row--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.row--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.row--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+/* пропорции: медиа + контент */
+.row--1-2 { grid-template-columns: 1fr 2fr; }
+.row--2-1 { grid-template-columns: 2fr 1fr; }
+/* происхождения: 4 элемента в строке — аватар, плашка, аватар, плашка */
+.row--origins { grid-template-columns: 1fr 2fr 1fr 2fr; }
+
+@media (max-width: 1100px) {
+  .row--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 1100px) {
+  /* две пары в строке уже не читаются — складываем в пары */
+  .row--origins { grid-template-columns: 1fr 2fr; }
+}
+@media (max-width: 800px) {
+  .row--2, .row--3, .row--4, .row--1-2, .row--2-1 { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .row--origins { grid-template-columns: 1fr; }
+}
+
+/* ------------------------------------------------------------- клетка (cell)
+   Базовая «ячейка справочника»: рамка, паттерн, серый оверлей 20%.
+   Внутри — что угодно: текст, таблица, картинка.
+   -------------------------------------------------------------------------- */
+.cell {
+  position: relative;
+  padding: 20px;
+  border: 1px solid var(--f-plate-line);
+  background-color: var(--f-plate-bg);
+  background-image: var(--f-plate-pattern, url("/fallout-2d20-site/assets/img/food-truck-pattern.jpg"));
+  background-repeat: repeat;
+  background-position: center;
+}
+.cell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--f-plate-overlay);
+  pointer-events: none;
+}
+.cell > * { position: relative; z-index: 1; }
+.cell--plain::before { display: none; }
+.cell--dark::before { background: rgba(0, 0, 0, .55); }
+.cell--shadow { box-shadow: 7px 5px 0 #c3c3c3; }
+/* плашка происхождения — три строки, шеврон прижат вниз */
+.cell--shadow {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.cell--shadow .cell__chevron { margin-top: auto; padding-top: 12px; }
+
+/* ------------------------------------------------------------ медиа-ячейка
+   Слева картинка происхождения на собственном фоне (без оверлея).
+   -------------------------------------------------------------------------- */
+.media-cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 260px;
+  padding: 20px;
+  border: 1px solid var(--f-plate-line);
+  background-color: transparent;
+  background-image: var(--f-media-bg, none);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+.media-cell img {
+  display: block;
+  max-width: 100%;
+  max-height: 300px;
+  width: auto;
+  height: auto;
+}
+/* когда файла картинки нет — просто фон, без пустой рамки */
+.media-cell--empty {
+  min-height: 200px;
+  background-image: url("/fallout-2d20-site/assets/img/food-truck-pattern.jpg");
+  background-size: auto;
+  background-repeat: repeat;
+}
+
+/* ------------------------------------------------------------ текст в ячейке */
+.cell__title {
+  margin: 0 0 10px;
+  font-size: 1.5rem;
+  text-align: center;
+}
+.cell__text {
+  margin: 0 0 18px;
+  text-align: center;
+}
+.cell__text p { margin: 0; }
+.cell__actions,
+.cell__chevron { display: flex; justify-content: center; }
+.cell__chevron .cta { max-width: 100%; }
+@media (max-width: 480px) {
+  .cell__chevron .cta { padding: 10px 18px 10px 26px; font-size: 17px; gap: 10px; }
+  .cell__chevron .cta__arrow { width: 28px; height: 18px; }
+}
+
+/* ============================================================== плитки-хабы
+   Страницы-хабы (категории оружия, брони, существ, еды): 3 столбца,
+   каждая плитка — 3 строки: заголовок, картинка, шеврон.
+   ========================================================================== */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--f-gap);
+}
+@media (max-width: 1000px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px)  { .tiles { grid-template-columns: 1fr; } }
+
+.tile {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 10px;
+  padding: 18px 14px;
+  text-align: center;
+  border: 1px solid var(--f-plate-line);
+  background-color: var(--f-plate-bg);
+  background-image: var(--f-plate-pattern, url("/fallout-2d20-site/assets/img/food-truck-pattern.jpg"));
+  background-repeat: repeat;
+  background-position: center;
+  text-decoration: none;
+  color: var(--f-ink);
+}
+.tile::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--f-plate-overlay);
+  pointer-events: none;
+}
+.tile > * { position: relative; z-index: 1; }
+.tile:hover { text-decoration: none; }
+.tile:hover .tile__title { color: var(--f-link); }
+.tile__title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.tile__media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+}
+.tile__media img { display: block; max-height: 140px; width: auto; }
+.tile__arrow { display: flex; justify-content: flex-end; }
+.tile__arrow svg { width: 28px; height: 18px; fill: #000; }
+.tile:hover .tile__arrow svg { fill: var(--f-link); }
+
+/* ------------------------------------------------------------- кнопка CTA  */
+/*
+   Кнопка с выезжающей стрелкой. Место под выезд зарезервировано сразу,
+   поэтому ширина кнопки при наведении не меняется.
+*/
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 30px 10px 45px;
+  font-family: "Poppins", var(--f-font-title);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--f-on-dark);
+  text-decoration: none;
+  background: #000;
+  box-shadow: 6px 6px 0 gray;
+  transform: skewX(-15deg);
+  transition: box-shadow .5s;
+}
+.cta:hover { color: var(--f-on-dark); text-decoration: none; box-shadow: 10px 10px 0 #fbc638; }
+.cta > span { display: block; transform: skewX(15deg); }
+.cta__arrow {
+  width: 36px;
+  height: 23px;
+  flex: 0 0 auto;
+  transition: transform .5s;
+}
+.cta:hover .cta__arrow { transform: translateX(6px); }
+.cta__arrow path { transition: transform .4s, fill 1s; }
+.cta__arrow .a2 { transform: translateX(-30%); }
+.cta__arrow .a1 { transform: translateX(-60%); }
+.cta:hover .cta__arrow .a1,
+.cta:hover .cta__arrow .a2 { transform: translateX(0); }
+.cta:hover .cta__arrow path { animation: cta-color 1s infinite .3s; }
+
+@keyframes cta-color {
+  0%   { fill: #fff; }
+  50%  { fill: #fbc638; }
+  100% { fill: #fff; }
+}
+
+/* ------------------------------------------------------------- подвал       */
+.site-footer {
+  margin-top: 40px;
+  padding: 24px 0;
+  color: var(--f-footer-text);
+  background: var(--f-footer-bg);
+}
+.site-footer a { color: var(--f-footer-link); }
+.site-footer a:hover { color: var(--f-footer-link-hover); }
+.site-footer__text { max-width: 900px; margin: 0; font-size: 14px; }
+
+/* ---------------------------------------------------------- вспомогательное */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ========================================================= таблица на div
+   Нужна для «строки»: на ПК данные читаются в строку, на мобильном таблица
+   перестраивается. Если столбцов больше трёх — на мобильном 2 столбца
+   и много строк, подписи берутся из data-label.
+   ========================================================================== */
+.dtable {
+  display: block;
+  width: 100%;
+  border-collapse: collapse;
+}
+.dtable__row {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
+}
+.dtable__row + .dtable__row { border-top: 1px solid var(--f-plate-line); }
+.dtable__cell {
+  padding: 8px 10px;
+  border-right: 1px solid var(--f-plate-line);
+  min-width: 0;
+}
+.dtable__cell:last-child { border-right: 0; }
+.dtable__row--head .dtable__cell {
+  font-weight: 700;
+  background: rgba(0, 0, 0, .06);
+}
+.dtable__label { display: none; }
+
+@media (max-width: 800px) {
+  /* обычная таблица: одна ячейка в строке */
+  .dtable__row { grid-template-columns: 1fr; }
+  .dtable__cell { border-right: 0; border-bottom: 1px solid var(--f-plate-line); }
+  .dtable__cell:last-child { border-bottom: 0; }
+  .dtable__label {
+    display: block;
+    font-size: .8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    opacity: .65;
+  }
+  /* таблица с 4+ столбцами: вертикальная сетка 2 × N */
+  .dtable--wide .dtable__row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .dtable--wide .dtable__row--head { display: none; }
+  .dtable--wide .dtable__cell { border-bottom: 1px solid var(--f-plate-line); }
+}
+
+/* =============================================================== спойлеры
+   <details> — работает без JS; вложенность любая.
+   ========================================================================== */
+.spoiler {
+  border: 1px solid var(--f-plate-line);
+  background: rgba(255, 255, 255, .35);
+  margin-bottom: 10px;
+}
+.spoiler__summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+.spoiler__summary::-webkit-details-marker { display: none; }
+.spoiler__summary::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform .2s;
+  flex: 0 0 auto;
+}
+.spoiler[open] > .spoiler__summary::before { transform: rotate(45deg); }
+.spoiler__body { padding: 0 14px 14px; }
+.spoiler .spoiler { margin-bottom: 8px; }
+
+/* ============================================================================
+   Раскладка: явные правила в конце файла, чтобы никакие более ранние
+   определения не могли их перебить.
+   ========================================================================== */
+.row { display: grid; gap: var(--f-gap); margin-bottom: var(--f-gap); }
+.row--origins { grid-template-columns: 1fr 2fr 1fr 2fr; }
+.row--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.row--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.row--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.row--1-2 { grid-template-columns: 1fr 2fr; }
+.row--2-1 { grid-template-columns: 2fr 1fr; }
+
+@media (max-width: 1100px) {
+  .row--origins { grid-template-columns: 1fr 2fr; }
+  .row--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 800px) {
+  .row--origins,
+  .row--2, .row--3, .row--4,
+  .row--1-2, .row--2-1 { grid-template-columns: 1fr; }
+}
+
+/* Плашка происхождения: три строки, шеврон прижат к низу */
+.cell--shadow {
+  display: flex;
+  flex-direction: column;
+  box-shadow: 7px 5px 0 #c3c3c3;
+}
+.cell__chevron { display: flex; justify-content: flex-end; margin-top: auto; padding-top: 12px; }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="site-header__logo" href="/fallout-2d20-site/"><img src="/fallout-2d20-site/assets/img/logos.png" alt="Fallout 2D20"></a>
+    <nav class="site-header__menu" aria-label="Основное меню"><ul class="top-menu"><li><a href="/fallout-2d20-site/">Главная</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/">Происхождения</a></li><li><a href="/fallout-2d20-site/snaryazhenie/">Снаряжение</a></li><li><a href="/fallout-2d20-site/perki/">Перки</a></li><li><a href="/fallout-2d20-site/bestiarij/">Бестиарий</a></li><li><a href="/fallout-2d20-site/forum/">Форум</a></li></ul></nav>
+    <button class="burger" type="button" aria-label="Открыть меню" aria-controls="drawer">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="drawer-backdrop" data-drawer-close></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer__head">
+    <a class="drawer__logo" href="/fallout-2d20-site/"><img src="/fallout-2d20-site/assets/img/logos.png" alt="Fallout 2D20"></a>
+    <button class="drawer__close" type="button" aria-label="Закрыть меню" data-drawer-close>
+      <span></span><span></span>
+    </button>
+  </div>
+  <ul><li><a href="/fallout-2d20-site/">Правила игры</a><button class="drawer__toggle" type="button" aria-expanded="false"><span class="visually-hidden">Раскрыть «Правила игры»</span></button><ul class="drawer__sub"><li><a href="/fallout-2d20-site/blog/igra">Что нужно для игры</a></li><li><a href="/fallout-2d20-site/blog/atributy-s-p-e-c-i-a-l">Атрибуты S.P.E.C.I.A.L</a></li><li><a href="/fallout-2d20-site/blog/kak-rabotaet-udacha">Как работает Удача</a></li></ul></li><li><a href="/fallout-2d20-site/proiskhozhdeniya">Происхождения</a><button class="drawer__toggle" type="button" aria-expanded="false"><span class="visually-hidden">Раскрыть «Происхождения»</span></button><ul class="drawer__sub"><li><a href="/fallout-2d20-site/proiskhozhdeniya/vyzhivshij">Выживший</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/posvyashchjonnyj-v-bratstvo-stali">Посвящённый в Братство Стали</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/gul">Гуль</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/supermutant">Супермутант</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/obitatel-ubezhishcha">Обитатель убежища</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/mister-pomoshchnik">Мистер Помощник</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/shturmotron">Штурмотрон</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/izgoj-bratstva">Изгой Братства</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/dikar">Дикарь</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/ditya-atoma">Дитя Атома</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/ten">Тень</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/zhitel-nkr">Житель НКР</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/minitmen">Минитмен</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/robomozg">Робомозг</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/protektron">Протектрон</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/oskolok-anklava">Осколок Анклава</a></li></ul></li><li><a href="/fallout-2d20-site/perki26">ПЕРКИ</a></li><li><a href="/fallout-2d20-site/oruzhie">Оружие</a><button class="drawer__toggle" type="button" aria-expanded="false"><span class="visually-hidden">Раскрыть «Оружие»</span></button><ul class="drawer__sub"><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie">Стрелковое оружие</a><button class="drawer__toggle" type="button" aria-expanded="false"><span class="visually-hidden">Раскрыть «Стрелковое оружие»</span></button><ul class="drawer__sub"><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/10-mm-pistolet">10-мм Пистолет</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/12-7-mm-pistolet">12,7-мм пистолет</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/12-7-mm-pistolet-pulemjot">12,7-мм пистолет-пулемёт</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/protivopekhotnyj-25-mm-granatomjot">Противопехотный 25-мм гранатомёт</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/krupnokalibernaya-snajperskaya-vintovka">Крупнокалиберная снайперская винтовка</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/samozaryadnaya-vintovka">Самозарядная винтовка</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/porokhovoj-mushketon">Пороховой мушкетон</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/porokhovoj-pistolet">Пороховой пистолет</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/porokhovoj-karabin">Пороховой карабин</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/pistolet-gaussa">Пистолет Гаусса</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/drobovik-gaussa">Дробовик Гаусса</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/karabin-s-rychazhnym-zatvorom">Карабин с рычажным затвором</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/ljogkij-pulemjot">Лёгкий пулемёт</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/pompovyj-drobovik">Помповый дробовик</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/radievyj-karabin">Радиевый карабин</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/snajperskaya-vintovka">Снайперская винтовка</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/granatomjot-m79">Гранатомёт M79</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/sten">Стен</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/pistolet-gulya">Пистолет Гуля</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/karabin-gulya">Карабин Гуля</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/karabin-gulya-2">Инъекционный пистолет</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/revolver-kalibra-44">Револьвер Калибра .44</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/signalnyj-pistolet">Сигнальный пистолет</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/shturmovaya-vintovka">Штурмовая винтовка</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/boevoj-karabin">Боевой карабин</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/karabin-gaussa">Карабин гаусса</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/tommi-gan">ПП Томпсона</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/boevoj-drobovik">Боевой дробовик</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/dvustvolnyj-drobovik">Двуствольный дробовик</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/gladkostvol-s-boltovym-zatvorom">Гладкоствол с болтовым затвором</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/gladkostvolnyj-revolver">Гладкоствольный револьвер</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/inektsionnyj-karabin">Инъекционный карабин</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/zheleznodorozhnaya-vintovka">Железнодорожная винтовка</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/9-mm-pistolet">9-мм пистолет</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/okhotnichya-vintovka">Охотничья винтовка</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/gladkostvol">Гладкоствол</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/revolver-magnum-kal-357">Револьвер «Магнум» кал. 357</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/pistolet-inektor">Пистолет-инъектор</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/abordazhnyj-pistolet">Абордажный пистолет</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/granatomet-so-slezotochivym-gazom">Гранатомет со слезоточивым газом</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/magnumnomikon">Магнумномикон</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie/kitajskij-avtomat">Китайский автомат</a></li></ul></li><li><a href="/fallout-2d20-site/oruzhie/atleticheskoe-oruzhie">Атлетическое оружие</a><button class="drawer__toggle" type="button" aria-expanded="false"><span class="visually-hidden">Раскрыть «Атлетическое оружие»</span></button><ul class="drawer__sub"><li><a href="/fallout-2d20-site/oruzhie/atleticheskoe-oruzhie/luk">Лук</a></li><li><a href="/fallout-2d20-site/oruzhie/atleticheskoe-oruzhie/arbalet">Арбалет</a></li></ul></li><li><a href="/fallout-2d20-site/oruzhie/metatelnoe-oruzhie">Метательное оружие</a><button class="drawer__toggle" type="button" aria-expanded="false"><span class="visually-hidden">Раскрыть «Метательное оружие»</span></button><ul class="drawer__sub"><li><a href="/fallout-2d20-site/oruzhie/metatelnoe-oruzhie/samodelnoe-lasso">Самодельное лассо</a></li><li><a href="/fallout-2d20-site/oruzhie/metatelnoe-oruzhie/metatelnye-nozhi">Метательные ножи</a></li><li><a href="/fallout-2d20-site/oruzhie/metatelnoe-oruzhie/tomagavk">Томагавк</a></li><li><a href="/fallout-2d20-site/oruzhie/metatelnoe-oruzhie/drotik">Дротик</a></li></ul></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya">Оружие ближнего боя</a><button class="drawer__toggle" type="button" aria-expanded="false"><span class="visually-hidden">Раскрыть «Оружие ближнего боя»</span></button><ul class="drawer__sub"><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/vykidnoj-nozh">Выкидной нож</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/dubinka">Дубинка</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/mech">Меч</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/boevoj-nozh">Боевой нож</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/machete">Мачете</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/potroshitel">Потрошитель</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/shish-kebab">Шиш-кебаб</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/bejsbolnaya-bita">Бейсбольная бита</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/alyuminievaya-bejsbolnaya-bita">Алюминиевая бейсбольная бита</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/dryn">Дрын</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/svintsovaya-truba">Свинцовая труба</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/razvodnoj-klyuch">Разводной ключ</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/bilyardnyj-kij">Бильярдный кий</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/skalka">Скалка</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/kuvalda">Кувалда</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/supermolot">Супермолот</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/balonnyj-klyuch">Балонный ключ</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/trost">Трость</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/bokserskaya-perchatka">Боксерская перчатка</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/perchatka-kogtya-smerti">Перчатка когтя смерти</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/kastet">Кастет</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/silovoj-kastet">Силовой кастет</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/klinok-shturmotrona">Клинок штурмотрона</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/avtotopor">Автотопор</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/ballisticheskij-kulak">Баллистический кулак</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/bolshoj-mech">Большой меч</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/elektroshoker">Электрошокер</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/benzopila">Бензопила</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/tanbo-smerti">Танбо смерти</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/perchatka-vytesnitel">Перчатка-вытеснитель</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/gitara-mech">Гитара-меч</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/tsirkulyarnyj-rezak-mistera-pomoshchnika">Циркулярный резак Мистера Помощника</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/universalnyj-topor">Универсальный топор</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/protonnyj-topor">Протонный топор</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/voennyj-baraban">Военный барабан</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/posokh-atoma">Посох Атома</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/shakhterskij-perforator">Шахтерский перфоратор</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya/svarochnaya-gorelka">Сварочная горелка</a></li></ul></li><li><a href="/fallout-2d20-site/oruzhie/vzryvchatka">Взрывчатка</a><button class="drawer__toggle" type="button" aria-expanded="false"><span class="visually-hidden">Раскрыть «Взрывчатка»</span></button><ul class="drawer__sub"><li><a href="/fallout-2d20-site/oruzhie/vzryvchatka/bejsbolnaya-granata">Бейсбольная граната</a></li><li><a href="/fallout-2d20-site/oruzhie/vzryvchatka/oskolochnaya-granata">Осколочная граната</a></li><li><a href="/fallout-2d20-site/oruzhie/vzryvchatka/koktejl-molotova">Коктейль молотова</a></li><li><a href="/fallout-2d20-site/oruzhie/vzryvchatka/yadernaya-granata">Ядерная граната</a></li><li><a href="/fallout-2d20-site/oruzhie/vzryvchatka/plazmennaya-granata">Плазменная граната</a></li><li><a href="/fallout-2d20-site/oruzhie/vzryvchatka/impulsnaya-granata">Импульсная граната</a></li><li><a href="/fallout-2d20-site/oruzhie/vzryvchatka/kriogennaya-granata">Криогенная граната</a></li><li><a href="/fallout-2d20-site/oruzhie/vzryvchatka/kryshkomina">Крышкомина</a></li><li><a href="/fallout-2d20-site/oruzhie/vzryvchatka/oskolochnaya-mina">Осколочная мина</a></li><li><a href="/fallout-2d20-site/oruzhie/vzryvchatka/yadernaya-mina">Ядерная мина</a></li><li><a href="/fallout-2d20-site/oruzhie/vzryvchatka/plazmennaya-mina">Плазменная мина</a></li><li><a href="/fallout-2d20-site/oruzhie/vzryvchatka/impulsnaya-mina">Импульсная мина</a></li><li><a href="/fallout-2d20-site/oruzhie/vzryvchatka/kriomina">Криомина</a></li><li><a href="/fallout-2d20-site/oruzhie/vzryvchatka/detonator">Детонатор</a></li><li><a href="/fallout-2d20-site/oruzhie/vzryvchatka/dinamit">Динамит</a></li><li><a href="/fallout-2d20-site/oruzhie/vzryvchatka/svyazka-dinamita">Связка динамита</a></li><li><a href="/fallout-2d20-site/oruzhie/vzryvchatka/svetoshumovaya-granata">Светошумовая граната</a></li><li><a href="/fallout-2d20-site/oruzhie/vzryvchatka/umnaya-oskolochnaya-granata">«Умная» осколочная граната</a></li><li><a href="/fallout-2d20-site/oruzhie/vzryvchatka/plastikovaya-vzryvchatka">Пластиковая взрывчатка</a></li><li><a href="/fallout-2d20-site/oruzhie/vzryvchatka/porokhovoj-zaryad">Пороховой заряд</a></li><li><a href="/fallout-2d20-site/oruzhie/vzryvchatka/dymovaya-granata">Дымовая граната</a></li></ul></li><li><a href="/fallout-2d20-site/oruzhie/energooruzhie">Энергооружие</a><button class="drawer__toggle" type="button" aria-expanded="false"><span class="visually-hidden">Раскрыть «Энергооружие»</span></button><ul class="drawer__sub"><li><a href="/fallout-2d20-site/oruzhie/energooruzhie/lazernyj-mushket">Лазерный мушкет</a></li><li><a href="/fallout-2d20-site/oruzhie/energooruzhie/lazernyj-pistolet">Лазерный пистолет</a></li><li><a href="/fallout-2d20-site/oruzhie/energooruzhie/lazernyj-pistolet-2">Плазменный пистолет</a></li><li><a href="/fallout-2d20-site/oruzhie/energooruzhie/gamma-pushka">Гамма-пушка</a></li><li><a href="/fallout-2d20-site/oruzhie/energooruzhie/atomajzer-inoplanetyan">Атомайзер инопланетян</a></li><li><a href="/fallout-2d20-site/oruzhie/energooruzhie/dezintegrator-chuzhogo">Дезинтегратор Чужого</a></li><li><a href="/fallout-2d20-site/oruzhie/energooruzhie/elektrosvarka">Электросварка</a></li><li><a href="/fallout-2d20-site/oruzhie/energooruzhie/golovnoj-lazer-shturmotrona">Головной лазер штурмотрона</a></li><li><a href="/fallout-2d20-site/oruzhie/energooruzhie/mikrovolnovyj-emitter">Микроволновый эмиттер</a></li><li><a href="/fallout-2d20-site/oruzhie/energooruzhie/karabin-tesly">Карабин Теслы</a></li><li><a href="/fallout-2d20-site/oruzhie/energooruzhie/kisloplyuj">Кислоплюй</a></li><li><a href="/fallout-2d20-site/oruzhie/energooruzhie/blaster-chuzhikh">Бластер Чужих</a></li><li><a href="/fallout-2d20-site/oruzhie/energooruzhie/gipnotron">Гипнотрон</a></li><li><a href="/fallout-2d20-site/oruzhie/energooruzhie/plazmakaster">Плазмакастер</a></li><li><a href="/fallout-2d20-site/oruzhie/energooruzhie/lazernoe-ruzhjo-wattz-2000">Лазерное ружьё WATTZ 2000</a></li></ul></li><li><a href="/fallout-2d20-site/oruzhie/tyazhjoloe-oruzhie">Тяжёлое оружие</a><button class="drawer__toggle" type="button" aria-expanded="false"><span class="visually-hidden">Раскрыть «Тяжёлое оружие»</span></button><ul class="drawer__sub"><li><a href="/fallout-2d20-site/oruzhie/tyazhjoloe-oruzhie/tolstyak">Толстяк</a></li><li><a href="/fallout-2d20-site/oruzhie/tyazhjoloe-oruzhie/ognemet">Огнемет</a></li><li><a href="/fallout-2d20-site/oruzhie/tyazhjoloe-oruzhie/gatling-lazer">Гатлинг-лазер</a></li><li><a href="/fallout-2d20-site/oruzhie/tyazhjoloe-oruzhie/tyazhjolyj-insinerator">Тяжёлый инсинератор</a></li><li><a href="/fallout-2d20-site/oruzhie/tyazhjoloe-oruzhie/khlamotron">Хламотрон</a></li><li><a href="/fallout-2d20-site/oruzhie/tyazhjoloe-oruzhie/minigan">Миниган</a></li><li><a href="/fallout-2d20-site/oruzhie/tyazhjoloe-oruzhie/raketnaya-ustanovka">Ракетная установка</a></li><li><a href="/fallout-2d20-site/oruzhie/tyazhjoloe-oruzhie/pulemjot-kalibra-50">Пулемёт калибра .50</a></li><li><a href="/fallout-2d20-site/oruzhie/tyazhjoloe-oruzhie/avtomaticheskij-granatomjot">Автоматический гранатомёт</a></li><li><a href="/fallout-2d20-site/oruzhie/tyazhjoloe-oruzhie/pushka-robota">Пушка робота</a></li><li><a href="/fallout-2d20-site/oruzhie/tyazhjoloe-oruzhie/gatling">Гатлинг</a></li><li><a href="/fallout-2d20-site/oruzhie/tyazhjoloe-oruzhie/gatling-plazma">Гатлинг-плазма</a></li><li><a href="/fallout-2d20-site/oruzhie/tyazhjoloe-oruzhie/minigan-gaussa">Миниган Гаусса</a></li><li><a href="/fallout-2d20-site/oruzhie/tyazhjoloe-oruzhie/plazmakaster">Плазмакастер</a></li><li><a href="/fallout-2d20-site/oruzhie/tyazhjoloe-oruzhie/pushka-tesly">Пушка Теслы</a></li><li><a href="/fallout-2d20-site/oruzhie/tyazhjoloe-oruzhie/zalp">Залп</a></li><li><a href="/fallout-2d20-site/oruzhie/tyazhjoloe-oruzhie/kriolyator">Криолятор</a></li><li><a href="/fallout-2d20-site/oruzhie/tyazhjoloe-oruzhie/garpunomjot">Гарпуномёт</a></li><li><a href="/fallout-2d20-site/oruzhie/tyazhjoloe-oruzhie/sten-inektor">Стен-Инъектор</a></li><li><a href="/fallout-2d20-site/oruzhie/tyazhjoloe-oruzhie/granatomet-so-slezotochivym-gazom">Гранатомет со слезоточивым газом</a></li><li><a href="/fallout-2d20-site/oruzhie/tyazhjoloe-oruzhie/yudzhin">Юджин</a></li></ul></li></ul></li><li><a href="/fallout-2d20-site/karty-oruzhiya-b">Карты оружия β</a></li><li><a href="/fallout-2d20-site/bronya">БРОНЯ</a><button class="drawer__toggle" type="button" aria-expanded="false"><span class="visually-hidden">Раскрыть «БРОНЯ»</span></button><ul class="drawer__sub"><li><a href="/fallout-2d20-site/bronya/silovaya-bronya">Силовая броня</a><button class="drawer__toggle" type="button" aria-expanded="false"><span class="visually-hidden">Раскрыть «Силовая броня»</span></button><ul class="drawer__sub"><li><a href="/fallout-2d20-site/bronya/silovaya-bronya/ekskavatornaya-silovaya-bronya">Экскаваторная силовая броня</a></li><li><a href="/fallout-2d20-site/bronya/silovaya-bronya/silovaya-bronya-t-45">Силовая броня Т-45</a></li></ul></li></ul></li><li><a href="/fallout-2d20-site/dopolneniya">РАЗНОЕ</a></li><li><a href="/fallout-2d20-site/stsenarii">СЦЕНАРИИ</a></li><li><a href="/fallout-2d20-site/generator-dobychi">ДОБЫЧА</a></li><li><a href="/fallout-2d20-site/eda">Еда</a><button class="drawer__toggle" type="button" aria-expanded="false"><span class="visually-hidden">Раскрыть «Еда»</span></button><ul class="drawer__sub"><li><a href="/fallout-2d20-site/eda/mutafrukt">Мутафрукт</a></li><li><a href="/fallout-2d20-site/eda/makarony-s-syrom-blamko">Макароны с Сыром &quot;БламКо&quot;</a></li><li><a href="/fallout-2d20-site/eda/myaso-dutnya">Мясо Дутня</a></li><li><a href="/fallout-2d20-site/eda/myaso-gnusa">Мясо Гнуса</a></li><li><a href="/fallout-2d20-site/eda/stejk-iz-gnusa">Стейк из Гнуса</a></li><li><a href="/fallout-2d20-site/eda/myaso-bramina">Мясо Брамина</a></li><li><a href="/fallout-2d20-site/eda/mozgovoj-grib">Мозговой Гриб</a></li><li><a href="/fallout-2d20-site/eda/sobachi-konservy">Собачьи Консервы</a></li><li><a href="/fallout-2d20-site/eda/morkov">Морковь</a></li><li><a href="/fallout-2d20-site/eda/prigotovlennoe-myaso-bolotnika-s-myagkim-pantsirem">Приготовленное мясо болотника с мягким панцирем</a></li><li><a href="/fallout-2d20-site/eda/kukuruza">Кукуруза</a></li><li><a href="/fallout-2d20-site/eda/cram">СРАМ</a></li><li><a href="/fallout-2d20-site/eda/khrustyashchie-kusochki-belki">Хрустящие кусочки белки</a></li><li><a href="/fallout-2d20-site/eda/nalivnye-yabloki">Наливные яблоки</a></li><li><a href="/fallout-2d20-site/eda/yajtso-kogtya-smerti">Яйцо Когтя Смерти</a></li><li><a href="/fallout-2d20-site/eda/omlet-iz-yaits-kogtya-smerti">Омлет из яиц Когтя смерти</a></li><li><a href="/fallout-2d20-site/eda/stejk-iz-kogtya-smerti">Стейк из Когтя смерти</a></li><li><a href="/fallout-2d20-site/eda/keksy-veselye-rebyata">Кексы &quot;Веселые ребята&quot;</a></li><li><a href="/fallout-2d20-site/eda/pishchevaya-pasta">Пищевая паста</a></li><li><a href="/fallout-2d20-site/eda/tykva">Тыква</a></li><li><a href="/fallout-2d20-site/eda/radtarakan-gril">Радтаракан гриль</a></li><li><a href="/fallout-2d20-site/eda/radolen-gril">Радолень гриль</a></li><li><a href="/fallout-2d20-site/eda/zhevatelnye-pastilki">Жевательные пастилки</a></li><li><a href="/fallout-2d20-site/eda/kusochki-iguany">Кусочки игуаны</a></li><li><a href="/fallout-2d20-site/eda/iguana-na-palochke">Игуана на палочке</a></li><li><a href="/fallout-2d20-site/eda/sup-iz-iguany">Суп из игуаны</a></li><li><a href="/fallout-2d20-site/eda/pyure-bystrogo-prigotovleniya">Пюре быстрого приготовления</a></li><li><a href="/fallout-2d20-site/eda/produktovyj-nabor-instituta">Продуктовый набор Института</a></li><li><a href="/fallout-2d20-site/eda/dynya">Дыня</a></li><li><a href="/fallout-2d20-site/eda/keks-iz-bolotnika">Кекс из Болотника</a></li><li><a href="/fallout-2d20-site/eda/yajtso-bolotnika">Яйцо болотника</a></li><li><a href="/fallout-2d20-site/eda/omlet-iz-yajtsa-bolotnika">Омлет из яйца Болотника</a></li><li><a href="/fallout-2d20-site/eda/stejk-iz-matki-bolotnika">Стейк из Матки Болотника</a></li><li><a href="/fallout-2d20-site/eda/myaso-kogtya-smerti">Мясо когтя смерти</a></li><li><a href="/fallout-2d20-site/eda/myaso-bolotnika">Мясо Болотника</a></li><li><a href="/fallout-2d20-site/eda/sobachatina">Собачатина</a></li><li><a href="/fallout-2d20-site/eda/otbivnaya-iz-gonchej-mutanta">Отбивная из гончей мутанта</a></li><li><a href="/fallout-2d20-site/eda/myaso-gonchej-mutanta">Мясо гончей мутанта</a></li><li><a href="/fallout-2d20-site/eda/otbivnye-iz-dvornyagi">Отбивные из дворняги</a></li><li><a href="/fallout-2d20-site/eda/chashka-s-lapshoj">Чашка с лапшой</a></li><li><a href="/fallout-2d20-site/eda/idealno-sokhranivshijsya-pirog">Идеально сохранившийся пирог</a></li><li><a href="/fallout-2d20-site/eda/svinina-s-bobami">Свинина с бобами</a></li><li><a href="/fallout-2d20-site/eda/kartofelnye-chipsy">Картофельные чипсы</a></li><li><a href="/fallout-2d20-site/eda/zapechennyj-duten">Запеченный дутень</a></li></ul></li><li><a href="/fallout-2d20-site/obzory-ofitsialnykh-stsenariev">Обзоры официальных сценариев</a><button class="drawer__toggle" type="button" aria-expanded="false"><span class="visually-hidden">Раскрыть «Обзоры официальных сценариев»</span></button><ul class="drawer__sub"><li><a href="/fallout-2d20-site/obzory-ofitsialnykh-stsenariev/obzor-priklyucheniya-v-bezdnu">Обзор приключения &quot;В бездну&quot;</a></li></ul></li><li><a href="/fallout-2d20-site/bestiarij">Бестиарий</a><button class="drawer__toggle" type="button" aria-expanded="false"><span class="visually-hidden">Раскрыть «Бестиарий»</span></button><ul class="drawer__sub"><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye">Животные и насекомые</a><button class="drawer__toggle" type="button" aria-expanded="false"><span class="visually-hidden">Раскрыть «Животные и насекомые»</span></button><ul class="drawer__sub"><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/gnus">Гнус</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/duten">Дутень</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/bramin">Брамин</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/kogot-smerti">Коготь смерти</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/sobaka">Собака</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/dvornyaga">Дворняга</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/lichinka-bolotnika">Личинка болотника</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/bolotnik">Болотник</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/bolotnik-okhotnik">Болотник охотник</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/matka-bolotnikov">Матка болотников</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/krotokrys">Кротокрыс</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/gonchaya-mutant">Гончая-мутант</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/radtarakan">Радтаракан</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/radskorpion">Радскорпион</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/radolen">Радолень</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/zhalokryl">Жалокрыл</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/yao-guaj">Яо Гуай</a></li></ul></li><li><a href="/fallout-2d20-site/bestiarij/raiders">Рейдеры</a><button class="drawer__toggle" type="button" aria-expanded="false"><span class="visually-hidden">Раскрыть «Рейдеры»</span></button><ul class="drawer__sub"><li><a href="/fallout-2d20-site/bestiarij/raiders/rejder">Рейдер</a></li><li><a href="/fallout-2d20-site/bestiarij/raiders/rejder-boss">Рейдер-Босс</a></li><li><a href="/fallout-2d20-site/bestiarij/raiders/rejder-psikh">Рейдер-псих</a></li><li><a href="/fallout-2d20-site/bestiarij/raiders/rejder-padalshchik">Рейдер-падальщик</a></li><li><a href="/fallout-2d20-site/bestiarij/raiders/rejder-veteran">Рейдер-ветеран</a></li></ul></li><li><a href="/fallout-2d20-site/bestiarij/supermutanty">Супермутанты</a><button class="drawer__toggle" type="button" aria-expanded="false"><span class="visually-hidden">Раскрыть «Супермутанты»</span></button><ul class="drawer__sub"><li><a href="/fallout-2d20-site/bestiarij/supermutanty/supermutant">Супермутант</a></li></ul></li></ul></li></ul>
+</aside>
+
+<main class="page">
+  <div class="container">
+<h1 class="page__title">Эталон раскладки</h1>
+<h2>1. Одна строка происхождений: 4 элемента</h2>
+<div class="row row--origins"><div class="media-cell media-cell--empty"></div><div class="cell cell--shadow"><h2 class="cell__title">Пример</h2><p class="cell__text">Короткое описание в одну-две строки.</p><div class="cell__chevron"><a class="cta" href="#"><span>Подробнее</span><svg class="cta__arrow" width="36" height="23" viewBox="0 0 66 43" aria-hidden="true" focusable="false"><g fill="#FFFFFF"><path class="a1" d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a2" d="M20.15 3.9 23.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L24.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L20.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a3" d="M.15 3.9 3.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L4.68 42.86a.66.66 0 0 1-.7 0L.15 39.11a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L.15 4.61a.66.66 0 0 1 0-.71Z"/></g></svg></a></div></div><div class="media-cell media-cell--empty"></div><div class="cell cell--shadow"><h2 class="cell__title">Пример</h2><p class="cell__text">Короткое описание в одну-две строки.</p><div class="cell__chevron"><a class="cta" href="#"><span>Подробнее</span><svg class="cta__arrow" width="36" height="23" viewBox="0 0 66 43" aria-hidden="true" focusable="false"><g fill="#FFFFFF"><path class="a1" d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a2" d="M20.15 3.9 23.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L24.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L20.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a3" d="M.15 3.9 3.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L4.68 42.86a.66.66 0 0 1-.7 0L.15 39.11a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L.15 4.61a.66.66 0 0 1 0-.71Z"/></g></svg></a></div></div></div>
+<h2>2. Два столбца: слева картинка, справа текст</h2>
+<div class="row row--1-2"><div class="media-cell media-cell--empty"></div><div class="cell"><p>Текст справа от картинки.</p></div></div>
+<h2>3. Три столбца (ячейки)</h2>
+<div class="row row--3"><div class="cell"><p>Ячейка 1</p></div><div class="cell"><p>Ячейка 2</p></div><div class="cell"><p>Ячейка 3</p></div></div>
+<h2>4. Четыре столбца</h2>
+<div class="row row--4"><div class="cell"><p>Колонка 1</p></div><div class="cell"><p>Колонка 2</p></div><div class="cell"><p>Колонка 3</p></div><div class="cell"><p>Колонка 4</p></div></div>
+<h2>5. Хаб из плиток: 3 столбца</h2>
+<div class="tiles"><a class="tile" href="#"><h2 class="tile__title">Оружие</h2><div class="tile__media"></div><div class="tile__arrow"><svg viewBox="0 0 66 43" aria-hidden="true" focusable="false"><path d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/></svg></div></a><a class="tile" href="#"><h2 class="tile__title">Броня</h2><div class="tile__media"></div><div class="tile__arrow"><svg viewBox="0 0 66 43" aria-hidden="true" focusable="false"><path d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/></svg></div></a><a class="tile" href="#"><h2 class="tile__title">Еда</h2><div class="tile__media"></div><div class="tile__arrow"><svg viewBox="0 0 66 43" aria-hidden="true" focusable="false"><path d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/></svg></div></a></div>
+<h2>6. Таблица на div: 4 столбца → 2×N на мобильном</h2>
+<div class="dtable dtable--wide" style="--cols:4"><div class="dtable__row dtable__row--head"><div class="dtable__cell">Оружие</div><div class="dtable__cell">Урон</div><div class="dtable__cell">Вес</div><div class="dtable__cell">Цена</div></div><div class="dtable__row"><div class="dtable__cell"><span class="dtable__label">Оружие</span>10-мм пистолет</div><div class="dtable__cell"><span class="dtable__label">Урон</span>1DC</div><div class="dtable__cell"><span class="dtable__label">Вес</span>1</div><div class="dtable__cell"><span class="dtable__label">Цена</span>100</div></div><div class="dtable__row"><div class="dtable__cell"><span class="dtable__label">Оружие</span>Лазерный пистолет</div><div class="dtable__cell"><span class="dtable__label">Урон</span>2DC</div><div class="dtable__cell"><span class="dtable__label">Вес</span>2</div><div class="dtable__cell"><span class="dtable__label">Цена</span>120</div></div></div>
+<h2>7. Вложенный спойлер</h2>
+<details class="spoiler" open><summary class="spoiler__summary">Внешний спойлер</summary><div class="spoiler__body"><details class="spoiler"><summary class="spoiler__summary">Внутренний спойлер</summary><div class="spoiler__body"><p>Текст внутри.</p></div></details><p>Текст на уровне внешнего.</p></div></details>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p class="site-footer__text">Fallout 2D20 — настольная ролевая игра по мотивам Fallout от
+      Modiphius Entertainment. Неофициальный русскоязычный сайт.</p>
+  </div>
+</footer>
+
+<script src="/fallout-2d20-site/assets/js/site.js"></script>
+</body>
+</html>
