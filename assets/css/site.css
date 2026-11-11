@@ -295,18 +295,28 @@ body {
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding: 20px 0;
+  padding: 24px 8px;
   border: 0;
   background-color: transparent;
   background-image: var(--f-media-bg, none);
   background-repeat: no-repeat;
+  /* bg-fon-3.png — сама наклонная жёлтая плитка (срез слева и справа-снизу),
+     поэтому её растягиваем на всю ячейку, а не ставим картинкой по центру.
+     contain: плитка видна целиком, срезы не обрезаются. */
   background-position: 50% 50%;
+  background-size: contain;
 }
+/* PNG 200×177 — мелкий: на большой ячейке плитка была бы крошечной,
+   поэтому тянем её вверх без потери гладкости (image-rendering — сглаженный) */
 .media-cell img {
   display: block;
-  width: 300px;
-  max-width: 100%;
+  width: 78%;
+  max-width: 300px;
   height: auto;
+  max-height: 78%;
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
 }
 .media-cell a { display: block; width: 100%; }
 
