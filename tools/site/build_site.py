@@ -235,7 +235,7 @@ def page(title, body, active='', nav_items=None):
 </head>
 <body>
 <header class="site-header">
-  <div class="container site-header__inner">
+  <div class="wrap site-header__inner">
     <a class="site-header__logo" href="{u('/')}"><img src="{logo}" alt="Fallout 2D20"></a>
     <nav class="site-header__menu" aria-label="Основное меню">{top_menu(active)}</nav>
     <button class="burger" type="button" aria-label="Открыть меню" aria-controls="drawer">
@@ -256,13 +256,13 @@ def page(title, body, active='', nav_items=None):
 </aside>
 
 <main class="page">
-  <div class="container">
+  <div class="wrap">
 {body}
   </div>
 </main>
 
 <footer class="site-footer">
-  <div class="container">
+  <div class="wrap">
     <p class="site-footer__text">Fallout 2D20 — настольная ролевая игра по мотивам Fallout от
       Modiphius Entertainment. Неофициальный русскоязычный сайт.</p>
   </div>
