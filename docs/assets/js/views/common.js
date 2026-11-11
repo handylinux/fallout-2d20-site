@@ -86,6 +86,25 @@
 
   /* Div-таблица: шапка + строки. На ПК — колонки, на мобильном — 2 колонки
      с подписями из .wmods__label (см. CSS). */
+  /* Текст с {CD} → текст с иконкой боевого кубика. Общая замена для
+     таблиц, где иконка стоит внутри значения. */
+  C.diceText = function (value) {
+    var parts = String(value === undefined || value === null ? '' : value).split('{CD}');
+    if (parts.length === 1) { return document.createTextNode(parts[0]); }
+    var frag = document.createDocumentFragment();
+    parts.forEach(function (part, i) {
+      if (i) {
+        var img = document.createElement('img');
+        img.className = 'cd-icon';
+        img.src = C.href('/assets/img/CD.png');
+        img.alt = 'Боевой кубик';
+        frag.appendChild(img);
+      }
+      if (part) { frag.appendChild(document.createTextNode(part)); }
+    });
+    return frag;
+  };
+
   C.divTable = function (head, rows) {
     var wrap = C.el('div', 'wmods');
     var headNode = C.el('div', 'wmods__head');
@@ -96,7 +115,7 @@
       cells.forEach(function (value, i) {
         var cell = C.el('div', 'wmods__c');
         cell.appendChild(C.el('span', 'wmods__label', head[i] || ''));
-        cell.appendChild(document.createTextNode(value));
+        cell.appendChild(C.diceText(value));
         row.appendChild(cell);
       });
       wrap.appendChild(row);
