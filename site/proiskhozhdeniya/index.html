@@ -734,29 +734,90 @@ body { background: transparent; }
 
 /* ============================================================================
    БРОНЯ. Образец — fallout-2d20.ru/bronya/silovaya-bronya/…
+   Строки разной ширины: --2 → две колонки, --1 → во всю ширину.
    ========================================================================== */
-/* Строки страницы брони: ширина строки задаётся классом, а не разметкой.
-   --2 → две равные колонки (картинка|данные, текст|таблица), --1 → одна. */
-.armor-row { margin: 0 0 22px; }
+.armor-row { margin: 0 0 26px; }
 .armor-row:last-child { margin-bottom: 0; }
-.armor-row--2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 30px; align-items: start; }
+.armor-row--2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 34px; align-items: start; }
 .armor-row--1 { display: block; }
-.armor__col { min-width: 0; }
-.armor__media { align-self: start; }
-.armor__img { display: block; max-width: 100%; width: auto; max-height: 460px; margin: 0 auto; }
-.armor__data { min-width: 0; }
-.armor__data .wstats { margin-bottom: 14px; }
-.armor__data .wstats:last-child { margin-bottom: 0; }
-.armor__col--table .wmods { margin: 0; }
-.armor__part {
-  margin: 22px 0 10px; padding: 0 0 6px;
-  font-size: 1.05rem; letter-spacing: .06em; text-transform: uppercase;
-  border-bottom: 2px solid #000;
-}
-.armor__text { margin: 14px 0; font-size: 16px; line-height: 1.6; }
+
+/* картинка слева */
+.armor__media { align-self: start; display: flex; justify-content: center; }
+.armor__media.wcard__media--empty { min-height: 240px; }
+.armor__img { display: block; width: auto; max-width: 100%; max-height: 430px; }
+
+/* части справа: сетка 2×2, подпись по центру, таблица узкая по центру */
+.armor__parts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 26px 34px; }
+.armor__part { min-width: 0; text-align: center; }
+.armor__part-title { margin: 0 0 8px; font-size: 1rem; font-weight: 700;
+  letter-spacing: .09em; text-transform: uppercase; }
+.armor__stats { margin: 0 auto; width: 100%; max-width: 210px;
+  border-collapse: collapse; border: 1px solid #000; }
+.armor__stats th, .armor__stats td { padding: 2px 7px; font-size: 12.5px;
+  line-height: 1.5; border: 1px solid #000; }
+.armor__stats th { background: #000; color: #fff; text-align: left; font-weight: 700; }
+.armor__stats td { width: 34px; background: #f6e6b6; text-align: center; }
+
+/* абзацы */
+.armor__desc { margin-top: 4px; }
+.armor__text { margin: 0 0 13px; font-size: 14.5px; line-height: 1.62; }
+.armor__text:last-child { margin-bottom: 0; }
 .armor__label { font-weight: 700; }
-.cd-icon { display: inline-block; width: 1em; height: 1em; vertical-align: -0.15em; }
-.wmods__c .cd-icon { width: .95em; height: .95em; }
+.armor__feature { margin: 0 0 26px; }
+
+/* произвольный блок данных: жёлтая плашка + золотая полоса слева */
+.armor-block { position: relative; padding: 26px 26px 24px 40px;
+  background: #fbf3d8; border-top: 1px solid #e0cd8e; border-bottom: 1px solid #e0cd8e; }
+.armor-block::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 9px; background: #d4a92b; }
+.armor-block__title { margin: 0 0 12px; font-size: 1.15rem; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase; color: #b8891a; }
+.armor-block__split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: 24px; align-items: start; }
+.armor-block__text .armor__text { margin: 0 0 10px; font-size: 13px; }
+.armor-block__table { min-width: 0; }
+
+/* таблицы блоков: чёрные заголовки, кремовые ячейки */
+.armor__grid { width: 100%; border-collapse: collapse; border: 1px solid #000;
+  background: #fdf6e3; }
+.armor__grid th, .armor__grid td { padding: 3px 7px; font-size: 12.5px;
+  line-height: 1.45; border: 1px solid #000; vertical-align: middle; }
+.armor__grid thead th { background: #000; color: #fff; font-size: 11.5px;
+  text-align: center; text-transform: uppercase; letter-spacing: .05em; }
+.armor__grid tbody tr:nth-child(odd) td { background: #fdf6e3; }
+.armor__grid tbody tr:nth-child(even) td { background: #f7ead1; }
+.armor__grid tbody td:first-child { text-align: center; white-space: nowrap; }
+
+/* поддерживаемые модификации */
+.armor-mods__title { margin: 0 0 18px; font-size: 1.45rem; font-weight: 700;
+  text-align: center; }
+.armor-mods__bar { padding: 6px 12px; background: linear-gradient(#f0cf6a, #dfb647);
+  border: 1px solid #c9a53c; color: #4a3a10; font-size: 11.5px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; text-align: center; }
+.armor__mod { border-bottom: 1px solid #d9d9d0; background: #f7f7f2; }
+.armor__mod-summary { display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; padding: 9px 14px; cursor: pointer; list-style: none; }
+.armor__mod-summary::-webkit-details-marker { display: none; }
+.armor__mod-name { font-size: 13.5px; font-weight: 700; }
+.armor__mod-arrow { flex: 0 0 auto; width: 9px; height: 9px;
+  border-right: 2px solid #6b6b62; border-bottom: 2px solid #6b6b62;
+  transform: rotate(45deg); transition: transform .2s; }
+.armor__mod[open] > .armor__mod-summary .armor__mod-arrow { transform: rotate(-135deg); }
+.armor__mod-body { padding: 0 10px 12px; background: #fff; }
+.armor__grid--mod { border: 1px solid #000; }
+.armor__grid--mod tbody td { background: #fff; }
+.armor__grid--mod thead th { font-size: 11px; }
+.armor__grid--mod tbody td:first-child { text-align: left; white-space: normal; font-weight: 700; }
+
+.cd-icon { display: inline-block; width: 1.05em; height: 1.05em; vertical-align: -0.18em; }
+
+@media (max-width: 900px) {
+  .armor-row--2 { grid-template-columns: 1fr; gap: 22px; }
+  .armor-block__split { grid-template-columns: 1fr; gap: 16px; }
+  .armor__stats { max-width: 240px; }
+}
 </style>
 </head>
 <body data-base="/fallout-2d20-site">
