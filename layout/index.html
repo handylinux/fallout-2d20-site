@@ -281,12 +281,15 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  height: 100%;
+  padding: 30px 20px;
   background-image: url("/fallout-2d20-site/assets/img/food-truck-pattern.jpg");
   background-repeat: repeat;
-  background-position: center;
+  background-size: cover;
+  background-position: 0 0;
   box-shadow: 7px 5px 0 #c3c3c3;
 }
-.cell--shadow::before { background: rgba(150, 150, 150, .28); }
+.cell--shadow::before { background: rgba(150, 150, 150, .2); }
 .cell--shadow .cell__chevron { margin-top: auto; padding-top: 12px; }
 
 /* ------------------------------------------------------------ медиа-ячейка
@@ -297,42 +300,46 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 260px;
-  padding: 20px;
-  border: 1px solid var(--f-plate-line);
-  background-color: transparent;
-  background-image: var(--f-media-bg, none);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+  height: 100%;
+  min-height: 240px;
+  padding: 0;
+  border: 0;
+  background: transparent;
 }
 .media-cell img {
   display: block;
-  max-width: 100%;
-  max-height: 300px;
-  width: auto;
+  width: 100%;
   height: auto;
+  max-height: 380px;
+  object-fit: contain;
 }
+.media-cell a { display: block; width: 100%; }
 /* когда файла картинки нет — просто фон, без пустой рамки */
-.media-cell--empty {
-  min-height: 200px;
-  background: rgba(255, 255, 255, .45);
-}
+/* файла картинки нет — колонка остаётся прозрачной, чтобы не выглядеть
+   пустой плашкой */
+.media-cell--empty { min-height: 240px; background: none; border: 0; }
+
+/* подложка-всплеск под аватаром (нет файла — просто не рисуется) */
+.media-cell { background-image: var(--f-media-bg, none); background-repeat: no-repeat; background-position: center; }
 
 /* ------------------------------------------------------------ текст в ячейке */
 .cell__title {
-  margin: 0 0 10px;
-  font-size: 1.5rem;
+  margin: 0 0 20px;
+  font-size: 1.6rem;
+  line-height: 1.2;
   text-align: center;
+  text-transform: uppercase;
 }
+.cell__title a { color: var(--f-link); }
+.cell__title a:hover { color: var(--f-link); text-decoration: underline; }
 .cell__text {
   margin: 0 0 18px;
-  text-align: center;
+  text-align: left;
 }
 .cell__text p { margin: 0; }
 .cell__actions,
 .cell__chevron { display: flex; justify-content: center; }
-.cell__chevron .cta { max-width: 100%; }
+.cell__chevron .cta { width: 100%; justify-content: center; }
 @media (max-width: 480px) {
   .cell__chevron .cta { padding: 10px 18px 10px 26px; font-size: 17px; gap: 10px; }
   .cell__chevron .cta__arrow { width: 28px; height: 18px; }
@@ -416,6 +423,10 @@ body {
 }
 .cta:hover .cta__arrow { transform: translateX(6px); }
 .cta__arrow path { transition: transform .4s, fill 1s; }
+.cta__arrow .a1 { transform: translateX(8px); }
+.cta__arrow .a2 { transform: translateX(0); }
+.cta:hover .cta__arrow .a1,
+.cta:hover .cta__arrow .a2 { transform: translateX(0); }
 .cta__arrow .a2 { transform: translateX(-30%); }
 .cta__arrow .a1 { transform: translateX(-60%); }
 .cta:hover .cta__arrow .a1,
@@ -636,7 +647,7 @@ body { background: transparent; }
   <div class="wrap">
 <h1 class="page__title">Эталон раскладки</h1>
 <h2>1. Одна строка происхождений: 4 элемента (col-3 × 4)</h2>
-<div class="row g-3 origins-row mb-3"><div class="col-12 col-sm-6 col-lg-3"><div class="media-cell media-cell--empty"></div></div><div class="col-12 col-sm-6 col-lg-3"><div class="cell cell--shadow"><h2 class="cell__title">Пример</h2><p class="cell__text">Короткое описание в одну-две строки.</p><div class="cell__chevron"><a class="cta" href="#"><span>Подробнее</span><svg class="cta__arrow" width="36" height="23" viewBox="0 0 66 43" aria-hidden="true" focusable="false"><g fill="#FFFFFF"><path class="a1" d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a2" d="M20.15 3.9 23.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L24.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L20.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a3" d="M.15 3.9 3.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L4.68 42.86a.66.66 0 0 1-.7 0L.15 39.11a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L.15 4.61a.66.66 0 0 1 0-.71Z"/></g></svg></a></div></div></div><div class="col-12 col-sm-6 col-lg-3"><div class="media-cell media-cell--empty"></div></div><div class="col-12 col-sm-6 col-lg-3"><div class="cell cell--shadow"><h2 class="cell__title">Пример</h2><p class="cell__text">Короткое описание в одну-две строки.</p><div class="cell__chevron"><a class="cta" href="#"><span>Подробнее</span><svg class="cta__arrow" width="36" height="23" viewBox="0 0 66 43" aria-hidden="true" focusable="false"><g fill="#FFFFFF"><path class="a1" d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a2" d="M20.15 3.9 23.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L24.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L20.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a3" d="M.15 3.9 3.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L4.68 42.86a.66.66 0 0 1-.7 0L.15 39.11a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L.15 4.61a.66.66 0 0 1 0-.71Z"/></g></svg></a></div></div></div></div>
+<div class="row g-3 origins-row mb-3"><div class="col-12 col-sm-6 col-lg-3"><div class="media-cell media-cell--empty"></div></div><div class="col-12 col-sm-6 col-lg-3"><div class="cell cell--shadow"><h2 class="cell__title"><a href="#">Пример</a></h2><p class="cell__text">Короткое описание в одну-две строки.</p><div class="cell__chevron"><a class="cta" href="#"><span>Подробнее</span><svg class="cta__arrow" width="36" height="23" viewBox="0 0 66 43" aria-hidden="true" focusable="false"><g fill="#FFFFFF"><path class="a1" d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a2" d="M20.15 3.9 23.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L24.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L20.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a3" d="M.15 3.9 3.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L4.68 42.86a.66.66 0 0 1-.7 0L.15 39.11a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L.15 4.61a.66.66 0 0 1 0-.71Z"/></g></svg></a></div></div></div><div class="col-12 col-sm-6 col-lg-3"><div class="media-cell media-cell--empty"></div></div><div class="col-12 col-sm-6 col-lg-3"><div class="cell cell--shadow"><h2 class="cell__title"><a href="#">Пример</a></h2><p class="cell__text">Короткое описание в одну-две строки.</p><div class="cell__chevron"><a class="cta" href="#"><span>Подробнее</span><svg class="cta__arrow" width="36" height="23" viewBox="0 0 66 43" aria-hidden="true" focusable="false"><g fill="#FFFFFF"><path class="a1" d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a2" d="M20.15 3.9 23.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L24.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L20.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a3" d="M.15 3.9 3.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L4.68 42.86a.66.66 0 0 1-.7 0L.15 39.11a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L.15 4.61a.66.66 0 0 1 0-.71Z"/></g></svg></a></div></div></div></div>
 <h2>2. Два столбца: слева картинка, справа текст</h2>
 <div class="row g-3"><div class="col-12 col-md-5"><div class="media-cell media-cell--empty"></div></div><div class="col-12 col-md-7"><div class="cell"><p>Текст справа от картинки.</p></div></div></div>
 <h2>3. Три столбца (ячейки, col-lg-4)</h2>
@@ -644,7 +655,7 @@ body { background: transparent; }
 <h2>4. Четыре столбца (col-lg-3)</h2>
 <div class="row g-3"><div class="col-12 col-sm-6 col-lg-3"><div class="cell"><p>Колонка 1</p></div></div><div class="col-12 col-sm-6 col-lg-3"><div class="cell"><p>Колонка 2</p></div></div><div class="col-12 col-sm-6 col-lg-3"><div class="cell"><p>Колонка 3</p></div></div><div class="col-12 col-sm-6 col-lg-3"><div class="cell"><p>Колонка 4</p></div></div></div>
 <h2>5. Хаб из плиток: 3 столбца</h2>
-<div class="row g-3 tiles-row"><div class="col-12 col-md-6 col-lg-4"><a class="tile" href="#"><h2 class="tile__title">Оружие</h2><div class="tile__media"></div><div class="tile__arrow"><svg viewBox="0 0 66 43" aria-hidden="true" focusable="false"><path d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/></svg></div></a></div><div class="col-12 col-md-6 col-lg-4"><a class="tile" href="#"><h2 class="tile__title">Броня</h2><div class="tile__media"></div><div class="tile__arrow"><svg viewBox="0 0 66 43" aria-hidden="true" focusable="false"><path d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/></svg></div></a></div><div class="col-12 col-md-6 col-lg-4"><a class="tile" href="#"><h2 class="tile__title">Еда</h2><div class="tile__media"></div><div class="tile__arrow"><svg viewBox="0 0 66 43" aria-hidden="true" focusable="false"><path d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/></svg></div></a></div></div>
+<div class="row g-3 tiles-row"><div class="col-12 col-md-6 col-lg-4"><a class="tile" href="#"><h2 class="tile__title">Оружие</h2><div class="tile__media"></div><div class="tile__arrow"><svg class="cta__arrow" viewBox="0 0 66 43" aria-hidden="true" focusable="false"><path class="a1" d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a2" d="M20.15 3.9 23.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L24.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L20.15 4.61a.66.66 0 0 1 0-.71Z"/></svg></div></a></div><div class="col-12 col-md-6 col-lg-4"><a class="tile" href="#"><h2 class="tile__title">Броня</h2><div class="tile__media"></div><div class="tile__arrow"><svg class="cta__arrow" viewBox="0 0 66 43" aria-hidden="true" focusable="false"><path class="a1" d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a2" d="M20.15 3.9 23.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L24.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L20.15 4.61a.66.66 0 0 1 0-.71Z"/></svg></div></a></div><div class="col-12 col-md-6 col-lg-4"><a class="tile" href="#"><h2 class="tile__title">Еда</h2><div class="tile__media"></div><div class="tile__arrow"><svg class="cta__arrow" viewBox="0 0 66 43" aria-hidden="true" focusable="false"><path class="a1" d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a2" d="M20.15 3.9 23.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L24.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L20.15 4.61a.66.66 0 0 1 0-.71Z"/></svg></div></a></div></div>
 <h2>6. Таблица на div: 4 столбца → 2×N на мобильном</h2>
 <div class="dtable dtable--wide" style="--cols:4"><div class="dtable__row dtable__row--head"><div class="dtable__cell">Оружие</div><div class="dtable__cell">Урон</div><div class="dtable__cell">Вес</div><div class="dtable__cell">Цена</div></div><div class="dtable__row"><div class="dtable__cell"><span class="dtable__label">Оружие</span>10-мм пистолет</div><div class="dtable__cell"><span class="dtable__label">Урон</span>1DC</div><div class="dtable__cell"><span class="dtable__label">Вес</span>1</div><div class="dtable__cell"><span class="dtable__label">Цена</span>100</div></div><div class="dtable__row"><div class="dtable__cell"><span class="dtable__label">Оружие</span>Лазерный пистолет</div><div class="dtable__cell"><span class="dtable__label">Урон</span>2DC</div><div class="dtable__cell"><span class="dtable__label">Вес</span>2</div><div class="dtable__cell"><span class="dtable__label">Цена</span>120</div></div></div>
 <h2>7. Вложенный спойлер</h2>
