@@ -160,7 +160,15 @@ def write_blog():
         write('blog.json', blog)
 
 
+def write_snaryazhenie():
+    """Хаб «Снаряжение»: 9 плиток в порядке эталона (SPPB id 269, 3 ряда 4+4+4).
+    У готовых разделов — путь, у будущих — ready:false (таблица показывает «скоро»)."""
+    data = load_json('data/snaryazhenie.json') or {'title': 'Снаряжение', 'tiles': []}
+    write('hub.json', data)
+
+
 def main():
+    write_snaryazhenie()
     write_origins()
     write_blog()
     write_examples()

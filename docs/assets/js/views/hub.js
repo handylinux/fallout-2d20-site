@@ -20,15 +20,31 @@
     return frag;
   };
 
+  /* Хаб «Снаряжение»: 9 плиток в порядке эталона.
+     Готовые разделы — ссылки, будущие — та же плитка с плашкой «скоро». */
   window.Views.snaryazhenie = function (data) {
+    var hub = data.hub || {};
     var frag = document.createDocumentFragment();
-    frag.appendChild(C.el('h1', 'page__title', 'Снаряжение'));
-    frag.appendChild(C.tiles((data.catalog.sections || []).map(function (s) {
-      return C.tile({
-        title: s.title,
-        href: (s.path || ('/snaryazhenie/' + s.slug)) + '/',
-        image: s.image,
-      });
+    frag.appendChild(C.el('h1', 'page__title', hub.title || 'Снаряжение'));
+    frag.appendChild(C.tiles((hub.tiles || []).map(function (tile) {
+      if (tile.href) {
+        return C.tile({ title: tile.title, href: tile.href, image: tile.image });
+      }
+      /* не ссылка: будущий раздел не должен попадать в индекс как битый адрес */
+      var card = C.el('div', 'tile tile--soon');
+      card.setAttribute('aria-disabled', 'true');
+      card.appendChild(C.el('h2', 'tile__title', tile.title));
+      var media = C.el('div', 'tile__media');
+      if (tile.image) {
+        var img = document.createElement('img');
+        img.src = C.href(tile.image);
+        img.alt = tile.title;
+        img.loading = 'lazy';
+        media.appendChild(img);
+      }
+      card.appendChild(media);
+      card.appendChild(C.el('span', 'tile__soon', 'скоро'));
+      return card;
     })));
     return frag;
   };

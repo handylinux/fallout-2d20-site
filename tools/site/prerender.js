@@ -264,7 +264,8 @@ function build() {
   push('', Views.home ? Views.home({ catalog }) : makeNode('#frag'), 'Правила игры', {
     description: 'Правила Fallout 2D20: справочник оружия, происхождений, снаряжения.',
   });
-  push('snaryazhenie', Views.snaryazhenie({ catalog }), 'Снаряжение');
+  push('snaryazhenie', Views.snaryazhenie({ catalog, hub: readJson('hub') }), 'Снаряжение',
+       { description: 'Снаряжение Fallout 2D20: оружие, броня, одежда, препараты, еда, напитки, книги, боеприпасы.' });
 
   const pathOf = (section) => (section.path || ('/snaryazhenie/' + section.slug)).replace(/^\//, '');
   (catalog.sections || []).forEach((section) => {

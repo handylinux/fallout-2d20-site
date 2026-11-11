@@ -1,0 +1,59 @@
+{
+ "title": "Снаряжение",
+ "tiles": [
+  {
+   "title": "Оружие",
+   "image": "/assets/img/gear/oruzhie.png",
+   "href": "/snaryazhenie/oruzhie/",
+   "ready": true
+  },
+  {
+   "title": "Боеприпасы",
+   "image": "/assets/img/gear/boepripasy.png",
+   "href": null,
+   "ready": false
+  },
+  {
+   "title": "Броня",
+   "image": "/assets/img/gear/bronya.png",
+   "href": "/bronya/",
+   "ready": true
+  },
+  {
+   "title": "Одежда",
+   "image": "/assets/img/gear/odezhda.png",
+   "href": null,
+   "ready": false
+  },
+  {
+   "title": "Препараты",
+   "image": "/assets/img/gear/preparaty.png",
+   "href": null,
+   "ready": false
+  },
+  {
+   "title": "Еда",
+   "image": "/assets/img/gear/eda.png",
+   "href": null,
+   "ready": false
+  },
+  {
+   "title": "Напитки",
+   "image": "/assets/img/gear/napitki.png",
+   "href": null,
+   "ready": false
+  },
+  {
+   "title": "Книги и журналы",
+   "image": "/assets/img/gear/knigi.png",
+   "href": null,
+   "ready": false
+  },
+  {
+   "title": "Разное",
+   "image": "/assets/img/gear/raznoe.png",
+   "href": null,
+   "ready": false
+  }
+ ]
+}

@@ -164,9 +164,9 @@
     }
 
     if (routeDef.view === 'snaryazhenie') {
-      get('catalog').then(function (catalog) {
-        renderNav(catalog);
-        paint(window.Views.snaryazhenie({ catalog: catalog }), 'Снаряжение');
+      Promise.all([get('catalog'), get('hub')]).then(function (res) {
+        renderNav(res[0]);
+        paint(window.Views.snaryazhenie({ catalog: res[0], hub: res[1] }), 'Снаряжение');
       }).catch(function () { paint(notFound('Данные не загрузились'), 'Ошибка'); });
       return;
     }
