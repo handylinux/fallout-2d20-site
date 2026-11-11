@@ -635,6 +635,7 @@ body { background: transparent; }
 
 @media (max-width: 900px) {
   .wcard__row { grid-template-columns: 1fr; gap: 18px; }
+  .armor__media { position: static; }
 }
 
 /* ============================================================================
@@ -733,8 +734,12 @@ body { background: transparent; }
 /* ============================================================================
    БРОНЯ. Образец — fallout-2d20.ru/bronya/silovaya-bronya/…
    ========================================================================== */
-.armor__media { margin: 0 0 18px; }
-.armor__img { display: block; max-width: 420px; width: 100%; height: auto; }
+/* две колонки: слева картинка, справа данные (как на эталоне) */
+.armor__row { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); }
+.armor__media { position: sticky; top: 20px; align-self: start; }
+.armor__img { display: block; max-width: 100%; width: auto; max-height: 560px; }
+.armor__data { min-width: 0; }
+.armor__data .wstats:last-child { margin-bottom: 0; }
 .armor__part {
   margin: 22px 0 10px; padding: 0 0 6px;
   font-size: 1.05rem; letter-spacing: .06em; text-transform: uppercase;
