@@ -11,6 +11,7 @@
 Страница описывается данными: title, lead, и список блоков. Новые страницы
 добавляются записью в PAGES — код рендера трогать не нужно.
 """
+import hashlib
 import html
 import json
 import base64
@@ -288,6 +289,14 @@ def search_box():
     return SEARCH_BOX
 
 
+def read_css_raw():
+    with open(os.path.join(SRC, 'site', 'css', 'site.css'), encoding='utf-8') as f:
+        return f.read()
+
+
+ASSET_VER = hashlib.sha1(read_css_raw().encode('utf-8')).hexdigest()[:8]
+
+
 def page(title, body, active='', nav_items=None, search_data=None):
     logo = u('/assets/img/logos.png')
     if BASE:
@@ -344,7 +353,7 @@ def page(title, body, active='', nav_items=None, search_data=None):
 
 <script src="{u('/assets/vendor/bootstrap.bundle.min.js')}"></script>
 <script src="{u('/assets/js/search.js')}"></script>
-<script src="{u('/assets/js/site.js')}"></script>
+<script src="{u('/assets/js/site.js')}?v={ASSET_VER}"></script>
 </body>
 </html>
 """

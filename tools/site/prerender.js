@@ -4,6 +4,7 @@
    sitemap и просмотра без JS), а клиентский роутер остаётся для навигации. */
 'use strict';
 
+const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 
@@ -104,8 +105,15 @@ function readJson(name) {
 }
 
 /* ------------------------------------------------------------------ каркас */
+function assetVer() {
+  const css = fs.readFileSync(path.join(ROOT, 'src/site/css/site.css'));
+  return crypto.createHash('sha1').update(css).digest('hex').slice(0, 8);
+}
+
 function shell() {
   let html = fs.readFileSync(TEMPLATE, 'utf8');
+  /* ?v= у стилей и скриптов: иначе браузер держит старый site.css в кеше */
+  html = html.split('__ASSET_VER__').join(assetVer());
   if (BASE) {
     html = html.split("'/fallout-2d20-site").join("'" + BASE);
     html = html.split('"/fallout-2d20-site').join('"' + BASE);
