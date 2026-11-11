@@ -1213,6 +1213,24 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 @media (max-width: 600px) {
   .home-grid { grid-template-columns: 1fr; }
 }
+
+/* ------------------------------------------------- аватар на странице происхождения
+   Крупная картинка происхождения над текстом, как в карточке хаба:
+   плитка-фон + картинка по центру, дальше текст из дампа.
+   -------------------------------------------------------------------------- */
+.sp-origin__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  background: url("/fallout-2d20-site/assets/img/bg-fon-3.png") no-repeat 50% 50%;
+}
+.sp-origin__avatar img {
+  display: block;
+  width: 300px;
+  max-width: 100%;
+  height: auto;
+}
 </style>
 </head>
 <body data-base="/fallout-2d20-site">
@@ -1239,7 +1257,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <main class="page">
   <div class="wrap">
-<div class="sp-page"><h1 class="sp-page__title">ОСКОЛОК АНКЛАВА</h1><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:0px 0px 0px 0px"><div class="sp-col" style="flex:0 0 100%;max-width:100%"><div class="sp-col__inner sp-col--center"><div class="sp-col__body"><div class="sp-text"><p>Как только грязь Пустоши проникала в вашу кожу, всё, что связывало вас с Анклавом, становилось похороненным — почти навсегда. Как конформисты, так и инакомыслящие отказались от атрибутов своей прошлой жизни, опасаясь преследований. Оружие, исследования и жизни были похоронены настолько глубоко, что лишь их прошлые владельцы могли найти их снова. Отсюда начинась новая жизнь,  состоящая из обмена своих навыков на безопасность, и анонимность, чтобы скрыться от НКР, Братства Стали и бесконечного потока охотников за головами, ищущих награду за дезертиров Анклава.</p></div></div></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:25px 25px"><div class="sp-col" style="flex:0 0 100%;max-width:100%"><div class="sp-col__inner sp-col--center"><div class="sp-col__body"><div class="sp-text"><p>Вы отмечаете один дополнительный навык на выбор: Скрытность или Выживание.</p>
+<div class="sp-page"><div class="sp-origin__avatar"><img src="/fallout-2d20-site/assets/img/origins/oskolok-anklava.png" alt="ОСКОЛОК АНКЛАВА"></div><h1 class="sp-page__title">ОСКОЛОК АНКЛАВА</h1><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:0px 0px 0px 0px"><div class="sp-col" style="flex:0 0 100%;max-width:100%"><div class="sp-col__inner sp-col--center"><div class="sp-col__body"><div class="sp-text"><p>Как только грязь Пустоши проникала в вашу кожу, всё, что связывало вас с Анклавом, становилось похороненным — почти навсегда. Как конформисты, так и инакомыслящие отказались от атрибутов своей прошлой жизни, опасаясь преследований. Оружие, исследования и жизни были похоронены настолько глубоко, что лишь их прошлые владельцы могли найти их снова. Отсюда начинась новая жизнь,  состоящая из обмена своих навыков на безопасность, и анонимность, чтобы скрыться от НКР, Братства Стали и бесконечного потока охотников за головами, ищущих награду за дезертиров Анклава.</p></div></div></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:25px 25px"><div class="sp-col" style="flex:0 0 100%;max-width:100%"><div class="sp-col__inner sp-col--center"><div class="sp-col__body"><div class="sp-text"><p>Вы отмечаете один дополнительный навык на выбор: Скрытность или Выживание.</p>
 <p>С момента падения Анклава за его бывших членов были назначены высокие награды. НКР и Братство стали разыскивать их как военных преступников. Если вас раскроют, то обе фракции станут враждебны к вам и вас начнут преследовать Охотники за головами. Если вы используете репутационные правила, то увеличьте сложность всех тестов на репутацию с НКР и Братством Стали на 2.</p>
 <p>Когда вы бежали из Анклава, вы спрятали остатки своей прошлой жизни в нескольких тайниках вокруг Пустоши. Тайники готовы для восстановления, когда будет необходимо.</p>
 <p>Когда вы создадите своего персонажа, после определения вашего атрибута Удачи создайте количество тайников с припасами, равное половине вашей удачи (округление в большую сторону). Чтобы создать запасы, выберите три категории предметов (или сделайте бросок по таблице ниже) или обсудите с вашим ГМом один предмет из каждой категории, который имеет смысл находиться в тайнике, либо случайным образом сгенерируйте по одному предмету из каждой категории.</p>
@@ -1304,6 +1322,6 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <script src="/fallout-2d20-site/assets/vendor/bootstrap.bundle.min.js"></script>
 <script src="/fallout-2d20-site/assets/js/search.js"></script>
-<script src="/fallout-2d20-site/assets/js/site.js?v=2ac5df8d"></script>
+<script src="/fallout-2d20-site/assets/js/site.js?v=a478aaca"></script>
 </body>
 </html>

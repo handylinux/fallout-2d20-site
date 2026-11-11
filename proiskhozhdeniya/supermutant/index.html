@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Супермутант — Fallout 2D20</title>
+<title>супермутант — Fallout 2D20</title>
 <link rel="stylesheet" href="/fallout-2d20-site/assets/vendor/bootstrap.min.css">
 <style>/* ============================================================================
    Fallout 2D20 — свои стили. Только классы проекта, никаких sppb-*/helix-*.
@@ -1213,6 +1213,24 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 @media (max-width: 600px) {
   .home-grid { grid-template-columns: 1fr; }
 }
+
+/* ------------------------------------------------- аватар на странице происхождения
+   Крупная картинка происхождения над текстом, как в карточке хаба:
+   плитка-фон + картинка по центру, дальше текст из дампа.
+   -------------------------------------------------------------------------- */
+.sp-origin__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  background: url("/fallout-2d20-site/assets/img/bg-fon-3.png") no-repeat 50% 50%;
+}
+.sp-origin__avatar img {
+  display: block;
+  width: 300px;
+  max-width: 100%;
+  height: auto;
+}
 </style>
 </head>
 <body data-base="/fallout-2d20-site">
@@ -1239,7 +1257,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <main class="page">
   <div class="wrap">
-<div class="sp-page"><h1 class="sp-page__title">Супермутант</h1><section class="sp-row sp-row--6-6"><div class="sp-row__inner" style="padding:15px 0px 5px 0px"><div class="sp-col" style="flex:0 0 50%;max-width:50%"><div class="sp-col__inner sp-col--center"><div class="sp-col__body"><h4 class="sp-heading">Назад в категорию: Супермутанты</h4><h2 class="sp-heading">Супермутант</h2><div class="sp-text"><p><strong><em>Уровень 5, Мутироваший Человек, Обычный персонаж (38 XP)</em></strong></p></div><div class="sp-img"><img src="" alt="Image" style="max-width:300px"></div></div></div></div><div class="sp-col" style="flex:0 0 50%;max-width:50%"><div class="sp-col__inner sp-col--center" style="padding:0px 0px 0px 0px"><div class="sp-col__body"><div class="sp-inner-row"></div><div class="sp-text"><div class="sp-table-wrap"><table class="sp-table">
+<div class="sp-page"><div class="sp-origin__avatar"><img src="/fallout-2d20-site/assets/img/origins/supermutant.png" alt="супермутант"></div><h1 class="sp-page__title">супермутант</h1><section class="sp-row sp-row--6-6"><div class="sp-row__inner" style="padding:15px 0px 5px 0px"><div class="sp-col" style="flex:0 0 50%;max-width:50%"><div class="sp-col__inner sp-col--center"><div class="sp-col__body"><h4 class="sp-heading">Назад в категорию: Супермутанты</h4><h2 class="sp-heading">Супермутант</h2><div class="sp-text"><p><strong><em>Уровень 5, Мутироваший Человек, Обычный персонаж (38 XP)</em></strong></p></div><div class="sp-img"><img src="" alt="Image" style="max-width:300px"></div></div></div></div><div class="sp-col" style="flex:0 0 50%;max-width:50%"><div class="sp-col__inner sp-col--center" style="padding:0px 0px 0px 0px"><div class="sp-col__body"><div class="sp-inner-row"></div><div class="sp-text"><div class="sp-table-wrap"><table class="sp-table">
 <tbody>
 <tr>
 <td colspan="2"><span><strong>ОЗ</strong></span></td>
@@ -1375,6 +1393,6 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <script src="/fallout-2d20-site/assets/vendor/bootstrap.bundle.min.js"></script>
 <script src="/fallout-2d20-site/assets/js/search.js"></script>
-<script src="/fallout-2d20-site/assets/js/site.js?v=2ac5df8d"></script>
+<script src="/fallout-2d20-site/assets/js/site.js?v=a478aaca"></script>
 </body>
 </html>
