@@ -59,24 +59,43 @@ MISSING = set()
 ORIGIN_BG = '/assets/img/bg-fon-3.png'
 
 
+def origin_art(url):
+    """Файл аватара для происхождения: src/img/origins/<slug>.png.
+    Имя берётся из адреса страницы, поэтому достаточно положить файл в папку."""
+    slug = (url or '').rstrip('/').rsplit('/', 1)[-1]
+    if not slug:
+        return None
+    for ext in ('.png', '.webp', '.jpg'):
+        name = 'origins/' + slug + ext
+        if os.path.exists(os.path.join(SRC, 'img', name)):
+            return name
+    return None
+
+
 def has_img(path):
     """Файл картинки реально есть в src/img? (иначе не выводим битую иконку)"""
     name = os.path.basename(path or '')
-    return bool(name) and os.path.exists(os.path.join(SRC, 'img', name))
+    return bool(name) and (os.path.exists(os.path.join(SRC, 'img', name))
+                           or os.path.exists(os.path.join(SRC, 'img', 'origins', name)))
 
 
 def img_tag(path, alt, cls='', max_width=300):
     if not has_img(path):
         MISSING.add(os.path.basename(path))
         return ''
+    rel = path if path.startswith('origins/') else 'origins/' + os.path.basename(path)
+    src = rel if os.path.exists(os.path.join(SRC, 'img', rel)) else 'origins/' + os.path.basename(path)
+    if not os.path.exists(os.path.join(SRC, 'img', src)):
+        src = os.path.basename(path)
     return ('<img%s src="%s" alt="%s" loading="lazy" width="%d">'
-            % (' class="%s"' % cls if cls else '', esc(u('/assets/img/' + os.path.basename(path))),
+            % (' class="%s"' % cls if cls else '', esc(u('/assets/img/' + src)),
                esc(alt), max_width))
 
 
 def origin_media(item):
-    """Левая часть пары: фон + аватар происхождения."""
-    media = img_tag(item.get('image'), item.get('alt') or item['title'])
+    """Левая часть пары: аватар происхождения (по слагу адреса)."""
+    art = origin_art(item.get('url')) or item.get('image')
+    media = img_tag(art, item.get('alt') or item['title'])
     cls = 'media-cell' + ('' if media else ' media-cell--empty')
     style = ' style="--f-media-bg:url(\'%s\')"' % esc(u(ORIGIN_BG)) if has_img(ORIGIN_BG) else ''
     return '<div class="%s"%s>%s</div>' % (cls, style, media)
@@ -383,7 +402,7 @@ def main():
     nav_items = load_nav()
     if os.path.isdir(OUT):
         shutil.rmtree(OUT)
-    for sub in ('assets/css', 'assets/js', 'assets/img', 'assets/vendor'):
+    for sub in ('assets/css', 'assets/js', 'assets/img', 'assets/img/origins', 'assets/vendor'):
         os.makedirs(os.path.join(OUT, sub), exist_ok=True)
 
     # статика: свои css/js + картинки и bootstrap из src
