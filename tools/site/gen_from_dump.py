@@ -246,6 +246,20 @@ def repair_internal_links(umap):
     print('ссылок перенаправлено: %d, снято: %d' % (fixed, dropped))
 
 
+def url_map_origins():
+    """slug → карточка origins.json: заголовок, описание, аватар."""
+    path = os.path.join('data', 'origins.json')
+    if not os.path.exists(path):
+        return {}
+    data = json.load(open(path, encoding='utf-8'))
+    out = {}
+    for card in data.get('cards') or []:
+        url = (card.get('url') or '').strip('/').split('/')
+        if len(url) >= 2 and url[0] == 'proiskhozhdeniya':
+            out[url[1]] = card
+    return out
+
+
 def text_link_map():
     """Текст ссылки → адрес: из сохранённых живых страниц public/.
     Нужна для ссылок дампа, у которых есть только index.php?Itemid=…"""
@@ -369,10 +383,23 @@ def home_from_live():
 # ------------------------------------------------------------------ хабы и страницы
 HUB_URLS = {'/snaryazhenie/', '/bestiarij/', '/proiskhozhdeniya/'}
 
+# Страницы происхождений: у хаба своя вёрстка (origins.json), а текст страниц
+# берём из дампа — он полный, в отличие от черновиков origins.pages.json.
+ORIGIN_DUMP_PAGES = {
+    'posvyashchjonnyj-v-bratstvo-stali': '78', 'zhitel-nkr': '284', 'minitmen': '316',
+    'ditya-atoma': '92', 'obitatel-ubezhishcha': '86', 'protektron': '362',
+    'vyzhivshij': '77', 'sekyuritron': '19', 'gul': '80', 'shturmotron': '89',
+    'supermutant': '383', 'mister-pomoshchnik': '88', 'izgoj-bratstva': '90',
+    'ten': '93', 'sint': '13', 'robomozg': '361', 'dikar': '91',
+    'novobranec-gadyuk': '54', 'oskolok-anklava': '386',
+}
+
+# Происхождения собирает предрендер из data/origins.json: там своя вёрстка
+# «аватар + плашка с шевроном», которую дамп не воспроизводит. Поэтому 72 сюда
+# не входит, а адрес защищён в HUB_URLS.
 HUB_PAGES = {
     '269': ('/snaryazhenie/', 'Снаряжение'),
     '293': ('/bestiarij/', 'Бестиарий'),
-    '72': ('/proiskhozhdeniya/', 'Происхождения'),
 }
 
 # список персонажей/существ: из живого рендера хаба
@@ -457,7 +484,7 @@ def main():
         if not url or url in ('/',):
             continue
         # хаб и адреса из HUB_PAGES не перезаписываем другой записью
-        if url in HUB_URLS:
+        if url in HUB_URLS or url.split('/')[2:3] == ['proiskhozhdeniya']:
             continue
         body = R.page_from_dump(rec)
         if not body:
@@ -469,6 +496,27 @@ def main():
         write(url, shell(title, body), umap, articles)
         made += 1
     print('страниц из дампа SPPB:', made)
+
+    # 3b. Страницы происхождений — из дампа, с аватаром из origins.json
+    origins = url_map_origins()
+    made_o = 0
+    for slug, pid in ORIGIN_DUMP_PAGES.items():
+        rec = sp.get(pid)
+        if not rec:
+            continue
+        body = R.page_from_dump(rec, origins.get(slug, {}).get('title'))
+        if not body:
+            continue
+        img = origins.get(slug, {}).get('image')
+        if img:
+            body = body.replace('<div class="sp-page">',
+                                '<div class="sp-page"><div class="sp-origin__avatar">'
+                                '<img src="%s" alt="%s"></div>'
+                                % (BASE + img, esc(origins[slug].get('alt') or '')), 1)
+        write('/proiskhozhdeniya/%s/' % slug,
+              shell(origins.get(slug, {}).get('title') or rec['title'], body), umap, articles)
+        made_o += 1
+    print('страниц происхождений из дампа:', made_o)
 
     # 4. Статьи из jos_content, у которых есть адрес в живых страницах.
     #    Приоритет ниже, чем у дампа SPPB: уже собранные страницы не трогаем.
