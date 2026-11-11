@@ -1034,7 +1034,19 @@ html, body { overflow-x: hidden; }
   max-width: 1370px;
   margin: 0 -15px;
 }
-.sp-col { min-width: 0; padding: 0 15px; }
+.sp-col { min-width: 0; padding: 0 15px; position: relative; }
+.sp-col__body { position: relative; z-index: 1; }
+.sp-col__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.sp-col--center > .sp-col__body { text-align: center; }
+.sp-col--center > .sp-col__body .sp-img { display: flex; justify-content: center; }
+.sp-col--vcenter > .sp-col__body { display: flex; flex-direction: column; justify-content: center; }
+/* подложка карточки хаба: рамка у колонки, своего фона у неё нет */
+.sp-col[style*="border:"] > .sp-col__body { height: 100%; }
 
 /* заголовки */
 .sp-heading { margin: 6px 0; font-weight: 700; }
@@ -1211,7 +1223,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <main class="page">
   <div class="wrap">
-<div class="sp-page"><h1 class="sp-page__title">Мозговой Гриб</h1><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:75px 0px 75px 0px"><div class="sp-col" style="flex:0 0 100%;max-width:100%"><h4 class="sp-heading">Назад в категорию: Еда</h4><h2 class="sp-heading">Мозговой Гриб</h2></div></div></section><section class="sp-row sp-row--4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col" style="flex:0 0 66.666667%;max-width:66.666667%"><div class="sp-text"><p>Белесый гриб, напоминающий мозг, который обычно можно найти в скоплениях, растущих в тёмных, промозглых углах. Слегка облучен из-за того, что растет в пустоши, но в остальном безвреден, несмотря на свое немного настораживающее название и внешний вид.</p><p>Мозговой гриб является ингредиентом для изготовления ментатов. </p></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:15px 0px 15px 0px"><div class="sp-col" style="flex:0 0 100%;max-width:100%"><div class="sp-table-wrap"><table class="sp-table"><thead><tr><th><p>НАЗВАНИЕ</p></th><th><p>ВОСПОЛНЯЕТ ЖИЗНЕЙ</p></th><th><p>ПРОЧИЕ ЭФФЕКТЫ</p></th><th><p>ОБЛУЧЕНА?</p></th><th><p>ВЕС</p></th><th><p>ЦЕНА</p></th><th><p>РЕДКОСТЬ</p></th></tr></thead><tbody><tr><td><p>Макароны с Сыром "БламКо"</p></td><td><p>4</p></td><td><p>-</p></td><td><p>1 {/CD}</p></td><td><p>&lt;1</p></td><td><p>8</p></td><td><p>0</p></td></tr></tbody></table></div></div></div></section></div>
+<div class="sp-page"><h1 class="sp-page__title">Мозговой Гриб</h1><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:75px 0px 75px 0px"><div class="sp-col sp-col--center" style="flex:0 0 100%;max-width:100%"><div class="sp-col__body"><h4 class="sp-heading"><a href="/fallout-2d20-site/eda/">Назад в категорию: Еда</a></h4><h2 class="sp-heading">Мозговой Гриб</h2></div></div></div></section><section class="sp-row sp-row--4"><div class="sp-row__inner" style="padding:25px 0px 25px 0px"><div class="sp-col sp-col--center sp-col--vcenter" style="flex:0 0 66.666667%;max-width:66.666667%"><div class="sp-col__body"><div class="sp-text"><p>Белесый гриб, напоминающий мозг, который обычно можно найти в скоплениях, растущих в тёмных, промозглых углах. Слегка облучен из-за того, что растет в пустоши, но в остальном безвреден, несмотря на свое немного настораживающее название и внешний вид.</p><p>Мозговой гриб является ингредиентом для изготовления ментатов. </p></div></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:15px 0px 15px 0px"><div class="sp-col sp-col--center sp-col--vcenter" style="flex:0 0 100%;max-width:100%"><div class="sp-col__body"><div class="sp-table-wrap"><table class="sp-table"><thead><tr><th><p>НАЗВАНИЕ</p></th><th><p>ВОСПОЛНЯЕТ ЖИЗНЕЙ</p></th><th><p>ПРОЧИЕ ЭФФЕКТЫ</p></th><th><p>ОБЛУЧЕНА?</p></th><th><p>ВЕС</p></th><th><p>ЦЕНА</p></th><th><p>РЕДКОСТЬ</p></th></tr></thead><tbody><tr><td><p>Макароны с Сыром "БламКо"</p></td><td><p>4</p></td><td><p>-</p></td><td><p>1 {/CD}</p></td><td><p>&lt;1</p></td><td><p>8</p></td><td><p>0</p></td></tr></tbody></table></div></div></div></div></section></div>
   </div>
 </main>
 
@@ -1225,6 +1237,6 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <script src="/fallout-2d20-site/assets/vendor/bootstrap.bundle.min.js"></script>
 <script src="/fallout-2d20-site/assets/js/search.js"></script>
-<script src="/fallout-2d20-site/assets/js/site.js?v=53dfa83e"></script>
+<script src="/fallout-2d20-site/assets/js/site.js?v=33235792"></script>
 </body>
 </html>
