@@ -522,3 +522,33 @@ h1, h2, h3, h4, h5, h6 {
 .spoiler[open] > .spoiler__summary::before { transform: rotate(45deg); }
 .spoiler__body { padding: 0 14px 14px; }
 .spoiler .spoiler { margin-bottom: 8px; }
+
+/* ============================================================================
+   Раскладка: явные правила в конце файла, чтобы никакие более ранние
+   определения не могли их перебить.
+   ========================================================================== */
+.row { display: grid; gap: var(--f-gap); margin-bottom: var(--f-gap); }
+.row--origins { grid-template-columns: 1fr 2fr 1fr 2fr; }
+.row--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.row--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.row--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.row--1-2 { grid-template-columns: 1fr 2fr; }
+.row--2-1 { grid-template-columns: 2fr 1fr; }
+
+@media (max-width: 1100px) {
+  .row--origins { grid-template-columns: 1fr 2fr; }
+  .row--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 800px) {
+  .row--origins,
+  .row--2, .row--3, .row--4,
+  .row--1-2, .row--2-1 { grid-template-columns: 1fr; }
+}
+
+/* Плашка происхождения: три строки, шеврон прижат к низу */
+.cell--shadow {
+  display: flex;
+  flex-direction: column;
+  box-shadow: 7px 5px 0 #c3c3c3;
+}
+.cell__chevron { display: flex; justify-content: flex-end; margin-top: auto; padding-top: 12px; }

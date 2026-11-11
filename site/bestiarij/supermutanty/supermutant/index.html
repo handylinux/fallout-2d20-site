@@ -4,7 +4,561 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Супермутант — Fallout 2D20</title>
-<link rel="stylesheet" href="/fallout-2d20-site/assets/css/site.css">
+<style>/* ============================================================================
+   Fallout 2D20 — свои стили. Только классы проекта, никаких sppb-*/helix-*.
+   Токены собраны из живого сайта (цвета, тени, паттерны).
+   ========================================================================== */
+
+:root {
+  --f-link: #b15b23;
+  --f-link-hover: #042615;
+  --f-ink: #000;
+  --f-on-dark: #fff;
+
+  --f-page-bg: #dcdcd4;
+  --f-plate-bg: #e6e6e1;
+  --f-plate-overlay: rgba(150, 150, 150, .2);
+  --f-plate-line: #6e6e6e;
+
+  --f-footer-bg: #171717;
+  --f-footer-text: #fff;
+  --f-footer-link: #a2a2a2;
+  --f-footer-link-hover: #fff;
+
+  --f-font: Helvetica, Arial, sans-serif;
+  --f-font-title: Arial, Helvetica, sans-serif;
+
+  --f-container: 1400px;
+  --f-gap: 20px;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100%;
+  font-family: var(--f-font);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--f-ink);
+  background: var(--f-page-bg);
+}
+
+a { color: var(--f-link); text-decoration: none; }
+a:hover { color: var(--f-link-hover); text-decoration: underline; }
+
+img { max-width: 100%; height: auto; }
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 0 .5em;
+  font-family: var(--f-font-title);
+  font-weight: 700;
+}
+
+/* ---------------------------------------------------------------- контейнер */
+.container {
+  width: 100%;
+  max-width: var(--f-container);
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* ------------------------------------------------------------------- шапка  */
+.site-header {
+  background: #000;
+  padding: 10px 0;
+}
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.site-header__logo { display: block; flex: 0 0 auto; }
+.site-header__logo img { display: block; height: 60px; width: auto; }
+.site-header__menu { margin-left: auto; }
+
+/* верхнее меню */
+.top-menu {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.top-menu a {
+  display: block;
+  padding: 24px 18px;
+  font-family: var(--f-font-title);
+  font-size: 20px;
+  font-weight: 700;
+  color: #fee9a6;
+  text-decoration: none;
+  transition: background-color .2s, color .2s;
+}
+.top-menu a:hover,
+.top-menu a:focus { color: #000; background: #fee9a6; }
+
+/* бургер */
+.burger {
+  display: none;
+  padding: 8px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.burger span {
+  display: block;
+  width: 28px;
+  height: 3px;
+  margin: 5px 0;
+  background: #fee9a6;
+}
+
+@media (max-width: 1199px) {
+  .top-menu { display: none; }
+  .burger { display: block; margin-left: auto; }
+  .site-header__logo img { height: 36px; }
+}
+
+/* --------------------------------------------------------------- offcanvas  */
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  width: min(420px, 90vw);
+  padding: 16px 20px 40px;
+  overflow-y: auto;
+  background: #4f4b4b;
+  transform: translateX(100%);
+  transition: transform .3s ease;
+}
+.drawer.is-open { transform: none; }
+.drawer__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.drawer__logo img { display: block; height: 36px; width: auto; }
+.drawer__close {
+  padding: 6px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.drawer__close span {
+  display: block;
+  width: 26px;
+  height: 3px;
+  margin: 5px 0;
+  background: #fee9a6;
+}
+.drawer__close span:first-child { transform: translateY(8px) rotate(45deg); }
+.drawer__close span:last-child { transform: translateY(-8px) rotate(-45deg); }
+
+.drawer ul { margin: 0; padding: 0; list-style: none; }
+.drawer li { overflow: hidden; }
+.drawer a,
+.drawer .drawer__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 0;
+  font-size: 18px;
+  color: #fee9a6;
+  text-align: left;
+  text-decoration: none;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.drawer a:hover { color: #ffc500; }
+.drawer .drawer__toggle::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  margin-left: 8px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform .2s;
+}
+.drawer .drawer__toggle[aria-expanded="true"]::after { transform: rotate(-135deg); }
+.drawer .drawer__sub { display: none; padding-left: 14px; }
+.drawer .drawer__sub.is-open { display: block; }
+
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, .5);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s, visibility .3s;
+}
+.drawer-backdrop.is-open { opacity: 1; visibility: visible; }
+
+/* ------------------------------------------------------------------- тело  */
+.page { padding: 20px 0 40px; }
+
+.page__title {
+  margin: 0 0 12px;
+  font-size: 2rem;
+  text-align: center;
+}
+.page__lead {
+  max-width: 900px;
+  margin: 0 auto 28px;
+  text-align: center;
+}
+
+/* =========================================================== типы раскладок
+   Каркас — «книжная страница»: набор строк, в каждой 2, 3 или 4 столбца.
+   На мобильном столбцы складываются в один, медиа уходит наверх.
+   ========================================================================== */
+.row {
+  display: grid;
+  gap: var(--f-gap);
+  margin-bottom: var(--f-gap);
+}
+.row--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.row--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.row--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+/* пропорции: медиа + контент */
+.row--1-2 { grid-template-columns: 1fr 2fr; }
+.row--2-1 { grid-template-columns: 2fr 1fr; }
+/* происхождения: 4 элемента в строке — аватар, плашка, аватар, плашка */
+.row--origins { grid-template-columns: 1fr 2fr 1fr 2fr; }
+
+@media (max-width: 1100px) {
+  .row--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 1100px) {
+  /* две пары в строке уже не читаются — складываем в пары */
+  .row--origins { grid-template-columns: 1fr 2fr; }
+}
+@media (max-width: 800px) {
+  .row--2, .row--3, .row--4, .row--1-2, .row--2-1 { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .row--origins { grid-template-columns: 1fr; }
+}
+
+/* ------------------------------------------------------------- клетка (cell)
+   Базовая «ячейка справочника»: рамка, паттерн, серый оверлей 20%.
+   Внутри — что угодно: текст, таблица, картинка.
+   -------------------------------------------------------------------------- */
+.cell {
+  position: relative;
+  padding: 20px;
+  border: 1px solid var(--f-plate-line);
+  background-color: var(--f-plate-bg);
+  background-image: var(--f-plate-pattern, url("/fallout-2d20-site/assets/img/food-truck-pattern.jpg"));
+  background-repeat: repeat;
+  background-position: center;
+}
+.cell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--f-plate-overlay);
+  pointer-events: none;
+}
+.cell > * { position: relative; z-index: 1; }
+.cell--plain::before { display: none; }
+.cell--dark::before { background: rgba(0, 0, 0, .55); }
+.cell--shadow { box-shadow: 7px 5px 0 #c3c3c3; }
+/* плашка происхождения — три строки, шеврон прижат вниз */
+.cell--shadow {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.cell--shadow .cell__chevron { margin-top: auto; padding-top: 12px; }
+
+/* ------------------------------------------------------------ медиа-ячейка
+   Слева картинка происхождения на собственном фоне (без оверлея).
+   -------------------------------------------------------------------------- */
+.media-cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 260px;
+  padding: 20px;
+  border: 1px solid var(--f-plate-line);
+  background-color: transparent;
+  background-image: var(--f-media-bg, none);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+.media-cell img {
+  display: block;
+  max-width: 100%;
+  max-height: 300px;
+  width: auto;
+  height: auto;
+}
+/* когда файла картинки нет — просто фон, без пустой рамки */
+.media-cell--empty { min-height: 200px; }
+
+/* ------------------------------------------------------------ текст в ячейке */
+.cell__title {
+  margin: 0 0 10px;
+  font-size: 1.5rem;
+  text-align: center;
+}
+.cell__text {
+  margin: 0 0 18px;
+  text-align: center;
+}
+.cell__text p { margin: 0; }
+.cell__actions,
+.cell__chevron { display: flex; justify-content: center; }
+.cell__chevron .cta { max-width: 100%; }
+@media (max-width: 480px) {
+  .cell__chevron .cta { padding: 10px 18px 10px 26px; font-size: 17px; gap: 10px; }
+  .cell__chevron .cta__arrow { width: 28px; height: 18px; }
+}
+
+/* ============================================================== плитки-хабы
+   Страницы-хабы (категории оружия, брони, существ, еды): 3 столбца,
+   каждая плитка — 3 строки: заголовок, картинка, шеврон.
+   ========================================================================== */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--f-gap);
+}
+@media (max-width: 1000px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px)  { .tiles { grid-template-columns: 1fr; } }
+
+.tile {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 10px;
+  padding: 18px 14px;
+  text-align: center;
+  border: 1px solid var(--f-plate-line);
+  background-color: var(--f-plate-bg);
+  background-image: var(--f-plate-pattern, url("/fallout-2d20-site/assets/img/food-truck-pattern.jpg"));
+  background-repeat: repeat;
+  background-position: center;
+  text-decoration: none;
+  color: var(--f-ink);
+}
+.tile::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--f-plate-overlay);
+  pointer-events: none;
+}
+.tile > * { position: relative; z-index: 1; }
+.tile:hover { text-decoration: none; }
+.tile:hover .tile__title { color: var(--f-link); }
+.tile__title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.tile__media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+}
+.tile__media img { display: block; max-height: 140px; width: auto; }
+.tile__arrow { display: flex; justify-content: flex-end; }
+.tile__arrow svg { width: 28px; height: 18px; fill: #000; }
+.tile:hover .tile__arrow svg { fill: var(--f-link); }
+
+/* ------------------------------------------------------------- кнопка CTA  */
+/*
+   Кнопка с выезжающей стрелкой. Место под выезд зарезервировано сразу,
+   поэтому ширина кнопки при наведении не меняется.
+*/
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 30px 10px 45px;
+  font-family: "Poppins", var(--f-font-title);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--f-on-dark);
+  text-decoration: none;
+  background: #000;
+  box-shadow: 6px 6px 0 gray;
+  transform: skewX(-15deg);
+  transition: box-shadow .5s;
+}
+.cta:hover { color: var(--f-on-dark); text-decoration: none; box-shadow: 10px 10px 0 #fbc638; }
+.cta > span { display: block; transform: skewX(15deg); }
+.cta__arrow {
+  width: 36px;
+  height: 23px;
+  flex: 0 0 auto;
+  transition: transform .5s;
+}
+.cta:hover .cta__arrow { transform: translateX(6px); }
+.cta__arrow path { transition: transform .4s, fill 1s; }
+.cta__arrow .a2 { transform: translateX(-30%); }
+.cta__arrow .a1 { transform: translateX(-60%); }
+.cta:hover .cta__arrow .a1,
+.cta:hover .cta__arrow .a2 { transform: translateX(0); }
+.cta:hover .cta__arrow path { animation: cta-color 1s infinite .3s; }
+
+@keyframes cta-color {
+  0%   { fill: #fff; }
+  50%  { fill: #fbc638; }
+  100% { fill: #fff; }
+}
+
+/* ------------------------------------------------------------- подвал       */
+.site-footer {
+  margin-top: 40px;
+  padding: 24px 0;
+  color: var(--f-footer-text);
+  background: var(--f-footer-bg);
+}
+.site-footer a { color: var(--f-footer-link); }
+.site-footer a:hover { color: var(--f-footer-link-hover); }
+.site-footer__text { max-width: 900px; margin: 0; font-size: 14px; }
+
+/* ---------------------------------------------------------- вспомогательное */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ========================================================= таблица на div
+   Нужна для «строки»: на ПК данные читаются в строку, на мобильном таблица
+   перестраивается. Если столбцов больше трёх — на мобильном 2 столбца
+   и много строк, подписи берутся из data-label.
+   ========================================================================== */
+.dtable {
+  display: block;
+  width: 100%;
+  border-collapse: collapse;
+}
+.dtable__row {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
+}
+.dtable__row + .dtable__row { border-top: 1px solid var(--f-plate-line); }
+.dtable__cell {
+  padding: 8px 10px;
+  border-right: 1px solid var(--f-plate-line);
+  min-width: 0;
+}
+.dtable__cell:last-child { border-right: 0; }
+.dtable__row--head .dtable__cell {
+  font-weight: 700;
+  background: rgba(0, 0, 0, .06);
+}
+.dtable__label { display: none; }
+
+@media (max-width: 800px) {
+  /* обычная таблица: одна ячейка в строке */
+  .dtable__row { grid-template-columns: 1fr; }
+  .dtable__cell { border-right: 0; border-bottom: 1px solid var(--f-plate-line); }
+  .dtable__cell:last-child { border-bottom: 0; }
+  .dtable__label {
+    display: block;
+    font-size: .8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    opacity: .65;
+  }
+  /* таблица с 4+ столбцами: вертикальная сетка 2 × N */
+  .dtable--wide .dtable__row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .dtable--wide .dtable__row--head { display: none; }
+  .dtable--wide .dtable__cell { border-bottom: 1px solid var(--f-plate-line); }
+}
+
+/* =============================================================== спойлеры
+   <details> — работает без JS; вложенность любая.
+   ========================================================================== */
+.spoiler {
+  border: 1px solid var(--f-plate-line);
+  background: rgba(255, 255, 255, .35);
+  margin-bottom: 10px;
+}
+.spoiler__summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+.spoiler__summary::-webkit-details-marker { display: none; }
+.spoiler__summary::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform .2s;
+  flex: 0 0 auto;
+}
+.spoiler[open] > .spoiler__summary::before { transform: rotate(45deg); }
+.spoiler__body { padding: 0 14px 14px; }
+.spoiler .spoiler { margin-bottom: 8px; }
+
+/* ============================================================================
+   Раскладка: явные правила в конце файла, чтобы никакие более ранние
+   определения не могли их перебить.
+   ========================================================================== */
+.row { display: grid; gap: var(--f-gap); margin-bottom: var(--f-gap); }
+.row--origins { grid-template-columns: 1fr 2fr 1fr 2fr; }
+.row--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.row--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.row--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.row--1-2 { grid-template-columns: 1fr 2fr; }
+.row--2-1 { grid-template-columns: 2fr 1fr; }
+
+@media (max-width: 1100px) {
+  .row--origins { grid-template-columns: 1fr 2fr; }
+  .row--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 800px) {
+  .row--origins,
+  .row--2, .row--3, .row--4,
+  .row--1-2, .row--2-1 { grid-template-columns: 1fr; }
+}
+
+/* Плашка происхождения: три строки, шеврон прижат к низу */
+.cell--shadow {
+  display: flex;
+  flex-direction: column;
+  box-shadow: 7px 5px 0 #c3c3c3;
+}
+.cell__chevron { display: flex; justify-content: flex-end; margin-top: auto; padding-top: 12px; }
+</style>
 </head>
 <body>
 <header class="site-header">

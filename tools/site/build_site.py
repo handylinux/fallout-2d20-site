@@ -196,15 +196,23 @@ def drawer(items):
 
 
 # --------------------------------------------------------------------- каркас
+def read_css():
+    with open(os.path.join(SRC, 'site', 'css', 'site.css'), encoding='utf-8') as f:
+        css = f.read()
+    # в инлайновом CSS абсолютные пути к картинкам тоже получают префикс
+    return css.replace('url("/assets/', 'url("%s/assets/' % BASE)
+
+
 def page(title, body, active='', nav_items=None):
     logo = u('/assets/img/logos.png')
+    styles = read_css()
     return f"""<!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)} — Fallout 2D20</title>
-<link rel="stylesheet" href="{u('/assets/css/site.css')}">
+<style>{styles}</style>
 </head>
 <body>
 <header class="site-header">
