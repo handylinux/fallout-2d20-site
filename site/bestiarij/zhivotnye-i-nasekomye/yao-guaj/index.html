@@ -98,7 +98,7 @@ body {
 }
 .site-header__logo { display: block; flex: 0 0 auto; }
 .site-header__logo img { display: block; height: 60px; width: auto; }
-.site-header__menu { margin-left: auto; }
+.site-header__menu { flex: 1 1 auto; min-width: 0; margin-left: 40px; }
 
 /* верхнее меню */
 /* Плашки меню — копия секции #sp-topmenu эталона (jos_sppagebuilder id со sp-topmenu):
@@ -117,17 +117,20 @@ body {
 }
 .top-menu > li {
   flex: 1 1 0;
-  max-width: 16.666667%;
   min-width: 0;
   text-align: center;
 }
 .top-menu a {
-  display: block;
-  padding: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 10px 8px;
   font-family: var(--f-font-title);
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   line-height: 16px;
+  white-space: nowrap;
   color: #fff;
   text-transform: uppercase;
   text-align: center;
@@ -151,7 +154,7 @@ body {
 /* у нас 8 пунктов вместо 6 — дальше цикл цветов */
 .top-menu li:nth-child(7) a { background-image: url("../img/plates/menu-item-bg-lblue2.png"); }
 .top-menu li:nth-child(8) a { background-image: url("../img/plates/menu-item-bg-orange2.png"); }
-.site-header__menu { margin-left: auto; }
+.site-header__menu { flex: 1 1 auto; min-width: 0; margin-left: 40px; }
 
 /* бургер */
 .burger {
@@ -1028,6 +1031,6 @@ html, body { overflow-x: hidden; }
 
 <script src="/fallout-2d20-site/assets/vendor/bootstrap.bundle.min.js"></script>
 <script src="/fallout-2d20-site/assets/js/search.js"></script>
-<script src="/fallout-2d20-site/assets/js/site.js?v=0a8e8772"></script>
+<script src="/fallout-2d20-site/assets/js/site.js?v=775e2c57"></script>
 </body>
 </html>
