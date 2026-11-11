@@ -53,32 +53,28 @@ def _op_text(mod, key):
 
 def mod_values(mod):
     return [
-        ('Модификация', mod['name']),
-        ('Урон', _op_text(mod, 'damage')),
-        ('Скорость', _op_text(mod, 'fireRate')),
-        ('Патрон', mod['ammo'] or '—'),
-        ('Сложность', mod['complexity'] if mod['complexity'] is not None else '—'),
-        ('Перк', mod['perk'] or '—'),
-        ('Цена', mod['cost'] if mod['cost'] is not None else '—'),
-        ('Вес', mod['weight'] if mod['weight'] is not None else '—'),
+        mod['name'],
+        _op_text(mod, 'damage'),
+        _op_text(mod, 'fireRate'),
+        mod['ammo'] or '—',
+        mod['complexity'] if mod['complexity'] is not None else '—',
+        mod['perk'] or '—',
+        mod['cost'] if mod['cost'] is not None else '—',
+        mod['weight'] if mod['weight'] is not None else '—',
     ]
 
 
 def mod_row(mod):
-    """Один мод = спойлер. Сводка — горизонтальная строка таблицы (8 ячеек),
-    внутри — таблица «характеристика — значение»."""
+    """Одна строка мода. На ПК — 8 колонок таблицы, на мобильном — 2 колонки
+    (название характеристики | значение), для чего у каждой ячейки есть подпись."""
     cells = ''.join(
-        '<span class="wmod__c"><span class="wmods__label">%s</span>%s</span>'
-        % (e(label), e(value)) for label, value in mod_values(mod))
-    rows = ''.join('<tr><th scope="row">%s</th><td>%s</td></tr>' % (e(k), e(v))
-                   for k, v in mod_values(mod) if k != 'Модификация')
-    return ('<details class="wmod"><summary class="wmod__summary">%s</summary>'
-            '<div class="wmod__body"><table class="wmod__table"><tbody>%s</tbody></table></div>'
-            '</details>' % (cells, rows))
+        '<div class="wmods__c"><span class="wmods__label">%s</span>%s</div>'
+        % (e(col), e(value)) for col, value in zip(MOD_COLS, mod_values(mod)))
+    return '<div class="wmods__row">%s</div>' % cells
 
 
 def mods_block(group):
-    """Слот модов — спойлер. Внутри таблица на div: шапка + строки-спойлеры."""
+    """Слот модов — спойлер; внутри div-таблица: шапка + строки модов."""
     head = ''.join('<div>%s</div>' % e(c) for c in MOD_COLS)
     rows = ''.join(mod_row(m) for m in group['mods'])
     return ('<details class="spoiler wmods-group"><summary class="spoiler__summary">%s '
