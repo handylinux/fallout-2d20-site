@@ -73,26 +73,31 @@ def img_tag(path, alt, cls='', max_width=300):
                esc(alt), max_width))
 
 
-def origin_row(item):
-    """Строка происхождения: слева секция с фоном и аватаром, справа плашка
-    из трёх строк — заголовок, описание, шеврон."""
+def origin_media(item):
+    """Левая часть пары: фон + аватар происхождения."""
     media = img_tag(item.get('image'), item.get('alt') or item['title'])
-    media_cls = 'media-cell' + ('' if media else ' media-cell--empty')
+    cls = 'media-cell' + ('' if media else ' media-cell--empty')
     style = ' style="--f-media-bg:url(\'%s\')"' % esc(u(ORIGIN_BG)) if has_img(ORIGIN_BG) else ''
-    return (
-        '<div class="row row--1-2">'
-        '<div class="%s"%s>%s</div>'
-        '<div class="cell cell--shadow">'
-        '<h2 class="cell__title">%s</h2>'
-        '<div class="cell__text"><p>%s</p></div>'
-        '<div class="cell__actions">%s</div>'
-        '</div></div>'
-        % (media_cls, style, media, esc(item['title']), esc(item.get('text')), cta(item.get('url')))
-    )
+    return '<div class="%s"%s>%s</div>' % (cls, style, media)
+
+
+def origin_plate(item):
+    """Правая часть пары: заголовок, описание, шеврон."""
+    return ('<div class="cell cell--shadow">'
+            '<h2 class="cell__title">%s</h2>'
+            '<p class="cell__text">%s</p>'
+            '<div class="cell__chevron">%s</div>'
+            '</div>' % (esc(item['title']), esc(item.get('text')), cta(item.get('url'))))
 
 
 def origins_block(items):
-    return ''.join(origin_row(i) for i in items)
+    """Строка = один div из четырёх: аватар, плашка, аватар, плашка."""
+    out = []
+    for i in range(0, len(items), 2):
+        pair = items[i:i + 2]
+        cells = ''.join(origin_media(it) + origin_plate(it) for it in pair)
+        out.append('<div class="row row--origins">%s</div>' % cells)
+    return ''.join(out)
 
 
 def tile(title, href, image=None, alt=None):

@@ -227,12 +227,21 @@ h1, h2, h3, h4, h5, h6 {
 /* пропорции: медиа + контент */
 .row--1-2 { grid-template-columns: 1fr 2fr; }
 .row--2-1 { grid-template-columns: 2fr 1fr; }
+/* происхождения: 4 элемента в строке — аватар, плашка, аватар, плашка */
+.row--origins { grid-template-columns: 1fr 2fr 1fr 2fr; }
 
 @media (max-width: 1100px) {
   .row--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+@media (max-width: 1100px) {
+  /* две пары в строке уже не читаются — складываем в пары */
+  .row--origins { grid-template-columns: 1fr 2fr; }
+}
 @media (max-width: 800px) {
   .row--2, .row--3, .row--4, .row--1-2, .row--2-1 { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .row--origins { grid-template-columns: 1fr; }
 }
 
 /* ------------------------------------------------------------- клетка (cell)
@@ -260,6 +269,13 @@ h1, h2, h3, h4, h5, h6 {
 .cell--plain::before { display: none; }
 .cell--dark::before { background: rgba(0, 0, 0, .55); }
 .cell--shadow { box-shadow: 7px 5px 0 #c3c3c3; }
+/* плашка происхождения — три строки, шеврон прижат вниз */
+.cell--shadow {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.cell--shadow .cell__chevron { margin-top: auto; padding-top: 12px; }
 
 /* ------------------------------------------------------------ медиа-ячейка
    Слева картинка происхождения на собственном фоне (без оверлея).
@@ -299,7 +315,13 @@ h1, h2, h3, h4, h5, h6 {
   text-align: center;
 }
 .cell__text p { margin: 0; }
-.cell__actions { display: flex; justify-content: center; }
+.cell__actions,
+.cell__chevron { display: flex; justify-content: center; }
+.cell__chevron .cta { max-width: 100%; }
+@media (max-width: 480px) {
+  .cell__chevron .cta { padding: 10px 18px 10px 26px; font-size: 17px; gap: 10px; }
+  .cell__chevron .cta__arrow { width: 28px; height: 18px; }
+}
 
 /* ============================================================== плитки-хабы
    Страницы-хабы (категории оружия, брони, существ, еды): 3 столбца,
