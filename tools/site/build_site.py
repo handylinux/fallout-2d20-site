@@ -120,7 +120,7 @@ def origins_block(items):
             '<div class="col-12 col-sm-6 col-lg-3">%s</div>' % origin_media(it) +
             '<div class="col-12 col-sm-6 col-lg-3">%s</div>' % origin_plate(it)
             for it in pair)
-        out.append('<div class="row g-3 origins-row mb-3">%s</div>' % cols)
+        out.append('<div class="row g-0 origins-row">%s</div>' % cols)
     return ''.join(out)
 
 

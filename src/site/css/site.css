@@ -556,12 +556,14 @@ body {
    СЕТКА — Bootstrap 5 (col-3 = 25%, col-4 = 33.3%, col-6 = 50%).
    Свои обёртки только для оформления, раскладку держит Bootstrap.
    ========================================================================== */
-/* строка происхождений: 4 колонки по 3 из 12 */
-.origins-row > [class*="col-"] { display: flex; }
+/* строка происхождений: 4 колонки по 3 из 12, без зазоров (как sppb-no-gutter) */
+.origins-row > [class*="col-"] { display: flex; padding: 0; }
+.origins-row { margin-left: 0; margin-right: 0; }
 
 /* медиа-секция и плашка тянутся на всю высоту колонки */
 .media-cell,
 .cell--shadow { width: 100%; }
+.origins-row + .origins-row { margin-top: 20px; }
 
 /* адаптив: на планшете пара в 2 столбца, на телефоне — в один */
 @media (max-width: 991.98px) {
