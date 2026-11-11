@@ -54,33 +54,99 @@ def cta(href, label='Подробнее'):
 # ------------------------------------------------------------------- карточка
 MISSING = set()
 
-
-def card(item, media_pattern=None):
-    style = ''
-    if media_pattern:
-        style = ' style="--f-plate-pattern:url(\'%s\')"' % esc(u(media_pattern))
-    img = ''
-    media = ''
-    name = os.path.basename(item.get('image') or '')
-    if name and os.path.exists(os.path.join(SRC, 'img', name)):
-        img = ('<img src="%s" alt="%s" loading="lazy" width="300">'
-               % (esc(u('/assets/img/' + name)), esc(item.get('alt') or item['title'])))
-        media = '<div class="card__media">%s</div>' % img
-    else:
-        MISSING.add(name)
-    body = ('<article class="card%s"%s>'
-            '%s'
-            '<h2 class="card__title">%s</h2>'
-            '<div class="card__text"><p>%s</p></div>'
-            '<div class="card__actions">%s</div>'
-            '</article>')
-    cls = '' if media else ' card--noimg'
-    return body % (cls, style, media, esc(item['title']), esc(item.get('text')), cta(item.get('url')))
+# фон под аватаром происхождения (из дампа SPPB: images/2025/03/30/bg-fon-3.png)
+ORIGIN_BG = '/assets/img/bg-fon-3.png'
 
 
-def cards(items, columns=4):
-    cls = 'cards' if columns == 4 else 'cards cards--%d' % columns
-    return '<div class="%s">%s</div>' % (cls, ''.join(card(i) for i in items))
+def has_img(path):
+    """Файл картинки реально есть в src/img? (иначе не выводим битую иконку)"""
+    name = os.path.basename(path or '')
+    return bool(name) and os.path.exists(os.path.join(SRC, 'img', name))
+
+
+def img_tag(path, alt, cls='', max_width=300):
+    if not has_img(path):
+        MISSING.add(os.path.basename(path))
+        return ''
+    return ('<img%s src="%s" alt="%s" loading="lazy" width="%d">'
+            % (' class="%s"' % cls if cls else '', esc(u('/assets/img/' + os.path.basename(path))),
+               esc(alt), max_width))
+
+
+def origin_row(item):
+    """Строка происхождения: слева секция с фоном и аватаром, справа плашка
+    из трёх строк — заголовок, описание, шеврон."""
+    media = img_tag(item.get('image'), item.get('alt') or item['title'])
+    media_cls = 'media-cell' + ('' if media else ' media-cell--empty')
+    style = ' style="--f-media-bg:url(\'%s\')"' % esc(u(ORIGIN_BG)) if has_img(ORIGIN_BG) else ''
+    return (
+        '<div class="row row--1-2">'
+        '<div class="%s"%s>%s</div>'
+        '<div class="cell cell--shadow">'
+        '<h2 class="cell__title">%s</h2>'
+        '<div class="cell__text"><p>%s</p></div>'
+        '<div class="cell__actions">%s</div>'
+        '</div></div>'
+        % (media_cls, style, media, esc(item['title']), esc(item.get('text')), cta(item.get('url')))
+    )
+
+
+def origins_block(items):
+    return ''.join(origin_row(i) for i in items)
+
+
+def tile(title, href, image=None, alt=None):
+    """Плитка хаба: 3 строки — заголовок, картинка, шеврон."""
+    media = img_tag(image or '', alt or title, max_width=200)
+    return (
+        '<a class="tile" href="%s">'
+        '<h2 class="tile__title">%s</h2>'
+        '<div class="tile__media">%s</div>'
+        '<div class="tile__arrow">%s</div>'
+        '</a>' % (esc(u(href)), esc(title), media, ARROW_SMALL)
+    )
+
+
+def tiles(items):
+    return '<div class="tiles">%s</div>' % ''.join(
+        tile(i['title'], i.get('url') or '#', i.get('image'), i.get('alt')) for i in items)
+
+
+ARROW_SMALL = (
+    '<svg viewBox="0 0 66 43" aria-hidden="true" focusable="false"><path d="M40.15 3.9 '
+    '43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0'
+    'l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/></svg>'
+)
+
+
+
+# ------------------------------------------------------- таблица на div (data)
+def dtable(headers, rows, wide=None):
+    """Таблица на div. wide=None — считается по числу столбцов (>3 → вертикальная
+    сетка 2×N на мобильном). Подписи ячеек выводятся из заголовков (data-label)."""
+    cols = max(len(headers), max((len(r) for r in rows), default=0))
+    wide = (cols > 3) if wide is None else wide
+    cls = 'dtable' + (' dtable--wide' if wide else '')
+    out = ['<div class="%s" style="--cols:%d">' % (cls, cols)]
+    if headers:
+        out.append('<div class="dtable__row dtable__row--head">%s</div>' % ''.join(
+            '<div class="dtable__cell">%s</div>' % esc(h) for h in headers))
+    for row in rows:
+        cells = []
+        for i, cell in enumerate(row):
+            label = headers[i] if i < len(headers) else ''
+            cells.append('<div class="dtable__cell">%s%s</div>' % (
+                '<span class="dtable__label">%s</span>' % esc(label) if label else '',
+                cell if isinstance(cell, str) and cell.startswith('<') else esc(cell)))
+        out.append('<div class="dtable__row">%s</div>' % ''.join(cells))
+    out.append('</div>')
+    return ''.join(out)
+
+
+def spoiler(title, body, open_=False):
+    return ('<details class="spoiler"%s><summary class="spoiler__summary">%s</summary>'
+            '<div class="spoiler__body">%s</div></details>'
+            % (' open' if open_ else '', esc(title), body))
 
 
 # ------------------------------------------------------------------ меню/шапка
@@ -181,7 +247,7 @@ def page_origins(nav_items):
     with open(os.path.join(DATA, 'origins.json'), encoding='utf-8') as f:
         data = json.load(f)
     body = ('<h1 class="page__title">%s</h1>\n<p class="page__lead">%s</p>\n%s'
-            % (esc(data['title']), esc(data['lead']), cards(data['cards'])))
+            % (esc(data['title']), esc(data['lead']), origins_block(data['cards'])))
     return page(data['title'], body, '/proiskhozhdeniya/', nav_items)
 
 
@@ -193,6 +259,21 @@ STUB_PAGE = """<h1 class="page__title">{title}</h1>
 
 def stub(title, nav_items):
     return page(title, STUB_PAGE.format(title=esc(title), home=u('/')), '', nav_items)
+
+
+PERKS_HUB = [
+    {'title': 'Все перки', 'url': '/perki26/'},
+    {'title': 'Перки по атрибутам', 'url': '/perki26/'},
+    {'title': 'Требования и ранги', 'url': '/perki26/'},
+]
+
+
+def page_perks(nav_items):
+    body = ('<h1 class="page__title">Перки</h1>'
+            '<p class="page__lead">Карточки перков с фильтром по атрибутам — '
+            'на странице <a href="%s">Перки 2026</a>.</p>%s'
+            % (u('/perki26/'), tiles(PERKS_HUB)))
+    return page('Перки', body, '/perki/', nav_items)
 
 
 def write(path, content):
@@ -223,6 +304,7 @@ def main():
     write('index.html', page('Правила игры', '<h1 class="page__title">Правила игры</h1>',
                              '/', nav_items))
     write('proiskhozhdeniya/index.html', page_origins(nav_items))
+    write('perki/index.html', page_perks(nav_items))
 
     # заглушки для всех пунктов меню, чтобы ссылки не давали 404
     titles = {}
