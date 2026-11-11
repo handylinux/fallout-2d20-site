@@ -655,11 +655,13 @@ body { background: transparent; }
 .wmods__row { border-top: 1px solid var(--f-plate-line); }
 .wmods__row:nth-child(odd) { background: rgba(0, 0, 0, .03); }
 .wmods__c {
+  display: flex; align-items: center;
   padding: 8px 10px; border-right: 1px solid var(--f-plate-line);
   min-width: 0; overflow-wrap: anywhere;
 }
+/* значение занимает всю ширину ячейки — центрируется, если так задано */
+.wmods__v { flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; }
 .wmods__c:last-child { border-right: 0; }
-.wmods__v { min-width: 0; overflow-wrap: anywhere; }
 .wmods__label { display: none; }
 
 @media (max-width: 760px) {
@@ -759,7 +761,7 @@ body { background: transparent; }
 .armor__stats { margin: 0 auto; width: 100%; max-width: 210px;
   border-collapse: collapse; border: 1px solid #000; }
 .armor__stats th, .armor__stats td { padding: 2px 7px; font-size: 12.5px;
-  line-height: 1.5; border: 0; }
+  line-height: 1.5; border: 0; vertical-align: middle; }
 .armor__stats th { background: #000; color: #fff; text-align: left; font-weight: 700;
   border-bottom: 1px solid #dedede; }
 .armor__stats tr:last-child th { border-bottom: 0; }
@@ -829,9 +831,10 @@ body { background: transparent; }
 .wmods--armor .wmods__c { border-right: 1px solid #000; border-bottom: 0;
   font-size: 12.5px; }
 .wmods--armor .wmods__c:nth-child(1) { font-weight: 700; }
-.wmods--armor .wmods__c:nth-child(3),
-.wmods--armor .wmods__c:nth-child(4),
-.wmods--armor .wmods__c:nth-child(5) { text-align: center; }
+/* все значения в модах брони — по центру и по вертикали, на любой ширине */
+.wmods--armor .wmods__v { text-align: center; line-height: 1.4; }
+.wmods--armor .wmods__c:nth-child(1) .wmods__v { text-align: left; }
+.wmods--armor .wmods__c:nth-child(2) .wmods__v { text-align: left; }
 
 .cd-icon { display: inline-block; width: 1.05em; height: 1.05em; vertical-align: -0.18em; }
 
@@ -852,8 +855,9 @@ body { background: transparent; }
     background: #f8f1da; text-align: left; font-size: 15px; }
   /* значение — отдельная «половина» строки: текст по центру и по вертикали */
   .wmods--armor .wmods__v { display: flex; align-items: center;
-    justify-content: center; min-height: 86px; text-align: center;
-    line-height: 1.35; }
+    min-height: 86px; text-align: center; line-height: 1.35; }
+  .wmods--armor .wmods__c:nth-child(1) .wmods__v,
+  .wmods--armor .wmods__c:nth-child(2) .wmods__v { text-align: center; }
   .wmods--armor .wmods__label { display: flex; align-items: center;
     justify-content: center; min-height: 86px; padding: 10px 8px;
     background: #000; color: #fff; font-size: 13px; font-weight: 700;
@@ -909,6 +913,6 @@ body { background: transparent; }
 
 <script src="/fallout-2d20-site/assets/vendor/bootstrap.bundle.min.js"></script>
 <script src="/fallout-2d20-site/assets/js/search.js"></script>
-<script src="/fallout-2d20-site/assets/js/site.js?v=97385bc1"></script>
+<script src="/fallout-2d20-site/assets/js/site.js?v=e4a43cea"></script>
 </body>
 </html>
