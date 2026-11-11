@@ -1034,7 +1034,19 @@ html, body { overflow-x: hidden; }
   max-width: 1370px;
   margin: 0 -15px;
 }
-.sp-col { min-width: 0; padding: 0 15px; }
+.sp-col { min-width: 0; padding: 0 15px; position: relative; }
+.sp-col__body { position: relative; z-index: 1; }
+.sp-col__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.sp-col--center > .sp-col__body { text-align: center; }
+.sp-col--center > .sp-col__body .sp-img { display: flex; justify-content: center; }
+.sp-col--vcenter > .sp-col__body { display: flex; flex-direction: column; justify-content: center; }
+/* подложка карточки хаба: рамка у колонки, своего фона у неё нет */
+.sp-col[style*="border:"] > .sp-col__body { height: 100%; }
 
 /* заголовки */
 .sp-heading { margin: 6px 0; font-weight: 700; }
@@ -1211,7 +1223,22 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <main class="page">
   <div class="wrap">
-<div class="sp-page"><div class="home-grid"><div class="home-cell"><h2 class="home-cell__title">Что нужно для игры</h2><ul class="home-cell__list"><li>Что может потребоваться на игре: Кубики, фишки, листы персонажей</li></ul></div><div class="home-cell"><h2 class="home-cell__title">Основы игры</h2><ul class="home-cell__list"><li>Атрибуты S.P.E.C.I.A.L</li><li>Как работает Удача.</li><li>Производные характеристики</li><li>Навыки</li><li>Тесты навыков</li><li>Очки действий</li></ul></div><div class="home-cell"><h2 class="home-cell__title">Основы сражений</h2><ul class="home-cell__list"><li>Боевые столкновения</li><li>Урон и увечья</li><li>Лечение</li><li>Окружение</li></ul></div><div class="home-cell"><h2 class="home-cell__title">Создание персонажа</h2><ul class="home-cell__list"><li>Как создать персонажа</li><li>Листы персонажей (Русская версия)</li></ul></div><div class="home-cell"><h2 class="home-cell__title">Снаряжение</h2><ul class="home-cell__list"><li><a href="/fallout-2d20-site/oruzhie">Оружие</a></li><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie">Стрелковое оружие</a></li><li><a href="/fallout-2d20-site/oruzhie/energooruzhie">Энергетическое оружие</a></li><li><a href="/fallout-2d20-site/oruzhie/tyazhjoloe-oruzhie">Тяжелое оружие</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya">Оружие ближнего боя</a></li><li><a href="/fallout-2d20-site/oruzhie/metatelnoe-oruzhie">Метательное оружие</a></li><li><a href="/fallout-2d20-site/oruzhie/vzryvchatka">Взрывчатка</a></li><li><a href="/fallout-2d20-site/oruzhie/atleticheskoe-oruzhie">Атлетическое оружие</a></li></ul></div><div class="home-cell"><h2 class="home-cell__title">Выживание</h2><ul class="home-cell__list"><li>Остаться в живых</li><li>Обыск локаций</li><li>Получение снаряжения</li><li>Модификация снаряжения</li><li>Крафт</li><li>Выжить под водой</li><li>Управление транспортом</li></ul></div><div class="home-cell"><h2 class="home-cell__title">Бестиарий</h2><ul class="home-cell__list"><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye">Животные и Насекомые</a></li><li><a href="/fallout-2d20-site/bestiarij/raiders">Рейдеры</a></li></ul></div><div class="home-cell"><h2 class="home-cell__title">Сценарии и компании</h2><ul class="home-cell__list"><li>Обзор официальных материалов</li><li>Фанатские сценарии</li></ul></div><div class="home-cell"><h2 class="home-cell__title">Дополнительно</h2><ul class="home-cell__list"><li>Генератор лута</li><li>Карточки оружия (аглийская версия)</li><li>Карточки монстров</li><li>Полезные дополнения</li></ul></div></div></div>
+<div class="sp-page"><h1 class="sp-page__title">Правила игры</h1><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:15px 0px 15px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center">Что нужно для игры</h2><div class="sp-text"><ul>
+<li><a href="/fallout-2d20-site/blog/igra/" rel="">Что может потребоваться на игре: Кубики, фишки, листы персонажей</a></li>
+</ul></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center">Основы игры</h2><div class="sp-text"><ul><li><a rel="" href="/fallout-2d20-site/blog/atributy-s-p-e-c-i-a-l" data-link-type="menu" data-link-value="index.php?option=com_content&amp;view=article&amp;id=469&amp;Itemid=679">Атрибуты S.P.E.C.I.A.L</a></li><li><a rel="" data-href="index.php?option=com_content&amp;view=article&amp;id=470&amp;Itemid=680" data-link-type="menu" data-link-value="index.php?option=com_content&amp;view=article&amp;id=470&amp;Itemid=680">Как работает Удача.</a></li><li>Производные характеристики</li><li>Навыки</li><li>Тесты навыков</li><li>Очки действий</li></ul></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center">Основы сражений</h2><div class="sp-text"><ul><li>Боевые столкновения</li><li>Урон и увечья</li><li>Лечение</li><li>Окружение</li></ul></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:15px 0px 15px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center">Создание персонажа</h2><div class="sp-text"><ul><li><a data-href="index.php?Itemid=662">Как создать персонажа</a></li><li><a rel="" href="https://www.fallout-2d20.ru/images/Листы_персонажей_2025.pdf" data-link-type="url" data-link-value="https://www.fallout-2d20.ru/images/Листы_персонажей_2025.pdf">Листы персонажей (Русская версия)</a></li></ul></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center">Снаряжение</h2><div class="sp-text"><mce:root id="rootblock"><p><mce:root id="rootblock"></mce:root></p><p><mce:root id="rootblock"></mce:root></p><p><mce:root id="rootblock"></mce:root></p><p><mce:root id="rootblock"></mce:root></p><p><br></p><ul><li><a href="/fallout-2d20-site/oruzhie">Оружие</a><ul><li><a href="/fallout-2d20-site/oruzhie/strelkovoe-oruzhie">Стрелковое оружие</a></li><li><a href="/fallout-2d20-site/oruzhie/energooruzhie">Энергетическое оружие</a></li><li><a href="/fallout-2d20-site/oruzhie/tyazhjoloe-oruzhie">Тяжелое оружие</a></li><li><a href="/fallout-2d20-site/oruzhie/oruzhie-blizhnego-boya">Оружие ближнего боя</a></li><li><a href="/fallout-2d20-site/oruzhie/metatelnoe-oruzhie">Метательное оружие</a></li><li><a href="/fallout-2d20-site/oruzhie/vzryvchatka"><span>Взрывчатка</span></a></li><li><a href="/fallout-2d20-site/oruzhie/atleticheskoe-oruzhie">Атлетическое оружие</a></li></ul></li><li><a href="/fallout-2d20-site/bronya"><span>Броня</span></a><ul><li><a href="/fallout-2d20-site/bronya/silovaya-bronya">Силовая броня</a></li></ul></li><li><span>Расходники</span><ul><li><a href="/fallout-2d20-site/eda">Еда</a></li></ul></li><li><span>Книги и журналы</span></li><li><span>Разное</span></li></ul><p><br></p></mce:root></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center">Выживание</h2><div class="sp-text"><p><br></p><ul><li>Остаться в живых</li><li>Обыск локаций</li><li>Получение снаряжения</li><li>Модификация снаряжения</li><li>Крафт</li><li>Выжить под водой</li><li>Управление транспортом</li></ul><p><br></p></div></div></div></div></section><section class="sp-row sp-row--4-4-4"><div class="sp-row__inner" style="padding:15px 0px 15px 0px"><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center">Бестиарий</h2><div class="sp-text"><ul>
+<li>Типы NPC</li>
+<li>Существа</li>
+<li>Персонажи</li>
+<li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye">Животные и Насекомые</a></li>
+<li>Мутировавшие гуманоиды</li>
+<li>Роботы</li>
+<li><a href="/fallout-2d20-site/bestiarij/supermutanty" rel="">Супермутанты</a></li>
+<li>Синты</li>
+<li>Турели</li>
+<li>Братство стали</li>
+<li><a href="/fallout-2d20-site/bestiarij/raiders">Рейдеры</a></li>
+<li>Жители пустоши</li>
+</ul></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center">Сценарии и компании</h2><div class="sp-text"><ul><li><a data-href="index.php?Itemid=539">Обзор официальных материалов</a></li><li>Фанатские сценарии<br></li></ul><p><br></p></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 33.333333%;max-width:33.333333%"><div class="sp-col__body"><h2 class="sp-heading sp-heading--center">Дополнительно</h2><div class="sp-text"><p> </p><ul><li><a data-href="index.php?Itemid=321">Генератор лута</a></li><li><a data-href="index.php?Itemid=336">Карточки оружия (аглийская версия)</a></li><li>Карточки монстров</li><li><span>Полезные дополнения</span></li></ul><p> </p><p> </p><p> </p></div></div></div></div></section></div>
   </div>
 </main>
 
@@ -1225,6 +1252,6 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <script src="/fallout-2d20-site/assets/vendor/bootstrap.bundle.min.js"></script>
 <script src="/fallout-2d20-site/assets/js/search.js"></script>
-<script src="/fallout-2d20-site/assets/js/site.js?v=53dfa83e"></script>
+<script src="/fallout-2d20-site/assets/js/site.js?v=33235792"></script>
 </body>
 </html>

@@ -144,6 +144,65 @@ def img_url(src):
     return ''
 
 
+def col_style(col):
+    """Инлайн-стиль колонки из её настроек в дампе: ширина, отступы, рамка,
+    подложка (overlay), выравнивание содержимого по центру."""
+    st = col.get('settings') or {}
+    css = ['flex:0 0 %s' % width_of(col), 'max-width:%s' % width_of(col)]
+
+    pad = px(st.get('padding'))
+    if pad:
+        css.append('padding:%s' % pad)
+
+    if st.get('use_border'):
+        width = px(st.get('border_width')) or '1'
+        width = re.sub(r'[^0-9.]', '', width) or '1'
+        color = st.get('border_color') or '#6e6e6e'
+        css.append('border:%spx solid %s' % (width, color))
+
+    bg = st.get('background_image') or {}
+    bg_type = st.get('background_type') or 'none'
+    src = bg.get('src') if isinstance(bg, dict) else ''
+    if bg_type in ('none', '', None):
+        src = ''            # тема не выводит фон при background_type=none
+    url = img_url(src) if src else ''
+    if url:
+        size = st.get('background_size') or 'auto'
+        if size not in ('auto', 'cover', 'contain'):
+            size = 'auto'
+        css.append('background:url(%s) %s %s/%s' % (
+            url, st.get('background_position') or '0 0',
+            st.get('background_repeat') or 'repeat', size))
+
+    box = st.get('boxshadow') or {}
+    if isinstance(box, dict) and box.get('enabled') and str(box.get('blur')) != '0':
+        css.append('box-shadow:%s %s %s %s %s' % (
+            box.get('ho', 0), box.get('vo', 0), box.get('blur', 0),
+            box.get('spread', 0), box.get('color') or '#c3c3c3'))
+    return ';'.join(css)
+
+
+# id статьи/страницы Joomla → наш адрес; заполняется из gen_from_dump
+LINK_MAP = {}
+
+
+def resolve_link(link):
+    """Ссылка аддона (heading/image) → адрес у нас. В выгрузке это
+    пункт меню/статья Joomla, своего адреса у неё нет."""
+    if not isinstance(link, dict):
+        return ''
+    url = (link.get('url') or '').strip()
+    if url and url not in ('/', '#') and 'index.php' not in url:
+        return url
+    src = link.get('menu') or ''
+    m = re.search(r'[?&]id=(\d+)', src)
+    if m and m.group(1) in LINK_MAP:
+        return LINK_MAP[m.group(1)]
+    if url == '/':
+        return '/'
+    return ''
+
+
 def width_of(col):
     w = (col.get('settings') or {}).get('width') or {}
     if isinstance(w, dict):
@@ -161,9 +220,9 @@ def r_heading(a):
         lvl = 'h2'
     align = (setting(a, 'alignment') or {}).get('xl') if isinstance(setting(a, 'alignment'), dict) else ''
     cls = 'sp-heading' + (' sp-heading--center' if align == 'center' else '')
-    link = (setting(a, 'title_link') or {}).get('url') or ''
+    link = resolve_link(setting(a, 'title_link'))
     inner = esc(t)
-    if link and link not in ('/', '#'):
+    if link:
         inner = '<a href="%s">%s</a>' % (esc(link), inner)
     return '<%s class="%s">%s</%s>' % (lvl, cls, inner, lvl)
 
@@ -185,15 +244,12 @@ def r_image(a):
     if isinstance(w, dict):
         w = w.get('xl') or ''
     style = ' style="max-width:%spx"' % w if str(w).strip().isdigit() else ''
-    href = ''
-    link = setting(a, 'link')
-    if isinstance(link, dict):
-        href = link.get('url') or ''
+    href = resolve_link(setting(a, 'link'))
     url = img_url(src)
     if not url:
         return ''
     out = '<img src="%s" alt="%s"%s>' % (esc(url), esc(setting(a, 'alt_text') or ''), style)
-    if href and href not in ('/', '#'):
+    if href:
         return '<a class="sp-img" href="%s">%s</a>' % (esc(href), out)
     return '<div class="sp-img">%s</div>' % out
 
@@ -308,8 +364,18 @@ def render_tree(tree):
             body = ''.join(r_addon(a) for a in col.get('addons') or [])
             if not body.strip():
                 continue
-            parts.append('<div class="sp-col" style="flex:0 0 %s;max-width:%s">%s</div>'
-                         % (width_of(col), width_of(col), body))
+            st = col.get('settings') or {}
+            extra = ''
+            if st.get('items_content_alignment') == 'center':
+                extra += ' sp-col--center'
+            if (st.get('items_align_center')):
+                extra += ' sp-col--vcenter'
+            overlay = st.get('overlay')
+            under = ''
+            if overlay and str(overlay).lower() not in ('none', ''):
+                under = '<div class="sp-col__overlay" style="background:%s"></div>' % overlay
+            parts.append('<div class="sp-col%s" style="%s">%s<div class="sp-col__body">%s</div></div>'
+                         % (extra, col_style(col), under, body))
         if not parts:
             continue
         pad = px((row.get('settings') or {}).get('padding'))

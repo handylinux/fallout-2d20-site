@@ -116,7 +116,7 @@ MENU_ITEM_URLS = {
 }
 
 
-def fix_links(fragment, umap, articles):
+def fix_links(fragment, umap, articles, textmap=None):
     """Ссылки из выгрузки Joomla на нашем сайте.
 
     1) index.php?option=com_content&view=article&id=143:tablitsa-sluchajnoj-edy
@@ -130,44 +130,68 @@ def fix_links(fragment, umap, articles):
         by_id[str(aid)] = art.get('title')
     base = BASE
 
+    textmap = textmap or {}
+
     def repl(m):
+        # m.group(0) — вся ссылка целиком: меняем только href внутри неё
         href = html.unescape(m.group(1))
+        whole = m.group(0)
+        # файл, которого у нас нет (pdf/zip): ссылку снимаем, текст остаётся
+        if re.search(r'\.(pdf|zip|docx?|xlsx?)$', href, re.I):
+            # файла у нас нет, но он есть на исходном сайте — ведём туда
+            if 'fallout-2d20.ru' not in href:
+                href = 'https://www.fallout-2d20.ru/' + href.lstrip('/')
+            return re.sub(r'href="[^"]*"', 'href="%s"' % href, whole, count=1)
+        if 'index.php' in href or href == '#':
+            label = re.sub(r'<[^>]+>', '', m.group(2) if m.lastindex and m.lastindex > 1 else '')
+            label = re.sub(r'\s+', ' ', html.unescape(label)).strip().lower()
+            if label in textmap:
+                return re.sub(r'href="[^"]*"', 'href="%s%s"' % (base, textmap[label]), whole, count=1)
         # пункт меню Joomla → раздел по названию ссылки (текст подписи)
         if href.startswith('index.php?Itemid='):
             mid = re.search(r'Itemid=(\d+)', href).group(1)
             url = MENU_ITEM_URLS.get(mid)
-            return 'href="%s%s"' % (base, url) if url else m.group(0)
+            return re.sub(r'href="[^"]*"', 'href="%s%s"' % (base, url), whole, count=1) if url else whole
         if href.startswith('http'):
             if 'fallout-2d20.ru' not in href:
                 return m.group(0)
             path = re.sub(r'^https?://(www\.)?fallout-2d20\.ru', '', href)
             if not path or path == '/':
-                return 'href="%s/"' % base
+                return re.sub(r'href="[^"]*"', 'href="%s/"' % base, whole, count=1)
             if not path.endswith('/') and '.' not in path.split('/')[-1]:
                 path += '/'
             for url in umap.values():
                 if url.rstrip('/') == path.rstrip('/'):
-                    return 'href="%s%s"' % (base, url)
-            return 'href="%s%s"' % (base, path)
+                    return re.sub(r'href="[^"]*"', 'href="%s%s"' % (base, url), whole, count=1)
+            return re.sub(r'href="[^"]*"', 'href="%s%s"' % (base, path), whole, count=1)
         if 'catid=15' in href or re.search(r'option=com_content.*[?&]id=(95|22|30|143):', href):
             url = PERK_URLS.get(re.search(r'[?&]id=(\d+)', href).group(1), '/perki/')
-            return 'href="%s%s"' % (base, url)
+            return re.sub(r'href="[^"]*"', 'href="%s%s"' % (base, url), whole, count=1)
         if 'com_sppagebuilder' in href:
             mid = re.search(r'[?&]id=(\d+)', href)
             if mid:
                 url = SP_PAGE_URLS.get(mid.group(1))
                 if url:
-                    return 'href="%s%s"' % (base, url)
+                    return re.sub(r'href="[^"]*"', 'href="%s%s"' % (base, url), whole, count=1)
         if 'option=com_content' in href:
             mid = re.search(r'[?&]id=(\d+)', href)
             if mid:
                 title = by_id.get(mid.group(1))
                 url = url_for(title, umap) if title else None
                 if url:
-                    return 'href="%s%s"' % (base, url)
-        return m.group(0)
+                    return re.sub(r'href="[^"]*"', 'href="%s%s"' % (base, url), whole, count=1)
+        return whole
 
-    return re.sub(r'href="([^"]+)"', repl, fragment)
+    fragment = re.sub(r'<a[^>]*href="([^"]+)"[^>]*>(.*?)</a>', repl, fragment, flags=re.S)
+
+    # относительные ссылки внутри текста («oruzhie/energooruzhie») → от корня сайта
+    def rel(m):
+        href = m.group(1)
+        if (href.startswith(('http', '/', '#', 'mailto:', 'index.php', 'data:', 'tel:'))
+                or re.search(r'\.(pdf|zip|png|jpe?g|webp|svg|css|js)$', href, re.I)):
+            return m.group(0)
+        return 'href="%s/%s"' % (base, href.lstrip('/'))
+    return re.sub(r'href="([^"]+)"', rel, fragment)
 
 
 def repair_internal_links(umap):
@@ -200,7 +224,11 @@ def repair_internal_links(umap):
                 return m.group(0)
             rel = href[len(BASE):]
             if '.' in rel.split('/')[-1].strip('/'):
-                return m.group(0)          # файл (css/js/img), не страница
+                # файл (css/js/img/pdf/zip): ссылку на отсутствующий файл снимаем
+                if os.path.exists(os.path.join(DOCS, rel.lstrip('/'))):
+                    return m.group(0)
+                dropped += 1
+                return 'data-href="%s"' % href
             if os.path.exists(os.path.join(DOCS, rel.strip('/'), 'index.html')):
                 return m.group(0)
             tail = rel.strip('/').split('/')[-1]
@@ -213,6 +241,26 @@ def repair_internal_links(umap):
         if out != src:
             open(f, 'w', encoding='utf-8').write(out)
     print('ссылок перенаправлено: %d, снято: %d' % (fixed, dropped))
+
+
+def text_link_map():
+    """Текст ссылки → адрес: из сохранённых живых страниц public/.
+    Нужна для ссылок дампа, у которых есть только index.php?Itemid=…"""
+    pairs = {}
+    for f in glob.glob(os.path.join('public', '**', '*.html'), recursive=True):
+        src = open(f, encoding='utf-8', errors='ignore').read()
+        for href, text in re.findall(r'<a[^>]+href="([^"]+)"[^>]*>(.*?)</a>', src, re.S):
+            if 'index.php' in href or href.startswith('#'):
+                continue
+            label = re.sub(r'<[^>]+>', '', text)
+            label = re.sub(r'\s+', ' ', html.unescape(label)).strip().lower()
+            if not label or len(label) > 80:
+                continue
+            if href.startswith(BASE):
+                href = href[len(BASE):]
+            if href.startswith('/'):
+                pairs.setdefault(label, href)
+    return pairs
 
 
 def url_for(title, umap, fallback=None):
@@ -331,9 +379,12 @@ def hub_cards_from_live(path, base_url):
     return cards
 
 
+TEXTMAP = {}
+
+
 def write(path, html_src, umap=None, articles=None):
     if umap is not None:
-        html_src = fix_links(html_src, umap, articles)
+        html_src = fix_links(html_src, umap, articles, TEXTMAP)
     target = os.path.join(DOCS, path.strip('/'), 'index.html')
     os.makedirs(os.path.dirname(target), exist_ok=True)
     with open(target, 'w', encoding='utf-8') as f:
@@ -351,13 +402,33 @@ def shell(title, body, active=''):
 def main():
     sp, articles = load()
     umap = url_map()
+    # ссылки заголовков/картинок в хабах: id статьи Joomla → наш адрес
+    R.LINK_MAP.update({
+        '191': '/oruzhie/', '192': '/oruzhie/', '190': '/oruzhie/',
+        '449': '/bronya/', '300': '/eda/',
+    })
     print('адресов из живых страниц:', len(umap))
 
-    # 1. Главная
-    home = home_from_live()
+    # ссылки статей Joomla (id=…) → наши адреса: чтобы ссылки из дампа
+    # (index.php?option=com_content&view=article&id=469) вели куда надо
+    for aid, art in articles.items():
+        u = url_for(art.get('title'), umap)
+        if u:
+            R.LINK_MAP.setdefault(str(aid), u)
+    TEXTMAP.update(text_link_map())
+    print('пар «текст ссылки → адрес»:', len(TEXTMAP))
+
+    # 1. Главная — страница SPPB id 161 «Правила игры», та же сетка, что на сайте
+    home_rec = sp.get('161')
+    home = R.page_from_dump(home_rec, 'Правила игры') if home_rec else ''
     if home:
-        write('/', shell('Правила игры', '<div class="sp-page">%s</div>' % home), umap, articles)
-        print('главная: из public/index.html')
+        write('/', shell('Правила игры', home), umap, articles)
+        print('главная: из дампа id 161')
+    else:
+        home = home_from_live()
+        if home:
+            write('/', shell('Правила игры', '<div class="sp-page">%s</div>' % home), umap, articles)
+            print('главная: из public/index.html')
 
     # 2. Хабы из SPPB-дампа (269 снаряжение, 293 бестиарий, 72 происхождения)
     for pid, (url, title) in HUB_PAGES.items():
@@ -374,7 +445,7 @@ def main():
     for rid, rec in sp.items():
         if str(rec.get('active')) != '1':
             continue
-        if rid in HUB_PAGES:
+        if rid in HUB_PAGES or rid in ('161',):
             continue
         url = url_for(rec['title'], umap)
         if not url or url in ('/',):

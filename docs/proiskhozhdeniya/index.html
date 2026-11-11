@@ -1034,7 +1034,19 @@ html, body { overflow-x: hidden; }
   max-width: 1370px;
   margin: 0 -15px;
 }
-.sp-col { min-width: 0; padding: 0 15px; }
+.sp-col { min-width: 0; padding: 0 15px; position: relative; }
+.sp-col__body { position: relative; z-index: 1; }
+.sp-col__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.sp-col--center > .sp-col__body { text-align: center; }
+.sp-col--center > .sp-col__body .sp-img { display: flex; justify-content: center; }
+.sp-col--vcenter > .sp-col__body { display: flex; flex-direction: column; justify-content: center; }
+/* подложка карточки хаба: рамка у колонки, своего фона у неё нет */
+.sp-col[style*="border:"] > .sp-col__body { height: 100%; }
 
 /* заголовки */
 .sp-heading { margin: 6px 0; font-weight: 700; }
@@ -1211,7 +1223,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <main class="page">
   <div class="wrap">
-<div class="sp-page"><h1 class="sp-page__title">Происхождения</h1><section class="sp-row sp-row--3-3"><div class="sp-row__inner" style="padding:10px 0px 10px 0px"><div class="sp-col" style="flex:0 0 25%;max-width:25%"><h2 class="sp-heading sp-heading--center">Братство Стали</h2><div class="sp-text"><p>Вы посвятили свою жизнь идеалам и целям Братству Стали - сохранить и защитить технологии прошлого для нужд будущего поколения.</p></div><div class="sp-raw"><div class="wrapper">
+<div class="sp-page"><h1 class="sp-page__title">Происхождения</h1><section class="sp-row sp-row--3-3"><div class="sp-row__inner" style="padding:10px 0px 10px 0px"><div class="sp-col sp-col--center" style="flex:0 0 25%;max-width:25%;padding:30px 20px 30px 20px;background:url(/fallout-2d20-site/assets/img/food-truck-pattern.jpg) 0 0 repeat/cover"><div class="sp-col__overlay" style="background:rgba(150, 150, 150, 0.2)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/proiskhozhdeniya/posvyashchjonnyj-v-bratstvo-stali/">Братство Стали</a></h2><div class="sp-text"><p>Вы посвятили свою жизнь идеалам и целям Братству Стали - сохранить и защитить технологии прошлого для нужд будущего поколения.</p></div><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/proiskhozhdeniya/posvyashchjonnyj-v-bratstvo-stali/">
     <span>Подробнее</span>
     <span>
@@ -1224,7 +1236,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div><div class="sp-col" style="flex:0 0 25%;max-width:25%"><h2 class="sp-heading sp-heading--center">Житель НКР</h2><div class="sp-text"><p>Как житель Новой Калифорнии, вы являетесь потомком выживших после ядерного апокалипсиса людей с Западного побережья.</p></div><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 25%;max-width:25%;padding:30px 20px 30px 30px;background:url(/fallout-2d20-site/assets/img/food-truck-pattern.jpg) 0 0 no-repeat/cover"><div class="sp-col__overlay" style="background:rgba(150, 150, 150, 0.2)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/proiskhozhdeniya/zhitel-nkr/">Житель НКР</a></h2><div class="sp-text"><p>Как житель Новой Калифорнии, вы являетесь потомком выживших после ядерного апокалипсиса людей с Западного побережья.</p></div><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/proiskhozhdeniya/zhitel-nkr/">
     <span>Подробнее</span>
     <span>
@@ -1237,7 +1249,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></section><section class="sp-row sp-row--3-3"><div class="sp-row__inner" style="padding:10px 0px 10px 0px"><div class="sp-col" style="flex:0 0 25%;max-width:25%"><h2 class="sp-heading sp-heading--center">Минитмен</h2><div class="sp-text"><p>"Защищать людей в любую минуту" - вот ваш лозунг. Вы принадлежите к уникальной группе выживших в Содружестве, которые ставят других выше себя. </p></div><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--3-3"><div class="sp-row__inner" style="padding:10px 0px 10px 0px"><div class="sp-col sp-col--center" style="flex:0 0 25%;max-width:25%;padding:30px 20px 30px 20px;background:url(/fallout-2d20-site/assets/img/food-truck-pattern.jpg) 0 0 no-repeat/cover"><div class="sp-col__overlay" style="background:rgba(150, 150, 150, 0.2)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/proiskhozhdeniya/minitmen/">Минитмен</a></h2><div class="sp-text"><p>"Защищать людей в любую минуту" - вот ваш лозунг. Вы принадлежите к уникальной группе выживших в Содружестве, которые ставят других выше себя. </p></div><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/proiskhozhdeniya/minitmen/">
     <span>Подробнее</span>
     <span>
@@ -1250,7 +1262,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div><div class="sp-col" style="flex:0 0 25%;max-width:25%"><h2 class="sp-heading sp-heading--center">Дитя Атома</h2><div class="sp-text"><p>Вы понимаете, что радиация опасна для тех, кто еще не осознал ее божественную истину. Радиация - это дар вашего атомного бога.</p></div><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 25%;max-width:25%;padding:30px 20px 30px 30px;background:url(/fallout-2d20-site/assets/img/food-truck-pattern.jpg) 0 0 no-repeat/cover"><div class="sp-col__overlay" style="background:rgba(150, 150, 150, 0.2)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/proiskhozhdeniya/ditya-atoma/">Дитя Атома</a></h2><div class="sp-text"><p>Вы понимаете, что радиация опасна для тех, кто еще не осознал ее божественную истину. Радиация - это дар вашего атомного бога.</p></div><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/proiskhozhdeniya/ditya-atoma/">
     <span>Подробнее</span>
     <span>
@@ -1263,7 +1275,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></section><section class="sp-row sp-row--3-3"><div class="sp-row__inner" style="padding:10px 0px 10px 0px"><div class="sp-col" style="flex:0 0 25%;max-width:25%"><h2 class="sp-heading sp-heading--center">Обитатель убежища</h2><div class="sp-text"><p>Когда падали бомбы, вам или вашим предшественникам посчастливилось оказаться в безопасности в одном из ста двадцати двух убежищ Vault-Tec.</p></div><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--3-3"><div class="sp-row__inner" style="padding:10px 0px 10px 0px"><div class="sp-col sp-col--center" style="flex:0 0 25%;max-width:25%;padding:30px 20px 30px 20px;background:url(/fallout-2d20-site/assets/img/food-truck-pattern.jpg) 0 0 no-repeat/cover"><div class="sp-col__overlay" style="background:rgba(150, 150, 150, 0.2)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/proiskhozhdeniya/obitatel-ubezhishcha/">Обитатель убежища</a></h2><div class="sp-text"><p>Когда падали бомбы, вам или вашим предшественникам посчастливилось оказаться в безопасности в одном из ста двадцати двух убежищ Vault-Tec.</p></div><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/proiskhozhdeniya/obitatel-ubezhishcha/">
     <span>Подробнее</span>
     <span>
@@ -1276,7 +1288,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div><div class="sp-col" style="flex:0 0 25%;max-width:25%"><h2 class="sp-heading sp-heading--center">ПРОТЕКТРОН</h2><div class="sp-text"><p>Протектроны были созданы для различных строительных, охранных и административных задач. Возможно, вы сошли с одной из этих производственных линий или совершенно иной.</p></div><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 25%;max-width:25%;padding:30px 20px 30px 30px;background:url(/fallout-2d20-site/assets/img/food-truck-pattern.jpg) 0 0 no-repeat/cover"><div class="sp-col__overlay" style="background:rgba(150, 150, 150, 0.2)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/proiskhozhdeniya/protektron/">ПРОТЕКТРОН</a></h2><div class="sp-text"><p>Протектроны были созданы для различных строительных, охранных и административных задач. Возможно, вы сошли с одной из этих производственных линий или совершенно иной.</p></div><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/proiskhozhdeniya/protektron/">
     <span>Подробнее</span>
     <span>
@@ -1289,7 +1301,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></section><section class="sp-row sp-row--3-3"><div class="sp-row__inner" style="padding:10px 0px 10px 0px"><div class="sp-col" style="flex:0 0 25%;max-width:25%"><h2 class="sp-heading sp-heading--center">Выживший</h2><div class="sp-text"><p>Вы - живое наследие людей, которые самостоятельно готовились к Армагеддону.</p></div><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--3-3"><div class="sp-row__inner" style="padding:10px 0px 10px 0px"><div class="sp-col sp-col--center" style="flex:0 0 25%;max-width:25%;padding:30px 20px 30px 20px;background:url(/fallout-2d20-site/assets/img/food-truck-pattern.jpg) 0 0 no-repeat/cover"><div class="sp-col__overlay" style="background:rgba(150, 150, 150, 0.2)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/proiskhozhdeniya/vyzhivshij/">Выживший</a></h2><div class="sp-text"><p>Вы - живое наследие людей, которые самостоятельно готовились к Армагеддону.</p></div><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/proiskhozhdeniya/vyzhivshij/">
     <span>Подробнее</span>
     <span>
@@ -1302,7 +1314,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div><div class="sp-col" style="flex:0 0 25%;max-width:25%"><h2 class="sp-heading sp-heading--center">СЕКЬЮРИТРОН</h2><div class="sp-text"><p>Вы созданы для поддержания спокойствия в Стрипе и его окрестностях. Уникальным является то, что некоторые роботы получили индивидуальность.</p></div></div></div></section><section class="sp-row sp-row--3-3"><div class="sp-row__inner" style="padding:10px 0px 10px 0px"><div class="sp-col" style="flex:0 0 25%;max-width:25%"><h2 class="sp-heading sp-heading--center">ГУЛЬ</h2><div class="sp-text"><p>Вы “гуль” — некротизированный постчеловек - один из многих выживших, которым не посчастливилось попасть в убежище Волт-Тек.</p></div><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 25%;max-width:25%;padding:30px 20px 30px 30px;background:url(/fallout-2d20-site/assets/img/food-truck-pattern.jpg) 0 0 no-repeat/cover"><div class="sp-col__overlay" style="background:rgba(150, 150, 150, 0.2)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center">СЕКЬЮРИТРОН</h2><div class="sp-text"><p>Вы созданы для поддержания спокойствия в Стрипе и его окрестностях. Уникальным является то, что некоторые роботы получили индивидуальность.</p></div></div></div></div></section><section class="sp-row sp-row--3-3"><div class="sp-row__inner" style="padding:10px 0px 10px 0px"><div class="sp-col sp-col--center" style="flex:0 0 25%;max-width:25%;padding:30px 20px 30px 20px;background:url(/fallout-2d20-site/assets/img/food-truck-pattern.jpg) 0 0 no-repeat/cover"><div class="sp-col__overlay" style="background:rgba(150, 150, 150, 0.2)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/proiskhozhdeniya/gul/">ГУЛЬ</a></h2><div class="sp-text"><p>Вы “гуль” — некротизированный постчеловек - один из многих выживших, которым не посчастливилось попасть в убежище Волт-Тек.</p></div><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/proiskhozhdeniya/gul/">
     <span>Подробнее</span>
     <span>
@@ -1315,7 +1327,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div><div class="sp-col" style="flex:0 0 25%;max-width:25%"><h2 class="sp-heading sp-heading--center">ШТУРМОТРОН</h2><div class="sp-text"><p>Штурмотрон - это первоклассный образец военной техники созданный для изнурительного ближнего боя. В голове находится лазер, настолько мощный, что звуки его выстрелов преследуют в кошмарах тех, кому посчастливилось выжить после встречи с ним.</p></div><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 25%;max-width:25%;padding:30px 20px 30px 30px;background:url(/fallout-2d20-site/assets/img/food-truck-pattern.jpg) 0 0 no-repeat/cover"><div class="sp-col__overlay" style="background:rgba(150, 150, 150, 0.2)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/proiskhozhdeniya/shturmotron/">ШТУРМОТРОН</a></h2><div class="sp-text"><p>Штурмотрон - это первоклассный образец военной техники созданный для изнурительного ближнего боя. В голове находится лазер, настолько мощный, что звуки его выстрелов преследуют в кошмарах тех, кому посчастливилось выжить после встречи с ним.</p></div><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/proiskhozhdeniya/shturmotron/">
     <span>Подробнее</span>
     <span>
@@ -1328,7 +1340,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></section><section class="sp-row sp-row--3-3"><div class="sp-row__inner" style="padding:10px 0px 10px 0px"><div class="sp-col" style="flex:0 0 25%;max-width:25%"><h2 class="sp-heading sp-heading--center">супермутант</h2><div class="sp-text"><p>Зараженное <strong>Вирусом Принудительной Эволюции</strong> ваше тело мутировало в высокую, мускулистую машину для убийства, наполненную яростью.</p></div><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--3-3"><div class="sp-row__inner" style="padding:10px 0px 10px 0px"><div class="sp-col sp-col--center" style="flex:0 0 25%;max-width:25%;padding:30px 20px 30px 20px;background:url(/fallout-2d20-site/assets/img/food-truck-pattern.jpg) 0 0 no-repeat/cover"><div class="sp-col__overlay" style="background:rgba(150, 150, 150, 0.2)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/proiskhozhdeniya/supermutant/">супермутант</a></h2><div class="sp-text"><p>Зараженное <strong>Вирусом Принудительной Эволюции</strong> ваше тело мутировало в высокую, мускулистую машину для убийства, наполненную яростью.</p></div><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/proiskhozhdeniya/supermutant/">
     <span>Подробнее</span>
     <span>
@@ -1341,7 +1353,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div><div class="sp-col" style="flex:0 0 25%;max-width:25%"><h2 class="sp-heading sp-heading--center">МИСТЕР ПОМОЩНИК</h2><div class="sp-text"><p>Вы - один из этих домашних автоматов, выпущенных где-то между 2037 и 2077 годами. Оснащенный самым современным программным обеспечением, вы обладаете волей и можете адаптировать свой собственный код, чтобы узнать больше из вашего окружения.</p></div><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 25%;max-width:25%;padding:30px 20px 30px 30px;background:url(/fallout-2d20-site/assets/img/food-truck-pattern.jpg) 0 0 no-repeat/cover"><div class="sp-col__overlay" style="background:rgba(150, 150, 150, 0.2)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/proiskhozhdeniya/mister-pomoshchnik/">МИСТЕР ПОМОЩНИК</a></h2><div class="sp-text"><p>Вы - один из этих домашних автоматов, выпущенных где-то между 2037 и 2077 годами. Оснащенный самым современным программным обеспечением, вы обладаете волей и можете адаптировать свой собственный код, чтобы узнать больше из вашего окружения.</p></div><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/proiskhozhdeniya/mister-pomoshchnik/">
     <span>Подробнее</span>
     <span>
@@ -1354,7 +1366,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></section><section class="sp-row sp-row--3-3"><div class="sp-row__inner" style="padding:10px 0px 10px 0px"><div class="sp-col" style="flex:0 0 25%;max-width:25%"><h2 class="sp-heading sp-heading--center">Изгой Братства Стали</h2><div class="sp-text"><p>Изгои Братства путешествуют от места к месту, предлагая помощь нуждающимся, верша правосудие, когда это необходимо, и обладая знаниями, о которых большинство жителей пустошей могут только мечтать. Однако Изгои могут принесут с собой больше бед, чем пользы.</p></div><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--3-3"><div class="sp-row__inner" style="padding:10px 0px 10px 0px"><div class="sp-col sp-col--center" style="flex:0 0 25%;max-width:25%;padding:30px 20px 30px 30px;background:url(/fallout-2d20-site/assets/img/food-truck-pattern.jpg) 0 0 no-repeat/cover"><div class="sp-col__overlay" style="background:rgba(150, 150, 150, 0.2)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/proiskhozhdeniya/izgoj-bratstva/">Изгой Братства Стали</a></h2><div class="sp-text"><p>Изгои Братства путешествуют от места к месту, предлагая помощь нуждающимся, верша правосудие, когда это необходимо, и обладая знаниями, о которых большинство жителей пустошей могут только мечтать. Однако Изгои могут принесут с собой больше бед, чем пользы.</p></div><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/proiskhozhdeniya/izgoj-bratstva/">
     <span>Подробнее</span>
     <span>
@@ -1367,7 +1379,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div><div class="sp-col" style="flex:0 0 25%;max-width:25%"><h2 class="sp-heading sp-heading--center">ТЕНЬ</h2><div class="sp-text"><p>Тени сохранили свой интеллект, индивидуальность и прошлый опыт, способность формировать и поддерживать сложные отношения, при этом обладая силой и стойкостью, характерными для супермутантов. За десятилетия использования Стелс-бой изменил их на молекулярном уровне, придав их коже голубой оттенок и исказив химию их мозга. Теперь Тени - трагическая копия себя прежних.</p></div><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 25%;max-width:25%;padding:30px 20px 30px 30px;background:url(/fallout-2d20-site/assets/img/food-truck-pattern.jpg) 0 0 no-repeat/cover"><div class="sp-col__overlay" style="background:rgba(150, 150, 150, 0.2)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/proiskhozhdeniya/ten/">ТЕНЬ</a></h2><div class="sp-text"><p>Тени сохранили свой интеллект, индивидуальность и прошлый опыт, способность формировать и поддерживать сложные отношения, при этом обладая силой и стойкостью, характерными для супермутантов. За десятилетия использования Стелс-бой изменил их на молекулярном уровне, придав их коже голубой оттенок и исказив химию их мозга. Теперь Тени - трагическая копия себя прежних.</p></div><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/proiskhozhdeniya/ten/">
     <span>Подробнее</span>
     <span>
@@ -1380,7 +1392,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></section><section class="sp-row sp-row--3-3"><div class="sp-row__inner" style="padding:10px 0px 10px 0px"><div class="sp-col" style="flex:0 0 25%;max-width:25%"><h2 class="sp-heading sp-heading--center">СИНТ</h2><div class="sp-text"><p>Вы – биосинтетический гуманоид, почти неотличимый от человека, созданный секретной научной организацией. Хотя вы кажетесь умственно и физически человеком, технологии биоинженерии сделали вас чем-то совершенно новым, во многих смыслах, улучшенным.</p></div></div><div class="sp-col" style="flex:0 0 25%;max-width:25%"><h2 class="sp-heading sp-heading--center">РОБОМОЗГ</h2><div class="sp-text"><p>Рождён в результате кибернетического слияния человеческого мозга и тела робота, робомозги стали результатом секретных исследований. Не помня своей прежней жизни, но обладая чувством собственного достоинства, вы путешествуете по пустошам меняясь и адаптируясь.</p></div><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--3-3"><div class="sp-row__inner" style="padding:10px 0px 10px 0px"><div class="sp-col sp-col--center" style="flex:0 0 25%;max-width:25%;padding:30px 20px 30px 30px;background:url(/fallout-2d20-site/assets/img/food-truck-pattern.jpg) 0 0 no-repeat/cover"><div class="sp-col__overlay" style="background:rgba(150, 150, 150, 0.2)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center">СИНТ</h2><div class="sp-text"><p>Вы – биосинтетический гуманоид, почти неотличимый от человека, созданный секретной научной организацией. Хотя вы кажетесь умственно и физически человеком, технологии биоинженерии сделали вас чем-то совершенно новым, во многих смыслах, улучшенным.</p></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 25%;max-width:25%;padding:30px 20px 30px 30px;background:url(/fallout-2d20-site/assets/img/food-truck-pattern.jpg) 0 0 no-repeat/cover"><div class="sp-col__overlay" style="background:rgba(150, 150, 150, 0.2)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/proiskhozhdeniya/robomozg/">РОБОМОЗГ</a></h2><div class="sp-text"><p>Рождён в результате кибернетического слияния человеческого мозга и тела робота, робомозги стали результатом секретных исследований. Не помня своей прежней жизни, но обладая чувством собственного достоинства, вы путешествуете по пустошам меняясь и адаптируясь.</p></div><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/proiskhozhdeniya/robomozg/">
     <span>Подробнее</span>
     <span>
@@ -1393,7 +1405,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></section><section class="sp-row sp-row--3-3"><div class="sp-row__inner" style="padding:10px 0px 10px 0px"><div class="sp-col" style="flex:0 0 25%;max-width:25%"><h2 class="sp-heading sp-heading--center">ДИКАРЬ</h2><div class="sp-text"><p>Возможно, дикари обладают более мистическими представлениями о пустоши, включая мифы и верования о мире в его современном виде, по сравнению с их более приземлёнными соседями. </p></div><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--3-3"><div class="sp-row__inner" style="padding:10px 0px 10px 0px"><div class="sp-col sp-col--center" style="flex:0 0 25%;max-width:25%;padding:30px 20px 30px 30px;background:url(/fallout-2d20-site/assets/img/food-truck-pattern.jpg) 50% 50% no-repeat/auto"><div class="sp-col__overlay" style="background:rgba(150, 150, 150, 0.2)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/proiskhozhdeniya/dikar/">ДИКАРЬ</a></h2><div class="sp-text"><p>Возможно, дикари обладают более мистическими представлениями о пустоши, включая мифы и верования о мире в его современном виде, по сравнению с их более приземлёнными соседями. </p></div><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/proiskhozhdeniya/dikar/">
     <span>Подробнее</span>
     <span>
@@ -1406,7 +1418,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div><div class="sp-col" style="flex:0 0 25%;max-width:25%"><h2 class="sp-heading sp-heading--center">ПОСЛЕДОВАТЕЛЬ АПОКАЛИПСИСА</h2><div class="sp-text"><p>Последователи Апокалипсиса - идеалисты и гуманисты, организация, которая посвятила себя распространению мира и знаний, а также помощи нуждающимся.</p></div><div class="sp-raw"><div class="wrapper">
+</div></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 25%;max-width:25%;padding:30px 20px 30px 30px;background:url(/fallout-2d20-site/assets/img/food-truck-pattern.jpg) 0 0 no-repeat/cover"><div class="sp-col__overlay" style="background:rgba(150, 150, 150, 0.2)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/proiskhozhdeniya/dikar/">ПОСЛЕДОВАТЕЛЬ АПОКАЛИПСИСА</a></h2><div class="sp-text"><p>Последователи Апокалипсиса - идеалисты и гуманисты, организация, которая посвятила себя распространению мира и знаний, а также помощи нуждающимся.</p></div><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/proiskhozhdeniya/dikar/">
     <span>Подробнее</span>
     <span>
@@ -1419,7 +1431,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></section><section class="sp-row sp-row--3-3"><div class="sp-row__inner" style="padding:10px 0px 10px 0px"><div class="sp-col" style="flex:0 0 25%;max-width:25%"><h2 class="sp-heading sp-heading--center">НОВОБРАНЕЦ ГАДЮК</h2><div class="sp-text"><p>Как член одного из последних кланов Гадюк, вы смотрите на Пустошь глазами своих предков. Их традиции, возможно, придают вашему восприятию особый, эзотерический оттенок.</p></div></div><div class="sp-col" style="flex:0 0 25%;max-width:25%"><h2 class="sp-heading sp-heading--center">ОСКОЛОК АНКЛАВА</h2><div class="sp-text"><p>Одним из основных принципов структуры анклава является «чистота» - отказ от мутировавших форм жизни во всех формах. И когда-то вы были его частью.</p></div><div class="sp-raw"><div class="wrapper">
+</div></div></div></div></div></section><section class="sp-row sp-row--3-3"><div class="sp-row__inner" style="padding:10px 0px 10px 0px"><div class="sp-col sp-col--center" style="flex:0 0 25%;max-width:25%;padding:30px 20px 30px 30px;background:url(/fallout-2d20-site/assets/img/food-truck-pattern.jpg) 0 0 no-repeat/cover"><div class="sp-col__overlay" style="background:rgba(150, 150, 150, 0.2)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center">НОВОБРАНЕЦ ГАДЮК</h2><div class="sp-text"><p>Как член одного из последних кланов Гадюк, вы смотрите на Пустошь глазами своих предков. Их традиции, возможно, придают вашему восприятию особый, эзотерический оттенок.</p></div></div></div><div class="sp-col sp-col--center" style="flex:0 0 25%;max-width:25%;padding:30px 20px 30px 30px;background:url(/fallout-2d20-site/assets/img/food-truck-pattern.jpg) 0 0 no-repeat/cover"><div class="sp-col__overlay" style="background:rgba(150, 150, 150, 0.2)"></div><div class="sp-col__body"><h2 class="sp-heading sp-heading--center"><a href="/fallout-2d20-site/proiskhozhdeniya/oskolok-anklava/">ОСКОЛОК АНКЛАВА</a></h2><div class="sp-text"><p>Одним из основных принципов структуры анклава является «чистота» - отказ от мутировавших форм жизни во всех формах. И когда-то вы были его частью.</p></div><div class="sp-raw"><div class="wrapper">
   <a class="cta" href="/fallout-2d20-site/proiskhozhdeniya/oskolok-anklava/">
     <span>Подробнее</span>
     <span>
@@ -1432,7 +1444,7 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
       </svg>
     </span> 
   </a>
-</div></div></div></div></section></div>
+</div></div></div></div></div></section></div>
   </div>
 </main>
 
@@ -1446,6 +1458,6 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <script src="/fallout-2d20-site/assets/vendor/bootstrap.bundle.min.js"></script>
 <script src="/fallout-2d20-site/assets/js/search.js"></script>
-<script src="/fallout-2d20-site/assets/js/site.js?v=53dfa83e"></script>
+<script src="/fallout-2d20-site/assets/js/site.js?v=33235792"></script>
 </body>
 </html>

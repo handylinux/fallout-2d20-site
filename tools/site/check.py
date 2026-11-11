@@ -61,13 +61,18 @@ for path in pages:
 hub = os.path.join(DOCS, 'snaryazhenie/index.html')
 if os.path.exists(hub):
     html = read(hub)
-    tiles = re.findall(r'class="sp-heading[^"]*">([^<]+)<', html)
+    tiles = re.findall(r'class="sp-heading[^"]*">(?:<a[^>]*>)?([^<]+)<', html)
     expect = ['Оружие', 'Боеприпасы', 'Броня', 'Одежда', 'Препараты', 'Еда',
               'Напитки', 'Книги и журналы', 'Разное']
     if tiles[:9] != expect:
         errors.append('хаб: порядок плиток %r, ожидался %r' % (tiles[:9], expect))
     if 'sp-row--4-4-4' not in html:
         errors.append('хаб: раскладка не 4+4+4 (как в дампе id 269)')
+    # карточка хаба: рамка 1px #6e6e6e у колонки, подложка RGBA(203,203,203,.4) — как в дампе
+    if 'border:1px solid rgb(110, 110, 110)' not in html:
+        errors.append('хаб: у карточки нет рамки 1px solid #6e6e6e')
+    if 'RGBA(203, 203, 203, 0.4)' not in html:
+        errors.append('хаб: у карточки нет подложки RGBA(203,203,203,0.4)')
 
 # --- битые внутренние ссылки
 for path in pages:
