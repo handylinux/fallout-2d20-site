@@ -296,20 +296,14 @@ def overlay_html(settings, cls='sppb-addon-overlayer'):
 
 # --------------------------------------------------------------------------- renderer
 # --- кнопка «Подробнее» -------------------------------------------------------
-# В исходном CSS (.cta span:nth-child(2){width:20px;margin-left:30px}) места под
-# выезд стрелки нет: при hover margin-right становится 45px, и кнопка растягивается.
-# Компенсируем это резервом справа (45px) в обычном состоянии и анимацией без
-# изменения ширины. Правила идут после CSS аддона и попадают в его контейнер.
-CTA_FIX = """
-<style>
-#sppb-addon-%(aid)s .cta { transition: box-shadow .5s; }
-#sppb-addon-%(aid)s .cta span:nth-child(2) { width: 20px; margin-left: 30px; margin-right: 45px; transition: transform .5s; }
-#sppb-addon-%(aid)s .cta:hover span:nth-child(2) { margin-right: 45px; transform: translateX(45px) skewX(15deg); }
-#sppb-addon-%(aid)s .cta span:nth-child(2) svg { display: block; overflow: hidden; }
-</style>
+# Исходный CSS: .cta{padding:10px 45px} и .cta:hover span:nth-child(2){margin-right:45px}.
+# Места под выезд стрелки нет — на hover кнопка становится шире на 45px и разъезжается
+# с сеткой. Резервируем это место в padding кнопки и двигаем стрелку трансформом.
+CTA_CSS = """
+#%(sel)s .cta { transition: box-shadow .5s; }
+#%(sel)s .cta span:nth-child(2) { width: 20px; margin-left: 30px; margin-right: 45px; transition: transform .5s; }
+#%(sel)s .cta:hover span:nth-child(2) { margin-right: 45px; transform: translateX(45px) skewX(15deg); }
 """
-
-CTA_PATCH = re.compile(r'<a class="cta"')
 
 
 def scope_custom_css(css, addon):
@@ -689,6 +683,12 @@ class Renderer:
                                   'border-radius', s.get('border_radius'))
         return css
 
+    def _css_raw_html(self, addon, s):
+        html = s.get('html') or ''
+        if 'class="cta"' not in html:
+            return ''
+        return CTA_CSS % {'sel': 'sppb-addon-%s' % addon.get('id')}
+
     def addon_raw_html(self, addon, s):
         body = s.get('html') or ''
         if not body:
@@ -698,8 +698,6 @@ class Renderer:
         h = '<div class="sppb-addon sppb-addon-raw-html">'
         if title:
             h += '<%s class="sppb-addon-title">%s</%s>' % (tag, tr(title), tag)
-        body = CTA_PATCH.sub(
-            lambda m: m.group(0) + CTA_FIX % {'aid': addon.get('id')}, body, count=1)
         h += '<div class="sppb-addon-content">%s</div></div>' % body
         return h
 
