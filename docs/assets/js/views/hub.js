@@ -42,7 +42,16 @@
       img.loading = 'lazy';
       media.appendChild(img);
     }
-    node.appendChild(media);
+    /* на эталоне картинка тоже обёрнута в ссылку */
+    if (tile.href) {
+      var mediaLink = C.el('a', 'tile__media-link');
+      mediaLink.setAttribute('href', C.href(tile.href));
+      mediaLink.setAttribute('tabindex', '-1');
+      mediaLink.appendChild(media);
+      node.appendChild(mediaLink);
+    } else {
+      node.appendChild(media);
+    }
     node.appendChild(bottom);
     return node;
   }

@@ -408,6 +408,7 @@ body {
   width: 100%;
 }
 .tile__media img { display: block; width: 200px; max-width: 100%; height: auto; }
+.tile__media-link { display: block; text-decoration: none; }
 /* #addon-html{padding-top:60px} — кнопка отделена от картинки 60px */
 .tile > .cta,
 .tile > .tile__soon { margin-top: 60px; }
@@ -656,7 +657,6 @@ body { background: transparent; }
   width: var(--f-content);
   max-width: var(--f-site-max);
   margin: 0 auto;
-  padding: 0 15px;
 }
 
 /* ============================================================================
