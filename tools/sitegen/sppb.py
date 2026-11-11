@@ -420,14 +420,23 @@ class Renderer:
 
     def column(self, col, pct=None):
         cid = col.get('id')
+        cs = col.get('settings') or {}
         addons = []
         for a in col.get('addons', []):
             addons.append(self.addon(a))
         inner = ''.join(addons)
         classes = 'sppb-row-column sppb-col' + (' ' + col_class(pct) if col_class(pct) else '')
+        # SPPB: вкладка «Overlay» у колонки — settings.overlay (rgba) поверх фона
+        ov = cs.get('overlay') or ''
+        col_class_extra = ' sppb-column-has-overlay' if ov else ''
+        ov_html = ''
+        if ov:
+            ov_html = ('<div class="sppb-column-overlay sppb-column-overlay-custom" '
+                       'style="background-color:%s;"></div>' % esc(ov))
         return ('<div id="column-wrap-id-%s" class="%s">'
-                '<div id="column-id-%s" class="sppb-column"><div class="sppb-column-addons">%s</div></div></div>'
-                % (esc(cid), classes, esc(cid), inner))
+                '<div id="column-id-%s" class="sppb-column%s">%s'
+                '<div class="sppb-column-addons">%s</div></div></div>'
+                % (esc(cid), classes, esc(cid), col_class_extra, ov_html, inner))
 
     def addon(self, addon):
         name = addon.get('name')
@@ -505,6 +514,10 @@ class Renderer:
             css += '%s .sppb-addon-wrapper{text-align:%s;}' % (sel, s['items_content_alignment'])
         if str(s.get('items_align_center', 0)) in ('1', 'true'):
             css += '%s .sppb-column-addons{align-items:center;}' % sel
+        if s.get('overlay'):
+            css += '%s{position:relative;overflow:hidden;}' % sel
+            css += '%s>.sppb-column-addons{position:relative;z-index:1;}' % sel
+            css += '%s>.sppb-column-overlay{position:absolute;top:0;left:0;right:0;bottom:0;z-index:0;pointer-events:none;}' % sel
         # границы колонки: в SPPB это use_border + border_width + boder_style + border_color
         if str(s.get('use_border', 0)) in ('1', 'true'):
             bw = s.get('border_width')
