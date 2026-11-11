@@ -25,7 +25,10 @@
   /* Ширина сайта — как на fallout-2d20.ru: .container max-width 1400px
      (инлайн-правило страницы поверх bootstrap), по центру. Прежние
      80%/1600px отменены: в сохранённых страницах таких значений нет. */
-  --f-site-max: 1400px;
+  /* Ширина контента — 1240px по центру: столько занимают карточки на
+     скриншоте эталона (197…1437 из 1574 px при окне 1574). Значение 1400px
+     выше — потолок .container, но фактические карточки уже него. */
+  --f-site-max: 1240px;
   --f-content: 100%;
   --f-gap: 20px;
 }
@@ -351,19 +354,33 @@ body {
    Страницы-хабы (категории оружия, брони, существ, еды): 3 столбца,
    каждая плитка — 3 строки: заголовок, картинка, шеврон.
    ========================================================================== */
+/* Ряд плиток: три равные колонки, зазор 16px — как на эталоне
+   (карточки идут с шагом 410px при ширине 394px). */
+.tiles-row { --bs-gutter-x: 16px; --bs-gutter-y: 16px; }
+.tiles-row > [class*="col-"] { display: flex; }
+.tiles-row > [class*="col-"] > .tile { width: 100%; }
+
+/* Плитка = колонка SPPB: border 1px solid rgb(110,110,110), padding 30px 0 20px,
+   содержимое по центру (items_content_alignment: center), фон — food-truck-pattern
+   с наложением RGBA(203,203,203,.4). Заголовок и картинка — внутри, без внешних
+   отступов; кнопка «Подробнее» прижата к низу (row 25px сверху/снизу). */
 .tile {
   position: relative;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
   height: 100%;
-  padding: 18px 14px;
+  padding: 30px 0 20px;
   text-align: center;
-  border: 1px solid var(--f-plate-line);
+  border: 1px solid #6e6e6e;
+  outline: 1px solid rgba(110, 110, 110, .45);
+  outline-offset: 4px;
   background-color: var(--f-plate-bg);
   background-image: var(--f-plate-pattern, url("/assets/img/food-truck-pattern.jpg"));
   background-repeat: repeat;
-  background-position: center;
+  background-position: 0 0;
+  background-attachment: fixed;
   text-decoration: none;
   color: var(--f-ink);
 }
@@ -372,25 +389,32 @@ body {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: var(--f-plate-overlay);
+  background: rgba(203, 203, 203, .4);
   pointer-events: none;
 }
 .tile > * { position: relative; z-index: 1; }
 .tile:hover { text-decoration: none; }
 .tile:hover .tile__title { color: var(--f-link); }
 .tile__title {
-  margin: 0;
-  font-size: 1.25rem;
+  margin: 0 0 14px;
+  font-size: 1.55rem;
   font-weight: 700;
-  text-transform: uppercase;
+  line-height: 1.2;
+  text-transform: none;
+  color: var(--f-ink);
 }
 .tile__media {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 120px;
+  min-height: 130px;
+  width: 100%;
 }
-.tile__media img { display: block; max-height: 140px; width: auto; }
+/* image_width из дампа: 200px, пропорции сохраняются */
+.tile__media img { display: block; max-height: 130px; max-width: 200px; width: auto; height: auto; }
+/* кнопка «Подробнее» по центру карточки, прижата к низу */
+.tile > .cta { margin-top: auto; }
+.tile > .tile__arrow { margin-top: auto; }
 .tile__arrow { display: flex; justify-content: flex-end; }
 .tile__arrow svg { width: 28px; height: 18px; fill: #000; }
 .tile:hover .tile__arrow svg { fill: var(--f-link); }
@@ -399,10 +423,13 @@ body {
 .tile--soon:hover .tile__title { color: var(--f-ink); }
 .tile--soon .tile__arrow { opacity: .25; }
 .tile__soon {
-  position: absolute; top: 10px; right: 10px; z-index: 2;
-  padding: 2px 8px; background: #000; color: #fff;
-  font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  margin-top: auto;
+  padding: 9px 26px;
+  background: #4a4a4a; color: #fff;
+  font-size: 15px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+  transform: skewX(-15deg);
 }
+.tile__soon > span { display: block; transform: skewX(15deg); }
 
 /* ------------------------------------------------------------- кнопка CTA  */
 /*

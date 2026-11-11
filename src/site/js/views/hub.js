@@ -20,31 +20,42 @@
     return frag;
   };
 
+  /* Карточка хаба: заголовок → картинка → то, что передали снизу
+     (кнопка «Подробнее» у готового раздела или плашка «скоро» у будущего). */
+  function card(tile, bottom) {
+    var node = C.el('div', 'tile' + (tile.href ? '' : ' tile--soon'));
+    node.appendChild(C.el('h2', 'tile__title', tile.title));
+    var media = C.el('div', 'tile__media');
+    if (tile.image) {
+      var img = document.createElement('img');
+      img.src = C.href(tile.image);
+      img.alt = tile.title;
+      img.loading = 'lazy';
+      media.appendChild(img);
+    }
+    node.appendChild(media);
+    node.appendChild(bottom);
+    return node;
+  }
+
   /* Хаб «Снаряжение»: 9 плиток в порядке эталона.
      Готовые разделы — ссылки, будущие — та же плитка с плашкой «скоро». */
+  function soon() {
+    var plate = C.el('span', 'tile__soon');
+    plate.appendChild(C.el('span', null, 'скоро'));
+    return plate;
+  }
+
   window.Views.snaryazhenie = function (data) {
     var hub = data.hub || {};
     var frag = document.createDocumentFragment();
     frag.appendChild(C.el('h1', 'page__title', hub.title || 'Снаряжение'));
     frag.appendChild(C.tiles((hub.tiles || []).map(function (tile) {
       if (tile.href) {
-        return C.tile({ title: tile.title, href: tile.href, image: tile.image });
+        return card(tile, C.cta(tile.href, 'Подробнее'));
       }
-      /* не ссылка: будущий раздел не должен попадать в индекс как битый адрес */
-      var card = C.el('div', 'tile tile--soon');
-      card.setAttribute('aria-disabled', 'true');
-      card.appendChild(C.el('h2', 'tile__title', tile.title));
-      var media = C.el('div', 'tile__media');
-      if (tile.image) {
-        var img = document.createElement('img');
-        img.src = C.href(tile.image);
-        img.alt = tile.title;
-        img.loading = 'lazy';
-        media.appendChild(img);
-      }
-      card.appendChild(media);
-      card.appendChild(C.el('span', 'tile__soon', 'скоро'));
-      return card;
+      /* будущий раздел: не ссылка, чтобы не попадал в индекс битым адресом */
+      return card(tile, soon());
     })));
     return frag;
   };
