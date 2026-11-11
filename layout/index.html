@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Эталон раскладки — Fallout 2D20</title>
+<link rel="stylesheet" href="/fallout-2d20-site/assets/vendor/bootstrap.min.css">
 <style>/* ============================================================================
    Fallout 2D20 — свои стили. Только классы проекта, никаких sppb-*/helix-*.
    Токены собраны из живого сайта (цвета, тени, паттерны).
@@ -222,7 +223,9 @@ h1, h2, h3, h4, h5, h6 {
    Каркас — «книжная страница»: набор строк, в каждой 2, 3 или 4 столбца.
    На мобильном столбцы складываются в один, медиа уходит наверх.
    ========================================================================== */
-.row {
+/* свои grid-строки не должны перебивать .row из Bootstrap */
+.row.row--2, .row.row--3, .row.row--4,
+.row.row--1-2, .row.row--2-1, .row.row--origins {
   display: grid;
   gap: var(--f-gap);
   margin-bottom: var(--f-gap);
@@ -239,16 +242,11 @@ h1, h2, h3, h4, h5, h6 {
 @media (max-width: 1100px) {
   .row--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-@media (max-width: 1100px) {
-  /* две пары в строке уже не читаются — складываем в пары */
-  .row--origins { grid-template-columns: 1fr 2fr; }
-}
+
 @media (max-width: 800px) {
   .row--2, .row--3, .row--4, .row--1-2, .row--2-1 { grid-template-columns: 1fr; }
 }
-@media (max-width: 640px) {
-  .row--origins { grid-template-columns: 1fr; }
-}
+
 
 /* ------------------------------------------------------------- клетка (cell)
    Базовая «ячейка справочника»: рамка, паттерн, серый оверлей 20%.
@@ -338,19 +336,12 @@ h1, h2, h3, h4, h5, h6 {
    Страницы-хабы (категории оружия, брони, существ, еды): 3 столбца,
    каждая плитка — 3 строки: заголовок, картинка, шеврон.
    ========================================================================== */
-.tiles {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--f-gap);
-}
-@media (max-width: 1000px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 640px)  { .tiles { grid-template-columns: 1fr; } }
-
 .tile {
   position: relative;
   display: grid;
   grid-template-rows: auto 1fr auto;
   gap: 10px;
+  height: 100%;
   padding: 18px 14px;
   text-align: center;
   border: 1px solid var(--f-plate-line);
@@ -538,8 +529,7 @@ h1, h2, h3, h4, h5, h6 {
    Раскладка: явные правила в конце файла, чтобы никакие более ранние
    определения не могли их перебить.
    ========================================================================== */
-.row { display: grid; gap: var(--f-gap); margin-bottom: var(--f-gap); }
-.row--origins { grid-template-columns: 1fr 2fr 1fr 2fr; }
+.row.row--origins { grid-template-columns: 1fr 2fr 1fr 2fr; }
 .row--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .row--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .row--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -547,13 +537,13 @@ h1, h2, h3, h4, h5, h6 {
 .row--2-1 { grid-template-columns: 2fr 1fr; }
 
 @media (max-width: 1100px) {
-  .row--origins { grid-template-columns: 1fr 2fr; }
-  .row--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .row.row--origins { grid-template-columns: 1fr 2fr; }
+  .row.row--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 800px) {
-  .row--origins,
-  .row--2, .row--3, .row--4,
-  .row--1-2, .row--2-1 { grid-template-columns: 1fr; }
+  .row.row--origins,
+  .row.row--2, .row.row--3, .row.row--4,
+  .row.row--1-2, .row.row--2-1 { grid-template-columns: 1fr; }
 }
 
 /* Плашка происхождения: три строки, шеврон прижат к низу */
@@ -563,6 +553,25 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 7px 5px 0 #c3c3c3;
 }
 .cell__chevron { display: flex; justify-content: flex-end; margin-top: auto; padding-top: 12px; }
+
+/* ============================================================================
+   СЕТКА — Bootstrap 5 (col-3 = 25%, col-4 = 33.3%, col-6 = 50%).
+   Свои обёртки только для оформления, раскладку держит Bootstrap.
+   ========================================================================== */
+/* строка происхождений: 4 колонки по 3 из 12 */
+.origins-row > [class*="col-"] { display: flex; }
+
+/* медиа-секция и плашка тянутся на всю высоту колонки */
+.media-cell,
+.cell--shadow { width: 100%; }
+
+/* адаптив: на планшете пара в 2 столбца, на телефоне — в один */
+@media (max-width: 991.98px) {
+  .origins-row > [class*="col-"] { flex: 0 0 50%; max-width: 50%; }
+}
+@media (max-width: 767.98px) {
+  .origins-row > [class*="col-"] { flex: 0 0 100%; max-width: 100%; }
+}
 </style>
 </head>
 <body>
@@ -590,16 +599,16 @@ h1, h2, h3, h4, h5, h6 {
 <main class="page">
   <div class="container">
 <h1 class="page__title">Эталон раскладки</h1>
-<h2>1. Одна строка происхождений: 4 элемента</h2>
-<div class="row row--origins"><div class="media-cell media-cell--empty"></div><div class="cell cell--shadow"><h2 class="cell__title">Пример</h2><p class="cell__text">Короткое описание в одну-две строки.</p><div class="cell__chevron"><a class="cta" href="#"><span>Подробнее</span><svg class="cta__arrow" width="36" height="23" viewBox="0 0 66 43" aria-hidden="true" focusable="false"><g fill="#FFFFFF"><path class="a1" d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a2" d="M20.15 3.9 23.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L24.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L20.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a3" d="M.15 3.9 3.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L4.68 42.86a.66.66 0 0 1-.7 0L.15 39.11a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L.15 4.61a.66.66 0 0 1 0-.71Z"/></g></svg></a></div></div><div class="media-cell media-cell--empty"></div><div class="cell cell--shadow"><h2 class="cell__title">Пример</h2><p class="cell__text">Короткое описание в одну-две строки.</p><div class="cell__chevron"><a class="cta" href="#"><span>Подробнее</span><svg class="cta__arrow" width="36" height="23" viewBox="0 0 66 43" aria-hidden="true" focusable="false"><g fill="#FFFFFF"><path class="a1" d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a2" d="M20.15 3.9 23.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L24.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L20.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a3" d="M.15 3.9 3.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L4.68 42.86a.66.66 0 0 1-.7 0L.15 39.11a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L.15 4.61a.66.66 0 0 1 0-.71Z"/></g></svg></a></div></div></div>
+<h2>1. Одна строка происхождений: 4 элемента (col-3 × 4)</h2>
+<div class="row g-3 origins-row mb-3"><div class="col-12 col-sm-6 col-lg-3"><div class="media-cell media-cell--empty"></div></div><div class="col-12 col-sm-6 col-lg-3"><div class="cell cell--shadow"><h2 class="cell__title">Пример</h2><p class="cell__text">Короткое описание в одну-две строки.</p><div class="cell__chevron"><a class="cta" href="#"><span>Подробнее</span><svg class="cta__arrow" width="36" height="23" viewBox="0 0 66 43" aria-hidden="true" focusable="false"><g fill="#FFFFFF"><path class="a1" d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a2" d="M20.15 3.9 23.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L24.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L20.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a3" d="M.15 3.9 3.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L4.68 42.86a.66.66 0 0 1-.7 0L.15 39.11a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L.15 4.61a.66.66 0 0 1 0-.71Z"/></g></svg></a></div></div></div><div class="col-12 col-sm-6 col-lg-3"><div class="media-cell media-cell--empty"></div></div><div class="col-12 col-sm-6 col-lg-3"><div class="cell cell--shadow"><h2 class="cell__title">Пример</h2><p class="cell__text">Короткое описание в одну-две строки.</p><div class="cell__chevron"><a class="cta" href="#"><span>Подробнее</span><svg class="cta__arrow" width="36" height="23" viewBox="0 0 66 43" aria-hidden="true" focusable="false"><g fill="#FFFFFF"><path class="a1" d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a2" d="M20.15 3.9 23.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L24.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L20.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a3" d="M.15 3.9 3.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L4.68 42.86a.66.66 0 0 1-.7 0L.15 39.11a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L.15 4.61a.66.66 0 0 1 0-.71Z"/></g></svg></a></div></div></div></div>
 <h2>2. Два столбца: слева картинка, справа текст</h2>
-<div class="row row--1-2"><div class="media-cell media-cell--empty"></div><div class="cell"><p>Текст справа от картинки.</p></div></div>
-<h2>3. Три столбца (ячейки)</h2>
-<div class="row row--3"><div class="cell"><p>Ячейка 1</p></div><div class="cell"><p>Ячейка 2</p></div><div class="cell"><p>Ячейка 3</p></div></div>
-<h2>4. Четыре столбца</h2>
-<div class="row row--4"><div class="cell"><p>Колонка 1</p></div><div class="cell"><p>Колонка 2</p></div><div class="cell"><p>Колонка 3</p></div><div class="cell"><p>Колонка 4</p></div></div>
+<div class="row g-3"><div class="col-12 col-md-5"><div class="media-cell media-cell--empty"></div></div><div class="col-12 col-md-7"><div class="cell"><p>Текст справа от картинки.</p></div></div></div>
+<h2>3. Три столбца (ячейки, col-lg-4)</h2>
+<div class="row g-3"><div class="col-12 col-md-6 col-lg-4"><div class="cell"><p>Ячейка 1</p></div></div><div class="col-12 col-md-6 col-lg-4"><div class="cell"><p>Ячейка 2</p></div></div><div class="col-12 col-md-6 col-lg-4"><div class="cell"><p>Ячейка 3</p></div></div></div>
+<h2>4. Четыре столбца (col-lg-3)</h2>
+<div class="row g-3"><div class="col-12 col-sm-6 col-lg-3"><div class="cell"><p>Колонка 1</p></div></div><div class="col-12 col-sm-6 col-lg-3"><div class="cell"><p>Колонка 2</p></div></div><div class="col-12 col-sm-6 col-lg-3"><div class="cell"><p>Колонка 3</p></div></div><div class="col-12 col-sm-6 col-lg-3"><div class="cell"><p>Колонка 4</p></div></div></div>
 <h2>5. Хаб из плиток: 3 столбца</h2>
-<div class="tiles"><a class="tile" href="#"><h2 class="tile__title">Оружие</h2><div class="tile__media"></div><div class="tile__arrow"><svg viewBox="0 0 66 43" aria-hidden="true" focusable="false"><path d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/></svg></div></a><a class="tile" href="#"><h2 class="tile__title">Броня</h2><div class="tile__media"></div><div class="tile__arrow"><svg viewBox="0 0 66 43" aria-hidden="true" focusable="false"><path d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/></svg></div></a><a class="tile" href="#"><h2 class="tile__title">Еда</h2><div class="tile__media"></div><div class="tile__arrow"><svg viewBox="0 0 66 43" aria-hidden="true" focusable="false"><path d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/></svg></div></a></div>
+<div class="row g-3 tiles-row"><div class="col-12 col-md-6 col-lg-4"><a class="tile" href="#"><h2 class="tile__title">Оружие</h2><div class="tile__media"></div><div class="tile__arrow"><svg viewBox="0 0 66 43" aria-hidden="true" focusable="false"><path d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/></svg></div></a></div><div class="col-12 col-md-6 col-lg-4"><a class="tile" href="#"><h2 class="tile__title">Броня</h2><div class="tile__media"></div><div class="tile__arrow"><svg viewBox="0 0 66 43" aria-hidden="true" focusable="false"><path d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/></svg></div></a></div><div class="col-12 col-md-6 col-lg-4"><a class="tile" href="#"><h2 class="tile__title">Еда</h2><div class="tile__media"></div><div class="tile__arrow"><svg viewBox="0 0 66 43" aria-hidden="true" focusable="false"><path d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/></svg></div></a></div></div>
 <h2>6. Таблица на div: 4 столбца → 2×N на мобильном</h2>
 <div class="dtable dtable--wide" style="--cols:4"><div class="dtable__row dtable__row--head"><div class="dtable__cell">Оружие</div><div class="dtable__cell">Урон</div><div class="dtable__cell">Вес</div><div class="dtable__cell">Цена</div></div><div class="dtable__row"><div class="dtable__cell"><span class="dtable__label">Оружие</span>10-мм пистолет</div><div class="dtable__cell"><span class="dtable__label">Урон</span>1DC</div><div class="dtable__cell"><span class="dtable__label">Вес</span>1</div><div class="dtable__cell"><span class="dtable__label">Цена</span>100</div></div><div class="dtable__row"><div class="dtable__cell"><span class="dtable__label">Оружие</span>Лазерный пистолет</div><div class="dtable__cell"><span class="dtable__label">Урон</span>2DC</div><div class="dtable__cell"><span class="dtable__label">Вес</span>2</div><div class="dtable__cell"><span class="dtable__label">Цена</span>120</div></div></div>
 <h2>7. Вложенный спойлер</h2>
@@ -614,6 +623,7 @@ h1, h2, h3, h4, h5, h6 {
   </div>
 </footer>
 
+<script src="/fallout-2d20-site/assets/vendor/bootstrap.bundle.min.js"></script>
 <script src="/fallout-2d20-site/assets/js/site.js"></script>
 </body>
 </html>
