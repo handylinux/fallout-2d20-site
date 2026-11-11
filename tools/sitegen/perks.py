@@ -246,7 +246,14 @@ def render_page(perks):
                '<div id="filter-attributes"></div>'
                '<div id="cards-container" class="cards-grid"></div>'
                '</div></div></div>')
-    out = shell.replace('<!--PERKS_CONTENT-->', content)
+    if '<!--PERKS_CONTENT-->' in shell:
+        out = shell.replace('<!--PERKS_CONTENT-->', content)
+    else:
+        # build.py кладёт в /perki содержимое модуля — заменяем его на каркас перков
+        out, n = re.subn(r'<div class="com-content-article item-page">.*?</div></div></div>',
+                         content, shell, count=1, flags=re.S)
+        if not n:
+            sys.exit('в шаблоне /perki нет ни маркера, ни article-body')
     out = out.replace('</head>', '<style>%s</style>\n</head>' % CSS.replace('{BASE}', BASE))
     out = out.replace('</body>', JS.replace('__BASE__', BASE) + '\n</body>')
     return out
