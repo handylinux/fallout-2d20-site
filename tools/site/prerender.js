@@ -114,6 +114,7 @@ const TOP_MENU = [
   ['/proiskhozhdeniya/', 'Происхождения'],
   ['/snaryazhenie/', 'Снаряжение'],
   ['/snaryazhenie/oruzhie/', 'Оружие'],
+  ['/bronya/', 'Броня'],
   ['/perki/', 'Перки'],
   ['/bestiarij/', 'Бестиарий'],
   ['/primery/', 'Примеры'],
@@ -176,15 +177,16 @@ function drawerHtml(catalog) {
     ['/blog/', 'Блог'],
     ['/primery/', 'Примеры типов страниц'],
   ];
+  const pathOf = (s) => (s.path || ('/snaryazhenie/' + s.slug));
   const parts = [];
   extras.forEach(([url, title]) => {
     parts.push('<li><a href="' + (BASE + url) + '">' + esc(title) + '</a></li>');
   });
   (catalog.sections || []).forEach((section) => {
     const cats = (section.categories || []).map((cat) =>
-      '<li><a href="' + (BASE + '/snaryazhenie/' + section.slug + '/' + cat.slug + '/') + '">' +
+      '<li><a href="' + (BASE + pathOf(section) + '/' + cat.slug + '/') + '">' +
       esc(cat.title) + '</a></li>').join('');
-    parts.push('<li><a href="' + (BASE + '/snaryazhenie/' + section.slug + '/') + '">' +
+    parts.push('<li><a href="' + (BASE + pathOf(section) + '/') + '">' +
       esc(section.title) + '</a>' +
       '<button class="drawer__toggle" type="button" aria-expanded="false">' +
       '<span class="visually-hidden">Раскрыть «' + esc(section.title) + '»</span></button>' +
@@ -233,37 +235,40 @@ function build() {
   });
   push('snaryazhenie', Views.snaryazhenie({ catalog }), 'Снаряжение');
 
+  const pathOf = (section) => (section.path || ('/snaryazhenie/' + section.slug)).replace(/^\//, '');
   (catalog.sections || []).forEach((section) => {
-    push('snaryazhenie/' + section.slug, Views.section({ section, catalog }), section.title, {
-      breadcrumbs: [['/snaryazhenie/', 'Снаряжение'], ['/snaryazhenie/' + section.slug + '/', section.title]],
+    const base = pathOf(section);
+    push(base, Views.section({ section, catalog }), section.title, {
+      breadcrumbs: [['/snaryazhenie/', 'Снаряжение'], ['/' + base + '/', section.title]],
     });
     (section.categories || []).forEach((cat) => {
-      push('snaryazhenie/' + section.slug + '/' + cat.slug,
+      push(base + '/' + cat.slug,
         Views.category({ section, category: cat, catalog }), cat.title, {
           description: cat.title + ' — ' + cat.items.length + ' единиц в справочнике Fallout 2D20.',
           breadcrumbs: [
             ['/snaryazhenie/', 'Снаряжение'],
-            ['/snaryazhenie/' + section.slug + '/', section.title],
-            ['/snaryazhenie/' + section.slug + '/' + cat.slug + '/', cat.title],
+            ['/' + base + '/', section.title],
+            ['/' + base + '/' + cat.slug + '/', cat.title],
           ],
         });
 
       (cat.items || []).forEach((item) => {
         const viewName = item.view && Views[item.view] ? item.view : 'weapon_item';
+        const extraData = { section, category: cat, item, catalog };
         const wanted = { 'УРОН': 1, 'ЦЕНА': 1, 'ВЕС': 1, 'ТИП УРОНА': 1 };
         const stats = (item.stats || [])
           .filter((row) => wanted[row[0]])
           .map((row) => row[0].toLowerCase() + ': ' + row[1])
           .join(', ');
-        push('snaryazhenie/' + section.slug + '/' + cat.slug + '/' + item.slug,
-          Views[viewName]({ section, category: cat, item, catalog }), item.name, {
+        push(base + '/' + cat.slug + '/' + item.slug,
+          Views[viewName](extraData), item.name, {
             description: [item.name, cat.title].filter(Boolean).join(' — ') +
               (stats ? '. ' + stats + '.' : ''),
             breadcrumbs: [
               ['/snaryazhenie/', 'Снаряжение'],
-              ['/snaryazhenie/' + section.slug + '/', section.title],
-              ['/snaryazhenie/' + section.slug + '/' + cat.slug + '/', cat.title],
-              ['/snaryazhenie/' + section.slug + '/' + cat.slug + '/' + item.slug + '/', item.name],
+              ['/' + base + '/', section.title],
+              ['/' + base + '/' + cat.slug + '/', cat.title],
+              ['/' + base + '/' + cat.slug + '/' + item.slug + '/', item.name],
             ],
           });
       });
@@ -323,7 +328,7 @@ function build() {
     });
   }
 
-  /* пишем */
+  /* пишем: адреса каталога — раньше заглушек, те же пути перезаписываем */
   const urls = [];
   jobs.forEach((job) => {
     const dir = path.join(DOCS, job.dir);

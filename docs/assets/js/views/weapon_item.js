@@ -11,10 +11,10 @@
     var item = data.item;
     var cat = data.category;
     var section = data.section;
+    var base = section.path || ('/snaryazhenie/' + section.slug);
     var frag = document.createDocumentFragment();
 
-    frag.appendChild(C.back('/snaryazhenie/' + section.slug + '/' + cat.slug + '/',
-                           'Назад в категорию: ' + cat.title));
+    frag.appendChild(C.back(base + '/' + cat.slug + '/', 'Назад в категорию: ' + cat.title));
     frag.appendChild(C.el('h1', 'page__title', item.name));
 
     var card = C.el('div', 'wcard');
@@ -61,7 +61,7 @@
       frag.appendChild(C.tiles(others.map(function (other) {
         return C.tile({
           title: other.name,
-          href: '/snaryazhenie/' + section.slug + '/' + cat.slug + '/' + other.slug + '/',
+          href: base + '/' + cat.slug + '/' + other.slug + '/',
           image: other.image,
         });
       })));

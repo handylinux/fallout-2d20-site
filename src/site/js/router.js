@@ -98,6 +98,10 @@
     /* каталог снаряжения */
     { re: /^\/snaryazhenie$/, view: 'snaryazhenie' },
     { re: /^\/snaryazhenie\/([^/]+)$/, view: 'section' },
+    /* /bronya/ — раздел мимо «Снаряжения», путь берётся из данных */
+    { re: /^\/bronya$/, view: 'sectionByPath', path: '/bronya' },
+    { re: /^\/bronya\/([^/]+)$/, view: 'categoryByPath', path: '/bronya' },
+    { re: /^\/bronya\/([^/]+)\/([^/]+)$/, view: 'itemByPath', path: '/bronya' },
     { re: /^\/snaryazhenie\/([^/]+)\/([^/]+)$/, view: 'category' },
     { re: /^\/snaryazhenie\/([^/]+)\/([^/]+)\/([^/]+)$/, view: 'weapon_item' },
   ];

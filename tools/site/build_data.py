@@ -14,6 +14,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
 sys.path.insert(0, HERE)
 
+import armor  # noqa: E402
 import weapons  # noqa: E402
 
 OUT = os.path.join(ROOT, 'docs', 'assets', 'data')
@@ -81,6 +82,50 @@ def weapon_entry(item):
     }
 
 
+def armor_section():
+    """Раздел «Броня»: категории — наборы брони (Кожаная, Металлическая…)."""
+    data = armor.build()
+    detail = data.get('detail')
+    categories = []
+    # категории эталона: обычная / силовая
+    plain = [i for i in data['items'] if i['slug'] not in ('karkas-silovoj-brony',)
+             and 'silovaya-bronya' not in i['slug']]
+    power = [i for i in data['items'] if i not in plain and i['slug'] != 'karkas-silovoj-brony']
+    for slug, title, group in (
+            ('obychnaya-bronya', 'Обычная броня', plain),
+            ('silovaya-bronya', 'Силовая Броня', power)):
+        items = []
+        if slug == 'silovaya-bronya' and detail:
+            items.append(armor_entry(detail, slug, title, '/bronya/' + slug + '/'))
+        for item in group:
+            items.append(armor_entry(item, slug, title))
+        categories.append({'slug': slug, 'title': title, 'items': items})
+    return {'slug': 'bronya', 'title': 'Броня', 'path': '/bronya',
+            'categories': categories}
+
+
+def armor_entry(item, cat_slug='obychnaya-bronya', cat_title='Броня', back=None):
+    return {
+        'kind': 'armor',
+        'view': 'armor_item',
+        'slug': item['slug'],
+        'name': item['name'],
+        'cat': 'bronya',
+        'catName': 'Броня',
+        'image': item.get('image'),
+        'description': item.get('description'),
+        'feature': item.get('feature'),
+        'pieces': item.get('pieces') or [],
+        'sections': item.get('sections') or [],
+        'mods': item.get('mods') or [],
+        'modHead': item.get('modHead'),
+        'back': back or ('/bronya/' + cat_slug + '/'),
+        'backText': 'Назад в категорию: ' + cat_title,
+        'search': ' '.join([item['name'], 'Броня'] +
+                           [p.get('area', '') for p in (item.get('pieces') or [])]),
+    }
+
+
 def load_json(rel):
     path = os.path.join(ROOT, rel)
     if not os.path.exists(path):
@@ -123,9 +168,10 @@ def main():
     cats = weapons.by_category(items)
 
     write('catalog.json', {
-        'sections': [{
+        'sections': [armor_section(), {
             'slug': 'oruzhie',
             'title': 'Оружие',
+            'path': '/snaryazhenie/oruzhie',
             'categories': [{
                 'slug': cat_slug,
                 'title': title,

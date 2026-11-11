@@ -13,7 +13,7 @@ mkdir -p docs
 cp -a site/. docs/
 touch docs/.nojekyll
 
-# данные каталога + sitemap + предрендер настоящих страниц
+# предрендер сам очищает и создаёт docs/ — иначе остались бы старые заглушки
 BASE="$BASE_PATH" python3 tools/site/build_data.py
 BASE="$BASE_PATH" node tools/site/prerender.js
 

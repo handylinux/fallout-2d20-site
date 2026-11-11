@@ -14,7 +14,7 @@
       frag.appendChild(C.tiles(sections.map(function (s) {
         return C.tile({
           title: s.title,
-          href: '/snaryazhenie/' + s.slug + '/',
+          href: (s.path || ('/snaryazhenie/' + s.slug)) + '/',
           image: s.image,
         });
       })));
