@@ -44,7 +44,9 @@ body {
   font-size: 16px;
   line-height: 1.5;
   color: var(--f-ink);
-  background: var(--f-page-bg);
+  background: var(--f-page-bg) url("/fallout-2d20-site/assets/img/bg-main.jpg") no-repeat center top;
+  background-size: cover;
+  background-attachment: fixed;
 }
 
 a { color: var(--f-link); text-decoration: none; }
@@ -257,9 +259,6 @@ h1, h2, h3, h4, h5, h6 {
   padding: 20px;
   border: 1px solid var(--f-plate-line);
   background-color: var(--f-plate-bg);
-  background-image: var(--f-plate-pattern, url("/fallout-2d20-site/assets/img/food-truck-pattern.jpg"));
-  background-repeat: repeat;
-  background-position: center;
 }
 .cell::before {
   content: "";
@@ -272,13 +271,18 @@ h1, h2, h3, h4, h5, h6 {
 .cell > * { position: relative; z-index: 1; }
 .cell--plain::before { display: none; }
 .cell--dark::before { background: rgba(0, 0, 0, .55); }
-.cell--shadow { box-shadow: 7px 5px 0 #c3c3c3; }
-/* плашка происхождения — три строки, шеврон прижат вниз */
+/* плашка происхождения: заголовок + текст + шеврон.
+   Единственный тип ячейки с фудтрак-паттерном и серым оверлеем. */
 .cell--shadow {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  background-image: url("/fallout-2d20-site/assets/img/food-truck-pattern.jpg");
+  background-repeat: repeat;
+  background-position: center;
+  box-shadow: 7px 5px 0 #c3c3c3;
 }
+.cell--shadow::before { background: rgba(150, 150, 150, .28); }
 .cell--shadow .cell__chevron { margin-top: auto; padding-top: 12px; }
 
 /* ------------------------------------------------------------ медиа-ячейка
@@ -308,9 +312,7 @@ h1, h2, h3, h4, h5, h6 {
 /* когда файла картинки нет — просто фон, без пустой рамки */
 .media-cell--empty {
   min-height: 200px;
-  background-image: url("/fallout-2d20-site/assets/img/food-truck-pattern.jpg");
-  background-size: auto;
-  background-repeat: repeat;
+  background: rgba(255, 255, 255, .45);
 }
 
 /* ------------------------------------------------------------ текст в ячейке */
@@ -552,7 +554,7 @@ h1, h2, h3, h4, h5, h6 {
   flex-direction: column;
   box-shadow: 7px 5px 0 #c3c3c3;
 }
-.cell__chevron { display: flex; justify-content: flex-end; margin-top: auto; padding-top: 12px; }
+.cell__chevron { display: flex; justify-content: center; margin-top: auto; padding-top: 12px; }
 
 /* ============================================================================
    СЕТКА — Bootstrap 5 (col-3 = 25%, col-4 = 33.3%, col-6 = 50%).
