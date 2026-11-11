@@ -33,6 +33,12 @@ function makeNode(tag) {
       return child;
     },
     setAttribute(name, value) { this.attrs[name] = value; },
+    /* как в браузере: element.style.setProperty(...) — инлайновые переменные CSS */
+    style: {
+      _props: {},
+      setProperty(name, value) { this._props[name] = value; },
+      removeProperty(name) { delete this._props[name]; },
+    },
     getAttribute(name) { return this.attrs[name]; },
     get firstChild() { return this.children[0]; },
     get innerHTML() { return this._html; },
@@ -71,6 +77,11 @@ function serialize(node) {
   ['src', 'alt', 'loading'].forEach((name) => {
     if (node[name]) { out += ' ' + name + '="' + esc(node[name]) + '"'; }
   });
+  const inline = node.style && node.style._props ? node.style._props : {};
+  const inlineKeys = Object.keys(inline);
+  if (inlineKeys.length) {
+    out += ' style="' + inlineKeys.map((k) => k + ':' + inline[k]).join(';') + '"';
+  }
   Object.keys(node.attrs).forEach((name) => {
     out += ' ' + name + '="' + esc(node.attrs[name]) + '"';
   });

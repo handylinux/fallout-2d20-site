@@ -18,6 +18,7 @@
       cards.slice(i, i + 2).forEach(function (card) {
         var mediaCol = C.el('div', 'col-12 col-sm-6 col-lg-3');
         var cell = C.el('div', 'media-cell');
+        cell.style.setProperty('--f-media-bg', "url('" + C.href('/assets/img/bg-fon-3.png') + "')");
         if (card.image) {
           var img = document.createElement('img');
           img.src = C.href(card.image);

@@ -104,7 +104,7 @@ def origin_media(item):
     art = origin_art(item.get('url')) or item.get('image')
     media = img_tag(art, item.get('alt') or item['title'])
     cls = 'media-cell' + ('' if media else ' media-cell--empty')
-    style = ' style="--f-media-bg:url(\'%s\')"' % esc(u(ORIGIN_BG)) if has_img(ORIGIN_BG) else ''
+    style = (' style="--f-media-bg:url(\'%s\')"' % esc(u(ORIGIN_BG))).replace("'", '&#39;')
     return '<div class="%s"%s>%s</div>' % (cls, style, media)
 
 
