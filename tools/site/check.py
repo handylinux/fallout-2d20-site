@@ -95,6 +95,13 @@ for label, expect in (('Главная', '/'), ('Происхождения', '/
                       ('Бестиарий', '/bestiarij/')):
     if BASE + expect not in read(os.path.join(DOCS, 'index.html')):
         errors.append('навигация: нет пункта «%s»' % label)
+# адрес каждого пункта меню должен совпадать с подписью (Форум → /forum/, а не /primery/)
+head_html = read(os.path.join(DOCS, 'index.html'))
+head_html = head_html[head_html.find('<header'):head_html.find('</header>')]
+for href, title in re.findall(r'<a href="([^"]*)"><span class="top-menu__title">([^<]*)', head_html):
+    rel = href[len(BASE):] if href.startswith(BASE) else href
+    if not os.path.exists(DOCS + (rel or '/') + 'index.html') and not os.path.exists(DOCS + rel + '/index.html'):
+        errors.append('навигация: «%s» ведёт на несуществующий адрес %s' % (title, rel))
 
 print('страниц проверено: %d' % len(pages))
 for w in warnings:
