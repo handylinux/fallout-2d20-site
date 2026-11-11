@@ -495,7 +495,9 @@ def main():
         os.makedirs(os.path.join(OUT, sub), exist_ok=True)
 
     # статика: свои css/js + картинки и bootstrap из src
-    shutil.copy(os.path.join(SRC, 'site', 'css', 'site.css'), os.path.join(OUT, 'assets/css/site.css'))
+    # css отдаём уже обработанным: фон вшит data URI, пути к картинкам с BASE
+    with open(os.path.join(OUT, 'assets/css/site.css'), 'w', encoding='utf-8') as f:
+        f.write(read_css())
     shutil.copy(os.path.join(SRC, 'site', 'js', 'site.js'), os.path.join(OUT, 'assets/js/site.js'))
     for name in ('search.js', 'router.js'):
         shutil.copy(os.path.join(SRC, 'site', 'js', name), os.path.join(OUT, 'assets/js', name))
