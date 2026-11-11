@@ -515,9 +515,11 @@ class Renderer:
         if str(s.get('items_align_center', 0)) in ('1', 'true'):
             css += '%s .sppb-column-addons{align-items:center;}' % sel
         if s.get('overlay'):
-            css += '%s{position:relative;overflow:hidden;}' % sel
+            css += '%s{position:relative;}' % sel
+            css += '%s{flex-direction:column;}' % sel
             css += '%s>.sppb-column-addons{position:relative;z-index:1;}' % sel
-            css += '%s>.sppb-column-overlay{position:absolute;top:0;left:0;right:0;bottom:0;z-index:0;pointer-events:none;}' % sel
+            css += ('%s>.sppb-column-overlay{position:absolute;top:0;left:0;right:0;bottom:0;'
+                    'z-index:0;pointer-events:none;}' % sel)
         # границы колонки: в SPPB это use_border + border_width + boder_style + border_color
         if str(s.get('use_border', 0)) in ('1', 'true'):
             bw = s.get('border_width')
