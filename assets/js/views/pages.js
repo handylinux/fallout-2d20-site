@@ -20,7 +20,7 @@
         var cell = C.el('div', 'media-cell');
         if (card.image) {
           var img = document.createElement('img');
-          img.src = card.image;
+          img.src = C.href(card.image);
           img.alt = card.alt || card.title;
           img.loading = 'lazy';
           cell.appendChild(img);
@@ -61,7 +61,7 @@
       var media = C.el('div', 'wcard__media');
       var img = document.createElement('img');
       img.className = 'wcard__img';
-      img.src = page.image;
+      img.src = C.href(page.image);
       img.alt = page.title;
       media.appendChild(img);
       frag.appendChild(media);
