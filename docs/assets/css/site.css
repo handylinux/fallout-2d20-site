@@ -388,7 +388,9 @@ body {
    Кнопка с выезжающей стрелкой. Место под выезд зарезервировано сразу,
    поэтому ширина кнопки при наведении не меняется.
 */
-.cta {
+/* Шеврон: чёрная кнопка со скошенными краями, текст и стрелка белые */
+.cta,
+.cta:visited {
   display: inline-flex;
   align-items: center;
   gap: 14px;
@@ -396,14 +398,20 @@ body {
   font-family: "Poppins", var(--f-font-title);
   font-size: 20px;
   font-weight: 700;
-  color: var(--f-on-dark);
+  color: #fff;
   text-decoration: none;
   background: #000;
   box-shadow: 6px 6px 0 gray;
   transform: skewX(-15deg);
   transition: box-shadow .5s;
 }
-.cta:hover { color: var(--f-on-dark); text-decoration: none; box-shadow: 10px 10px 0 #fbc638; }
+.cta:hover,
+.cta:focus { color: #fff; text-decoration: none; box-shadow: 10px 10px 0 #fbc638; }
+.cta .cta__arrow,
+.cta svg { fill: #fff; }
+/* в шевроне стрелка — обычный .tile__svg: размер как у остальных, цвет белый */
+.cta .tile__svg { width: 30px; height: 20px; flex: 0 0 auto; fill: #fff; }
+.cta:hover .tile__svg { fill: #fff; }
 .cta > span { display: block; transform: skewX(15deg); }
 .cta__arrow {
   width: 36px;
