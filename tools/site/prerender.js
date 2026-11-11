@@ -36,7 +36,13 @@ function makeNode(tag) {
     getAttribute(name) { return this.attrs[name]; },
     get firstChild() { return this.children[0]; },
     get innerHTML() { return this._html; },
-    set innerHTML(value) { this._html = value; this.children = []; },
+    /* как в браузере: innerHTML += x сохраняет уже вложенные узлы,
+       иначе предрендер терял, например, <span> в кнопке-шевроне */
+    set innerHTML(value) {
+      const existing = this.children.map(serialize).join('');
+      this._html = existing + String(value === undefined || value === null ? '' : value);
+      this.children = [];
+    },
   };
   return node;
 }
