@@ -39,9 +39,7 @@
           plate.appendChild(C.el('p', 'cell__text', text));
         });
         var chev = C.el('div', 'cell__chevron');
-        var a = C.link(card.url, 'cta', 'Подробнее');
-        a.innerHTML += C.ARROW;
-        chev.appendChild(a);
+        chev.appendChild(C.cta(card.url, 'Подробнее'));
         plate.appendChild(chev);
         plateCol.appendChild(plate);
         row.appendChild(plateCol);
