@@ -273,17 +273,17 @@ body {
 .cell--shadow {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   height: 100%;
   padding: 30px 20px;
   background-image: url("/assets/img/food-truck-pattern.jpg");
-  background-repeat: repeat;
+  background-repeat: no-repeat;
   background-size: cover;
   background-position: 0 0;
   box-shadow: 7px 5px 0 #c3c3c3;
 }
 .cell--shadow::before { background: rgba(150, 150, 150, .2); }
-.cell--shadow .cell__chevron { margin-top: auto; padding-top: 12px; }
+.cell--shadow .cell__chevron { margin-top: 0; padding-top: 0; }
 
 /* ------------------------------------------------------------ медиа-ячейка
    Слева картинка происхождения на собственном фоне (без оверлея).
@@ -294,26 +294,21 @@ body {
   align-items: center;
   justify-content: center;
   height: 100%;
-  min-height: 240px;
-  padding: 0;
+  padding: 20px 0;
   border: 0;
-  background: transparent;
+  background-color: transparent;
+  background-image: var(--f-media-bg, none);
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
 }
 .media-cell img {
   display: block;
-  width: 100%;
+  width: 300px;
+  max-width: 100%;
   height: auto;
-  max-height: 380px;
-  object-fit: contain;
 }
 .media-cell a { display: block; width: 100%; }
-/* когда файла картинки нет — просто фон, без пустой рамки */
-/* файла картинки нет — колонка остаётся прозрачной, чтобы не выглядеть
-   пустой плашкой */
-.media-cell--empty { min-height: 240px; background: none; border: 0; }
 
-/* подложка-всплеск под аватаром (нет файла — просто не рисуется) */
-.media-cell { background-image: var(--f-media-bg, none); background-repeat: no-repeat; background-position: center; }
 
 /* ------------------------------------------------------------ текст в ячейке */
 .cell__title {
@@ -326,13 +321,14 @@ body {
 .cell__title a { color: var(--f-link); }
 .cell__title a:hover { color: var(--f-link); text-decoration: underline; }
 .cell__text {
-  margin: 0 0 18px;
+  margin: 0;
+  padding: 25px 0;
   text-align: left;
 }
 .cell__text p { margin: 0; }
 .cell__actions,
 .cell__chevron { display: flex; justify-content: center; }
-.cell__chevron .cta { width: 100%; justify-content: center; }
+.cell__chevron .cta { padding: 10px 45px; }
 @media (max-width: 480px) {
   .cell__chevron .cta { padding: 10px 18px 10px 26px; font-size: 17px; gap: 10px; }
   .cell__chevron .cta__arrow { width: 28px; height: 18px; }
@@ -555,14 +551,6 @@ body {
   .row.row--2, .row.row--3, .row.row--4,
   .row.row--1-2, .row.row--2-1 { grid-template-columns: 1fr; }
 }
-
-/* Плашка происхождения: три строки, шеврон прижат к низу */
-.cell--shadow {
-  display: flex;
-  flex-direction: column;
-  box-shadow: 7px 5px 0 #c3c3c3;
-}
-.cell__chevron { display: flex; justify-content: center; margin-top: auto; padding-top: 12px; }
 
 /* ============================================================================
    СЕТКА — Bootstrap 5 (col-3 = 25%, col-4 = 33.3%, col-6 = 50%).
