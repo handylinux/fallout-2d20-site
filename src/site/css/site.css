@@ -807,13 +807,23 @@ body { background: transparent; }
   border-right: 2px solid #b7b7ae; border-bottom: 2px solid #b7b7ae;
   transform: rotate(45deg); transition: transform .2s; }
 .armor__mod[open] > .armor__mod-summary .armor__mod-arrow { transform: rotate(-135deg); }
-.armor__mod-body { padding: 0 8px 10px; background: #fff; }
-.armor__grid--mod { border: 1px solid #000; }
-.armor__grid--mod tbody td { background: #fdf1dc; }
-.armor__grid--mod thead th { font-size: 11px; }
-.armor__grid--mod tbody td:first-child,
-.armor__grid--mod tbody td:last-child { text-align: left; white-space: normal; }
-.armor__grid--mod tbody td:first-child { font-weight: 700; }
+.armor__mod-body { padding: 0 0 10px; background: #fff; }
+/* таблица модификации — тот же divTable, что у оружия: 7 колонок,
+   на узком экране шапка скрывается и ячейки идут столбиком с подписями */
+.wmods--armor { border: 1px solid #000; background: #fdf1dc; }
+.wmods--armor .wmods__head,
+.wmods--armor .wmods__row { grid-template-columns: .9fr 1.9fr .6fr .4fr .5fr .9fr .6fr; }
+.wmods--armor .wmods__head { background: #000; color: #fff; border-bottom: 1px solid #000;
+  font-size: 11px; letter-spacing: .04em; text-transform: uppercase; }
+.wmods--armor .wmods__head > div { border-right: 1px solid rgba(255, 255, 255, .3);
+  text-align: center; }
+.wmods--armor .wmods__row { background: #fdf1dc; border: 0; }
+.wmods--armor .wmods__c { border-right: 1px solid #000; border-bottom: 0;
+  font-size: 12.5px; }
+.wmods--armor .wmods__c:nth-child(1) { font-weight: 700; }
+.wmods--armor .wmods__c:nth-child(3),
+.wmods--armor .wmods__c:nth-child(4),
+.wmods--armor .wmods__c:nth-child(5) { text-align: center; }
 
 .cd-icon { display: inline-block; width: 1.05em; height: 1.05em; vertical-align: -0.18em; }
 
@@ -823,5 +833,12 @@ body { background: transparent; }
   .armor-block__split { grid-template-columns: 1fr; gap: 16px; }
   .armor-block__title { font-size: 1.3rem; }
   .armor-mods__title { font-size: 1.4rem; }
+  /* модификации на узком экране — вертикальная карточка, как у оружия */
+  .wmods--armor .wmods__head { display: none; }
+  .wmods--armor .wmods__row { grid-template-columns: 1fr; }
+  .wmods--armor .wmods__c { display: grid; grid-template-columns: 42% 58%;
+    gap: 10px; align-items: baseline; border-right: 0;
+    border-bottom: 1px solid #000; text-align: left; }
+  .wmods--armor .wmods__c:last-child { border-bottom: 0; }
   .armor__stats { max-width: 240px; }
 }

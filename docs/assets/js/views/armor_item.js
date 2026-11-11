@@ -175,23 +175,9 @@
       mods.appendChild(C.el('div', 'armor-mods__bar', 'Модификации системы'));
       var head = item.modHead || ['Модификация', 'Эффект', 'Часть брони', 'Вес', 'Цена', 'Перки', 'Навык'];
       rows.forEach(function (r) {
-        var body = C.el('div', 'armor-mods__body');
-        var table = C.el('table', 'armor__grid armor__grid--mod');
-        var thead = C.el('thead');
-        var tr = C.el('tr');
-        head.forEach(function (t) { tr.appendChild(C.el('th', null, t)); });
-        thead.appendChild(tr);
-        table.appendChild(thead);
-        var tbody = C.el('tbody');
-        var line = C.el('tr');
-        r.forEach(function (value) {
-          var cell = C.el('td');
-          cell.appendChild(withDice(value));
-          line.appendChild(cell);
-        });
-        tbody.appendChild(line);
-        table.appendChild(tbody);
-        body.appendChild(table);
+        /* как в оружии: div-таблица, на узком экране — вертикальная */
+        var body = C.divTable(head, [r]);
+        body.className += ' wmods--armor';
         mods.appendChild(modRow(r[0], body));
       });
       frag.appendChild(mods);
