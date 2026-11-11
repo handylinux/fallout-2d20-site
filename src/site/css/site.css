@@ -21,13 +21,13 @@
 
   --f-font: Helvetica, Arial, sans-serif;
   --f-font-title: Arial, Helvetica, sans-serif;
+  /* цвет заголовков-ссылок карточек: #b15b23 из template.css эталона */
+  --f-link-title: #b15b23;
 
-  /* Ширина сайта — как на fallout-2d20.ru: .container max-width 1400px
-     (инлайн-правило страницы поверх bootstrap), по центру. Прежние
-     80%/1600px отменены: в сохранённых страницах таких значений нет. */
-  /* Ширина сайта — как на fallout-2d20.ru: .container max-width 1400px
-     (инлайн-CSS в public/*.html перекрывает bootstrap). */
-  --f-site-max: 1400px;
+  /* Ширина сайта = body-innerwrapper эталона: max-width 1240px, по центру
+     (template.css). 1400px у .sppb-row-container — только внутренняя секция,
+     она уже внутри этих 1240px. */
+  --f-site-max: 1240px;
   --f-content: 100%;
   --f-gap: 20px;
 }
@@ -378,23 +378,12 @@ body {
   padding: 30px 0 20px;
   text-align: center;
   border: 1px solid #6e6e6e;
-  background-color: var(--f-plate-bg);
-  background-image: var(--f-plate-pattern, url("/assets/img/food-truck-pattern.jpg"));
-  background-repeat: repeat;
-  background-position: 0 0;
-  background-attachment: fixed;
+  /* фона нет: у карточек эталона только рамка 1px #6e6e6e (фон колонки
+     background_type:none, оверлей RGBA() без фона не виден) */
+  background: none;
   text-decoration: none;
   color: var(--f-ink);
 }
-.tile::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background: rgba(203, 203, 203, .4);
-  pointer-events: none;
-}
-.tile > * { position: relative; z-index: 1; }
 .tile:hover { text-decoration: none; }
 .tile:hover .tile__title { color: var(--f-link); }
 /* h2.addon-title{font-size:36px;line-height:36px;margin-top:0} + margin 0 */
@@ -407,6 +396,7 @@ body {
   text-transform: none;
   color: var(--f-ink);
 }
+.tile__title { color: var(--f-link-title, #b15b23); }
 .tile__title a { color: inherit; text-decoration: none; }
 .tile__title a:hover { text-decoration: underline; text-decoration-color: currentColor; }
 /* #addon-image{padding:20px 0} .sppb-addon-single-image-container{text-align:center} img{width:200px} */
@@ -658,14 +648,15 @@ body { background: transparent; }
 
 /* ============================================================================
    ШИРИНА САЙТА.
-   Сайт = 100% окна до 1400px, свыше — фиксируется на 1400px и центрируется.
-   Значение снято с живого сайта: `.container,.sppb-row-container{max-width:1400px}`
-   в инлайн-стилях каждой страницы (перекрывает bootstrap-ные 1320px).
+   Сайт = 100% окна до 1240px, свыше — фиксируется на 1240px и центрируется.
+   Снято с живого сайта: `.body-innerwrapper{max-width:1240px;margin:0 auto}`
+   (template.css). Внутри — `.container{padding:0 15px}`.
    ========================================================================== */
 .site {
   width: var(--f-content);
   max-width: var(--f-site-max);
   margin: 0 auto;
+  padding: 0 15px;
 }
 
 /* ============================================================================
