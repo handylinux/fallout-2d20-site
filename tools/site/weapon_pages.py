@@ -118,8 +118,57 @@ def card(item, back_url=None, back_title=None, img_url=None):
                         left, stats_table(item), flavour, note_html, mods_html))
 
 
+def _mods_words(item):
+    """Все моды оружия одной строкой — для поиска."""
+    words = []
+    for group in item.get('mod_groups') or []:
+        words.append(group['slotName'])
+        for mod in group['mods']:
+            words.append(mod['name'])
+    return ' '.join(words)
+
+
+SEARCH_FIELDS = (
+    'name', 'skillName', 'typeName', 'damageTypeName', 'ammoName',
+    'effectName', 'qualityName', 'rangeName', 'rarityName',
+)
+
+
+def search_index(items):
+    """Индекс поиска: те же json, что и страницы. Отдаётся одним файлом."""
+    import json
+    rows = []
+    for item in items:
+        catslug = item['category'][0]
+        rows.append({
+            'n': item['name'],
+            'u': '/snaryazhenie/oruzhie/%s/%s/' % (catslug, item['slug']),
+            'c': item['category'][1],
+            'd': item['damageText'].replace(' {/CD}', ''),
+            's': [item.get(f) or '' for f in SEARCH_FIELDS] + [_mods_words(item)],
+        })
+    rows.sort(key=lambda r: r['n'].lower())
+    return json.dumps({'items': rows}, ensure_ascii=False, separators=(',', ':'))
+
+
+def search_box():
+    return ('<div class="site-search">'
+            '<button class="site-search__btn" type="button" id="search-open" '
+            'aria-label="Поиск по сайту" aria-expanded="false">'
+            '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" '
+            'fill="none" stroke="currentColor" stroke-width="2.2"/>'
+            '<path d="M15.4 15.4 21 21" fill="none" stroke="currentColor" stroke-width="2.2" '
+            'stroke-linecap="round"/></svg></button>'
+            '<div class="site-search__panel" id="search-panel" hidden>'
+            '<input class="site-search__input" type="search" id="search-input" '
+            'placeholder="Оружие, моды, навык…" autocomplete="off" '
+            'aria-label="Поиск по оружию и модам">'
+            '<div class="site-search__results" id="search-results" role="listbox"></div>'
+            '</div></div>')
+
+
 def category_page(items, cat_title, cat_slug):
-    """Список оружия категории плитками 3 в ряд."""
+    """Список оружия категории плитками 3 в ряд — целиком из json."""
     tiles = []
     for item in items:
         tiles.append(
@@ -131,7 +180,9 @@ def category_page(items, cat_title, cat_slug):
             % (cat_slug, item['slug'], e(item['name']), ARROW))
     return ('<p class="wcard__back"><a href="/snaryazhenie/">Назад в снаряжение</a></p>'
             '<h1 class="page__title">%s</h1>'
-            '<div class="row g-3 tiles-row">%s</div>' % (e(cat_title), ''.join(tiles)))
+            '<p class="page__lead">%d единиц оружия в категории.</p>'
+            '<div class="row g-3 tiles-row">%s</div>'
+            % (e(cat_title), len(items), ''.join(tiles)))
 
 
 ARROW = ('<svg viewBox="0 0 66 43" aria-hidden="true" class="tile__svg">'

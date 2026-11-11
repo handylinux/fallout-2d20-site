@@ -267,7 +267,7 @@ def read_css():
     return css.replace('__BG_DATA_URI__', bg_data_uri()).replace('url("/assets/', 'url("%s/assets/' % BASE)
 
 
-def page(title, body, active='', nav_items=None):
+def page(title, body, active='', nav_items=None, search_data=None):
     logo = u('/assets/img/logos.png')
     styles = read_css()
     return f"""<!DOCTYPE html>
@@ -279,12 +279,13 @@ def page(title, body, active='', nav_items=None):
 <link rel="stylesheet" href="{u('/assets/vendor/bootstrap.min.css')}">
 <style>{styles}</style>
 </head>
-<body>
+<body data-base="{BASE}">
 <div class="site">
 <header class="site-header">
   <div class="wrap site-header__inner">
     <a class="site-header__logo" href="{u('/')}"><img src="{logo}" alt="Fallout 2D20"></a>
     <nav class="site-header__menu" aria-label="Основное меню">{top_menu(active)}</nav>
+    {weapon_pages.search_box()}
     <button class="burger" type="button" aria-label="Открыть меню" aria-controls="drawer">
       <span></span><span></span><span></span>
     </button>
@@ -317,6 +318,7 @@ def page(title, body, active='', nav_items=None):
 </div><!-- /.site -->
 
 <script src="{u('/assets/vendor/bootstrap.bundle.min.js')}"></script>
+<script src="{u('/assets/js/search.js')}"></script>
 <script src="{u('/assets/js/site.js')}"></script>
 </body>
 </html>
@@ -414,6 +416,7 @@ def main():
     # статика: свои css/js + картинки и bootstrap из src
     shutil.copy(os.path.join(SRC, 'site', 'css', 'site.css'), os.path.join(OUT, 'assets/css/site.css'))
     shutil.copy(os.path.join(SRC, 'site', 'js', 'site.js'), os.path.join(OUT, 'assets/js/site.js'))
+    shutil.copy(os.path.join(SRC, 'site', 'js', 'search.js'), os.path.join(OUT, 'assets/js/search.js'))
     for name in ('bootstrap.min.css', 'bootstrap.bundle.min.js'):
         src = os.path.join(SRC, 'vendor', name)
         if os.path.exists(src):
@@ -425,6 +428,13 @@ def main():
         for name in files:
             shutil.copy(os.path.join(root, name), os.path.join(dst, name))
 
+    # один поисковый индекс на весь сайт — из тех же json, что и страницы
+    items = weapons.load()
+    cats = weapons.by_category(items)
+    os.makedirs(os.path.join(OUT, 'assets/data'), exist_ok=True)
+    with open(os.path.join(OUT, 'assets/data/search.json'), 'w', encoding='utf-8') as f:
+        f.write(weapon_pages.search_index(items))
+
     write('index.html', page('Правила игры', '<h1 class="page__title">Правила игры</h1>',
                              '/', nav_items))
     write('proiskhozhdeniya/index.html', page_origins(nav_items))
@@ -434,8 +444,6 @@ def main():
         write('layout/index.html', page_layout(nav_items))
 
     # страницы оружия из данных приложения-компаньона
-    items = weapons.load()
-    cats = weapons.by_category(items)
     for cat_slug, cat_title, group in cats:
         write('snaryazhenie/oruzhie/%s/index.html' % cat_slug,
               page(cat_title, weapon_pages.category_page(group, cat_title, cat_slug),

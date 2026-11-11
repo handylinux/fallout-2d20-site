@@ -672,14 +672,56 @@ body { background: transparent; }
     letter-spacing: .02em;
   }
 }
+
+/* ============================================================================
+   ПОИСК. Кнопка в шапке + выпадающая панель. Индекс — JSON на странице.
+   ========================================================================== */
+.site-search { position: relative; flex: 0 0 auto; margin-left: 12px; }
+.site-search__btn {
+  display: grid; place-items: center;
+  width: 42px; height: 42px; padding: 0;
+  color: #f0dea8; background: transparent;
+  border: 1px solid #6E6E6E; border-radius: 0; cursor: pointer;
+}
+.site-search__btn svg { width: 20px; height: 20px; display: block; }
+.site-search__btn:hover { color: #fff; border-color: #f0dea8; }
+.site-search__panel {
+  position: absolute; right: 0; top: calc(100% + 10px); z-index: 40;
+  width: min(560px, 86vw); padding: 12px;
+  background: #1b1b1b; border: 1px solid #6E6E6E;
+  box-shadow: 7px 5px 0 rgba(0, 0, 0, .45);
+}
+.site-search__input {
+  width: 100%; padding: 10px 12px;
+  font: inherit; color: #fff; background: #0d0d0d;
+  border: 1px solid #6E6E6E; border-radius: 0;
+}
+.site-search__input::placeholder { color: #9a9a9a; }
+.site-search__input:focus { outline: none; border-color: #f0dea8; }
+.site-search__results { max-height: min(60vh, 460px); overflow-y: auto; margin-top: 8px; }
+.site-search__hit {
+  display: block; padding: 9px 10px; text-decoration: none;
+  border-bottom: 1px solid rgba(110, 110, 110, .45);
+}
+.site-search__hit:last-child { border-bottom: 0; }
+.site-search__hit:hover, .site-search__hit:focus { background: rgba(240, 222, 168, .12); }
+.site-search__hit-title { display: block; color: #f0dea8; font-weight: 700; }
+.site-search__hit-meta { display: block; color: #b9b9b9; font-size: .84rem; margin-top: 2px; }
+.site-search__empty { padding: 10px; color: #b9b9b9; }
+@media (max-width: 900px) {
+  .site-search { margin-left: 8px; }
+  .site-search__btn { width: 38px; height: 38px; }
+  .site-search__panel { position: fixed; left: 5vw; right: 5vw; top: 70px; width: auto; }
+}
 </style>
 </head>
-<body>
+<body data-base="/fallout-2d20-site">
 <div class="site">
 <header class="site-header">
   <div class="wrap site-header__inner">
     <a class="site-header__logo" href="/fallout-2d20-site/"><img src="/fallout-2d20-site/assets/img/logos.png" alt="Fallout 2D20"></a>
     <nav class="site-header__menu" aria-label="Основное меню"><ul class="top-menu"><li><a href="/fallout-2d20-site/">Главная</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/">Происхождения</a></li><li><a href="/fallout-2d20-site/snaryazhenie/">Снаряжение</a></li><li><a href="/fallout-2d20-site/snaryazhenie/oruzhie/">Оружие</a></li><li class="is-active"><a href="/fallout-2d20-site/perki/">Перки</a></li><li><a href="/fallout-2d20-site/bestiarij/">Бестиарий</a></li><li><a href="/fallout-2d20-site/forum/">Форум</a></li></ul></nav>
+    <div class="site-search"><button class="site-search__btn" type="button" id="search-open" aria-label="Поиск по сайту" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M15.4 15.4 21 21" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button><div class="site-search__panel" id="search-panel" hidden><input class="site-search__input" type="search" id="search-input" placeholder="Оружие, моды, навык…" autocomplete="off" aria-label="Поиск по оружию и модам"><div class="site-search__results" id="search-results" role="listbox"></div></div></div>
     <button class="burger" type="button" aria-label="Открыть меню" aria-controls="drawer">
       <span></span><span></span><span></span>
     </button>
@@ -712,6 +754,7 @@ body { background: transparent; }
 </div><!-- /.site -->
 
 <script src="/fallout-2d20-site/assets/vendor/bootstrap.bundle.min.js"></script>
+<script src="/fallout-2d20-site/assets/js/search.js"></script>
 <script src="/fallout-2d20-site/assets/js/site.js"></script>
 </body>
 </html>
