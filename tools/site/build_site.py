@@ -497,8 +497,15 @@ def main():
     # статика: свои css/js + картинки и bootstrap из src
     shutil.copy(os.path.join(SRC, 'site', 'css', 'site.css'), os.path.join(OUT, 'assets/css/site.css'))
     shutil.copy(os.path.join(SRC, 'site', 'js', 'site.js'), os.path.join(OUT, 'assets/js/site.js'))
-    for name in ('search.js', 'render.js', 'router.js'):
+    for name in ('search.js', 'router.js'):
         shutil.copy(os.path.join(SRC, 'site', 'js', name), os.path.join(OUT, 'assets/js', name))
+    # типы страниц: views/*.js — каждый тип в своём файле
+    views_out = os.path.join(OUT, 'assets/js/views')
+    os.makedirs(views_out, exist_ok=True)
+    views_src = os.path.join(SRC, 'site', 'js', 'views')
+    for name in sorted(os.listdir(views_src)):
+        if name.endswith('.js'):
+            shutil.copy(os.path.join(views_src, name), os.path.join(views_out, name))
     for name in ('bootstrap.min.css', 'bootstrap.bundle.min.js'):
         src = os.path.join(SRC, 'vendor', name)
         if os.path.exists(src):

@@ -61,6 +61,7 @@ def weapon_entry(item):
     """Одно оружие в виде, который ждёт шаблон карточки."""
     return {
         'kind': 'weapon',
+        'view': 'weapon_item',
         'id': item['id'],
         'slug': item['slug'],
         'name': item['name'],
@@ -79,7 +80,33 @@ def weapon_entry(item):
     }
 
 
+def load_json(rel):
+    path = os.path.join(ROOT, rel)
+    if not os.path.exists(path):
+        return None
+    with open(path, encoding='utf-8') as f:
+        return json.load(f)
+
+
+def write_origins():
+    """Происхождения: хаб (origins.json) и детали (origins.pages.json)."""
+    hub = load_json('data/origins.json')
+    if hub:
+        write('origins.json', hub)
+    pages = load_json('data/origins.pages.json')
+    if pages:
+        write('origins.pages.json', pages)
+
+
+def write_blog():
+    blog = load_json('data/blog.json')
+    if blog:
+        write('blog.json', blog)
+
+
 def main():
+    write_origins()
+    write_blog()
     items = weapons.load()
     cats = weapons.by_category(items)
 

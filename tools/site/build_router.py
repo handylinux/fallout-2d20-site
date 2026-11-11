@@ -51,6 +51,27 @@ def main():
             f.write(html)
         written += 1
 
+    # прочие типы страниц: происхождения, блог
+    extra = []
+    origins = os.path.join(ROOT, 'docs', 'assets', 'data', 'origins.pages.json')
+    if os.path.exists(origins):
+        with open(origins, encoding='utf-8') as f:
+            extra.append('proiskhozhdeniya')
+            extra += ['proiskhozhdeniya/%s' % slug
+                      for slug in json.load(f).get('pages', {})]
+    blog = os.path.join(ROOT, 'docs', 'assets', 'data', 'blog.json')
+    if os.path.exists(blog):
+        with open(blog, encoding='utf-8') as f:
+            data = json.load(f)
+            extra.append('blog')
+            extra += ['blog/%s' % slug for slug in (data.get('posts') or {})]
+    for path in extra:
+        full = os.path.join(OUT, path)
+        os.makedirs(full, exist_ok=True)
+        with open(os.path.join(full, 'index.html'), 'w', encoding='utf-8') as f:
+            f.write(html)
+        written += 1
+
     print('shell-страниц: %d' % written)
 
 

@@ -1,4 +1,5 @@
-/* Роутер: адрес → данные каталога → шаблон. Страниц на диске нет. */
+/* Роутер: адрес → данные → тип страницы из window.Views.
+   Страницы на диске не генерируются: один каркас, много типов. */
 (function () {
   'use strict';
 
@@ -6,81 +7,75 @@
   var app = document.getElementById('app');
   if (!app) { return; }
 
-  var catalog = null;
+  var cache = {};
 
-  function loadCatalog() {
-    if (catalog) { return Promise.resolve(catalog); }
-    return fetch(BASE + '/assets/data/catalog.json', { credentials: 'same-origin' })
-      .then(function (r) { return r.json(); })
-      .then(function (json) { catalog = json; return catalog; });
+  function get(name) {
+    if (cache[name]) { return Promise.resolve(cache[name]); }
+    return fetch(BASE + '/assets/data/' + name + '.json', { credentials: 'same-origin' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (json) { cache[name] = json; return json; });
   }
 
-  function find(sectionSlug, catSlug, itemSlug) {
-    var section = null;
-    var cat = null;
-    (catalog.sections || []).forEach(function (s) {
-      if (s.slug === sectionSlug) { section = s; }
-    });
-    if (!section) { return { section: null, cat: null, item: null }; }
-    (section.categories || []).forEach(function (c) {
-      if (c.slug === catSlug) { cat = c; }
-    });
-    if (!cat || !itemSlug) { return { section: section, cat: cat, item: null }; }
-    var item = null;
-    (cat.items || []).forEach(function (i) { if (i.slug === itemSlug) { item = i; } });
-    return { section: section, cat: cat, item: item };
-  }
-
-  /* путь без BASE: /snaryazhenie/oruzhie/… */
   function path() {
     var p = window.location.pathname;
     if (BASE && p.indexOf(BASE) === 0) { p = p.slice(BASE.length); }
     return p.replace(/\/+$/, '') || '/';
   }
 
-  function parts(p) {
-    return p.split('/').filter(Boolean);
-  }
+  function seg() { return path().split('/').filter(Boolean); }
 
-  function paint(frag, title) {
+  function paint(node, title) {
     app.innerHTML = '';
-    app.appendChild(frag);
+    app.appendChild(node);
     app.setAttribute('aria-busy', 'false');
     document.title = (title ? title + ' — ' : '') + 'Fallout 2D20';
     window.scrollTo(0, 0);
   }
 
-  function renderNav() {
-    var holder = document.getElementById('drawer-nav');
-    if (!holder) { return; }
-    holder.innerHTML = '';
-    catalog.sections.forEach(function (s) {
-      var li = document.createElement('li');
-      var a = document.createElement('a');
-      a.setAttribute('href', BASE + '/snaryazhenie/' + s.slug + '/');
-      a.textContent = s.title;
-      li.appendChild(a);
+  function notFound(title) {
+    var frag = document.createDocumentFragment();
+    frag.appendChild(window.C.el('h1', 'page__title', title || 'Страница не найдена'));
+    frag.appendChild(window.C.el('p', 'page__lead',
+      'Такого адреса в данных нет. Проверьте ссылку или меню.'));
+    return frag;
+  }
 
+  function pick(sectionSlug, catSlug, itemSlug, catalog) {
+    var section = null, cat = null, item = null;
+    (catalog.sections || []).forEach(function (s) {
+      if (s.slug === sectionSlug) { section = s; }
+    });
+    if (!section) { return null; }
+    (section.categories || []).forEach(function (c) {
+      if (c.slug === catSlug) { cat = c; }
+    });
+    if (!cat) { return { section: section, category: null, item: null }; }
+    (cat.items || []).forEach(function (i) { if (i.slug === itemSlug) { item = i; } });
+    return { section: section, category: cat, item: item };
+  }
+
+  function renderNav(catalog) {
+    var holder = document.getElementById('drawer-nav');
+    if (!holder || !catalog) { return; }
+    holder.innerHTML = '';
+    (catalog.sections || []).forEach(function (s) {
+      var li = document.createElement('li');
+      li.appendChild(window.C.link('/snaryazhenie/' + s.slug + '/', '', s.title));
       var btn = document.createElement('button');
       btn.className = 'drawer__toggle';
       btn.type = 'button';
       btn.setAttribute('aria-expanded', 'false');
       btn.innerHTML = '<span class="visually-hidden">Раскрыть «' + s.title + '»</span>';
       li.appendChild(btn);
-
       var sub = document.createElement('ul');
       sub.className = 'drawer__sub';
-      s.categories.forEach(function (c) {
+      (s.categories || []).forEach(function (c) {
         var cli = document.createElement('li');
-        var ca = document.createElement('a');
-        ca.setAttribute('href', BASE + '/snaryazhenie/' + s.slug + '/' + c.slug + '/');
-        ca.textContent = c.title;
-        cli.appendChild(ca);
+        cli.appendChild(window.C.link('/snaryazhenie/' + s.slug + '/' + c.slug + '/', '', c.title));
         sub.appendChild(cli);
       });
       li.appendChild(sub);
       holder.appendChild(li);
-
       btn.addEventListener('click', function () {
         var open = !sub.classList.contains('is-open');
         sub.classList.toggle('is-open', open);
@@ -89,91 +84,106 @@
     });
   }
 
+  var routes = [
+    /* /proiskhozhdeniya/ */
+    { re: /^\/proiskhozhdeniya$/, data: 'origins', view: 'origins' },
+    { re: /^\/proiskhozhdeniya\/([^/]+)$/, data: 'origins.pages', view: 'origin',
+      bySlug: true },
+    /* /blog/ и /blog/<slug>/ */
+    { re: /^\/blog$/, data: 'blog', view: 'list' },
+    { re: /^\/blog\/([^/]+)$/, data: 'blog', view: 'article', bySlug: true },
+    /* каталог снаряжения */
+    { re: /^\/snaryazhenie$/, view: 'snaryazhenie' },
+    { re: /^\/snaryazhenie\/([^/]+)$/, view: 'section' },
+    { re: /^\/snaryazhenie\/([^/]+)\/([^/]+)$/, view: 'category' },
+    { re: /^\/snaryazhenie\/([^/]+)\/([^/]+)\/([^/]+)$/, view: 'weapon_item' },
+  ];
+
   function route() {
     var p = path();
-    var seg = parts(p);
-
-    if (seg.length === 0) {
-      paint(window.Render.home ? window.Render.home() : window.Render.notFound(), '');
+    var segs = seg();
+    if (segs.length === 0) {
+      var home = document.createDocumentFragment();
+      home.appendChild(window.C.el('h1', 'page__title', 'Правила игры'));
+      paint(home, 'Правила игры');
       return;
     }
 
-    if (seg[0] !== 'snaryazhenie') {
-      page_placeholder(seg);
-      return;
-    }
-
-    loadCatalog().then(function () {
-      renderNav();
-
-      /* /snaryazhenie/ — все разделы */
-      if (seg.length === 1) {
-        var frag = document.createDocumentFragment();
-        var h = document.createElement('h1');
-        h.className = 'page__title';
-        h.textContent = 'Снаряжение';
-        frag.appendChild(h);
-        var row = document.createElement('div');
-        row.className = 'row g-3 tiles-row';
-        catalog.sections.forEach(function (s) {
-          var col = document.createElement('div');
-          col.className = 'col-12 col-md-6 col-lg-4';
-          var a = document.createElement('a');
-          a.className = 'tile';
-          a.setAttribute('href', BASE + '/snaryazhenie/' + s.slug + '/');
-          a.innerHTML = window.Render_tile ? '' : '';
-          var t = document.createElement('h2');
-          t.className = 'tile__title';
-          t.textContent = s.title;
-          a.appendChild(t);
-          var media = document.createElement('div');
-          media.className = 'tile__media tile__media--empty';
-          a.appendChild(media);
-          var arrow = document.createElement('div');
-          arrow.className = 'tile__arrow';
-          arrow.innerHTML = '<svg viewBox="0 0 66 43" aria-hidden="true" class="tile__svg">' +
-            '<path d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43' +
-            'L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54' +
-            'a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/></svg>';
-          a.appendChild(arrow);
-          col.appendChild(a);
-          row.appendChild(col);
-        });
-        frag.appendChild(row);
-        paint(frag, 'Снаряжение');
-        return;
-      }
-
-      var sectionSlug = seg[1];
-      var catSlug = seg[2];
-      var itemSlug = seg[3];
-      if (!catSlug) {
-        var s = null;
-        catalog.sections.forEach(function (x) { if (x.slug === sectionSlug) { s = x; } });
-        if (!s) { paint(window.Render.notFound(), 'Нет раздела'); return; }
-        paint(window.Render.section(s), s.title);
-        return;
-      }
-      var found = find(sectionSlug, catSlug, itemSlug);
-      if (!found.cat) { paint(window.Render.notFound(), 'Нет категории'); return; }
-      if (!itemSlug) {
-        paint(window.Render.category(found.section, found.cat), found.cat.title);
-        return;
-      }
-      if (!found.item) { paint(window.Render.notFound(), 'Нет предмета'); return; }
-      paint(window.Render.item(found.section, found.cat, found.item), found.item.name);
-    }).catch(function () {
-      app.innerHTML = '<h1 class="page__title">Данные не загрузились</h1>' +
-        '<p class="page__lead">Проверьте assets/data/catalog.json.</p>';
+    var matched = null;
+    routes.some(function (r) {
+      var m = p.match(r.re);
+      if (m) { matched = { route: r, match: m }; return true; }
+      return false;
     });
-  }
 
-  function page_placeholder(seg) {
-    /* прочие разделы пока живут отдельными страницами (заглушки) */
-    window.location.replace(BASE + '/' + seg.join('/') + '/');
+    if (!matched) {
+      paint(notFound(), 'Не найдено');
+      return;
+    }
+
+    var routeDef = matched.route;
+
+    if (!routeDef.data && routeDef.view !== 'snaryazhenie') {
+      /* раздел каталога */
+      get('catalog').then(function (catalog) {
+        renderNav(catalog);
+        var data = { catalog: catalog, page: catalog && catalog.pages && catalog.pages[routeDef.view] };
+        if (routeDef.view === 'section') {
+          var s = null;
+          (catalog.sections || []).forEach(function (x) {
+            if (x.slug === matched.match[1]) { s = x; }
+          });
+          if (!s) { paint(notFound('Нет такого раздела'), 'Не найдено'); return; }
+          data.section = s;
+          paint(window.Views.section(data), s.title);
+          return;
+        }
+        var found = pick(matched.match[1], matched.match[2], matched.match[3], catalog);
+        if (!found || !found.category) { paint(notFound('Нет такой категории'), 'Не найдено'); return; }
+        data.section = found.section;
+        data.category = found.category;
+        if (!matched.match[3]) {
+          paint(window.Views.category(data), found.category.title);
+          return;
+        }
+        if (!found.item) { paint(notFound('Нет такого предмета'), 'Не найдено'); return; }
+        data.item = found.item;
+        var view = window.Views[found.item.view || routeDef.view];
+        paint(view(data), found.item.name);
+      }).catch(function () {
+        paint(notFound('Данные не загрузились'), 'Ошибка');
+      });
+      return;
+    }
+
+    if (routeDef.view === 'snaryazhenie') {
+      get('catalog').then(function (catalog) {
+        renderNav(catalog);
+        paint(window.Views.snaryazhenie({ catalog: catalog }), 'Снаряжение');
+      }).catch(function () { paint(notFound('Данные не загрузились'), 'Ошибка'); });
+      return;
+    }
+
+    get(routeDef.data).then(function (data) {
+      if (!data) { paint(notFound(), 'Не найдено'); return; }
+      var page = data;
+      if (routeDef.bySlug) {
+        var slug = matched.match[1];
+        page = null;
+        var map = (data && data.pages) || (data && data.posts) || {};
+        if (Array.isArray(map)) {
+          map.forEach(function (row) { if (row.slug === slug) { page = row; } });
+        } else if (map[slug]) {
+          page = map[slug];
+        }
+        if (!page) { paint(notFound(), 'Не найдено'); return; }
+      }
+      paint(window.Views[routeDef.view]({ page: page }), page.title);
+    }).catch(function () { paint(notFound('Данные не загрузились'), 'Ошибка'); });
   }
 
   window.addEventListener('popstate', route);
-  document.addEventListener('DOMContentLoaded', route);
-  if (document.readyState !== 'loading') { route(); }
+  if (document.readyState !== 'loading') { route(); } else {
+    document.addEventListener('DOMContentLoaded', route);
+  }
 }());

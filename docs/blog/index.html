@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fallout 2D20</title>
+<link rel="stylesheet" href="/fallout-2d20-site/assets/vendor/bootstrap.min.css">
+<link rel="stylesheet" href="/fallout-2d20-site/assets/css/site.css">
+<script>window.SITE_BASE = '/fallout-2d20-site';</script>
+</head>
+<body data-base="/fallout-2d20-site">
+<div class="site">
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a class="site-header__logo" href="/fallout-2d20-site/"><img src="/fallout-2d20-site/assets/img/logos.png" alt="Fallout 2D20"></a>
+    <nav class="site-header__menu" aria-label="Основное меню">
+      <ul class="top-menu">
+        <li><a href="/fallout-2d20-site/">Главная</a></li>
+        <li><a href="/fallout-2d20-site/proiskhozhdeniya/">Происхождения</a></li>
+        <li><a href="/fallout-2d20-site/snaryazhenie/">Снаряжение</a></li>
+        <li><a href="/fallout-2d20-site/snaryazhenie/oruzhie/">Оружие</a></li>
+        <li><a href="/fallout-2d20-site/perki/">Перки</a></li>
+        <li><a href="/fallout-2d20-site/bestiarij/">Бестиарий</a></li>
+      </ul>
+    </nav>
+    <div class="site-search">
+      <button class="site-search__btn" type="button" id="search-open" aria-label="Поиск по сайту" aria-expanded="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M15.4 15.4 21 21" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+      </button>
+      <div class="site-search__panel" id="search-panel" hidden>
+        <input class="site-search__input" type="search" id="search-input" placeholder="Оружие, моды, навык…" autocomplete="off" aria-label="Поиск по оружию и модам">
+        <div class="site-search__results" id="search-results" role="listbox"></div>
+      </div>
+    </div>
+    <button class="burger" type="button" aria-label="Открыть меню" aria-controls="drawer">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="drawer-backdrop" data-drawer-close></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer__head">
+    <a class="drawer__logo" href="/fallout-2d20-site/"><img src="/fallout-2d20-site/assets/img/logos.png" alt="Fallout 2D20"></a>
+    <button class="drawer__close" type="button" aria-label="Закрыть меню" data-drawer-close>
+      <span></span><span></span>
+    </button>
+  </div>
+  <ul id="drawer-nav"></ul>
+</aside>
+
+<main class="page">
+  <div class="wrap" id="app">
+    <p class="page__lead">Загрузка…</p>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p class="site-footer__text">Fallout 2D20 — настольная ролевая игра по мотивам Fallout от
+      Modiphius Entertainment. Неофициальный русскоязычный сайт.</p>
+  </div>
+</footer>
+</div><!-- /.site -->
+
+<script src="/fallout-2d20-site/assets/vendor/bootstrap.bundle.min.js"></script>
+<script src="/fallout-2d20-site/assets/js/search.js"></script>
+<script src="/fallout-2d20-site/assets/js/views/common.js"></script>
+<script src="/fallout-2d20-site/assets/js/views/hub.js"></script>
+<script src="/fallout-2d20-site/assets/js/views/category.js"></script>
+<script src="/fallout-2d20-site/assets/js/views/weapon_item.js"></script>
+<script src="/fallout-2d20-site/assets/js/views/pages.js"></script>
+<script src="/fallout-2d20-site/assets/js/router.js"></script>
+<script src="/fallout-2d20-site/assets/js/site.js"></script>
+</body>
+</html>
