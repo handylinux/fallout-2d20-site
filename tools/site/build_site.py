@@ -15,11 +15,16 @@ import html
 import json
 import base64
 import os
+import sys
 import shutil
 import urllib.parse
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))
 DATA = os.path.join(ROOT, 'data')
+sys.path.insert(0, os.path.join(ROOT, 'tools', 'site'))
+import weapons            # noqa: E402
+import weapon_pages       # noqa: E402
+
 SRC = os.path.join(ROOT, 'src')
 OUT = os.path.join(ROOT, 'site')
 BASE = (os.environ.get('BASE') or '').rstrip('/')
@@ -208,6 +213,7 @@ TOP_MENU = [
     ('Главная', '/'),
     ('Происхождения', '/proiskhozhdeniya/'),
     ('Снаряжение', '/snaryazhenie/'),
+    ('Оружие', '/snaryazhenie/oruzhie/'),
     ('Перки', '/perki/'),
     ('Бестиарий', '/bestiarij/'),
     ('Форум', '/forum/'),
@@ -426,6 +432,33 @@ def main():
     # страница-эталон не публикуется в docs/, только для локальной сверки
     if os.environ.get('DEMO'):
         write('layout/index.html', page_layout(nav_items))
+
+    # страницы оружия из данных приложения-компаньона
+    items = weapons.load()
+    cats = weapons.by_category(items)
+    for cat_slug, cat_title, group in cats:
+        write('snaryazhenie/oruzhie/%s/index.html' % cat_slug,
+              page(cat_title, weapon_pages.category_page(group, cat_title, cat_slug),
+                   '/snaryazhenie/', nav_items))
+        for item in group:
+            write('snaryazhenie/oruzhie/%s/%s/index.html' % (cat_slug, item['slug']),
+                  page(item['name'], weapon_pages.card(item), '/snaryazhenie/', nav_items))
+    # хаб «Снаряжение»: категории оружия плитками
+    hub_tiles = [{'title': t, 'url': '/snaryazhenie/oruzhie/%s/' % sl} for sl, t, _g in cats]
+    write('snaryazhenie/oruzhie/index.html',
+          page('Оружие',
+               '<h1 class="page__title">Оружие</h1>'
+               '<p class="page__lead">%d единиц оружия в %d категориях. Данные — '
+               'справочник приложения-компаньона Fallout 2D20.</p>%s'
+               % (len(items), len(cats), tiles(hub_tiles)),
+               '/snaryazhenie/', nav_items))
+    write('snaryazhenie/index.html',
+          page('Снаряжение',
+               '<h1 class="page__title">Снаряжение</h1>'
+               '<p class="page__lead">Оружие из справочника приложения-компаньона: '
+               '%d единиц в %d категориях.</p>%s'
+               % (len(items), len(cats), tiles(hub_tiles)),
+               '/snaryazhenie/', nav_items))
 
     # заглушки для всех пунктов меню, чтобы ссылки не давали 404
     titles = {}

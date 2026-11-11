@@ -601,3 +601,30 @@ body { background: transparent; }
   max-width: var(--f-site-max);
   margin: 0 auto;
 }
+
+/* ============================================================================
+   СТРАНИЦА ОРУЖИЯ (данные приложения-компаньона).
+   Разметка — tools/site/weapon_pages.py, данные — tools/site/weapons.py.
+   ========================================================================== */
+.wcard__back { margin: 0 0 8px; font-size: 18px; }
+.wcard__back a { color: var(--f-link); }
+.wcard__title { margin: 0 0 20px; font-size: 2rem; text-align: center; }
+.wcard__row { display: grid; grid-template-columns: 1fr 1.2fr; gap: 30px; align-items: start; }
+.wcard__media { display: flex; align-items: center; justify-content: center; }
+.wcard__media--empty { min-height: 220px; }
+.wcard__img { display: block; max-width: 100%; height: auto; }
+.wcard__text { margin: 24px 0 0; }
+.wcard__sub { margin: 28px 0 12px; font-size: 1.35rem; text-transform: uppercase; }
+.wcard__note { margin: 0; padding: 14px 16px; border-left: 4px solid var(--f-link);
+  background: rgba(255, 255, 255, .55); }
+.wmods__title { margin: 22px 0 8px; font-size: 1.1rem; text-transform: uppercase; }
+
+/* таблица характеристик: чёрные заголовки, бежевые значения */
+.wstats { width: 100%; border-collapse: collapse; border: 1px solid #000; }
+.wstats th, .wstats td { padding: 8px 12px; border: 1px solid #000; font-size: 15px; }
+.wstats th { width: 40%; background: #000; color: #fff; text-align: left; font-weight: 700; }
+.wstats td { width: 60%; background: #f0dea8; color: #000; text-align: center; }
+
+@media (max-width: 900px) {
+  .wcard__row { grid-template-columns: 1fr; gap: 18px; }
+}

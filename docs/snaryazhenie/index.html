@@ -608,6 +608,33 @@ body { background: transparent; }
   max-width: var(--f-site-max);
   margin: 0 auto;
 }
+
+/* ============================================================================
+   СТРАНИЦА ОРУЖИЯ (данные приложения-компаньона).
+   Разметка — tools/site/weapon_pages.py, данные — tools/site/weapons.py.
+   ========================================================================== */
+.wcard__back { margin: 0 0 8px; font-size: 18px; }
+.wcard__back a { color: var(--f-link); }
+.wcard__title { margin: 0 0 20px; font-size: 2rem; text-align: center; }
+.wcard__row { display: grid; grid-template-columns: 1fr 1.2fr; gap: 30px; align-items: start; }
+.wcard__media { display: flex; align-items: center; justify-content: center; }
+.wcard__media--empty { min-height: 220px; }
+.wcard__img { display: block; max-width: 100%; height: auto; }
+.wcard__text { margin: 24px 0 0; }
+.wcard__sub { margin: 28px 0 12px; font-size: 1.35rem; text-transform: uppercase; }
+.wcard__note { margin: 0; padding: 14px 16px; border-left: 4px solid var(--f-link);
+  background: rgba(255, 255, 255, .55); }
+.wmods__title { margin: 22px 0 8px; font-size: 1.1rem; text-transform: uppercase; }
+
+/* таблица характеристик: чёрные заголовки, бежевые значения */
+.wstats { width: 100%; border-collapse: collapse; border: 1px solid #000; }
+.wstats th, .wstats td { padding: 8px 12px; border: 1px solid #000; font-size: 15px; }
+.wstats th { width: 40%; background: #000; color: #fff; text-align: left; font-weight: 700; }
+.wstats td { width: 60%; background: #f0dea8; color: #000; text-align: center; }
+
+@media (max-width: 900px) {
+  .wcard__row { grid-template-columns: 1fr; gap: 18px; }
+}
 </style>
 </head>
 <body>
@@ -615,7 +642,7 @@ body { background: transparent; }
 <header class="site-header">
   <div class="wrap site-header__inner">
     <a class="site-header__logo" href="/fallout-2d20-site/"><img src="/fallout-2d20-site/assets/img/logos.png" alt="Fallout 2D20"></a>
-    <nav class="site-header__menu" aria-label="Основное меню"><ul class="top-menu"><li><a href="/fallout-2d20-site/">Главная</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/">Происхождения</a></li><li><a href="/fallout-2d20-site/snaryazhenie/">Снаряжение</a></li><li><a href="/fallout-2d20-site/perki/">Перки</a></li><li><a href="/fallout-2d20-site/bestiarij/">Бестиарий</a></li><li><a href="/fallout-2d20-site/forum/">Форум</a></li></ul></nav>
+    <nav class="site-header__menu" aria-label="Основное меню"><ul class="top-menu"><li><a href="/fallout-2d20-site/">Главная</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/">Происхождения</a></li><li class="is-active"><a href="/fallout-2d20-site/snaryazhenie/">Снаряжение</a></li><li><a href="/fallout-2d20-site/snaryazhenie/oruzhie/">Оружие</a></li><li><a href="/fallout-2d20-site/perki/">Перки</a></li><li><a href="/fallout-2d20-site/bestiarij/">Бестиарий</a></li><li><a href="/fallout-2d20-site/forum/">Форум</a></li></ul></nav>
     <button class="burger" type="button" aria-label="Открыть меню" aria-controls="drawer">
       <span></span><span></span><span></span>
     </button>
@@ -635,10 +662,7 @@ body { background: transparent; }
 
 <main class="page">
   <div class="wrap">
-<h1 class="page__title">Снаряжение</h1>
-<p class="page__lead">Страница ещё не перенесена в новый каркас.</p>
-<p class="page__lead"><a href="/fallout-2d20-site/">На главную</a></p>
-
+<h1 class="page__title">Снаряжение</h1><p class="page__lead">Оружие из справочника приложения-компаньона: 146 единиц в 8 категориях.</p><div class="row g-3 tiles-row"><div class="col-12 col-md-6 col-lg-4"><a class="tile" href="/fallout-2d20-site/snaryazhenie/oruzhie/strelkovoe-oruzhie/"><h2 class="tile__title">Стрелковое оружие</h2><div class="tile__media"></div><div class="tile__arrow"><svg class="cta__arrow" viewBox="0 0 66 43" aria-hidden="true" focusable="false"><path class="a1" d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a2" d="M20.15 3.9 23.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L24.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L20.15 4.61a.66.66 0 0 1 0-.71Z"/></svg></div></a></div><div class="col-12 col-md-6 col-lg-4"><a class="tile" href="/fallout-2d20-site/snaryazhenie/oruzhie/tyazhjoloe-oruzhie/"><h2 class="tile__title">Тяжёлое оружие</h2><div class="tile__media"></div><div class="tile__arrow"><svg class="cta__arrow" viewBox="0 0 66 43" aria-hidden="true" focusable="false"><path class="a1" d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a2" d="M20.15 3.9 23.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L24.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L20.15 4.61a.66.66 0 0 1 0-.71Z"/></svg></div></a></div><div class="col-12 col-md-6 col-lg-4"><a class="tile" href="/fallout-2d20-site/snaryazhenie/oruzhie/energeticheskoe-oruzhie/"><h2 class="tile__title">Энергетическое оружие</h2><div class="tile__media"></div><div class="tile__arrow"><svg class="cta__arrow" viewBox="0 0 66 43" aria-hidden="true" focusable="false"><path class="a1" d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a2" d="M20.15 3.9 23.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L24.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L20.15 4.61a.66.66 0 0 1 0-.71Z"/></svg></div></a></div><div class="col-12 col-md-6 col-lg-4"><a class="tile" href="/fallout-2d20-site/snaryazhenie/oruzhie/kholodnoe-oruzhie/"><h2 class="tile__title">Холодное оружие</h2><div class="tile__media"></div><div class="tile__arrow"><svg class="cta__arrow" viewBox="0 0 66 43" aria-hidden="true" focusable="false"><path class="a1" d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a2" d="M20.15 3.9 23.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L24.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L20.15 4.61a.66.66 0 0 1 0-.71Z"/></svg></div></a></div><div class="col-12 col-md-6 col-lg-4"><a class="tile" href="/fallout-2d20-site/snaryazhenie/oruzhie/bez-oruzhiya/"><h2 class="tile__title">Без оружия</h2><div class="tile__media"></div><div class="tile__arrow"><svg class="cta__arrow" viewBox="0 0 66 43" aria-hidden="true" focusable="false"><path class="a1" d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a2" d="M20.15 3.9 23.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L24.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L20.15 4.61a.66.66 0 0 1 0-.71Z"/></svg></div></a></div><div class="col-12 col-md-6 col-lg-4"><a class="tile" href="/fallout-2d20-site/snaryazhenie/oruzhie/vzryvchatka/"><h2 class="tile__title">Взрывчатка</h2><div class="tile__media"></div><div class="tile__arrow"><svg class="cta__arrow" viewBox="0 0 66 43" aria-hidden="true" focusable="false"><path class="a1" d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a2" d="M20.15 3.9 23.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L24.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L20.15 4.61a.66.66 0 0 1 0-.71Z"/></svg></div></a></div><div class="col-12 col-md-6 col-lg-4"><a class="tile" href="/fallout-2d20-site/snaryazhenie/oruzhie/metatelnoe/"><h2 class="tile__title">Метательное</h2><div class="tile__media"></div><div class="tile__arrow"><svg class="cta__arrow" viewBox="0 0 66 43" aria-hidden="true" focusable="false"><path class="a1" d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a2" d="M20.15 3.9 23.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L24.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L20.15 4.61a.66.66 0 0 1 0-.71Z"/></svg></div></a></div><div class="col-12 col-md-6 col-lg-4"><a class="tile" href="/fallout-2d20-site/snaryazhenie/oruzhie/oruzhie/"><h2 class="tile__title">Оружие</h2><div class="tile__media"></div><div class="tile__arrow"><svg class="cta__arrow" viewBox="0 0 66 43" aria-hidden="true" focusable="false"><path class="a1" d="M40.15 3.9 43.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L44.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L40.15 4.61a.66.66 0 0 1 0-.71Z"/><path class="a2" d="M20.15 3.9 23.98.14a.66.66 0 0 1 .7 0l21.01 20.64a1 1 0 0 1 0 1.43L24.68 42.86a.66.66 0 0 1-.7 0l-3.83-3.75a.66.66 0 0 1 0-.71l16.84-16.54a.5.5 0 0 0 0-.71L20.15 4.61a.66.66 0 0 1 0-.71Z"/></svg></div></a></div></div>
   </div>
 </main>
 
