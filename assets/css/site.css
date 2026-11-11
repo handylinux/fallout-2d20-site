@@ -97,10 +97,9 @@ body {
 .site-header__logo img { display: block; height: 60px; width: auto; }
 /* меню — по центру секции, 6 колонок по 16.666667% (columns_content_alignment: center) */
 .site-header__menu {
-  flex: 0 1 auto;
-  margin: 0 auto;
+  flex: 1 1 auto;
+  margin: 0;
   width: 100%;
-  max-width: 1370px;
 }
 
 /* верхнее меню */
@@ -144,10 +143,29 @@ body {
   background-position: 50% 50%;
   background-size: contain;
 }
+/* hover из дампа (global_custom_css пункта):
+     text-decoration: underline; text-decoration-color: currentColor;
+     transform: scale(1.05); display: inline-block;
+   Масштабируем только текст — иначе поедет текстура плашки.
+   :visited в дампе не переопределён, цвет ссылки белый во всех состояниях. */
+.top-menu a,
+.top-menu a:link,
+.top-menu a:visited,
 .top-menu a:hover,
 .top-menu a:focus,
-.top-menu a:active { color: #fff; }
-.top-menu a:hover .top-menu__title { text-decoration: underline; text-decoration-color: currentColor; }
+.top-menu a:active { color: #fff; text-decoration: none; }
+.top-menu__title {
+  display: inline-block;
+  transform-origin: center;
+  transition: transform .2s;
+}
+.top-menu a:hover .top-menu__title,
+.top-menu a:focus .top-menu__title,
+.top-menu a:active .top-menu__title {
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+  transform: scale(1.05);
+}
 /* порядок текстур как в дампе */
 .top-menu li:nth-child(1) a { background-image: url("../img/plates/menu-item-bg-lblue2.png"); }
 .top-menu li:nth-child(2) a { background-image: url("../img/plates/menu-item-bg-orange2.png"); padding-bottom: 15px; }
@@ -175,7 +193,6 @@ body {
 @media (max-width: 1199px) {
   .top-menu { display: none; }
   .burger { display: block; margin-left: auto; }
-  .site-header__logo img { height: 36px; }
 }
 
 /* --------------------------------------------------------------- offcanvas  */

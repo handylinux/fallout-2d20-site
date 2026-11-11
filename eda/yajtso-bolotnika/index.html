@@ -104,10 +104,9 @@ body {
 .site-header__logo img { display: block; height: 60px; width: auto; }
 /* меню — по центру секции, 6 колонок по 16.666667% (columns_content_alignment: center) */
 .site-header__menu {
-  flex: 0 1 auto;
-  margin: 0 auto;
+  flex: 1 1 auto;
+  margin: 0;
   width: 100%;
-  max-width: 1370px;
 }
 
 /* верхнее меню */
@@ -151,10 +150,29 @@ body {
   background-position: 50% 50%;
   background-size: contain;
 }
+/* hover из дампа (global_custom_css пункта):
+     text-decoration: underline; text-decoration-color: currentColor;
+     transform: scale(1.05); display: inline-block;
+   Масштабируем только текст — иначе поедет текстура плашки.
+   :visited в дампе не переопределён, цвет ссылки белый во всех состояниях. */
+.top-menu a,
+.top-menu a:link,
+.top-menu a:visited,
 .top-menu a:hover,
 .top-menu a:focus,
-.top-menu a:active { color: #fff; }
-.top-menu a:hover .top-menu__title { text-decoration: underline; text-decoration-color: currentColor; }
+.top-menu a:active { color: #fff; text-decoration: none; }
+.top-menu__title {
+  display: inline-block;
+  transform-origin: center;
+  transition: transform .2s;
+}
+.top-menu a:hover .top-menu__title,
+.top-menu a:focus .top-menu__title,
+.top-menu a:active .top-menu__title {
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+  transform: scale(1.05);
+}
 /* порядок текстур как в дампе */
 .top-menu li:nth-child(1) a { background-image: url("../img/plates/menu-item-bg-lblue2.png"); }
 .top-menu li:nth-child(2) a { background-image: url("../img/plates/menu-item-bg-orange2.png"); padding-bottom: 15px; }
@@ -182,7 +200,6 @@ body {
 @media (max-width: 1199px) {
   .top-menu { display: none; }
   .burger { display: block; margin-left: auto; }
-  .site-header__logo img { height: 36px; }
 }
 
 /* --------------------------------------------------------------- offcanvas  */
@@ -999,9 +1016,7 @@ html, body { overflow-x: hidden; }
 <div class="site">
 <header class="site-header">
   <div class="wrap site-header__inner">
-    <a class="site-header__logo" href="/fallout-2d20-site/"><img src="/fallout-2d20-site/assets/img/logos.png" alt="Fallout 2D20"></a>
-    <nav class="site-header__menu" aria-label="Основное меню"><ul class="top-menu"><li><a href="/fallout-2d20-site/">Главная</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/">Происхождения</a></li><li><a href="/fallout-2d20-site/snaryazhenie/">Снаряжение</a></li><li><a href="/fallout-2d20-site/snaryazhenie/oruzhie/">Оружие</a></li><li><a href="/fallout-2d20-site/perki/">Перки</a></li><li><a href="/fallout-2d20-site/bestiarij/">Бестиарий</a></li><li><a href="/fallout-2d20-site/forum/">Форум</a></li></ul></nav>
-    <div class="site-search"><button class="site-search__btn" type="button" id="search-open" aria-label="Поиск по сайту" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M15.4 15.4 21 21" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button><div class="site-search__panel" id="search-panel" hidden><input class="site-search__input" type="search" id="search-input" placeholder="Оружие, моды, навык…" autocomplete="off" aria-label="Поиск по оружию и модам"><div class="site-search__results" id="search-results" role="listbox"></div></div></div>
+    <nav class="site-header__menu" aria-label="Основное меню"><ul class="top-menu"><li><a href="/fallout-2d20-site/"><span class="top-menu__title">Главная</span></a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/"><span class="top-menu__title">Происхождения</span></a></li><li><a href="/fallout-2d20-site/snaryazhenie/"><span class="top-menu__title">Снаряжение</span></a></li><li><a href="/fallout-2d20-site/perki/"><span class="top-menu__title">Перки</span></a></li><li><a href="/fallout-2d20-site/bestiarij/"><span class="top-menu__title">Бестиарий</span></a></li><li><a href="/fallout-2d20-site/primery/"><span class="top-menu__title">Форум</span></a></li></ul></nav>
     <button class="burger" type="button" aria-label="Открыть меню" aria-controls="drawer">
       <span></span><span></span><span></span>
     </button>
@@ -1038,6 +1053,6 @@ html, body { overflow-x: hidden; }
 
 <script src="/fallout-2d20-site/assets/vendor/bootstrap.bundle.min.js"></script>
 <script src="/fallout-2d20-site/assets/js/search.js"></script>
-<script src="/fallout-2d20-site/assets/js/site.js?v=a2428f81"></script>
+<script src="/fallout-2d20-site/assets/js/site.js?v=ba6c3604"></script>
 </body>
 </html>
