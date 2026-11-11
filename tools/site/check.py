@@ -61,13 +61,13 @@ for path in pages:
 hub = os.path.join(DOCS, 'snaryazhenie/index.html')
 if os.path.exists(hub):
     html = read(hub)
-    tiles = re.findall(r'class="tile__title">([^<]+)<', html)
+    tiles = re.findall(r'class="sp-heading[^"]*">([^<]+)<', html)
     expect = ['Оружие', 'Боеприпасы', 'Броня', 'Одежда', 'Препараты', 'Еда',
               'Напитки', 'Книги и журналы', 'Разное']
     if tiles[:9] != expect:
         errors.append('хаб: порядок плиток %r, ожидался %r' % (tiles[:9], expect))
-    if 'tile--soon' in html and 'скоро' not in html:
-        errors.append('хаб: плитка «скоро» без подписи')
+    if 'sp-row--4-4-4' not in html:
+        errors.append('хаб: раскладка не 4+4+4 (как в дампе id 269)')
 
 # --- битые внутренние ссылки
 for path in pages:

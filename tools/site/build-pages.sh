@@ -17,6 +17,8 @@ touch docs/.nojekyll
 BASE="$BASE_PATH" python3 tools/site/build_data.py
 BASE="$BASE_PATH" node tools/site/prerender.js
 
+BASE="$BASE_PATH" python3 tools/site/gen_from_dump.py
+
 python3 tools/site/check.py
 
 echo "готово: site/ + docs/ (BASE=$BASE_PATH)"

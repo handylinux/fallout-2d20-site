@@ -1010,6 +1010,180 @@ html, body { overflow-x: hidden; }
   .wmods--armor .wmods__c:nth-child(5) { text-align: center; }
   .armor__stats { max-width: 240px; }
 }
+
+/* ============================================================ страницы из дампа
+   Рендер дерева SPPB (tools/site/sppb_render.py): ряд → колонки → аддоны.
+   Ширины, padding и цвета приходят inline из настроек записи, здесь — только
+   внешний вид элементов (шрифты, рамки, таблицы, спойлеры, табы).
+   ========================================================================== */
+.sp-page { padding: 0 0 40px; }
+.sp-page__title {
+  margin: 20px 0 10px;
+  font-size: 34px;
+  line-height: 1.15;
+  text-align: center;
+  text-transform: uppercase;
+}
+.sp-row { width: 100%; }
+.sp-row__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 20px;
+  max-width: 1370px;
+  margin: 0 auto;
+}
+.sp-col { min-width: 0; }
+
+/* заголовки */
+.sp-heading { margin: 6px 0; font-weight: 700; }
+.sp-heading a { color: inherit; text-decoration: none; }
+.sp-heading a:hover { text-decoration: underline; }
+.sp-heading--center { text-align: center; }
+h2.sp-heading { font-size: 30px; line-height: 1.2; }
+h3.sp-heading { font-size: 24px; }
+h4.sp-heading { font-size: 20px; }
+
+/* текст */
+.sp-text { font-size: 16px; line-height: 1.55; }
+.sp-text p { margin: 0 0 .8em; }
+.sp-text ul, .sp-text ol { margin: 0 0 .8em 1.2em; padding: 0; }
+.sp-text a { color: #b15b23; }
+.sp-text table { width: 100%; border-collapse: collapse; margin: 0 0 .8em; }
+.sp-text th, .sp-text td { border: 1px solid #757575; padding: 6px 10px; }
+
+/* картинки */
+.sp-img { display: block; text-align: center; }
+.sp-img img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+
+/* таблицы из table_advanced */
+.sp-table-wrap { overflow-x: auto; }
+.sp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  background: #f8f1da;
+}
+.sp-table thead th {
+  padding: 8px 10px;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  background: #000;
+  border: 1px solid #757575;
+}
+.sp-table td {
+  padding: 8px 10px;
+  border: 1px solid #6e6e6e;
+  vertical-align: top;
+}
+.sp-table tbody tr:nth-child(even) td { background: #fbd9b3; }
+.sp-table p { margin: 0; }
+
+/* спойлеры (accordion) */
+.sp-acc { margin: 12px 0; }
+.sp-acc__item {
+  margin: 0 0 8px;
+  border: 1px solid #6e6e6e;
+  background: #fff;
+  box-shadow: 7px 5px 0 #c3c3c3;
+}
+.sp-acc__head {
+  position: relative;
+  padding: 10px 40px 10px 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+  list-style: none;
+}
+.sp-acc__head::-webkit-details-marker { display: none; }
+.sp-acc__head::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  width: 9px;
+  height: 9px;
+  margin-top: -6px;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: rotate(45deg);
+  transition: transform .15s ease;
+}
+details[open] > .sp-acc__head::after { transform: rotate(-135deg); margin-top: -3px; }
+.sp-acc__body { padding: 12px 14px; }
+
+/* табы */
+.sp-tabs { margin: 12px 0; }
+.sp-tab { margin: 0 0 12px; }
+.sp-tab__title {
+  position: relative;
+  margin: 0 0 8px;
+  padding-right: 40px;
+  padding: 8px 14px;
+  font-size: 18px;
+  color: #fff;
+  text-transform: uppercase;
+  background: #000;
+  cursor: pointer;
+  list-style: none;
+}
+.sp-tab__title::-webkit-details-marker { display: none; }
+.sp-tab__title::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  width: 9px;
+  height: 9px;
+  margin-top: -6px;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: rotate(45deg);
+}
+details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: -3px; }
+
+.sp-divider { margin: 20px 0; border: 0; border-top: 1px solid #6e6e6e; }
+.sp-inner-row { display: flex; flex-wrap: wrap; gap: 20px; }
+.sp-raw { margin: 12px 0; }
+
+/* кнопка «Подробнее» внутри raw_html дампа */
+.sp-raw .cta { display: inline-flex; }
+
+@media (max-width: 800px) {
+  .sp-row__inner > .sp-col { flex: 0 0 100% !important; max-width: 100% !important; }
+  .sp-page__title { font-size: 26px; }
+}
+
+/* ---------------------------------------------------------- главная (правила) */
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  padding: 25px 0;
+}
+.home-cell {
+  padding: 15px 0;
+  text-align: center;
+  border: 1px solid #6e6e6e;
+}
+.home-cell__title {
+  margin: 0 0 10px;
+  font-size: 26px;
+  line-height: 1.2;
+  color: #b15b23;
+}
+.home-cell__list { margin: 0; padding: 0; list-style: none; }
+.home-cell__list li { margin: 4px 0; }
+.home-cell__list a { color: #b15b23; }
+@media (max-width: 900px) {
+  .home-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .home-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body data-base="/fallout-2d20-site">
@@ -1031,15 +1205,12 @@ html, body { overflow-x: hidden; }
       <span></span><span></span>
     </button>
   </div>
-  <ul><li><a href="/fallout-2d20-site/">Правила игры</a><button class="drawer__toggle" type="button" aria-expanded="false"><span class="visually-hidden">Раскрыть «Правила игры»</span></button><ul class="drawer__sub"><li><a href="/fallout-2d20-site/blog/igra">Что нужно для игры</a></li><li><a href="/fallout-2d20-site/blog/atributy-s-p-e-c-i-a-l">Атрибуты S.P.E.C.I.A.L</a></li><li><a href="/fallout-2d20-site/blog/kak-rabotaet-udacha">Как работает Удача</a></li></ul></li><li><a href="/fallout-2d20-site/proiskhozhdeniya">Происхождения</a><button class="drawer__toggle" type="button" aria-expanded="false"><span class="visually-hidden">Раскрыть «Происхождения»</span></button><ul class="drawer__sub"><li><a href="/fallout-2d20-site/proiskhozhdeniya/vyzhivshij">Выживший</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/posvyashchjonnyj-v-bratstvo-stali">Посвящённый в Братство Стали</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/gul">Гуль</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/supermutant">Супермутант</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/obitatel-ubezhishcha">Обитатель убежища</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/mister-pomoshchnik">Мистер Помощник</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/shturmotron">Штурмотрон</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/izgoj-bratstva">Изгой Братства</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/dikar">Дикарь</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/ditya-atoma">Дитя Атома</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/ten">Тень</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/zhitel-nkr">Житель НКР</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/minitmen">Минитмен</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/robomozg">Робомозг</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/protektron">Протектрон</a></li><li><a href="/fallout-2d20-site/proiskhozhdeniya/oskolok-anklava">Осколок Анклава</a></li></ul></li><li><a href="/fallout-2d20-site/perki26">ПЕРКИ</a></li><li><a href="/fallout-2d20-site/snaryazhenie/oruzhie">Оружие</a><button class="drawer__toggle" type="button" aria-expanded="false"><span class="visually-hidden">Раскрыть «Оружие»</span></button><ul class="drawer__sub"><li><a href="/fallout-2d20-site/snaryazhenie/oruzhie/strelkovoe-oruzhie">Стрелковое оружие</a></li><li><a href="/fallout-2d20-site/snaryazhenie/oruzhie/tyazhjoloe-oruzhie">Тяжёлое оружие</a></li><li><a href="/fallout-2d20-site/snaryazhenie/oruzhie/energeticheskoe-oruzhie">Энергетическое оружие</a></li><li><a href="/fallout-2d20-site/snaryazhenie/oruzhie/kholodnoe-oruzhie">Холодное оружие</a></li><li><a href="/fallout-2d20-site/snaryazhenie/oruzhie/bez-oruzhiya">Без оружия</a></li><li><a href="/fallout-2d20-site/snaryazhenie/oruzhie/vzryvchatka">Взрывчатка</a></li><li><a href="/fallout-2d20-site/snaryazhenie/oruzhie/metatelnoe">Метательное</a></li><li><a href="/fallout-2d20-site/snaryazhenie/oruzhie/oruzhie">Оружие</a></li></ul></li><li><a href="/fallout-2d20-site/karty-oruzhiya-b">Карты оружия β</a></li><li><a href="/fallout-2d20-site/bronya">БРОНЯ</a><button class="drawer__toggle" type="button" aria-expanded="false"><span class="visually-hidden">Раскрыть «БРОНЯ»</span></button><ul class="drawer__sub"><li><a href="/fallout-2d20-site/bronya/silovaya-bronya">Силовая броня</a><button class="drawer__toggle" type="button" aria-expanded="false"><span class="visually-hidden">Раскрыть «Силовая броня»</span></button><ul class="drawer__sub"><li><a href="/fallout-2d20-site/bronya/silovaya-bronya/ekskavatornaya-silovaya-bronya">Экскаваторная силовая броня</a></li><li><a href="/fallout-2d20-site/bronya/silovaya-bronya/silovaya-bronya-t-45">Силовая броня Т-45</a></li></ul></li></ul></li><li><a href="/fallout-2d20-site/dopolneniya">РАЗНОЕ</a></li><li><a href="/fallout-2d20-site/stsenarii">СЦЕНАРИИ</a></li><li><a href="/fallout-2d20-site/generator-dobychi">ДОБЫЧА</a></li><li><a href="/fallout-2d20-site/eda">Еда</a><button class="drawer__toggle" type="button" aria-expanded="false"><span class="visually-hidden">Раскрыть «Еда»</span></button><ul class="drawer__sub"><li><a href="/fallout-2d20-site/eda/mutafrukt">Мутафрукт</a></li><li><a href="/fallout-2d20-site/eda/makarony-s-syrom-blamko">Макароны с Сыром &quot;БламКо&quot;</a></li><li><a href="/fallout-2d20-site/eda/myaso-dutnya">Мясо Дутня</a></li><li><a href="/fallout-2d20-site/eda/myaso-gnusa">Мясо Гнуса</a></li><li><a href="/fallout-2d20-site/eda/stejk-iz-gnusa">Стейк из Гнуса</a></li><li><a href="/fallout-2d20-site/eda/myaso-bramina">Мясо Брамина</a></li><li><a href="/fallout-2d20-site/eda/mozgovoj-grib">Мозговой Гриб</a></li><li><a href="/fallout-2d20-site/eda/sobachi-konservy">Собачьи Консервы</a></li><li><a href="/fallout-2d20-site/eda/morkov">Морковь</a></li><li><a href="/fallout-2d20-site/eda/prigotovlennoe-myaso-bolotnika-s-myagkim-pantsirem">Приготовленное мясо болотника с мягким панцирем</a></li><li><a href="/fallout-2d20-site/eda/kukuruza">Кукуруза</a></li><li><a href="/fallout-2d20-site/eda/cram">СРАМ</a></li><li><a href="/fallout-2d20-site/eda/khrustyashchie-kusochki-belki">Хрустящие кусочки белки</a></li><li><a href="/fallout-2d20-site/eda/nalivnye-yabloki">Наливные яблоки</a></li><li><a href="/fallout-2d20-site/eda/yajtso-kogtya-smerti">Яйцо Когтя Смерти</a></li><li><a href="/fallout-2d20-site/eda/omlet-iz-yaits-kogtya-smerti">Омлет из яиц Когтя смерти</a></li><li><a href="/fallout-2d20-site/eda/stejk-iz-kogtya-smerti">Стейк из Когтя смерти</a></li><li><a href="/fallout-2d20-site/eda/keksy-veselye-rebyata">Кексы &quot;Веселые ребята&quot;</a></li><li><a href="/fallout-2d20-site/eda/pishchevaya-pasta">Пищевая паста</a></li><li><a href="/fallout-2d20-site/eda/tykva">Тыква</a></li><li><a href="/fallout-2d20-site/eda/radtarakan-gril">Радтаракан гриль</a></li><li><a href="/fallout-2d20-site/eda/radolen-gril">Радолень гриль</a></li><li><a href="/fallout-2d20-site/eda/zhevatelnye-pastilki">Жевательные пастилки</a></li><li><a href="/fallout-2d20-site/eda/kusochki-iguany">Кусочки игуаны</a></li><li><a href="/fallout-2d20-site/eda/iguana-na-palochke">Игуана на палочке</a></li><li><a href="/fallout-2d20-site/eda/sup-iz-iguany">Суп из игуаны</a></li><li><a href="/fallout-2d20-site/eda/pyure-bystrogo-prigotovleniya">Пюре быстрого приготовления</a></li><li><a href="/fallout-2d20-site/eda/produktovyj-nabor-instituta">Продуктовый набор Института</a></li><li><a href="/fallout-2d20-site/eda/dynya">Дыня</a></li><li><a href="/fallout-2d20-site/eda/keks-iz-bolotnika">Кекс из Болотника</a></li><li><a href="/fallout-2d20-site/eda/yajtso-bolotnika">Яйцо болотника</a></li><li><a href="/fallout-2d20-site/eda/omlet-iz-yajtsa-bolotnika">Омлет из яйца Болотника</a></li><li><a href="/fallout-2d20-site/eda/stejk-iz-matki-bolotnika">Стейк из Матки Болотника</a></li><li><a href="/fallout-2d20-site/eda/myaso-kogtya-smerti">Мясо когтя смерти</a></li><li><a href="/fallout-2d20-site/eda/myaso-bolotnika">Мясо Болотника</a></li><li><a href="/fallout-2d20-site/eda/sobachatina">Собачатина</a></li><li><a href="/fallout-2d20-site/eda/otbivnaya-iz-gonchej-mutanta">Отбивная из гончей мутанта</a></li><li><a href="/fallout-2d20-site/eda/myaso-gonchej-mutanta">Мясо гончей мутанта</a></li><li><a href="/fallout-2d20-site/eda/otbivnye-iz-dvornyagi">Отбивные из дворняги</a></li><li><a href="/fallout-2d20-site/eda/chashka-s-lapshoj">Чашка с лапшой</a></li><li><a href="/fallout-2d20-site/eda/idealno-sokhranivshijsya-pirog">Идеально сохранившийся пирог</a></li><li><a href="/fallout-2d20-site/eda/svinina-s-bobami">Свинина с бобами</a></li><li><a href="/fallout-2d20-site/eda/kartofelnye-chipsy">Картофельные чипсы</a></li><li><a href="/fallout-2d20-site/eda/zapechennyj-duten">Запеченный дутень</a></li></ul></li><li><a href="/fallout-2d20-site/obzory-ofitsialnykh-stsenariev">Обзоры официальных сценариев</a><button class="drawer__toggle" type="button" aria-expanded="false"><span class="visually-hidden">Раскрыть «Обзоры официальных сценариев»</span></button><ul class="drawer__sub"><li><a href="/fallout-2d20-site/obzory-ofitsialnykh-stsenariev/obzor-priklyucheniya-v-bezdnu">Обзор приключения &quot;В бездну&quot;</a></li></ul></li><li><a href="/fallout-2d20-site/bestiarij">Бестиарий</a><button class="drawer__toggle" type="button" aria-expanded="false"><span class="visually-hidden">Раскрыть «Бестиарий»</span></button><ul class="drawer__sub"><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye">Животные и насекомые</a><button class="drawer__toggle" type="button" aria-expanded="false"><span class="visually-hidden">Раскрыть «Животные и насекомые»</span></button><ul class="drawer__sub"><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/gnus">Гнус</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/duten">Дутень</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/bramin">Брамин</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/kogot-smerti">Коготь смерти</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/sobaka">Собака</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/dvornyaga">Дворняга</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/lichinka-bolotnika">Личинка болотника</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/bolotnik">Болотник</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/bolotnik-okhotnik">Болотник охотник</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/matka-bolotnikov">Матка болотников</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/krotokrys">Кротокрыс</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/gonchaya-mutant">Гончая-мутант</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/radtarakan">Радтаракан</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/radskorpion">Радскорпион</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/radolen">Радолень</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/zhalokryl">Жалокрыл</a></li><li><a href="/fallout-2d20-site/bestiarij/zhivotnye-i-nasekomye/yao-guaj">Яо Гуай</a></li></ul></li><li><a href="/fallout-2d20-site/bestiarij/raiders">Рейдеры</a><button class="drawer__toggle" type="button" aria-expanded="false"><span class="visually-hidden">Раскрыть «Рейдеры»</span></button><ul class="drawer__sub"><li><a href="/fallout-2d20-site/bestiarij/raiders/rejder">Рейдер</a></li><li><a href="/fallout-2d20-site/bestiarij/raiders/rejder-boss">Рейдер-Босс</a></li><li><a href="/fallout-2d20-site/bestiarij/raiders/rejder-psikh">Рейдер-псих</a></li><li><a href="/fallout-2d20-site/bestiarij/raiders/rejder-padalshchik">Рейдер-падальщик</a></li><li><a href="/fallout-2d20-site/bestiarij/raiders/rejder-veteran">Рейдер-ветеран</a></li></ul></li><li><a href="/fallout-2d20-site/bestiarij/supermutanty">Супермутанты</a><button class="drawer__toggle" type="button" aria-expanded="false"><span class="visually-hidden">Раскрыть «Супермутанты»</span></button><ul class="drawer__sub"><li><a href="/fallout-2d20-site/bestiarij/supermutanty/supermutant">Супермутант</a></li></ul></li></ul></li></ul>
+  <ul></ul>
 </aside>
 
 <main class="page">
   <div class="wrap">
-<h1 class="page__title">Жалокрыл</h1>
-<p class="page__lead">Страница ещё не перенесена в новый каркас.</p>
-<p class="page__lead"><a href="/fallout-2d20-site/">На главную</a></p>
-
+<div class="sp-page"><h1 class="sp-page__title">Жалокрыл</h1><section class="sp-row sp-row--6-6"><div class="sp-row__inner" style="padding:15px 0px 5px 0px"><div class="sp-col" style="flex:0 0 50%;max-width:50%"><h4 class="sp-heading">Назад в категорию: Животные и Насекомые</h4><h2 class="sp-heading">Жалокрыл</h2><div class="sp-text"><p><em><strong>Уровень 5, Мутировавшее Насекомое, Обычное существо (38 XP)</strong></em></p></div></div><div class="sp-col" style="flex:0 0 50%;max-width:50%"><div class="sp-text"><p> </p><div class="sp-table-wrap"><table class="sp-table"><thead><tr><td><strong><span>ТЕЛО</span></strong></td><td><strong><span>РАЗУМ</span></strong></td><td><strong><span>Б.БОЙ</span></strong></td><td><strong><span>Д.БОЙ</span></strong></td><td colspan="2"><strong><span>ПРОЧЕЕ</span></strong></td></tr></thead><tbody><tr><td>6</td><td>5</td><td>3</td><td>-</td><td colspan="2">2</td></tr><tr><td colspan="2"><span><strong>ОЗ</strong></span></td><td><span><strong>ИНИЦИАТИВА</strong></span></td><td colspan="3"><span><strong>ЗАЩИТА</strong></span></td></tr><tr><td colspan="2">9</td><td>1</td><td colspan="3">3</td></tr><tr><td><strong><span>ФИЗ. СУ</span></strong></td><td><strong><span>ЭНЕРГО. СУ</span></strong></td><td><strong><span>РАД. СУ. </span></strong></td><td colspan="3"><strong><span>ЯД СУ.</span></strong></td></tr><tr><td>0</td><td>0</td><td>Иммунитет</td><td colspan="3">Иммунитет</td></tr></tbody></table></div></div><div class="sp-text"><div class="sp-table-wrap"><table class="sp-table"><thead><tr><th><span>АТАКИ</span></th></tr></thead><tbody><tr><td><ul><li><strong>КОЛЮЧЕЕ ЖАЛО: ТЕЛО + БЛИЖНИЙ БОЙ (ЗУ 9)</strong>, 2 {/CD} Устойчивый Ядовитый Физический урон</li></ul></td></tr></tbody></table></div></div><h2 class="sp-heading sp-heading--center">ОСОБЕННОСТИ</h2><div class="sp-text"><p>{Иммунитет к радиации}</p></div><div class="sp-text"><p>{Иммунитет к яду}</p></div><div class="sp-text"><p>{Полёт}</p></div><div class="sp-text"><ul><li><strong>ПИКИРУЮЩАЯ БОМБА:</strong> Если жалокрыл перемещается в зону досягаемости и совершает атаку в ближнем бою в тот же ход, он может перебросить 1d20 на атаку. После атаки он может потратить 1 ОД, чтобы переместиться на одну зону.</li></ul></div><h2 class="sp-heading sp-heading--center">ИНВЕНТАРЬ</h2><div class="sp-text"><ul><li><p><strong>ПОТРОШЕНИЕ:</strong> Можно разделать труп жалокрыла успешно пройдя тест на ВЫН + Выживание со сложностью 0. Это принесёт 1 {/CD} мяса жалокрыла.<br></p></li></ul></div></div></div></section><section class="sp-row sp-row--12"><div class="sp-row__inner" style="padding:15px 0px 25px 0px"><div class="sp-col" style="flex:0 0 100%;max-width:100%"><div class="sp-text"><p>Мутировавшая форма до военного вида скорпомухи, жалокрылы - еще одно распространенное в пустошах летающее насекомое. Их часто можно встретить строящими гнезда в тех же условиях и местах, что и <a href="index.php?option=com_content&amp;view=article&amp;id=371:duten&amp;catid=31:zhivotnye-i-nasekomye&amp;Itemid=546">дутни  </a>с <a href="index.php?option=com_content&amp;view=article&amp;id=363:gnus&amp;catid=31:zhivotnye-i-nasekomye&amp;Itemid=545">гнусами</a>, из-за схожести климата и источников пищи. У жалокрылов развилось ядовитое жало, который одновременно смертельное и болезненое. Эти существа невероятно быстры и проворны, и бросаются на свою жертву, чтобы как можно быстрее ее уничтожить. Эти качества делают их сложным противником особенно если они собираются в рой. Они создают гнезда как на земле, так и на высоте, которые можно заметить по ярко-желтой медоподобной жиже, которую они выделяют. Если гнездо потревожено или ему угрожает опасность, рой жалокрылов непременно поднимется на его защиту. <br></p></div></div></div></section></div>
   </div>
 </main>
 
@@ -1053,6 +1224,6 @@ html, body { overflow-x: hidden; }
 
 <script src="/fallout-2d20-site/assets/vendor/bootstrap.bundle.min.js"></script>
 <script src="/fallout-2d20-site/assets/js/search.js"></script>
-<script src="/fallout-2d20-site/assets/js/site.js?v=ba6c3604"></script>
+<script src="/fallout-2d20-site/assets/js/site.js?v=e6653915"></script>
 </body>
 </html>
