@@ -207,6 +207,9 @@ def load():
                     'materials': m.get('materials') or '',
                 } for m in group],
             })
+        # картинка: src/img/weapons/<слаг>.png — подставляется по названию
+        art = os.path.join(ROOT, 'src', 'img', 'weapons', item['slug'] + '.png')
+        item['image'] = ('/assets/img/weapons/%s.png' % item['slug']) if os.path.exists(art) else None
         item['stats'] = [
             [label, ('—' if item.get(key) in (None, '') else item.get(key))]
             for key, label in STAT_LABELS

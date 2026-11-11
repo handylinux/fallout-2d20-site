@@ -116,6 +116,7 @@ const TOP_MENU = [
   ['/snaryazhenie/oruzhie/', 'Оружие'],
   ['/perki/', 'Перки'],
   ['/bestiarij/', 'Бестиарий'],
+  ['/primery/', 'Примеры'],
 ];
 
 function titleTag(title) {
@@ -173,6 +174,7 @@ function drawerHtml(catalog) {
   const extras = [
     ['/proiskhozhdeniya/', 'Происхождения'],
     ['/blog/', 'Блог'],
+    ['/primery/', 'Примеры типов страниц'],
   ];
   const parts = [];
   extras.forEach(([url, title]) => {
@@ -287,6 +289,23 @@ function build() {
       ],
     });
   });
+
+  /* примеры типов страниц: NPC, броня, еда, препарат */
+  const variants = readJson('variants');
+  if (variants) {
+    const views = { creature_item: 1, armor_item: 1, food_item: 1, weapon_item: 1 };
+    push('primery', Views.examples({ page: variants }), variants.title || 'Примеры', {
+      description: variants.lead || '',
+      breadcrumbs: [['/primery/', variants.title || 'Примеры']],
+    });
+    (variants.examples || []).forEach((item) => {
+      const view = views[item.view] ? item.view : 'weapon_item';
+      push('primery/' + item.slug, Views[view]({ item, category: {}, section: {} }), item.name, {
+        description: [item.name, item.category, item.note].filter(Boolean).join(' — '),
+        breadcrumbs: [['/primery/', 'Примеры'], ['/primery/' + item.slug + '/', item.name]],
+      });
+    });
+  }
 
   /* блог: список и статьи */
   const blog = readJson('blog');

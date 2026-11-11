@@ -68,6 +68,7 @@ def weapon_entry(item):
         'cat': item['category'][0],
         'catName': item['category'][1],
         'stats': [[label, value] for label, value in item['stats']],
+        'image': item.get('image'),
         'search': ' '.join([item['name'], item['category'][1]] +
                            [str(v) for _k, v in item['stats']]),
         'flavour': item.get('flavour') or '',
@@ -86,6 +87,16 @@ def load_json(rel):
         return None
     with open(path, encoding='utf-8') as f:
         return json.load(f)
+
+
+def write_examples():
+    """По одному примеру каждого вида: разные наборы характеристик и блоков.
+
+    Это не «спецстраницы»: тот же шаблон, просто данные другой формы.
+    """
+    variants = load_json('data/variants.json')
+    if variants:
+        write('variants.json', variants)
 
 
 def write_origins():
@@ -107,6 +118,7 @@ def write_blog():
 def main():
     write_origins()
     write_blog()
+    write_examples()
     items = weapons.load()
     cats = weapons.by_category(items)
 
