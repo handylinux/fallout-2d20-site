@@ -40,43 +40,75 @@ def stats_table(item):
     return ('<table class="wstats"><tbody>%s</tbody></table>' % body)
 
 
-def mods_table(group):
-    """Моды одного слота."""
-    head = ('<div class="dtable__row dtable__row--head">'
-            '<div class="dtable__cell">Модификация</div>'
-            '<div class="dtable__cell">Урон</div>'
-            '<div class="dtable__cell">Скорость</div>'
-            '<div class="dtable__cell">Патрон</div>'
-            '<div class="dtable__cell">Сложность</div>'
-            '<div class="dtable__cell">Перк</div>'
-            '<div class="dtable__cell">Цена</div>'
-            '<div class="dtable__cell">Вес</div></div>')
+def mod_row(mod, labels):
+    """Один мод: спойлер, внутри таблица «характеристика — значение»."""
+    dmg = mod['damage']
+    dmg_text = '—'
+    if isinstance(dmg, dict):
+        op = dmg.get('op')
+        dmg_text = ('%s%s' % ('' if op == 'set' else (op or ''), dmg.get('value')))
+    fr = mod['fireRate']
+    fr_text = '—'
+    if isinstance(fr, dict):
+        fr_text = '%s%s' % (fr.get('op') or '', fr.get('value'))
+
+    values = {
+        'Урон': dmg_text,
+        'Скорость': fr_text,
+        'Патрон': mod['ammo'] or '—',
+        'Сложность': mod['complexity'] if mod['complexity'] is not None else '—',
+        'Перк': mod['perk'] or '—',
+        'Цена': mod['cost'] if mod['cost'] is not None else '—',
+        'Вес': mod['weight'] if mod['weight'] is not None else '—',
+    }
+    rows = ''.join('<tr><th scope="row">%s</th><td>%s</td></tr>' % (e(k), e(v))
+                   for k, v in values.items())
+    return ('<details class="wmod"><summary class="wmod__summary">%s</summary>'
+            '<div class="wmod__body"><table class="wmod__table"><tbody>%s</tbody></table></div>'
+            '</details>' % (e(mod['name']), rows))
+
+
+def mods_block(group):
+    """Слот модов: спойлер, внутри — спойлеры модов. Плюс таблица на div
+    для широкого экрана (шапка = характеристики, строка = мод)."""
+    mods = group['mods']
+    return ('<details class="spoiler wmods-group"><summary class="spoiler__summary">%s '
+            '<span class="wmods-group__count">(%d)</span></summary>'
+            '<div class="spoiler__body">%s</div></details>'
+            % (e(group['slotName']), len(mods),
+               ''.join(mod_row(m, None) for m in mods)))
+
+
+def mods_table_div(group):
+    """Плоская таблица на div: на узком экране столбцы становятся колонками."""
+    head = ('<div class="wmods__head">'
+            '<div>Модификация</div><div>Урон</div><div>Скорость</div><div>Патрон</div>'
+            '<div>Сложность</div><div>Перк</div><div>Цена</div><div>Вес</div></div>')
     rows = []
     for m in group['mods']:
         dmg = m['damage']
         dmg_text = '—'
         if isinstance(dmg, dict):
-            dmg_text = ('%s%s' % (dmg.get('op') if dmg.get('op') != 'set' else '', dmg.get('value')))
+            op = dmg.get('op')
+            dmg_text = '%s%s' % ('' if op == 'set' else (op or ''), dmg.get('value'))
         fr = m['fireRate']
         fr_text = '—'
         if isinstance(fr, dict):
             fr_text = '%s%s' % (fr.get('op') or '', fr.get('value'))
-        rows.append(
-            '<div class="dtable__row">'
-            '<div class="dtable__cell"><span class="dtable__label">Модификация</span>%s</div>'
-            '<div class="dtable__cell"><span class="dtable__label">Урон</span>%s</div>'
-            '<div class="dtable__cell"><span class="dtable__label">Скорость</span>%s</div>'
-            '<div class="dtable__cell"><span class="dtable__label">Патрон</span>%s</div>'
-            '<div class="dtable__cell"><span class="dtable__label">Сложность</span>%s</div>'
-            '<div class="dtable__cell"><span class="dtable__label">Перк</span>%s</div>'
-            '<div class="dtable__cell"><span class="dtable__label">Цена</span>%s</div>'
-            '<div class="dtable__cell"><span class="dtable__label">Вес</span>%s</div>'
-            '</div>' % (e(m['name']), e(dmg_text), e(fr_text), e(m['ammo'] or '—'),
-                        e(m['complexity'] if m['complexity'] is not None else '—'),
-                        e(m['perk'] or '—'), e(m['cost'] if m['cost'] is not None else '—'),
-                        e(m['weight'] if m['weight'] is not None else '—')))
-    return ('<div class="dtable dtable--wide wmods" style="--cols:8">%s%s</div>'
-            % (head, ''.join(rows)))
+        cells = [
+            ('Модификация', m['name']),
+            ('Урон', dmg_text),
+            ('Скорость', fr_text),
+            ('Патрон', m['ammo'] or '—'),
+            ('Сложность', m['complexity'] if m['complexity'] is not None else '—'),
+            ('Перк', m['perk'] or '—'),
+            ('Цена', m['cost'] if m['cost'] is not None else '—'),
+            ('Вес', m['weight'] if m['weight'] is not None else '—'),
+        ]
+        rows.append('<div class="wmods__row">%s</div>' % ''.join(
+            '<div class="wmods__cell"><span class="wmods__label">%s</span>%s</div>'
+            % (e(label), e(value)) for label, value in cells))
+    return '<div class="wmods">%s%s</div>' % (head, ''.join(rows))
 
 
 def card(item, back_url=None, back_title=None, img_url=None):
@@ -97,11 +129,7 @@ def card(item, back_url=None, back_title=None, img_url=None):
 
     mods_html = ''
     if item['mod_groups']:
-        blocks = []
-        for group in item['mod_groups']:
-            blocks.append(
-                '<h3 class="wmods__title">%s</h3>%s'
-                % (e(group['slotName']), mods_table(group)))
+        blocks = [mods_block(g) for g in item['mod_groups']]
         mods_html = ('<section class="wcard__mods"><h2 class="wcard__sub">Модификации</h2>%s</section>'
                      % ''.join(blocks))
 

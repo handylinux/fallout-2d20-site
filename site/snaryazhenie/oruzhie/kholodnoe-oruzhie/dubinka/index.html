@@ -63,9 +63,10 @@ h1, h2, h3, h4, h5, h6 {
    Свой класс .wrap — не пересекается с .container из Bootstrap.
    -------------------------------------------------------------------------- */
 .wrap {
-  width: var(--f-content);
-  max-width: calc(var(--f-site-max) * .8);
+  width: 100%;
+  max-width: none;
   margin: 0 auto;
+  padding: 0 15px;
 }
 
 body {
@@ -604,8 +605,8 @@ body { background: transparent; }
    Свыше 1600px: сайт фиксируется на 1600px и центрируется.
    ========================================================================== */
 .site {
-  width: 100%;
-  max-width: var(--f-site-max);
+  width: var(--f-content);          /* 80% от ширины окна */
+  max-width: var(--f-site-max);     /* но не шире 1600px */
   margin: 0 auto;
 }
 
@@ -635,6 +636,56 @@ body { background: transparent; }
 @media (max-width: 900px) {
   .wcard__row { grid-template-columns: 1fr; gap: 18px; }
 }
+
+/* ============================================================================
+   МОДЫ ОРУЖИЯ: каждый мод — спойлер внутри спойлера-слота.
+   На широком экране таблица на div в 8 колонок, на узком — 2 колонки,
+   и каждый мод сам становится такой же таблицей «характеристика-значение».
+   ========================================================================== */
+.wmods { border: 1px solid var(--f-plate-line); background: rgba(255, 255, 255, .5); }
+.wmods__head,
+.wmods__row { display: grid; grid-template-columns: 1.6fr .7fr .7fr 1fr .8fr 1.1fr .6fr .6fr; }
+.wmods__head { background: #000; color: #fff; font-weight: 700; }
+.wmods__head > div,
+.wmods__row > .wmods__cell { padding: 8px 10px; border-right: 1px solid var(--f-plate-line); min-width: 0; }
+.wmods__head > div:last-child,
+.wmods__row > .wmods__cell:last-child { border-right: 0; }
+.wmods__row + .wmods__row { border-top: 1px solid var(--f-plate-line); }
+.wmods__label { display: none; }
+
+/* спойлер мода: сводка = имя, внутри таблица характеристик */
+.wmod { border-top: 1px solid var(--f-plate-line); }
+.wmod:first-of-type { border-top: 0; }
+.wmod__summary {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; cursor: pointer; list-style: none;
+}
+.wmod__summary::-webkit-details-marker { display: none; }
+.wmod__summary::before {
+  content: ""; width: 7px; height: 7px; flex: 0 0 auto;
+  border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg); transition: transform .2s;
+}
+.wmod[open] > .wmod__summary::before { transform: rotate(45deg); }
+.wmod__body { padding: 0 10px 10px; }
+
+/* таблица «характеристика — значение» внутри мода */
+.wmod__table { width: 100%; border-collapse: collapse; border: 1px solid #000; }
+.wmod__table th,
+.wmod__table td { padding: 6px 10px; border: 1px solid #000; font-size: 15px; }
+.wmod__table th { width: 45%; background: #000; color: #fff; text-align: left; font-weight: 700; }
+.wmod__table td { background: #f0dea8; text-align: center; }
+
+@media (max-width: 900px) {
+  /* шапка не нужна: подписи и так внутри каждой строки */
+  .wmods__head { display: none; }
+  .wmods__row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .wmods__row > .wmods__cell { border-right: 0; border-bottom: 1px solid var(--f-plate-line); }
+  .wmods__label {
+    display: block; font-size: .72rem; font-weight: 700;
+    letter-spacing: .02em; text-transform: uppercase; opacity: .7;
+  }
+}
 </style>
 </head>
 <body>
@@ -662,7 +713,7 @@ body { background: transparent; }
 
 <main class="page">
   <div class="wrap">
-<p class="wcard__back"><a href="/snaryazhenie/oruzhie/kholodnoe-oruzhie/">Назад в категорию: Холодное оружие</a></p><h2 class="wcard__title">Дубинка</h2><div class="wcard"><div class="wcard__row"><div class="wcard__media wcard__media--empty"></div><div class="wcard__stats"><table class="wstats"><tbody><tr><th scope="row">ТИП ПАТРОНА</th><td>—</td></tr><tr><th scope="row">ТИП УРОНА</th><td>Физический</td></tr><tr><th scope="row">УРОН</th><td>3 {/CD}</td></tr><tr><th scope="row">ЭФФЕКТ</th><td>—</td></tr><tr><th scope="row">СКОРОСТЬ СТРЕЛЬБЫ</th><td>0</td></tr><tr><th scope="row">ДИСТАНЦИЯ</th><td>—</td></tr><tr><th scope="row">КАЧЕСТВА</th><td>—</td></tr><tr><th scope="row">ВЕС</th><td>2</td></tr><tr><th scope="row">ЦЕНА</th><td>15</td></tr><tr><th scope="row">РЕДКОСТЬ</th><td>Необычное</td></tr></tbody></table></div></div><p class="wcard__text">A collapsible baton of the sort used by police depart ments and private security forces before the Great War. Vault-Tec security within each vault had a stock of these, so they remain in common use as a light weight back-up melee weapon.</p><section class="wcard__mods"><h2 class="wcard__sub">Модификации</h2><h3 class="wmods__title">Уникальное</h3><div class="dtable dtable--wide wmods" style="--cols:8"><div class="dtable__row dtable__row--head"><div class="dtable__cell">Модификация</div><div class="dtable__cell">Урон</div><div class="dtable__cell">Скорость</div><div class="dtable__cell">Патрон</div><div class="dtable__cell">Сложность</div><div class="dtable__cell">Перк</div><div class="dtable__cell">Цена</div><div class="dtable__cell">Вес</div></div><div class="dtable__row"><div class="dtable__cell"><span class="dtable__label">Модификация</span>Дубинка: Электризованная</div><div class="dtable__cell"><span class="dtable__label">Урон</span>+2</div><div class="dtable__cell"><span class="dtable__label">Скорость</span>—</div><div class="dtable__cell"><span class="dtable__label">Патрон</span>—</div><div class="dtable__cell"><span class="dtable__label">Сложность</span>4</div><div class="dtable__cell"><span class="dtable__label">Перк</span>Blacksmith 2, Science! 1</div><div class="dtable__cell"><span class="dtable__label">Цена</span>15</div><div class="dtable__cell"><span class="dtable__label">Вес</span>—</div></div><div class="dtable__row"><div class="dtable__cell"><span class="dtable__label">Модификация</span>Электрошокер</div><div class="dtable__cell"><span class="dtable__label">Урон</span>+2</div><div class="dtable__cell"><span class="dtable__label">Скорость</span>—</div><div class="dtable__cell"><span class="dtable__label">Патрон</span>—</div><div class="dtable__cell"><span class="dtable__label">Сложность</span>5</div><div class="dtable__cell"><span class="dtable__label">Перк</span>Blacksmith 3, Science! 1</div><div class="dtable__cell"><span class="dtable__label">Цена</span>100</div><div class="dtable__cell"><span class="dtable__label">Вес</span>—</div></div></div></section></div>
+<p class="wcard__back"><a href="/snaryazhenie/oruzhie/kholodnoe-oruzhie/">Назад в категорию: Холодное оружие</a></p><h2 class="wcard__title">Дубинка</h2><div class="wcard"><div class="wcard__row"><div class="wcard__media wcard__media--empty"></div><div class="wcard__stats"><table class="wstats"><tbody><tr><th scope="row">ТИП ПАТРОНА</th><td>—</td></tr><tr><th scope="row">ТИП УРОНА</th><td>Физический</td></tr><tr><th scope="row">УРОН</th><td>3 {/CD}</td></tr><tr><th scope="row">ЭФФЕКТ</th><td>—</td></tr><tr><th scope="row">СКОРОСТЬ СТРЕЛЬБЫ</th><td>0</td></tr><tr><th scope="row">ДИСТАНЦИЯ</th><td>—</td></tr><tr><th scope="row">КАЧЕСТВА</th><td>—</td></tr><tr><th scope="row">ВЕС</th><td>2</td></tr><tr><th scope="row">ЦЕНА</th><td>15</td></tr><tr><th scope="row">РЕДКОСТЬ</th><td>Необычное</td></tr></tbody></table></div></div><p class="wcard__text">A collapsible baton of the sort used by police depart ments and private security forces before the Great War. Vault-Tec security within each vault had a stock of these, so they remain in common use as a light weight back-up melee weapon.</p><section class="wcard__mods"><h2 class="wcard__sub">Модификации</h2><details class="spoiler wmods-group"><summary class="spoiler__summary">Уникальное <span class="wmods-group__count">(2)</span></summary><div class="spoiler__body"><details class="wmod"><summary class="wmod__summary">Дубинка: Электризованная</summary><div class="wmod__body"><table class="wmod__table"><tbody><tr><th scope="row">Урон</th><td>+2</td></tr><tr><th scope="row">Скорость</th><td>—</td></tr><tr><th scope="row">Патрон</th><td>—</td></tr><tr><th scope="row">Сложность</th><td>4</td></tr><tr><th scope="row">Перк</th><td>Blacksmith 2, Science! 1</td></tr><tr><th scope="row">Цена</th><td>15</td></tr><tr><th scope="row">Вес</th><td>—</td></tr></tbody></table></div></details><details class="wmod"><summary class="wmod__summary">Электрошокер</summary><div class="wmod__body"><table class="wmod__table"><tbody><tr><th scope="row">Урон</th><td>+2</td></tr><tr><th scope="row">Скорость</th><td>—</td></tr><tr><th scope="row">Патрон</th><td>—</td></tr><tr><th scope="row">Сложность</th><td>5</td></tr><tr><th scope="row">Перк</th><td>Blacksmith 3, Science! 1</td></tr><tr><th scope="row">Цена</th><td>100</td></tr><tr><th scope="row">Вес</th><td>—</td></tr></tbody></table></div></details></div></details></section></div>
   </div>
 </main>
 
