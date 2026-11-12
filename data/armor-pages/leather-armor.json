@@ -1,0 +1,53 @@
+{
+  "id": "leather-armor",
+  "slug": "kozhanskaya-bronya",
+  "collection": "armor",
+  "set": "leatherArmor",
+  "title": "Кожаная броня",
+  "back": {
+    "title": "Назад в категорию: Броня",
+    "href": "https://www.fallout-2d20.ru/bronya"
+  },
+  "image": {
+    "src": "https://www.fallout-2d20.ru/images/2025/05/16/fo76_excavator_power_armor.png",
+    "alt": "Кожаная броня"
+  },
+  "intro": [
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+  ],
+  "tier_titles": {
+    "standard": "Стандартная",
+    "sturdy": "Укреплённая",
+    "heavy": "Тяжёлая"
+  },
+  "hero": {
+    "tier": "standard",
+    "side": "right"
+  },
+  "tabs_title": "Категории и модификации",
+  "tabs": [
+    {
+      "type": "tiers",
+      "title": "Категории",
+      "tiers": [
+        "sturdy",
+        "heavy"
+      ]
+    },
+    {
+      "type": "mods",
+      "title": "Модификации обшивки",
+      "categories": [
+        "standardMods"
+      ]
+    },
+    {
+      "type": "mods",
+      "title": "Улучшения",
+      "categories": [
+        "leatherUniqueMods"
+      ]
+    }
+  ]
+}
