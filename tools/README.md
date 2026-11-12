@@ -329,7 +329,8 @@ tools/weapons2cards.py                 Companion JSON → карточки
 tools/weapon2pdf.py                    генератор PDF
 assets/fonts/Carlito-*.ttf             шрифт (OFL, метрический клон Calibri)
 assets/pdf/paper.jpg                   бумажная текстура из PDF
-assets/pdf/weapons/*.png               картинки оружия (пока вручную)
+assets/pdf/weapons/*.png               картинки оружия (из книги: tools/extract_pdf_images.py)
+tools/extract_pdf_images.py            вытащить картинки из PDF книги
 docs/weapon-pdf.md                     геометрия, кегли, правила, пробелы в данных
 ```
 
@@ -339,6 +340,12 @@ python3 tools/weapon2pdf.py data/weapons/cards/combat-rifle.json \
     --out docs/render/out/combat-rifle.pdf
 python3 tools/weapon2pdf.py data/weapons/cards/revolver-44.json \
     --out docs/render/out/revolver-44.pdf
+
+# вытащить все картинки оружия из книги (~75 МБ PDF из Publisher)
+python3 tools/extract_pdf_images.py "Справочник оружия.pdf" --out art/ \
+    --min-size 300
+# art/index.html — контактный лист со страницами, art/report.csv — таблица
+# файлы вида art/p018-01.png кладём как assets/pdf/weapons/<slug>.png
 
 # карточка из данных компаньона (описание — английское flavour)
 python3 tools/weapons2cards.py weapon_10mm_pistol --page 18 \
