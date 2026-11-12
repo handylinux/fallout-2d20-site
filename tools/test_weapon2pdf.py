@@ -212,6 +212,27 @@ class RenderTests(unittest.TestCase):
             self.assertAlmostEqual(heading_top + w.MODS_HEADING_GAP,
                                    table_top, delta=2)
 
+    def test_long_description_uses_the_space_above_the_mods(self):
+        card = base_card()
+        card["mods"] = [{"slot": "РЕСИВЕР", "items": ["Один"]}]
+        card["description"] = " ".join(f"Слово{i}" for i in range(110))
+        page = self.render(card)[0]
+        text = page.get_text()
+        self.assertNotIn("…", text)
+        self.assertIn("Слово109", text)
+
+    def test_description_bottom_follows_the_table(self):
+        card = base_card()
+        card["mods"] = [{"slot": "РЕСИВЕР", "items": ["Один"]}]
+        short = w.description_bottom(card)
+        card["mods"] = [{"slot": "РЕСИВЕР",
+                         "items": [f"Мод {i}" for i in range(8)]}]
+        tall = w.description_bottom(card)
+        self.assertGreater(short, tall)
+        self.assertAlmostEqual(
+            short, w.MODS_BOTTOM - w.MODS_MIN_ROW - w.MODS_HEADING_GAP - 10,
+            places=1)
+
     def test_page_number_side_alternates(self):
         even = self.render(base_card())[0]
         odd_card = base_card()

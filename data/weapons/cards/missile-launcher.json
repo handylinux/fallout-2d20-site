@@ -1,0 +1,44 @@
+{
+  "id": "weapon_missile_launcher",
+  "title": "Ракетная установка",
+  "weight": "21",
+  "cost": 314,
+  "rarity": 4,
+  "ammo": "Ракета",
+  "damageType": "Физический",
+  "damage": 11,
+  "fireRate": 0,
+  "range": "Дальняя",
+  "effects": [],
+  "qualities": [
+    "Двуручное",
+    "Врыв"
+  ],
+  "description": "A refined, highly adaptable multipurpose missile weapon introduced into the American arsenal, the modular launcher is smaller and more maneuverable than the earlier model. It consists of the two-part launch tube, firing mechanism, mounting brackets; open battle sights and a mount for a guidance system. It is a breech-loading weapon, reloaded by lifting the front section of the launch tube and sliding the 72mm fin-stabilized missile inside. The rear part of the tube is designed to safely disperse launch gasses, allowing it to be launched from confined spaces. Other forms and designs of Missile Launcher exist across the waste lands, but this form is common enough that most consider it the standard.",
+  "image": "assets/pdf/weapons/combat-rifle.png",
+  "mods": [
+    {
+      "slot": "СТВОЛ",
+      "items": [
+        "Четырёхствольный",
+        "Пятиствольный"
+      ]
+    },
+    {
+      "slot": "ПРИЦЕЛ",
+      "items": [
+        "Оптический ночного видения",
+        "Оптический",
+        "Компьютер наведения"
+      ]
+    },
+    {
+      "slot": "ДУЛО",
+      "items": [
+        "Измельчитель",
+        "Стабилизатор"
+      ]
+    }
+  ],
+  "page": 41
+}

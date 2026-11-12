@@ -453,15 +453,43 @@ def draw_stats(c, card) -> None:
     c.line(CONTENT_R, y_from_top(top), CONTENT_R, y_from_top(bottom))
 
 
-def draw_description(c, card) -> None:
+def mods_block(card):
+    """(rows, table top, column count) or None when there are no mods."""
+    if not any((cat.get("items") or []) for cat in card.get("mods") or []):
+        return None
+    rows, total, ncols = mods_layout(card)
+    avail = MODS_BOTTOM - MODS_TOP
+    if total > avail:
+        print("warning: mods table overflows the page", file=sys.stderr)
+        scale = avail / total
+        for row in rows:
+            row["h"] *= scale
+    top = MODS_BOTTOM - sum(r["h"] for r in rows)
+    return rows, top, ncols
+
+
+def description_bottom_from(block) -> float:
+    """Last y the description may reach: just above the mods heading."""
+    if block is None:
+        return MODS_HEADING_TOP - 10
+    return block[1] - MODS_HEADING_GAP - 10
+
+
+def description_bottom(card) -> float:
+    return description_bottom_from(mods_block(card))
+
+
+def draw_description(c, card, max_bottom=None) -> None:
     text = (card.get("description") or "").strip()
     if not text:
         return
     width = DESC_RIGHT - DESC_LEFT
     size, leading = DESC_SIZE, DESC_LEADING
     lines = wrap_text(text, "Carlito", size, width)
-    # keep the block above the mods heading; shrink a little if needed
-    max_bottom = MODS_HEADING_TOP - 10
+    # the description may use all the room above the mods block; shrink only
+    # when even that is not enough
+    if max_bottom is None:
+        max_bottom = description_bottom(card)
     while len(lines) * leading + DESC_TOP > max_bottom and size > 10:
         size -= 0.5
         leading -= 0.6
@@ -532,26 +560,18 @@ def mods_layout(card) -> tuple[list[dict], float, int]:
     return rows, sum(r["h"] for r in rows), ncols
 
 
-def draw_mods(c, card) -> None:
-    top = MODS_TOP
+def draw_mods(c, card, block=None) -> None:
     mods = card.get("mods") or []
 
-    if not any((cat.get("items") or []) for cat in mods):
+    if block is None:
+        block = mods_block(card)
+    if block is None:
         draw_center_line(c, MODS_HEADING_TOP, "НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ",
                          "Carlito-Bold", MODS_HEADING_SIZE)
         return
 
-    rows, total, ncols = mods_layout(card)
+    rows, top, ncols = block
     edges = mods_edges(ncols)
-    avail = MODS_BOTTOM - top
-    if total > avail:
-        print("warning: mods table overflows the page", file=sys.stderr)
-        scale = avail / total
-        for row in rows:
-            row["h"] *= scale
-    # rows keep their content height and stack up from the bottom rule, so the
-    # table always ends at MODS_BOTTOM no matter how many mods there are
-    top = MODS_BOTTOM - sum(r["h"] for r in rows)
     bottom = MODS_BOTTOM
     # the heading follows the table, so short tables do not leave a hole
     draw_center_line(c, top - MODS_HEADING_GAP, MODS_HEADING, "Carlito-Bold",
@@ -650,8 +670,9 @@ def render_card(card, out_path: str) -> None:
     draw_image(c, card)   # opaque paper copy: must stay behind the text
     draw_title(c, card)
     draw_stats(c, card)
-    draw_description(c, card)
-    draw_mods(c, card)
+    block = mods_block(card)
+    draw_description(c, card, max_bottom=description_bottom_from(block))
+    draw_mods(c, card, block)
     draw_page_number(c, int(card.get("page") or 0))
     c.showPage()
     c.save()
