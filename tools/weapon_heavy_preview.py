@@ -49,9 +49,11 @@ def build_rows(comp, wid, prefixes):
     return result
 
 
-def render_source_heavy(comp, wid, page_num, source, source_page, out):
+def render_source_heavy(comp, wid, page_num, source, source_page, out, extra_description=""):
     """Preserve the original mod block as vector PDF, without weapon art."""
     card = build_card(comp, wid, page=page_num, image='')
+    if extra_description:
+        card['description'] = (card.get('description', '') + '\n\n' + extra_description).strip()
     with pymupdf.open(source) as original:
         page = original[source_page - 1]
         words = [x for x in page.get_text('words') if 'МОДИФИКАЦИ' in x[4]]

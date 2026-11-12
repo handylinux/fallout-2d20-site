@@ -519,3 +519,15 @@ python tools\compare_heavy_mods.py
 ```
 
 Сопоставление оригинала и рабочих данных: `docs/weapon-heavy-mods-comparison.md`.
+
+### Проверочный фрагмент энергетического оружия
+
+```powershell
+python tools\weapon_energy_preview.py ".\Справочник оружия.pdf" --out docs\render\out\energy-preview.pdf --report docs\render\out\energy-preview-report.md
+```
+
+После полного тяжёлого раздела вставлены две оригинальные страницы общих
+таблиц, оригинальный разделитель и три пробные страницы оружия. Блоки модов
+пока взяты из исходного PDF; это не готовые редактируемые JSON. Особенность
+лазерного мушкета записана в `data/weapons/energy-specials.ru.json`.
+Неполнота таблиц и расхождения перечислены в отчёте.
