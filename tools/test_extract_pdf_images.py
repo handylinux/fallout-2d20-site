@@ -147,6 +147,24 @@ class PageNameTests(unittest.TestCase):
         rows = ex.extract(pdf, self.dir, 300, 0.9, None, False, {}, False)
         self.assertEqual(len(rows), 1)
 
+    def test_pdf_soft_mask_preserves_transparency(self):
+        image = Image.new("RGBA", (400, 400), (220, 40, 20, 0))
+        for x in range(100, 300):
+            for y in range(100, 300):
+                image.putpixel((x, y), (220, 40, 20, 255))
+        path = os.path.join(self.dir, "alpha.png")
+        image.save(path)
+        pdf = os.path.join(self.dir, "alpha.pdf")
+        c = canvas.Canvas(pdf)
+        c.drawImage(ImageReader(path), 40, 400, width=200, height=200, mask="auto")
+        c.showPage()
+        c.save()
+        rows = ex.extract(pdf, self.dir, 300, 0.9, None, False, {}, False)
+        self.assertEqual(len(rows), 1)
+        with Image.open(os.path.join(self.dir, rows[0]["file"])) as extracted:
+            self.assertEqual(extracted.convert("RGBA").getpixel((0, 0))[3], 0)
+            self.assertEqual(extracted.convert("RGBA").getpixel((200, 200))[3], 255)
+
     def test_normalize_name(self):
         self.assertEqual(ex.normalize_name("БОЕВОЙ КАРАБИН"), "боевойкарабин")
         self.assertEqual(ex.normalize_name("10-мм пистолет"),

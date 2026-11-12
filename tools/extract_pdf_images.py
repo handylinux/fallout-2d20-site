@@ -122,13 +122,18 @@ def page_title(page) -> str:
     return " ".join(text for size, text in lines if size >= top - 0.5).strip()
 
 
-def image_pixmap(doc, xref: int):
-    """CMYK/Gray/alpha-safe pixmap for an image xref."""
+def image_pixmap(doc, xref: int, smask: int = 0):
+    """Convert to RGB and apply the PDF soft mask if one exists."""
     pix = pymupdf.Pixmap(doc, xref)
     if pix.colorspace is None:
         return None
-    if pix.colorspace.n not in (1, 3) or pix.alpha:
-        pix = pymupdf.Pixmap(pymupdf.csRGB, pix)  # drops alpha, converts CMYK
+    if pix.colorspace.n != 3:
+        pix = pymupdf.Pixmap(pymupdf.csRGB, pix)
+    if smask:
+        if pix.alpha:
+            pix = pymupdf.Pixmap(pix, 0)
+        mask = pymupdf.Pixmap(doc, smask)
+        pix = pymupdf.Pixmap(pix, mask)
     return pix
 
 
@@ -182,7 +187,7 @@ def extract(pdf: str, out_dir: str, min_size: int, share: float,
         # as <slug>-2.png, <slug>-3.png
         candidates.sort(reverse=True)
         for index, (_, xref, smask, width, height) in enumerate(candidates, 1):
-            pix = image_pixmap(doc, xref)
+            pix = image_pixmap(doc, xref, smask)
             if pix is None:
                 done.add(xref)
                 continue
