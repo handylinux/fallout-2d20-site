@@ -55,14 +55,20 @@ def wrap(text, font, width, size=SIZE):
 
 
 def render(data, output, page_start=10):
-    rows = data.get('rows')
-    if not data.get('title') or not data.get('category'):
-        raise ValueError('Нужны title и category')
-    if not isinstance(rows, list) or not rows or any(
-        not isinstance(row, list) or len(row) != 6 or
-        any(not isinstance(v, str) for v in row) for row in rows
-    ) or page_start < 1:
-        raise ValueError('Нужны строки из шести текстовых ячеек и положительный номер страницы')
+    sections = data.get('sections')
+    if sections is None:
+        sections = [{'category': data.get('category'), 'rows': data.get('rows')}]
+    if not data.get('title') or not isinstance(sections, list) or not sections:
+        raise ValueError('Нужны title и разделы таблицы')
+    for section in sections:
+        if not isinstance(section, dict) or not section.get('category'):
+            raise ValueError('Нужно название категории')
+        rows = section.get('rows')
+        if not isinstance(rows, list) or not rows or any(
+            not isinstance(row, list) or len(row) != 6 or
+            any(not isinstance(v, str) for v in row) for row in rows
+        ) or page_start < 1:
+            raise ValueError('Нужны строки из шести текстовых ячеек и положительный номер страницы')
     regular = pymupdf.Font(fontfile=REGULAR)
     bold = pymupdf.Font(fontfile=BOLD)
     doc = pymupdf.open()
@@ -96,7 +102,7 @@ def render(data, output, page_start=10):
             text(page, x, baseline, line, name, size, color)
             baseline += leading
 
-    def new_page():
+    def new_page(category_name):
         page = doc.new_page(width=w.PAGE_W, height=w.PAGE_H)
         page.insert_font(fontname='body', fontfile=REGULAR)
         page.insert_font(fontname='bold', fontfile=BOLD)
@@ -121,34 +127,43 @@ def render(data, output, page_start=10):
             page.draw_rect(rect, color=BORDER, fill=BLACK, width=.25)
             centered(page, rect, wrap(name, bold, width - 6, 9), bold, 'bold', 9, 11, WHITE)
             x += width
-        category = pymupdf.Rect(w.MARGIN_L, TABLE_TOP + HEADER_H, w.CONTENT_R,
-                                TABLE_TOP + HEADER_H + CATEGORY_H)
-        page.draw_rect(category, color=BORDER, fill=BLACK, width=.25)
-        centered(page, category, wrap(data['category'], bold, w.CONTENT_W - 6, 10), bold, 'bold', 10, 12, WHITE)
-        return page, category.y1
+        return page, draw_category(page, TABLE_TOP + HEADER_H, category_name)
 
-    for index, row in enumerate(rows):
-        lines = [wrap(damage_tokens(value) if col == 2 else value, regular, width - 6)
-                 for col, (value, width) in enumerate(zip(row, COL_WIDTHS))]
-        height = max(len(cell) for cell in lines) * LEADING + 6
-        if height > PAGE_BOTTOM - (TABLE_TOP + HEADER_H + CATEGORY_H):
-            doc.close()
-            raise ValueError(f'Строка {index + 1} не помещается на страницу целиком')
-        if page is None or y + height > PAGE_BOTTOM:
-            page, y = new_page()
-        x = w.MARGIN_L
-        for col, (width, cell) in enumerate(zip(COL_WIDTHS, lines)):
-            rect = pymupdf.Rect(x, y, x + width, y + height)
-            page.draw_rect(rect, color=BORDER, fill=BEIGE if index % 2 == 0 else ORANGE, width=.25)
-            if col >= 3:
-                centered(page, rect, cell, regular, 'body', SIZE, LEADING)
-            else:
-                baseline = y + (height - ((len(cell) - 1) * LEADING + SIZE)) / 2 + SIZE * .85
-                for line in cell:
-                    inline_text(page, x + 3, baseline, line)
-                    baseline += LEADING
-            x += width
-        y += height
+    def draw_category(page, top, category_name):
+        category = pymupdf.Rect(w.MARGIN_L, top, w.CONTENT_R, top + CATEGORY_H)
+        category_lines = wrap(category_name, bold, w.CONTENT_W - 6, 10)
+        if len(category_lines) > 1:
+            raise ValueError(f'Слишком длинное название категории: {category_name}')
+        page.draw_rect(category, color=BORDER, fill=BLACK, width=.25)
+        centered(page, category, category_lines, bold, 'bold', 10, 12, WHITE)
+        return category.y1
+
+    for section in sections:
+        category_name = section['category']
+        for index, row in enumerate(section['rows']):
+            lines = [wrap(damage_tokens(value) if col == 2 else value, regular, width - 6)
+                     for col, (value, width) in enumerate(zip(row, COL_WIDTHS))]
+            height = max(len(cell) for cell in lines) * LEADING + 6
+            if height > PAGE_BOTTOM - (TABLE_TOP + HEADER_H + CATEGORY_H):
+                doc.close()
+                raise ValueError(f'Строка {index + 1} не помещается на страницу целиком')
+            if page is None or y + height + (CATEGORY_H if index == 0 else 0) > PAGE_BOTTOM:
+                page, y = new_page(category_name)
+            elif index == 0:
+                y = draw_category(page, y, category_name)
+            x = w.MARGIN_L
+            for col, (width, cell) in enumerate(zip(COL_WIDTHS, lines)):
+                rect = pymupdf.Rect(x, y, x + width, y + height)
+                page.draw_rect(rect, color=BORDER, fill=BEIGE if index % 2 == 0 else ORANGE, width=.25)
+                if col >= 3:
+                    centered(page, rect, cell, regular, 'body', SIZE, LEADING)
+                else:
+                    baseline = y + (height - ((len(cell) - 1) * LEADING + SIZE)) / 2 + SIZE * .85
+                    for line in cell:
+                        inline_text(page, x + 3, baseline, line)
+                        baseline += LEADING
+                x += width
+            y += height
     output = Path(output)
     output.parent.mkdir(parents=True, exist_ok=True)
     try:

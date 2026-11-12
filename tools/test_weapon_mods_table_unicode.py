@@ -36,6 +36,23 @@ class UnicodeTableTests(unittest.TestCase):
                 self.assertIn('РЕСИВЕР', page.get_text())
                 self.assertIn('ЭФФЕКТЫ', page.get_text())
 
+    def test_multiple_categories_render_and_split_without_orphan_heading(self):
+        rows = [[f'Запись {i:02}', '', '', '', '', ''] for i in range(36)]
+        data = {'title': 'МОДЫ', 'sections': [
+            {'category': 'ПЕРВАЯ КАТЕГОРИЯ', 'rows': rows},
+            {'category': 'ВТОРАЯ КАТЕГОРИЯ', 'rows': [['Единственный', '', '', '', '', '']]},
+        ]}
+        table.render(data, self.out)
+        with pymupdf.open(self.out) as doc:
+            for page in doc:
+                text = page.get_text()
+                if 'ВТОРАЯ КАТЕГОРИЯ' in text:
+                    self.assertIn('Единственный', text)
+            alltext = ''.join(page.get_text() for page in doc)
+            for i in range(36):
+                self.assertEqual(alltext.count(f'Запись {i:02}'), 1)
+            self.assertEqual(alltext.count('Единственный'), 1)
+
     def test_damage_icons_are_inline_and_only_in_effect_cells(self):
         row = ['Название DC', 'Префикс', 'Урон: +1 DC; затем +2 DC; ACDC', '–', '+20', 'Перк']
         table.render({'title': 'Таблица', 'category': 'Ресивер', 'rows': [row]}, self.out)

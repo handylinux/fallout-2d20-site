@@ -64,7 +64,7 @@ def effect_text(mod, effects, qualities, ammo):
     for key, labels, kind in [('effectChanges', effects, 'эффект'),
                               ('qualityChanges', qualities, 'качество')]:
         for change in mod.get(key) or []:
-            op = {'gain': 'Добавить', 'remove': 'Убрать'}.get(change.get('op'))
+            op = {'gain': 'Добавить', 'remove': 'Убрать', 'lose': 'Убрать'}.get(change.get('op'))
             if op is None:
                 parts.append(f'[{key}: {json.dumps(change, ensure_ascii=False)}]')
                 continue
