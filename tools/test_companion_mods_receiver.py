@@ -31,6 +31,17 @@ class ReceiverConverterTests(unittest.TestCase):
         self.assertIn('`a`', report)
         self.assertIn('`b`', report)
 
+    def test_editable_prefix_does_not_change_mod_name(self):
+        mods = [{'id': 'a', 'slot': 'Receiver', 'cost': 3}]
+        book = {'rows': [['Имя', 'Префикс из книги', 'эффект', '-', '+3', '-']]}
+        data, report = c.generate(mods, {'a': 'Имя'}, {}, {}, {}, book,
+                                  {'a': 'Новый префикс'})
+        self.assertEqual(data['rows'][0][0], 'Имя')
+        self.assertEqual(data['rows'][0][1], 'Новый префикс')
+        self.assertIn('Различия в сравнимых полях: префикс', report)
+        fallback, _ = c.generate(mods, {'a': 'Имя'}, {}, {}, {}, book, {})
+        self.assertEqual(fallback['rows'][0][1], 'Имя')
+
     def test_real_data_is_not_lost_and_difference_is_reported(self):
         mods = c.load(c.COMP / 'equipment/weapon_mods.json')
         data, report = c.generate(mods, c.index(c.EQUIP / 'weapon_mods.json'),

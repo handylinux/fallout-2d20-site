@@ -26,7 +26,7 @@ import re
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-COMP = os.path.join(ROOT, "data", "companion")
+COMP = os.path.join(ROOT, "data", "weapon-book", "companion")
 RU = os.path.join(COMP, "i18n", "ru-RU", "data")
 
 # Book order for the pages we have seen; the remaining slots (energy weapons,

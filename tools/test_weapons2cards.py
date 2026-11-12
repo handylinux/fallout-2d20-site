@@ -1,6 +1,11 @@
 """Tests for tools/weapons2cards.py (Companion JSON → card JSON)."""
 
 import unittest
+import json
+import os
+import shutil
+import tempfile
+from unittest.mock import patch
 
 import weapons2cards as cards
 
@@ -9,6 +14,22 @@ class CompanionTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.comp = cards.Companion()
+
+    def test_working_copy_edits_drive_cards(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            copy = os.path.join(tmp, 'companion')
+            shutil.copytree(cards.COMP, copy)
+            ru = os.path.join(copy, 'i18n', 'ru-RU', 'data')
+            names = os.path.join(ru, 'equipment', 'weapons', 'weapons.json')
+            with open(names, encoding='utf-8') as f:
+                items = json.load(f)
+            next(x for x in items if x['id'] == 'weapon_10mm_pistol')['name'] = 'Изменённый пистолет'
+            with open(names, 'w', encoding='utf-8') as f:
+                json.dump(items, f, ensure_ascii=False)
+            with patch.object(cards, 'COMP', copy), patch.object(cards, 'RU', ru):
+                result = cards.build_card(cards.Companion(), 'weapon_10mm_pistol')
+            self.assertEqual(result['title'], 'Изменённый пистолет')
+            self.assertEqual(self.comp.weapon_name('weapon_10mm_pistol'), '10-мм пистолет')
 
     def test_slugify(self):
         self.assertEqual(cards.slugify("weapon_10mm_pistol"), "10mm-pistol")

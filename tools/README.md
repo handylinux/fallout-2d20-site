@@ -426,7 +426,8 @@ python tools/weapon_mods_table.py data/weapons/mods-receiver-companion.json --ou
 Экспортирует только `Receiver`: операции урона, скорострельности, дистанции,
 боеприпасов, эффектов и качеств превращаются в текст. Цена, вес и перки берутся
 из Companion. `?` / «Не указано» — отсутствующее значение, а не ноль; неизвестные
-операции и ID остаются видимыми. Префиксы в данных не найдены. Отчёт сопоставляет
+операции и ID остаются видимыми. Префиксы задаются в отдельном рабочем JSON,
+при отсутствии берутся из локализации. Отчёт сопоставляет
 строки образца по имени как неподтверждённых кандидатов; одинаковые имена и
 смысл эффектов необходимо проверять вручную. Это прототип, ещё не часть книги.
 
@@ -442,3 +443,34 @@ python tools/weapon_mods_table_unicode.py data/weapons/mods-receiver-companion.j
 
 Работа в GitHub-приложении и редактирование в FlexiPDF требуют проверки на
 устройстве пользователя. Предыдущие образцы и книга не пересобраны этим способом.
+
+### Рабочие JSON книги — ручные изменения
+
+Сборка страниц оружия и преобразователь ресиверов читают **рабочие копии** из
+`data/weapon-book/companion/`, а не оригинал `data/companion/`. Это отдельные
+файлы в репозитории: обновление оригинала скриптом синхронизации их не перезапишет.
+Новые данные из Companion не попадают в рабочие копии автоматически — их надо
+сверить и перенести вручную, сохраняя собственные правки.
+
+* Характеристики оружия: `data/weapon-book/companion/equipment/weapons.json`.
+* Названия и описания оружия: `data/weapon-book/companion/i18n/ru-RU/data/equipment/weapons/weapons.json`.
+* Характеристики модов: `data/weapon-book/companion/equipment/weapon_mods.json`.
+* Названия модов: `data/weapon-book/companion/i18n/ru-RU/data/equipment/weapon_mods.json`.
+* Префиксы: `data/weapon-book/mod-prefixes.ru.json` — по ID, независимо от имени.
+  Если запись отсутствует или пуста, используется `prefix` из локализации,
+  а если его нет — `name`, как в Companion. Сгенерированный
+  `data/weapons/mods-receiver-companion.json` — результат, а не исходник.
+
+После правок (в PowerShell из папки проекта):
+
+```powershell
+python tools\weapon_book_small_guns_preview.py ".\Справочник оружия.pdf" --full --out docs\render\out\small-guns-full.pdf
+python tools\companion_mods_receiver.py --out-json data\weapons\mods-receiver-companion.json --report docs\weapon-mods-receiver-comparison.md
+python tools\weapon_mods_table_unicode.py data\weapons\mods-receiver-companion.json --out docs\render\out\mods-receiver.pdf
+```
+
+Первый PDF содержит текущие страницы оружия, но его страницы 1–13 всё ещё
+копируются из исходной книги: таблица ресиверов не включена в него автоматически.
+Второй PDF — отдельная пробная таблица ресиверов. Другие категории модов пока не
+преобразуются этим скриптом. Редактирование текста в FlexiPDF и отображение
+Unicode-PDF в GitHub на телефоне ещё нужно подтвердить на устройствах пользователя.

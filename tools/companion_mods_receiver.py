@@ -12,7 +12,8 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-COMP = ROOT / 'data/companion'
+COMP = ROOT / 'data/weapon-book/companion'
+PREFIXES = ROOT / 'data/weapon-book/mod-prefixes.ru.json'
 EQUIP = COMP / 'i18n/ru-RU/data/equipment'
 SYSTEM = COMP / 'i18n/ru-RU/data/system'
 BOOK = ROOT / 'data/weapons/mods-receiver-sample.json'
@@ -94,7 +95,8 @@ def perks(mod):
     return 'Не указано' if 'perk1' not in mod or 'perk2' not in mod else '—'
 
 
-def generate(mods, names, effects, qualities, ammo, book):
+def generate(mods, names, effects, qualities, ammo, book, prefixes=None):
+    prefixes = prefixes or {}
     receivers = [x for x in mods if x.get('slot') == 'Receiver']
     by_name = {}
     for mod in receivers:
@@ -103,7 +105,7 @@ def generate(mods, names, effects, qualities, ammo, book):
     entries = []
     for mod in receivers:
         name = names.get(mod['id'], f'[{mod["id"]}]')
-        cells = [name, 'Не указано', effect_text(mod, effects, qualities, ammo),
+        cells = [name, prefixes.get(mod['id']) or names.get(mod['id']) or 'Не указано', effect_text(mod, effects, qualities, ammo),
                  number(mod.get('weight')), number(mod.get('cost')), perks(mod)]
         converted.append(cells)
         missing = [key for key in FIELDS if key not in mod]
@@ -121,7 +123,7 @@ def generate(mods, names, effects, qualities, ammo, book):
               'для ручной проверки; эталон автоматически не выбирается.', '',
               '«Не указано» и знак «?» означают, что значения нет в записи, а не что оно равно нулю '
               'или отсутствует в правилах. Пустые массивы изменений отличаются от отсутствующих полей. '
-              'Префиксы в данных не найдены; в PDF они отмечены как «Не указано». '
+              'Префиксы взяты из отдельного рабочего файла; если записи нет — используется локализованное имя, как в Companion. '
               'Текст DC временно заменяет значок урона.', '',
               '## Строки образца книги', '']
     matched = set()
@@ -145,7 +147,7 @@ def generate(mods, names, effects, qualities, ammo, book):
         # Compare only unambiguous numeric/perk cells; semantic effect text is
         # deliberately left for review instead of pretending string equality.
         differences = []
-        for column, name in ((3, 'вес'), (4, 'цена'), (5, 'перки')):
+        for column, name in ((1, 'префикс'), (3, 'вес'), (4, 'цена'), (5, 'перки')):
             original, comp_value = row[column].strip(), item[1][column].strip()
             if not original or comp_value in ('?', 'Не указано'):
                 continue
@@ -163,7 +165,7 @@ def generate(mods, names, effects, qualities, ammo, book):
                           f'Не содержатся: {", ".join(missing) or "нет"}.')
     result = {'title': 'МОДИФИКАЦИИ СТРЕЛКОВОГО ОРУЖИЯ',
               'category': 'МОДИФИКАЦИИ РЕСИВЕРА',
-              'source': 'Companion weapon_mods.json; предварительная интерпретация, не проверенная по правилам',
+              'source': 'Рабочая копия Companion и пользовательские префиксы; предварительная интерпретация',
               'rows': converted}
     return result, '\n'.join(report) + '\n'
 
@@ -173,9 +175,13 @@ def main(argv=None):
     parser.add_argument('--out-json', type=Path, required=True)
     parser.add_argument('--report', type=Path, required=True)
     args = parser.parse_args(argv)
+    localized = load(EQUIP / 'weapon_mods.json')
+    prefix_candidates = {item['id']: item.get('prefix') or item.get('name', '')
+                         for item in localized}
+    prefix_candidates.update(load(PREFIXES))
     converted, report = generate(load(COMP / 'equipment/weapon_mods.json'),
-        index(EQUIP / 'weapon_mods.json'), index(SYSTEM / 'damageEffects.json'),
-        index(SYSTEM / 'qualities.json'), index(EQUIP / 'ammo/ammo_types.json'), load(BOOK))
+        {item['id']: item['name'] for item in localized}, index(SYSTEM / 'damageEffects.json'),
+        index(SYSTEM / 'qualities.json'), index(EQUIP / 'ammo/ammo_types.json'), load(BOOK), prefix_candidates)
     for path in (args.out_json, args.report):
         path.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps(converted, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
