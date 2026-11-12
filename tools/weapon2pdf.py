@@ -548,12 +548,13 @@ def draw_mods(c, card) -> None:
     avail = MODS_BOTTOM - top
     if total > avail:
         print("warning: mods table overflows the page", file=sys.stderr)
-        extra = 0.0
-    else:
-        extra = (avail - total) / len(rows)  # the table always ends at the rule
-    for row in rows:
-        row["h"] += extra
-    bottom = min(MODS_BOTTOM, top + sum(r["h"] for r in rows))
+        scale = avail / total
+        for row in rows:
+            row["h"] *= scale
+    # rows keep their content height and stack up from the bottom rule, so the
+    # table always ends at MODS_BOTTOM no matter how many mods there are
+    top = MODS_BOTTOM - sum(r["h"] for r in rows)
+    bottom = MODS_BOTTOM
 
     # category fills
     y = top

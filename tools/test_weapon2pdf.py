@@ -106,7 +106,7 @@ class ModsLayoutTests(unittest.TestCase):
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0]["cells"], [[] for _ in range(ncols)])
 
-    def test_table_is_always_stretched_to_the_bottom(self):
+    def test_rows_keep_their_content_height(self):
         card = base_card()
         card["mods"] = [
             {"slot": "РЕСИВЕР", "items": ["Один"]},
@@ -115,17 +115,16 @@ class ModsLayoutTests(unittest.TestCase):
             {"slot": "ДУЛО", "items": ["Четыре"]},
         ]
         rows, total, _ = w.mods_layout(card)
-        avail = w.MODS_BOTTOM - w.MODS_TOP
-        extra = (avail - total) / len(rows)
-        self.assertAlmostEqual(total + extra * len(rows), avail, places=1)
+        for row in rows:
+            self.assertAlmostEqual(row["h"], w.MODS_MIN_ROW, places=2)
+        self.assertAlmostEqual(total, 4 * w.MODS_MIN_ROW, places=2)
 
-    def test_single_row_still_reaches_the_bottom(self):
+    def test_single_row_is_not_stretched(self):
         card = base_card()
         card["mods"] = [{"slot": "РЕСИВЕР", "items": ["Один"]}]
         rows, total, _ = w.mods_layout(card)
-        avail = w.MODS_BOTTOM - w.MODS_TOP
-        extra = (avail - total) / len(rows)
-        self.assertAlmostEqual(total + extra, avail, places=1)
+        self.assertAlmostEqual(rows[0]["h"], w.MODS_MIN_ROW, places=2)
+        self.assertLess(total, w.MODS_BOTTOM - w.MODS_TOP)
 
 
 class RenderTests(unittest.TestCase):
@@ -172,14 +171,16 @@ class RenderTests(unittest.TestCase):
         self.assertEqual(text.count("НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ"), 1)
         self.assertNotIn("ПОДДЕРЖИВАЕМЫЕ МОДИФИКАЦИИ", text)
 
-    def test_one_mod_table_reaches_the_bottom(self):
+    def test_one_mod_table_sits_on_the_bottom_rule(self):
         card = base_card()
         card["mods"] = [{"slot": "РЕСИВЕР", "items": ["Укреплённый"]}]
         page = self.render(card)[0]
         lines = [it["rect"] for it in page.get_drawings()
                  if it["type"] == "s" and it["rect"].width > 400]
-        self.assertAlmostEqual(max(r.y1 for r in lines), w.MODS_BOTTOM,
-                               delta=0.6)
+        bottom = max(r.y1 for r in lines)
+        top = min(r.y0 for r in lines if r.y1 > w.MODS_TOP)
+        self.assertAlmostEqual(bottom, w.MODS_BOTTOM, delta=0.6)
+        self.assertLess(bottom - top, 2 * w.MODS_MIN_ROW)
 
     def test_page_number_side_alternates(self):
         even = self.render(base_card())[0]
