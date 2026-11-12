@@ -341,9 +341,10 @@ python3 tools/weapon2pdf.py data/weapons/cards/combat-rifle.json \
 python3 tools/weapon2pdf.py data/weapons/cards/revolver-44.json \
     --out docs/render/out/revolver-44.pdf
 
-# вытащить все картинки оружия из книги (~75 МБ PDF из Publisher)
-python3 tools/extract_pdf_images.py "Справочник оружия.pdf" --out art/ \
-    --min-size 300
+# вытащить изображения из книги (в том числе иллюстрации разделов)
+python3 tools/extract_pdf_images.py "Справочник оружия.pdf" --out art/
+# По умолчанию короткая сторона >=100 пикселей, площадь >=60000 пикселей;
+# параметры --min-size и --min-area позволяют изменить пороги.
 # имена берутся с самой страницы: заголовок «БОЕВОЙ КАРАБИН» → weapon_combat_rifle
 # → art/combat-rifle.png (тот же слаг, что у карточки); если заголовок не
 # совпал с weapons.json — art/p018.png, а в report.csv пустой weapon_id
@@ -367,3 +368,16 @@ python3 tools/weapon2pdf.py data/weapons/cards/plasma-gun.json \
 Тесты (`tools/test_weapon2pdf.py`) проверяют перенос строк, разбиение
 категории на строки по 6 модов, растяжение таблицы до нижнего поля, номер
 страницы на внешнем поле и рендер PDF (если установлен PyMuPDF).
+
+### Начало книги: промежуточная сборка
+
+`weapon_book_front.py` копирует физические страницы 1–9 исходного PDF без
+перевёрстки: обложку, разворот, эффекты, качества и разделитель. Это временный
+этап сборки, а не генерация этих страниц из данных. Нужен исходный PDF.
+
+```bash
+python tools/weapon_book_front.py "Справочник оружия.pdf" --out docs/render/out/book-front.pdf
+```
+
+Выходной путь должен отличаться от пути исходного PDF. Номера страниц в
+результате сохранены как в оригинале.

@@ -39,11 +39,20 @@ WEAPONS_JSON = os.path.join(
     "weapons.json")
 
 
+# Подтверждённое различие между заголовком книги и названием Companion.
+ALIASES = {"пистолетинъектор": "weapon_pistol_injector",
+           "стенинъектор": "weapon_sten_injector"}
+
+
 def normalize_name(text: str) -> str:
-    """«БОЕВОЙ КАРАБИН» и «Боевой карабин» -> «боевой карабин»."""
+    """«БОЕВОЙ КАРАБИН» и «Боевой карабин» -> «боевойкарабин».
+
+    Пробелы и дефисы выкидываются: Publisher рвёт заголовок на куски по
+    кернингу («ДВУСТВОЛЬНЫЙ ДРОБОВИ» + «К»), и склеивать их с пробелами
+    нельзя. Для сравнения с weapons.json это не мешает.
+    """
     text = (text or "").casefold().replace("ё", "е")
-    text = re.sub(r"[^0-9a-zа-я]+", " ", text)
-    return " ".join(text.split())
+    return re.sub(r"[^0-9a-zа-я]+", "", text)
 
 
 def slug_of(weapon_id: str) -> str:
@@ -51,6 +60,17 @@ def slug_of(weapon_id: str) -> str:
     name = weapon_id[len("weapon_"):] if weapon_id.startswith("weapon_") \
         else weapon_id
     return name.replace("_", "-")
+
+
+def match_weapon(title: str, weapons: dict[str, str]) -> str:
+    key = normalize_name(title)
+    if not key:
+        return ""
+    if key in weapons:
+        return weapons[key]
+    if key in ALIASES:
+        return ALIASES[key]
+    return ""
 
 
 def load_weapons(path: str | None) -> dict[str, str]:
@@ -79,19 +99,27 @@ def background_xrefs(page) -> set[int]:
 
 
 def page_title(page) -> str:
-    """Самая крупная надпись в верхней части страницы — название оружия."""
-    best: list[tuple[float, str]] = []
+    """Самая крупная надпись в верхней части страницы — название оружия.
+
+    Publisher рисует заголовок с трекингом, поэтому одна строка может прийти
+    несколькими спанами («ДВУСТВОЛЬНЫЙ ДРОБОВИ» + «К»). Склеиваем спаны
+    строки без разделителя и берём строку с самым крупным кеглем.
+    """
+    lines: list[tuple[float, str]] = []
     for block in page.get_text("dict")["blocks"]:
         for line in block.get("lines", []):
-            for span in line["spans"]:
-                text = (span["text"] or "").strip()
-                if not text or span["bbox"][1] > 130:
-                    continue
-                best.append((round(span["size"], 1), text))
-    if not best:
+            spans = [s for s in line["spans"]
+                     if (s["text"] or "").strip() and s["bbox"][1] <= 130]
+            if not spans:
+                continue
+            spans.sort(key=lambda s: s["bbox"][0])
+            size = max(round(s["size"], 1) for s in spans)
+            text = "".join(s["text"] for s in spans)
+            lines.append((size, text.strip()))
+    if not lines:
         return ""
-    top = max(size for size, _ in best)
-    return " ".join(text for size, text in best if size >= top - 0.5).strip()
+    top = max(size for size, _ in lines)
+    return " ".join(text for size, text in lines if size >= top - 0.5).strip()
 
 
 def image_pixmap(doc, xref: int):
@@ -117,7 +145,8 @@ def repeated_xrefs(doc, pages: list[int], share: float) -> set[int]:
 def extract(pdf: str, out_dir: str, min_size: int, share: float,
             pages: list[int] | None, keep_repeated: bool,
             weapons: dict[str, str] | None = None,
-            name_from_page: bool = True) -> list[dict]:
+            name_from_page: bool = True,
+            min_area: int = 60000) -> list[dict]:
     doc = pymupdf.open(pdf)
     page_ids = [p - 1 for p in pages] if pages else list(range(doc.page_count))
     skip = set() if keep_repeated else repeated_xrefs(doc, page_ids, share)
@@ -126,12 +155,13 @@ def extract(pdf: str, out_dir: str, min_size: int, share: float,
 
     rows: list[dict] = []
     done: set[int] = set()
+    used_names: set[str] = set()
     for pno in page_ids:
         if not 0 <= pno < doc.page_count:
             continue
         page = doc[pno]
         title = page_title(page) if name_from_page else ""
-        weapon_id = weapons.get(normalize_name(title), "")
+        weapon_id = match_weapon(title, weapons)
         base = slug_of(weapon_id) if weapon_id else f"p{pno + 1:03d}"
 
         background = background_xrefs(page)
@@ -144,7 +174,7 @@ def extract(pdf: str, out_dir: str, min_size: int, share: float,
             if xref in background and not keep_repeated:
                 done.add(xref)
                 continue
-            if width < min_size or height < min_size:
+            if min(width, height) < min_size or width * height < min_area:
                 done.add(xref)
                 continue
             candidates.append((width * height, xref, smask, width, height))
@@ -157,6 +187,11 @@ def extract(pdf: str, out_dir: str, min_size: int, share: float,
                 done.add(xref)
                 continue
             name = f"{base}.png" if index == 1 else f"{base}-{index}.png"
+            suffix = index
+            while name in used_names:  # two pages of the same weapon
+                suffix += 1
+                name = f"{base}-{suffix}.png"
+            used_names.add(name)
             path = os.path.join(out_dir, name)
             pix.save(path)
             done.add(xref)
@@ -211,8 +246,10 @@ def main(argv=None) -> int:
     ap.add_argument("pdf")
     ap.add_argument("--out", default="pdf-images")
     ap.add_argument("--pages", help="страницы через запятую или 12-40")
-    ap.add_argument("--min-size", type=int, default=300,
-                    help="минимальная сторона картинки в пикселях (300)")
+    ap.add_argument("--min-size", type=int, default=100,
+                    help="минимальная сторона картинки в пикселях (100)")
+    ap.add_argument("--min-area", type=int, default=60000,
+                    help="минимальная площадь картинки в пикселях (60000)")
     ap.add_argument("--share", type=float, default=0.5,
                     help="доля страниц, с которой картинка считается текстурой")
     ap.add_argument("--keep-repeated", action="store_true",
@@ -240,7 +277,8 @@ def main(argv=None) -> int:
         print("weapons.json не найден — имена будут вида p018-01.png",
               file=sys.stderr)
     rows = extract(args.pdf, args.out, args.min_size, args.share, pages,
-                   args.keep_repeated, weapons, not args.no_page_names)
+                   args.keep_repeated, weapons, not args.no_page_names,
+                   args.min_area)
     with open(os.path.join(args.out, "report.csv"), "w", newline="",
               encoding="utf-8") as fh:
         writer = csv.DictWriter(fh, fieldnames=["page", "file", "title",

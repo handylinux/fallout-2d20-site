@@ -148,10 +148,20 @@ class PageNameTests(unittest.TestCase):
         self.assertEqual(len(rows), 1)
 
     def test_normalize_name(self):
-        self.assertEqual(ex.normalize_name("БОЕВОЙ КАРАБИН"), "боевой карабин")
+        self.assertEqual(ex.normalize_name("БОЕВОЙ КАРАБИН"), "боевойкарабин")
         self.assertEqual(ex.normalize_name("10-мм пистолет"),
                          ex.normalize_name("10 мм пистолет"))
         self.assertEqual(ex.normalize_name("Ёж"), "еж")
+
+    def test_split_title_and_confirmed_injector(self):
+        weapons = ex.load_weapons(ex.WEAPONS_JSON)
+        self.assertEqual(ex.match_weapon("ДВУСТВОЛЬНЫЙ ДРОБОВИ К", weapons),
+                         "weapon_double_barrel_shotgun")
+        self.assertEqual(ex.match_weapon("ПИСТОЛЕТ - ИНЪЕКТОР", weapons),
+                         "weapon_pistol_injector")
+        self.assertEqual(ex.match_weapon("СТЕН - ИНЪЕКТОР", weapons),
+                         "weapon_sten_injector")
+        self.assertEqual(ex.match_weapon("НЕИЗВЕСТНОЕ ОРУЖИЕ", weapons), "")
 
     def test_slug_of(self):
         self.assertEqual(ex.slug_of("weapon_10mm_pistol"), "10mm-pistol")
