@@ -1,0 +1,76 @@
+page,file,title,weapon_id,xref,width,height,smask
+1,p001.png,РУКОВОДСТВО БРАТСТВА,,21,963,654,22
+1,p001-2.png,РУКОВОДСТВО БРАТСТВА,,19,564,460,20
+12,p012.png,МОДИФИКАЦИЯ ПРЕФИКС ЭФФЕКТЫ ВЕС ЦЕНА ПЕРКИ МОДИФИКАЦИИ ПРИЦЕЛА,,256,546,546,257
+14,10mm-pistol.png,10 - ММ ПИСТОЛЕТ,weapon_10mm_pistol,265,557,407,266
+15,44-pistol.png,РЕВОЛЬВЕР КАЛИБРА .44,weapon_44_pistol,296,658,438,297
+16,flare-gun.png,СИГНАЛЬНЫЙ ПИСТОЛЕТ,weapon_flare_gun,322,600,400,323
+17,assault-rifle.png,ШТУРМОВАЯ ВИНТОВКА,weapon_assault_rifle,348,600,342,349
+18,combat-rifle.png,БОЕВОЙ КАРАБИН,weapon_combat_rifle,378,1119,439,379
+19,combat-shotgun.png,БОЕВОЙ ДРОБОВИК,weapon_combat_shotgun,398,1116,400,399
+20,gauss-rifle.png,КАРАБИН ГАУССА,weapon_gauss_rifle,414,1347,381,415
+21,gauss-pistol.png,ПИСТОЛЕТ ГАУССА,weapon_gauss_pistol,418,721,412,419
+22,hunting-rifle.png,ОХОТНИЧЬЯ ВИНТОВКА,weapon_hunting_rifle,438,1083,307,439
+23,submachine-gun.png,ПП ТОМПСОНА,weapon_submachine_gun,454,1210,342,455
+24,p024.png,ДВУСТВОЛЬНЫЙ ДРОБОВИ К,,468,923,673,469
+25,p025.png,ГЛАДКОСТВОЛ С БОЛТОВ ЫМ ЗАТВОРОМ,,482,811,507,483
+26,pipe-gun.png,ГЛАДКОСТВОЛ,weapon_pipe_gun,500,939,587,501
+27,pipe-revolver.png,ГЛАДКОСТВОЛЬНЫЙ РЕВОЛЬВЕР,weapon_pipe_revolver,520,749,499,521
+28,p028.png,ЖЕЛЕЗНОДОРОЖНАЯ ВИНТ ОВКА,,530,923,331,531
+29,syringer.png,ИНЪЕКЦИОННЫЙ КАРАБИН,weapon_syringer,542,1029,369,543
+30,357-magnum-revolver.png,РЕВОЛЬВЕР МАГНУМ КАЛ. 357,weapon_357_magnum_revolver,562,925,483,563
+31,12-7mm-pistol.png,"12,7 - ММ ПИСТОЛЕТ",weapon_12_7mm_pistol,572,686,428,573
+32,12-7mm-smg.png,"12,7 - ММ ПИСТОЛЕТ – ПУЛЕМЁТ",weapon_12_7mm_smg,596,793,579,597
+33,p033.png,ПРОТИВОПЕХОТНЫЙ 25 - М М ГРАНАТОМЁТ,,612,1057,379,613
+34,9mm-pistol.png,9 - ММ ПИСТОЛЕТ,weapon_9mm_pistol,642,663,442,643
+36,p036.png,САМОЗАРЯДНАЯ ВИНТОВК А,,694,854,854,695
+37,black-powder-blunderbuss.png,ПОРОХОВОЙ МУШКЕТОН,weapon_black_powder_blunderbuss,716,793,793,717
+39,black-powder-pistol.png,ПОРОХОВОЙ ПИСТОЛЕТ,weapon_black_powder_pistol,752,581,581,753
+40,gauss-shotgun.png,ДРОБОВИК ГАУССА,weapon_gauss_shotgun,762,1089,308,763
+41,p041.png,КАРАБИН С РЫЧАЖНЫМ З АТВОРОМ,,788,951,951,789
+42,light-machine-gun.png,ЛЁГКИЙ ПУЛЕМЁТ,weapon_light_machine_gun,812,922,361,813
+43,pump-action-shotgun.png,ПОМПОВЫЙ ДРОБОВИК,weapon_pump_action_shotgun,824,1081,676,825
+44,radium-rifle.png,РАДИЕВЫЙ КАРАБИН,weapon_radium_rifle,836,1035,405,837
+46,m79-grenade-launcher.png,ГРАНАТОМЁТ M79,weapon_m79_grenade_launcher,868,1171,612,869
+47,p047.png,ПИСТОЛЕТ - ИНЪЕКТОР,,886,884,688,887
+48,ghoul-rifle.png,КАРАБИН ГУЛЯ,weapon_ghoul_rifle,904,1116,637,905
+48,ghoul-rifle-2.png,КАРАБИН ГУЛЯ,weapon_ghoul_rifle,902,1054,338,903
+50,sten.png,СТЕН,weapon_sten,938,870,635,939
+51,boarding-pistol.png,АБОРДАЖНЫЙ ПИСТОЛЕТ,weapon_boarding_pistol,960,1017,581,961
+52,magnum-monicon.png,МАГНУМНОМИКОН,weapon_magnum_monicon,974,911,476,975
+53,underwater-gun.png,ПОДВОДНОЕ РУЖЬЕ,weapon_underwater_gun,984,920,613,985
+54,chinese-assault-rifle.png,КИТАЙСКИЙ АВТОМАТ,weapon_chinese_assault_rifle,1000,1017,581,1001
+55,crossbow.png,АРБАЛЕТ,weapon_crossbow,1020,858,401,1021
+56,bow.png,ЛУК,weapon_bow,1045,503,503,1046
+58,fat-man.png,ТОЛСТЯК,weapon_fat_man,1054,839,839,1055
+59,flamer.png,ОГНЕМЁТ,weapon_flamer,1078,888,591,1079
+60,gatling-laser.png,ГАТЛИНГ - ЛАЗЕР,weapon_gatling_laser,1102,782,782,1103
+61,heavy-incinerator.png,ТЯЖЁЛЫЙ ИНСИНЕРАТОР,weapon_heavy_incinerator,1118,1027,449,1119
+62,junk-jet.png,ХЛАМОТРОН,weapon_junk_jet,1122,675,525,1123
+63,minigun.png,МИНИГАН,weapon_minigun,1154,740,423,1155
+64,missile-launcher.png,РАКЕТНАЯ УСТАНОВКА,weapon_missile_launcher,1172,729,416,1173
+65,50-cal-machine-gun.png,ПУЛЕМЁТ КАЛИБРА .50,weapon_50_cal_machine_gun,1190,814,465,1191
+66,p066.png,АВТОМАТИЧЕСКИЙ ГРАНА ТОМЁТ,,1210,676,448,1211
+67,broadsider.png,ЗАЛП,weapon_broadsider,1224,799,456,1225
+68,gatling-gun.png,ГАТЛИНГ,weapon_gatling_gun,1234,795,497,1235
+69,gauss-minigun.png,МИНИГАН ГАУССА,weapon_gauss_minigun,1250,974,465,1251
+70,cryolator.png,КРИОЛЯТОР,weapon_cryolator,1266,974,608,1267
+71,tesla-cannon.png,ПУШКА ТЕСЛЫ,weapon_tesla_cannon,1280,864,493,1281
+72,drone-cannon.png,ПУШКА РОБОТА,weapon_drone_cannon,1290,952,595,1291
+73,harpoon-gun.png,ГАРПУНОМЁТ,weapon_harpoon_gun,1306,1116,400,1307
+74,p074.png,ГРАНАТОМЕТ СО СЛЕЗОТ ОЧИВЫМ ГАЗОМ,,1324,713,475,1325
+75,eugene.png,ЮДЖИН,weapon_eugene,1336,1044,499,1337
+76,plasma-caster.png,ПЛАЗМАКАСТЕР,weapon_plasma_caster,1352,925,528,1353
+81,laser-musket.png,ЛАЗЕРНЫЙ МУШКЕТ,weapon_laser_musket,1429,1116,637,1430
+82,laser-gun.png,ЛАЗЕРНЫЙ ПИСТОЛЕТ,weapon_laser_gun,1445,845,616,1446
+83,plasma-gun.png,ПЛАЗМЕННЫЙ ПИСТОЛЕТ,weapon_plasma_gun,1457,1018,581,1458
+84,gamma-gun.png,ГАММА - ПУШКА,weapon_gamma_gun,1473,830,397,1474
+85,mesmetron.png,ГИПНОТРОН,weapon_mesmetron,1481,543,418,1482
+86,wattz-2000.png,ЛАЗЕРНОЕ РУЖЬЁ WATTZ 2000,weapon_wattz_2000,1493,1116,437,1494
+87,tesla-rifle.png,КАРАБИН ТЕСЛЫ,weapon_tesla_rifle,1511,1116,637,1512
+88,acid-soaker.png,КИСЛОПЛЮЙ,weapon_acid_soaker,1523,712,520,1524
+89,alien-atomizer.png,АТОМАЙЗЕР ПРИШЕЛЬЦЕВ,weapon_alien_atomizer,1535,531,565,1536
+90,alien-disintegrator.png,ДЕЗИНТЕГРАТОР ПРИШЕЛЬЦЕВ,weapon_alien_disintegrator,1555,923,527,1556
+91,alien-blaster.png,БЛАСТЕР ПРИШЕЛЬЦЕВ,weapon_alien_blaster,1573,621,414,1574
+93,arc-welder.png,ДУГОВАЯ СВАРКА,weapon_arc_welder,1609,974,302,1610
+94,p094.png,ГОЛОВНОЙ ЛАЗЕР ШТУРМ ОТРОНА,,1623,366,454,1624
