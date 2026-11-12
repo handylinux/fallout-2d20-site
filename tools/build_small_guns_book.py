@@ -94,14 +94,15 @@ def renumber_divider(page, number, source_number=13):
                      fontname='dividernum', fontsize=9.96, color=(0, 0, 0))
 
 
-def build(source, output, report=None):
+def build(source, output, report=None, reference_weapons=()):
     source, output = Path(source), Path(output)
     if source.resolve() == output.resolve():
         raise ValueError('Выходной файл не должен совпадать с исходным PDF')
     weapon_ids = json.loads(ORDER.read_text(encoding='utf-8'))
     comp = Companion()
     prefixes = conv.load(conv.PREFIXES)
-    data, problems = make_mod_data(comp, weapon_ids, prefixes)
+    reference_ids = list(dict.fromkeys(weapon_ids + list(reference_weapons)))
+    data, problems = make_mod_data(comp, reference_ids, prefixes)
     w.register_fonts()
     with pymupdf.open(source) as original:
         if original.page_count < 13:

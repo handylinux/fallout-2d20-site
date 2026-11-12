@@ -46,6 +46,34 @@ class HeavyPreviewTests(unittest.TestCase):
         with pymupdf.open(output) as doc:
             self.assertEqual(doc[0].get_text().count('НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ'), 1)
 
+    def test_many_mods_use_readable_names_not_detailed_columns(self):
+        output = self.root / 'gatling-plasma.pdf'
+        info = heavy.render_heavy(self.comp, 'weapon_gatling_plasma', 80, {}, output)
+        self.assertEqual(info['mode'], 'names')
+        self.assertEqual(info['mod_count'], 17)
+        with pymupdf.open(output) as doc:
+            text = doc[0].get_text()
+            self.assertIn('Укреплённый', text)
+            self.assertIn('Глушитель', text)
+            self.assertNotIn('ПРЕФИКС', text)
+            self.assertNotIn('НАЗВАНИЕ', text)
+
+    def test_detailed_mode_keeps_small_mod_sets(self):
+        info = heavy.render_heavy(self.comp, 'weapon_flamer', 61, {}, self.root / 'flamer.pdf')
+        self.assertEqual(info['mode'], 'detailed')
+        self.assertEqual(info['mod_count'], 6)
+
+    def test_name_only_mods_are_in_shared_reference(self):
+        ids = json.loads(heavy.ORDER_FILE.read_text(encoding='utf-8'))
+        selected = [wid for wid in ids if len(heavy.build_rows(self.comp, wid, {})) > heavy.MAX_DETAILED_MODS]
+        small_ids = json.loads(heavy.small.ORDER.read_text(encoding='utf-8'))
+        data, _ = heavy.small.make_mod_data(self.comp, list(dict.fromkeys(small_ids + selected)), {})
+        names = {(section['category'], row[0]) for section in data['sections'] for row in section['rows']}
+        for wid in selected:
+            for slot, values in heavy.build_rows(self.comp, wid, {}):
+                category = 'МОДИФИКАЦИИ ' + heavy.small.SLOT_TITLES[slot]
+                self.assertIn((category, values[0]), names, (wid, slot, values[0]))
+
     def test_full_order_renders_every_card_without_losing_description(self):
         ids = json.loads(heavy.ORDER_FILE.read_text(encoding='utf-8'))
         self.assertEqual(len(ids), 21)

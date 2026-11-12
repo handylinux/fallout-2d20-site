@@ -22,6 +22,7 @@ from weapons2cards import Companion, build_card
 
 WEAPONS = ('weapon_fat_man', 'weapon_flamer', 'weapon_gatling_laser')
 ORDER_FILE = Path(__file__).resolve().parent.parent / 'data/weapons/heavy-guns-order.json'
+MAX_DETAILED_MODS = 8
 ORDER = ['Fuel', 'Receiver', 'Capacitor', 'Barrel', 'Tank', 'Grip', 'Stock', 'Magazine', 'Sight', 'Muzzle', 'Nozzle']
 
 
@@ -51,7 +52,14 @@ def render_heavy(comp, wid, page_num, prefixes, out):
     rows = build_rows(comp, wid, prefixes)
     if not rows:
         w.render_card(card, str(out))
-        return {'font_size': None, 'mod_count': 0}
+        return {'mode': 'none', 'font_size': None, 'mod_count': 0}
+    if len(rows) > MAX_DETAILED_MODS:
+        missing = [mid for ids in (comp.slots.get(wid) or {}).values() for mid in ids
+                   if not (comp.mods_ru.get(mid) or {}).get('name')]
+        if missing:
+            raise ValueError(f'{wid}: нет названий модов: {", ".join(missing)}')
+        w.render_card(card, str(out))
+        return {'mode': 'names', 'font_size': None, 'mod_count': len(rows)}
     # Fixed dimensions and content-driven heights, so no clipping or distortion.
     widths = [65, 72, 72, 171, 30, 31, w.CONTENT_W - 441]
     with tempfile.TemporaryDirectory() as tmp:
@@ -116,7 +124,7 @@ def render_heavy(comp, wid, page_num, prefixes, out):
         w.draw_page_number(c, page_num)
         c.showPage()
         c.save()
-        return {'font_size': font_size, 'mod_count': len(rows)}
+        return {'mode': 'detailed', 'font_size': font_size, 'mod_count': len(rows)}
 
 
 def build(source, output, weapons=WEAPONS, report=None):
@@ -135,7 +143,11 @@ def build(source, output, weapons=WEAPONS, report=None):
     diagnostics = []
     with tempfile.TemporaryDirectory() as tmp:
         base = Path(tmp) / 'small-guns.pdf'
-        small.build(source, base)
+        # Every name-only weapon contributes its mods to the earlier reference
+        # tables. Existing IDs are deduplicated with the small-guns entries.
+        reference_weapons = [wid for wid in weapons
+                             if len(build_rows(comp, wid, prefixes)) > MAX_DETAILED_MODS]
+        small.build(source, base, reference_weapons=reference_weapons)
         with pymupdf.open(base) as base_pdf, pymupdf.open(source) as original, pymupdf.open() as result:
             if original.page_count < 57:
                 raise ValueError('В исходном PDF нужно минимум 57 страниц')
@@ -146,7 +158,9 @@ def build(source, output, weapons=WEAPONS, report=None):
             for index, wid in enumerate(weapons):
                 path = Path(tmp) / f'heavy-{index}.pdf'
                 info = render_heavy(comp, wid, len(result) + 1, prefixes, path)
-                if info['font_size'] is not None and info['font_size'] < 8.4:
+                if info['mode'] == 'names':
+                    diagnostics.append(f"{wid}: {info['mod_count']} модов, показаны только названия; характеристики в общей таблице модов перед стрелковым разделом")
+                elif info['font_size'] is not None and info['font_size'] < 8.4:
                     diagnostics.append(f"{wid}: компактная таблица, шрифт {info['font_size']} pt")
                 for slot, values in build_rows(comp, wid, prefixes):
                     if values[2] in ('Не указано', 'Нет данных') or '[' in values[2] or '?' in values[3:5]:
@@ -161,7 +175,7 @@ def build(source, output, weapons=WEAPONS, report=None):
             report.parent.mkdir(parents=True, exist_ok=True)
             text = '# Тяжёлое оружие: проверка сборки\n\n'
             text += f'Разделитель: {divider}; оружие: {len(weapons)}; всего страниц: {total}.\n\n'
-            text += 'Рабочие данные Companion не сверены с книгой. Для сохранения одной страницы на предмет некоторые таблицы уплотнены.\n\n'
+            text += 'Рабочие данные Companion не сверены с книгой. Если модов более восьми, показаны только названия; характеристики находятся в общих таблицах перед стрелковым разделом.\n\n'
             text += '## Требует внимания\n\n' + ('\n'.join('- ' + x for x in diagnostics) if diagnostics else 'Не обнаружено.') + '\n'
             report.write_text(text, encoding='utf-8')
         return {'divider': divider, 'pages': total, 'weapons': len(weapons), 'issues': len(diagnostics)}
