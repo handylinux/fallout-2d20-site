@@ -68,6 +68,20 @@ class CompanionTests(unittest.TestCase):
         card = cards.build_card(self.comp, "weapon_10mm_pistol")
         self.assertEqual(card["effects"], [])
 
+    def test_dish_and_camera_use_the_companion_labels(self):
+        self.assertEqual(self.comp.slot_label("Dish"), "ДИСК")
+        self.assertEqual(self.comp.slot_label("Camera"), "КАМЕРА")
+
+    def test_unique_slot_is_labelled(self):
+        self.assertEqual(self.comp.slot_label("Unique"), "УНИКАЛЬНЫЙ")
+
+    def test_unique_mods_of_a_melee_weapon(self):
+        card = cards.build_card(self.comp, "weapon_sword")
+        self.assertEqual([m["slot"] for m in card["mods"]], ["УНИКАЛЬНЫЙ"])
+        self.assertEqual(card["mods"][0]["items"],
+                         ["Электризованное", "Электризованное зазубренное",
+                          "Зазубренное", "Скрытое", "Электрошокер"])
+
     def test_combined_damage_type(self):
         self.assertEqual(self.comp.damage_type(["energy", "physical"]),
                          "Энергетический и Физический")

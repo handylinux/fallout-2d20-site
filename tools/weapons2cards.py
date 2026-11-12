@@ -37,6 +37,9 @@ SLOT_ORDER = ["Receiver", "Barrel", "Capacitor", "Nozzle", "Grip", "Stock",
 
 # Book spellings for the classic slots; everything else comes from the
 # Companion translation (weapon.modSlots in screens/weaponsAndArmor).
+# weapon_mod_slots.json spells some slots differently from the screen.json keys
+SLOT_ALIASES = {"dish": "dishe", "camera": "chamber"}
+
 SLOT_LABEL_OVERRIDES = {
     "Receiver": "РЕСИВЕР",
     "Barrel": "СТВОЛ",
@@ -119,9 +122,11 @@ class Companion:
     def slot_label(self, slot):
         if slot in SLOT_LABEL_OVERRIDES:
             return SLOT_LABEL_OVERRIDES[slot]
-        name = self.slot_labels.get(slot.lower().rstrip("s"))
-        if not name:
-            name = self.slot_labels.get(slot.lower(), slot)
+        key = slot.lower()
+        name = (self.slot_labels.get(key)
+                or self.slot_labels.get(SLOT_ALIASES.get(key, key))
+                or self.slot_labels.get(key.rstrip("s"))
+                or slot)
         return name.upper()
 
     def mod_rows(self, wid):
