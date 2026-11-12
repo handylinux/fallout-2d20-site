@@ -79,11 +79,11 @@ def make_mod_data(comp, weapon_ids, prefixes):
     return data, problems
 
 
-def renumber_divider(page, number):
+def renumber_divider(page, number, source_number=13):
     """Remove only source page number, preserving background and artwork."""
-    words = [word for word in page.get_text('words') if word[4] == '13' and word[1] > 800]
+    words = [word for word in page.get_text('words') if word[4] == str(source_number) and word[1] > 800]
     if len(words) != 1:
-        raise ValueError('Не удалось однозначно найти номер 13 на странице-разделителе')
+        raise ValueError(f'Не удалось однозначно найти номер {source_number} на странице-разделителе')
     page.add_redact_annot(pymupdf.Rect(words[0][:4]), fill=False, cross_out=False)
     page.apply_redactions(images=0, graphics=0, text=0)
     page.insert_font(fontname='dividernum', fontfile=tables.REGULAR)

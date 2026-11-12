@@ -92,9 +92,16 @@ class Companion:
         return (self.weapons_ru.get(wid) or {}).get("name") or wid
 
     def ammo_name(self, w):
-        ammo = self.ammo.get(w.get("ammoId") or "") or {}
-        name = ammo.get("name") or ""
-        return re.sub(r"^Патрон\s+", "", name)
+        raw = w.get("ammoId") or ""
+        names = []
+        for ammo_id in raw.split(","):
+            ammo_id = ammo_id.strip()
+            if not ammo_id:
+                continue
+            ammo = self.ammo.get(ammo_id) or {}
+            name = ammo.get("name") or f"[{ammo_id}]"
+            names.append(re.sub(r"^Патрон\s+", "", name))
+        return " / ".join(names)
 
     def damage_type(self, value):
         if isinstance(value, list):

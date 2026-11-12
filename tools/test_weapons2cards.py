@@ -46,6 +46,11 @@ class CompanionTests(unittest.TestCase):
         self.assertEqual(card["qualities"], ["Вплотную", "Надежное"])
         self.assertEqual(card["page"], 18)
 
+    def test_multiple_ammo_types_are_preserved(self):
+        self.assertEqual(self.comp.ammo_name(self.comp.weapons['weapon_gatling_laser']),
+                         'Энергоячейка / Ядерный блок')
+        self.assertIn('[unknown_ammo]', self.comp.ammo_name({'ammoId': 'ammo_fusion_core,unknown_ammo'}))
+
     def test_slots_are_in_book_order(self):
         card = cards.build_card(self.comp, "weapon_10mm_pistol")
         self.assertEqual([m["slot"] for m in card["mods"]],
