@@ -13,6 +13,7 @@ tools/sppb2html.py                            конвертер (Python 3, бе
 pages/supermutant.html                        готовый прототип
 pages/ekskavatornaya-silovaya-bronya.html     готовый прототип
 pages/index.html                              список прототипов
+docs/catalog.md                               архитектура справочника и синтаксис ссылок
 jos_sppagebuilder.zip                         дамп таблицы jos_sppagebuilder (366 страниц)
 ```
 
