@@ -56,7 +56,7 @@ RULE_W = 385.94
 SUBTITLE_TOP = 87.53
 SUBTITLE_SIZE = 14.04
 
-IMAGE_BOX = (21.43, 96.0, 573.93, 306.0)  # x0, y0(top), x1, y1(bottom)
+IMAGE_BOX = (21.43, 78.98, 573.93, 331.64)  # x0, y0(top), x1, y1(bottom)
 
 STATS_TOP = 307.39
 STATS_HEADER_H = 34.97
@@ -86,6 +86,7 @@ MODS_MIN_ROW = 20.73
 MODS_ROW_SLOPE = 12.5
 MODS_ROW_BASE = 6.0
 MODS_MAX_EXTRA = 46.8  # keep stretched rows <= ~67 pt (25 mm)
+MODS_H_PAD = 7.2  # total left+right padding inside a mod cell
 MODS_LABEL_SIZE = 9.96
 
 PAGE_NUMBER_TOP = 810.91
@@ -213,7 +214,7 @@ def _paper_image():
     return _PAPER_CACHE["im"]
 
 
-def flatten_on_paper(path, box, dpi=300):
+def flatten_on_paper(path, box, dpi=300, fit="contain"):
     """Alpha-composite an image onto the exact paper pixels under *box*.
 
     ReportLab's PNG soft-mask path corrupts the colour data, so images are
@@ -241,8 +242,12 @@ def flatten_on_paper(path, box, dpi=300):
 
     im = Image.open(path).convert("RGBA")
     box_w, box_h = x1 - x0, y1 - y0
-    fit = min(box_w / im.width, box_h / im.height)
-    w, h = im.width * fit, im.height * fit
+    if fit == "stretch":
+        im = im.resize((W, H), Image.LANCZOS)
+        bg.paste(im, (0, 0), im)
+        return bg
+    factor = min(box_w / im.width, box_h / im.height)
+    w, h = im.width * factor, im.height * factor
     im = im.resize((max(1, int(round(w * scale))), max(1, int(round(h * scale)))),
                    Image.LANCZOS)
     ox = int(round(((box_w - w) / 2.0) * scale))
@@ -264,7 +269,7 @@ def flatten_on_color(path, w_pt, h_pt, color, dpi=300):
     return bg
 
 
-def place_image(c, path, box) -> None:
+def place_image(c, path, box, fit="contain") -> None:
     """Draw *path* contained in *box* (top-down coords), alpha over paper."""
     if not path:
         return
@@ -274,13 +279,13 @@ def place_image(c, path, box) -> None:
         print(f"warning: image not found: {path}", file=sys.stderr)
         return
     x0, y0, x1, y1 = box
-    img = flatten_on_paper(path, box)
+    img = flatten_on_paper(path, box, fit=fit)
     c.drawImage(ImageReader(img), x0, y_from_top(y1), x1 - x0, y1 - y0,
                 mask=None)
 
 
 def draw_image(c, card) -> None:
-    place_image(c, card.get("image") or "", IMAGE_BOX)
+    place_image(c, card.get("image") or "", IMAGE_BOX, fit="stretch")
 
 
 def draw_title(c, card) -> None:
@@ -448,7 +453,7 @@ def mods_layout(card) -> tuple[list[dict], float]:
             max_lines = 1
             for i in range(6):
                 text = chunk[i] if i < len(chunk) else ""
-                col_w = MODS_EDGES[i + 2] - MODS_EDGES[i + 1] - 7.2
+                col_w = MODS_EDGES[i + 2] - MODS_EDGES[i + 1] - MODS_H_PAD
                 lines = wrap_text(text, "Carlito", MODS_FONT_SIZE, col_w)
                 cells.append(lines)
                 max_lines = max(max_lines, len(lines))

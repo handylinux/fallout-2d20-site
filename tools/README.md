@@ -317,7 +317,8 @@ python3 tools/armor2page.py --only leather-armor
 описание и таблица модификаций (до 6 слотов, до 6 модов в строке).
 
 ```
-data/weapons/cards/combat-rifle.json   карточка (готовые к печати данные)
+data/weapons/cards/combat-rifle.json   карточка (страница 18 из Publisher)
+data/weapons/cards/revolver-44.json    карточка «Револьвер калибра .44»
 tools/weapon2pdf.py                    генератор PDF
 assets/fonts/Carlito-*.ttf             шрифт (OFL, метрический клон Calibri)
 assets/pdf/paper.jpg                   бумажная текстура из PDF
@@ -329,6 +330,8 @@ docs/weapon-pdf.md                     геометрия, кегли, прав�
 python3 -m pip install -r tools/requirements-pdf.txt
 python3 tools/weapon2pdf.py data/weapons/cards/combat-rifle.json \
     --out docs/render/out/combat-rifle.pdf
+python3 tools/weapon2pdf.py data/weapons/cards/revolver-44.json \
+    --out docs/render/out/revolver-44.pdf
 ```
 
 Тесты (`tools/test_weapon2pdf.py`) проверяют перенос строк, разбиение

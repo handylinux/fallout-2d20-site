@@ -137,6 +137,15 @@ class RenderTests(unittest.TestCase):
 
 
 class CardFixtureTests(unittest.TestCase):
+    def test_revolver_card_is_consistent(self):
+        path = os.path.join(ROOT, "data", "weapons", "cards", "revolver-44.json")
+        with open(path, encoding="utf-8") as fh:
+            card = json.load(fh)
+        self.assertEqual(card["id"], "weapon_44_pistol")
+        self.assertEqual(card["page"], 15)
+        self.assertEqual([c["slot"] for c in card["mods"]],
+                         ["РЕСИВЕР", "СТВОЛ", "РУКОЯТЬ", "ПРИЦЕЛ"])
+
     def test_reference_card_is_consistent(self):
         card = base_card()
         self.assertEqual(card["slug"] if "slug" in card else card["id"],
