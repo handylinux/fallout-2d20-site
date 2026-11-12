@@ -79,14 +79,18 @@ MODS_HEADING_SIZE = 18.0
 
 MODS_TOP = 533.65
 MODS_BOTTOM = 803.35
+MODS_LEFT = 36.44
+MODS_LABEL_RIGHT = 86.54
+MODS_RIGHT = 559.71
+MODS_MAX_COLS = 6
+# six-column grid from the Publisher pages (kept for reference/tests)
 MODS_EDGES = [36.44, 86.54, 167.80, 244.00, 326.04, 404.58, 481.17, 559.71]
-MODS_LABEL_W = MODS_EDGES[1] - MODS_EDGES[0]
+MODS_LABEL_W = MODS_LABEL_RIGHT - MODS_LEFT
 MODS_FONT_SIZE = 9.0
 MODS_LEADING = 13.08
 MODS_MIN_ROW = 20.73
 MODS_ROW_SLOPE = 12.5
 MODS_ROW_BASE = 6.0
-MODS_MAX_EXTRA = 70.0  # keep a stretched row <= ~91 pt (32 mm)
 MODS_H_PAD = 7.2  # total left+right padding inside a mod cell
 MODS_LABEL_SIZE = 9.96
 
@@ -474,19 +478,34 @@ def draw_description(c, card) -> None:
                    leading)
 
 
-def mods_layout(card) -> tuple[list[dict], float]:
-    """Return flat rows with wrapped cells; each category starts a block."""
+def mods_edges(ncols: int) -> list[float]:
+    """Label column + ncols equal mod columns up to the right margin."""
+    step = (MODS_RIGHT - MODS_LABEL_RIGHT) / ncols
+    return [MODS_LEFT, MODS_LABEL_RIGHT] + [
+        MODS_LABEL_RIGHT + step * i for i in range(1, ncols + 1)]
+
+
+def mods_layout(card) -> tuple[list[dict], float, int]:
+    """Return flat rows with wrapped cells; each category starts a block.
+
+    The column count follows the widest category: one mod fills the whole
+    width, three mods give three columns, more than six wrap into rows of six.
+    """
+    mods = card.get("mods") or []
+    widest = max((len(cat.get("items") or []) for cat in mods), default=0)
+    ncols = max(1, min(MODS_MAX_COLS, widest))
+    edges = mods_edges(ncols)
     rows = []
-    for cat in card.get("mods") or []:
+    for cat in mods:
         items = cat.get("items") or []
-        chunks = [items[i:i + 6] for i in range(0, len(items), 6)] or [[]]
+        chunks = [items[i:i + ncols] for i in range(0, len(items), ncols)] or [[]]
         for ci, chunk in enumerate(chunks):
             cells = []
             sizes = []
             max_lines = 1
-            for i in range(6):
+            for i in range(ncols):
                 text = chunk[i] if i < len(chunk) else ""
-                col_w = MODS_EDGES[i + 2] - MODS_EDGES[i + 1] - MODS_H_PAD
+                col_w = edges[i + 2] - edges[i + 1] - MODS_H_PAD
                 size = MODS_FONT_SIZE
                 lines = wrap_text(text, "Carlito", size, col_w)
                 # a single long word ("гиростабилизирующая") can be wider
@@ -509,51 +528,44 @@ def mods_layout(card) -> tuple[list[dict], float]:
                 "cat_start": ci == 0,
                 "cat_end": ci == len(chunks) - 1,
             })
-    return rows, sum(r["h"] for r in rows)
+    return rows, sum(r["h"] for r in rows), ncols
 
 
 def draw_mods(c, card) -> None:
     top = MODS_TOP
     mods = card.get("mods") or []
 
+    if not any((cat.get("items") or []) for cat in mods):
+        draw_center_line(c, MODS_HEADING_TOP, "НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ",
+                         "Carlito-Bold", MODS_HEADING_SIZE)
+        return
+
     draw_center_line(c, MODS_HEADING_TOP, MODS_HEADING, "Carlito-Bold",
                      MODS_HEADING_SIZE)
 
-    if not any((cat.get("items") or []) for cat in mods):
-        draw_center_line(c, top + 30, "НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ",
-                         "Carlito-Bold", 14)
-        return
-
-    rows, total = mods_layout(card)
+    rows, total, ncols = mods_layout(card)
+    edges = mods_edges(ncols)
     avail = MODS_BOTTOM - top
-    extra = min((avail - total) / len(rows), MODS_MAX_EXTRA) if total < avail else 0.0
     if total > avail:
         print("warning: mods table overflows the page", file=sys.stderr)
+        extra = 0.0
+    else:
+        extra = (avail - total) / len(rows)  # the table always ends at the rule
     for row in rows:
         row["h"] += extra
     bottom = min(MODS_BOTTOM, top + sum(r["h"] for r in rows))
 
     # category fills
-    c.setFillColor(BEIGE)
-    y = top
-    color = BEIGE
-    for row in rows:
-        if row["cat_start"]:
-            c.setFillColor(color)
-            color = ORANGE if color == BEIGE else BEIGE
-        # defer the rect: height is known only after the block is measured
-    # second pass with per-category heights
     y = top
     color = BEIGE
     ri = 0
     cat_heights = []
     for cat in mods:
-        n = max(1, math.ceil(len(cat.get("items") or []) / 6))
+        n = max(1, math.ceil(len(cat.get("items") or []) / ncols))
         h = sum(r["h"] for r in rows[ri:ri + n])
         cat_heights.append((n, h))
         c.setFillColor(color)
-        c.rect(MODS_EDGES[0], y_from_top(y), MODS_EDGES[-1] - MODS_EDGES[0],
-               -h, 0, 1)
+        c.rect(edges[0], y_from_top(y), edges[-1] - edges[0], -h, 0, 1)
         color = ORANGE if color == BEIGE else BEIGE
         y += h
         ri += n
@@ -564,11 +576,10 @@ def draw_mods(c, card) -> None:
     y = top
     for row in rows:
         y += row["h"]
-        c.line(MODS_EDGES[0], y_from_top(y), MODS_EDGES[-1], y_from_top(y))
-    c.line(MODS_EDGES[0], y_from_top(top), MODS_EDGES[-1], y_from_top(top))
-    c.line(MODS_EDGES[0], y_from_top(bottom), MODS_EDGES[-1],
-           y_from_top(bottom))
-    for x in MODS_EDGES:
+        c.line(edges[0], y_from_top(y), edges[-1], y_from_top(y))
+    c.line(edges[0], y_from_top(top), edges[-1], y_from_top(top))
+    c.line(edges[0], y_from_top(bottom), edges[-1], y_from_top(bottom))
+    for x in edges:
         c.line(x, y_from_top(top), x, y_from_top(bottom))
 
     # black label cells + white separators between them
@@ -576,12 +587,12 @@ def draw_mods(c, card) -> None:
     ri = 0
     for cat, (n, h) in zip(mods, cat_heights):
         c.setFillColor(BLACK)
-        c.rect(MODS_EDGES[0], y_from_top(y), MODS_LABEL_W, -h, 0, 1)
+        c.rect(edges[0], y_from_top(y), MODS_LABEL_W, -h, 0, 1)
         if y > top:
             c.setStrokeColor(WHITE)
             c.setLineWidth(RULE_W_PT)
-            c.line(MODS_EDGES[0] + 0.5, y_from_top(y - 0.3),
-                   MODS_EDGES[1] - 0.5, y_from_top(y - 0.3))
+            c.line(edges[0] + 0.5, y_from_top(y - 0.3),
+                   edges[1] - 0.5, y_from_top(y - 0.3))
         y += h
         ri += n
 
@@ -593,7 +604,7 @@ def draw_mods(c, card) -> None:
         size = MODS_LABEL_SIZE
         while size > 7 and sw(label, "Carlito-Bold", size) > MODS_LABEL_W - 6:
             size -= 0.25
-        draw_cell_text(c, MODS_EDGES[0], y, MODS_LABEL_W, h, label,
+        draw_cell_text(c, edges[0], y, MODS_LABEL_W, h, label,
                        "Carlito-Bold", size, color=WHITE)
         ry = y
         for k in range(n):
@@ -601,7 +612,7 @@ def draw_mods(c, card) -> None:
             for ci, lines in enumerate(row["cells"]):
                 if not lines:
                     continue
-                x0, x1 = MODS_EDGES[ci + 1], MODS_EDGES[ci + 2]
+                x0, x1 = edges[ci + 1], edges[ci + 2]
                 size = row["sizes"][ci]
                 leading = size * MODS_LEADING / MODS_FONT_SIZE
                 block_h = size + (len(lines) - 1) * leading

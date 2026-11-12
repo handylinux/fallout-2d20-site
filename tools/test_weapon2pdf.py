@@ -40,21 +40,54 @@ class ModsLayoutTests(unittest.TestCase):
         card = base_card()
         card["mods"] = [{"slot": "РЕСИВЕР",
                          "items": [f"Мод {i}" for i in range(8)]}]
-        rows, _ = w.mods_layout(card)
+        rows, _, ncols = w.mods_layout(card)
+        self.assertEqual(ncols, 6)
         self.assertEqual(len(rows), 2)
         self.assertEqual([len([c for c in r["cells"] if c]) for r in rows],
                          [6, 2])
         self.assertTrue(rows[0]["cat_start"])
         self.assertTrue(rows[-1]["cat_end"])
 
+    def test_column_count_follows_the_widest_category(self):
+        card = base_card()
+        card["mods"] = [
+            {"slot": "РЕСИВЕР", "items": ["Один", "Два", "Три"]},
+            {"slot": "СТВОЛ", "items": ["Четыре"]},
+        ]
+        rows, _, ncols = w.mods_layout(card)
+        self.assertEqual(ncols, 3)
+        self.assertEqual(len(rows[0]["cells"]), 3)
+
+    def test_single_mod_fills_the_whole_width(self):
+        card = base_card()
+        card["mods"] = [{"slot": "СТВОЛ", "items": ["Единственный"]}]
+        rows, _, ncols = w.mods_layout(card)
+        self.assertEqual(ncols, 1)
+        self.assertEqual(len(rows[0]["cells"]), 1)
+        edges = w.mods_edges(1)
+        self.assertAlmostEqual(edges[1], w.MODS_LABEL_RIGHT, places=2)
+        self.assertAlmostEqual(edges[2], w.MODS_RIGHT, places=2)
+        self.assertAlmostEqual(edges[2] - edges[1],
+                               w.MODS_RIGHT - w.MODS_LABEL_RIGHT, places=2)
+
+    def test_edges_cover_the_table_width(self):
+        for ncols in (1, 2, 3, 4, 5, 6):
+            edges = w.mods_edges(ncols)
+            self.assertAlmostEqual(edges[0], w.MODS_LEFT, places=2)
+            self.assertAlmostEqual(edges[1], w.MODS_LABEL_RIGHT, places=2)
+            self.assertAlmostEqual(edges[-1], w.MODS_RIGHT, places=2)
+            self.assertEqual(len(edges), ncols + 2)
+
     def test_long_mod_word_shrinks_to_fit_its_cell(self):
         card = {
             "title": "Тест",
             "mods": [{"slot": "СТВОЛ", "items": [
-                "Квантовая гиростабилизирующая линза"]}],
+                "Квантовая гиростабилизирующая линза", "Мод", "Мод", "Мод",
+                "Мод", "Мод"]}],
         }
-        rows, _ = w.mods_layout(card)
-        col_w = (w.MODS_EDGES[2] - w.MODS_EDGES[1] - w.MODS_H_PAD)
+        rows, _, ncols = w.mods_layout(card)
+        edges = w.mods_edges(ncols)
+        col_w = edges[2] - edges[1] - w.MODS_H_PAD
         self.assertLess(rows[0]["sizes"][0], w.MODS_FONT_SIZE)
         for line in rows[0]["cells"][0]:
             self.assertLessEqual(w.sw(line, "Carlito", rows[0]["sizes"][0]),
@@ -62,18 +95,18 @@ class ModsLayoutTests(unittest.TestCase):
 
     def test_normal_mods_keep_the_base_size(self):
         card = base_card()
-        rows, _ = w.mods_layout(card)
+        rows, _, _ = w.mods_layout(card)
         self.assertTrue(all(size == w.MODS_FONT_SIZE
                             for row in rows for size in row["sizes"]))
 
     def test_empty_mods_is_reported(self):
         card = base_card()
         card["mods"] = [{"slot": "СТВОЛ", "items": []}]
-        rows, _ = w.mods_layout(card)
+        rows, _, ncols = w.mods_layout(card)
         self.assertEqual(len(rows), 1)
-        self.assertEqual(rows[0]["cells"], [[] for _ in range(6)])
+        self.assertEqual(rows[0]["cells"], [[] for _ in range(ncols)])
 
-    def test_short_table_is_stretched_to_the_bottom(self):
+    def test_table_is_always_stretched_to_the_bottom(self):
         card = base_card()
         card["mods"] = [
             {"slot": "РЕСИВЕР", "items": ["Один"]},
@@ -81,18 +114,18 @@ class ModsLayoutTests(unittest.TestCase):
             {"slot": "ЛОЖА", "items": ["Три"]},
             {"slot": "ДУЛО", "items": ["Четыре"]},
         ]
-        rows, total = w.mods_layout(card)
+        rows, total, _ = w.mods_layout(card)
         avail = w.MODS_BOTTOM - w.MODS_TOP
-        extra = min((avail - total) / len(rows), w.MODS_MAX_EXTRA)
+        extra = (avail - total) / len(rows)
         self.assertAlmostEqual(total + extra * len(rows), avail, places=1)
 
-    def test_single_row_does_not_grow_endlessly(self):
+    def test_single_row_still_reaches_the_bottom(self):
         card = base_card()
         card["mods"] = [{"slot": "РЕСИВЕР", "items": ["Один"]}]
-        rows, total = w.mods_layout(card)
+        rows, total, _ = w.mods_layout(card)
         avail = w.MODS_BOTTOM - w.MODS_TOP
-        extra = min((avail - total) / len(rows), w.MODS_MAX_EXTRA)
-        self.assertLess(total + extra, avail)
+        extra = (avail - total) / len(rows)
+        self.assertAlmostEqual(total + extra, avail, places=1)
 
 
 class RenderTests(unittest.TestCase):
@@ -135,7 +168,18 @@ class RenderTests(unittest.TestCase):
         card = base_card()
         card["mods"] = []
         page = self.render(card)[0]
-        self.assertIn("НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ", page.get_text())
+        text = page.get_text()
+        self.assertEqual(text.count("НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ"), 1)
+        self.assertNotIn("ПОДДЕРЖИВАЕМЫЕ МОДИФИКАЦИИ", text)
+
+    def test_one_mod_table_reaches_the_bottom(self):
+        card = base_card()
+        card["mods"] = [{"slot": "РЕСИВЕР", "items": ["Укреплённый"]}]
+        page = self.render(card)[0]
+        lines = [it["rect"] for it in page.get_drawings()
+                 if it["type"] == "s" and it["rect"].width > 400]
+        self.assertAlmostEqual(max(r.y1 for r in lines), w.MODS_BOTTOM,
+                               delta=0.6)
 
     def test_page_number_side_alternates(self):
         even = self.render(base_card())[0]
