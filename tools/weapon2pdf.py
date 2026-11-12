@@ -26,6 +26,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import io
 import json
 import math
 import os
@@ -269,6 +270,14 @@ def flatten_on_color(path, w_pt, h_pt, color, dpi=300):
     return bg
 
 
+def _image_reader(img, quality=90):
+    """Encode a flattened PIL image as JPEG; lossless Flate is 10x bigger."""
+    buf = io.BytesIO()
+    img.save(buf, format="JPEG", quality=quality, optimize=True)
+    buf.seek(0)
+    return ImageReader(buf)
+
+
 def place_image(c, path, box, fit="contain") -> None:
     """Draw *path* contained in *box* (top-down coords), alpha over paper."""
     if not path:
@@ -280,7 +289,7 @@ def place_image(c, path, box, fit="contain") -> None:
         return
     x0, y0, x1, y1 = box
     img = flatten_on_paper(path, box, fit=fit)
-    c.drawImage(ImageReader(img), x0, y_from_top(y1), x1 - x0, y1 - y0,
+    c.drawImage(_image_reader(img), x0, y_from_top(y1), x1 - x0, y1 - y0,
                 mask=None)
 
 
@@ -420,7 +429,7 @@ def draw_stats(c, card) -> None:
     )
     if os.path.exists(DAMAGE_ICON):
         badge = flatten_on_color(DAMAGE_ICON, icon, icon, BEIGE)
-        c.drawImage(ImageReader(badge), gx + dmg_w + gap,
+        c.drawImage(_image_reader(badge), gx + dmg_w + gap,
                     y_from_top(gy + icon), icon, icon, mask=None)
 
     # grid: verticals, then horizontals so they close the corners

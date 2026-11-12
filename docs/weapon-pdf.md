@@ -160,4 +160,5 @@ python3 tools/weapon2pdf.py data/weapons/cards/combat-rifle.json \
 python3 -m unittest discover -s tools -v
 ```
 
-`docs/render/out/` — черновики, в git не попадают.
+`docs/render/out/` — черновики, в git не попадают. Готовые образцы лежат в
+`docs/render/samples/` (там же README со списком страниц).
