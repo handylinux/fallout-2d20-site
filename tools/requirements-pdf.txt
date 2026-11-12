@@ -1,0 +1,4 @@
+reportlab>=4.0
+pillow>=10.0
+# only for tests and PNG previews of the generated PDF
+pymupdf>=1.24

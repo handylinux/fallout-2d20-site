@@ -307,3 +307,30 @@ python3 tools/armor2page.py --only leather-armor
   раздела модификаций не будет, пока данные не появятся.
 * Лора и картинок в данных снаряжения нет — они задаются в JSON страницы.
 * Пока генерируется только броня (`armor.json` и `powerArmor.json`).
+
+---
+
+# PDF-справочник оружия (`tools/weapon2pdf.py`)
+
+Собирает страницу оружия A4 один-в-один с PDF, свёрстанным в Publisher:
+заголовок, линейка, «Вес / Цена / Редкость», картинка, таблица статов,
+описание и таблица модификаций (до 6 слотов, до 6 модов в строке).
+
+```
+data/weapons/cards/combat-rifle.json   карточка (готовые к печати данные)
+tools/weapon2pdf.py                    генератор PDF
+assets/fonts/Carlito-*.ttf             шрифт (OFL, метрический клон Calibri)
+assets/pdf/paper.jpg                   бумажная текстура из PDF
+assets/pdf/weapons/*.png               картинки оружия (пока вручную)
+docs/weapon-pdf.md                     геометрия, кегли, правила, пробелы в данных
+```
+
+```bash
+python3 -m pip install -r tools/requirements-pdf.txt
+python3 tools/weapon2pdf.py data/weapons/cards/combat-rifle.json \
+    --out docs/render/out/combat-rifle.pdf
+```
+
+Тесты (`tools/test_weapon2pdf.py`) проверяют перенос строк, разбиение
+категории на строки по 6 модов, растяжение таблицы до нижнего поля, номер
+страницы на внешнем поле и рендер PDF (если установлен PyMuPDF).
