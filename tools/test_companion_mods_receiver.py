@@ -16,6 +16,15 @@ class ReceiverConverterTests(unittest.TestCase):
                          'Проникающий 1', 'Убрать качество «Неточное»', 'Патрон .308'):
             self.assertIn(expected, result)
 
+    def test_damage_type_operations_preserve_meaning(self):
+        labels = {'energy': 'Энергетический', 'physical': 'Физический'}
+        for op, expected in [('set', 'Установить'), ('add', 'Добавить')]:
+            value = {'damageTypeOverride': {'op': op, 'value': ['energy', 'physical']}}
+            text = c.effect_text(value, {}, {}, {}, labels)
+            self.assertIn(expected + ' тип урона: Энергетический и Физический', text)
+        text = c.effect_text({'damageTypeOverride': {'op': 'weird', 'value': 'energy'}}, {}, {}, {}, labels)
+        self.assertIn('weird', text)
+
     def test_unknown_or_missing_values_are_visible(self):
         self.assertEqual(c.number(None), '?')
         self.assertEqual(c.effect_text({}, {}, {}, {}), 'Не указано')

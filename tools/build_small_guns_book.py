@@ -59,7 +59,7 @@ def make_mod_data(comp, weapon_ids, prefixes):
             if mod is None:
                 rows.append([name, prefix, 'Нет данных', '?', '?', 'Не указано'])
                 continue
-            description = conv.effect_text(mod, effects, qualities, ammo)
+            description = conv.effect_text(mod, effects, qualities, ammo, comp.damage_types)
             if '[' in description:
                 problems.append(f'{mid}: нераспознанное значение — {description}')
             if description == 'Не указано':

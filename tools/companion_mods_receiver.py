@@ -37,7 +37,7 @@ def label(identifier, labels):
     return labels.get(identifier) or f'[{identifier}]'
 
 
-def effect_text(mod, effects, qualities, ammo):
+def effect_text(mod, effects, qualities, ammo, damage_types=None):
     parts = []
     for key, name, unit in [('damageModifier', 'урон', ' DC'),
                             ('fireRateModifier', 'скорость стрельбы', ''),
@@ -60,7 +60,14 @@ def effect_text(mod, effects, qualities, ammo):
     if mod.get('ammoOverride'):
         parts.append('Патроны: ' + label(mod['ammoOverride'], ammo))
     if mod.get('damageTypeOverride'):
-        parts.append('Тип урона: [' + str(mod['damageTypeOverride']) + ']')
+        override = mod['damageTypeOverride']
+        if isinstance(override, dict) and override.get('op') in ('set', 'add') and isinstance(override.get('value'), (str, list)):
+            raw_values = override['value'] if isinstance(override['value'], list) else [override['value']]
+            types = ' и '.join(label(x, damage_types or {}) for x in raw_values)
+            action = 'Установить' if override['op'] == 'set' else 'Добавить'
+            parts.append(f'{action} тип урона: {types}')
+        else:
+            parts.append('[damageTypeOverride: ' + json.dumps(override, ensure_ascii=False) + ']')
     for key, labels, kind in [('effectChanges', effects, 'эффект'),
                               ('qualityChanges', qualities, 'качество')]:
         for change in mod.get(key) or []:
@@ -95,7 +102,7 @@ def perks(mod):
     return 'Не указано' if 'perk1' not in mod or 'perk2' not in mod else '—'
 
 
-def generate(mods, names, effects, qualities, ammo, book, prefixes=None):
+def generate(mods, names, effects, qualities, ammo, book, prefixes=None, damage_types=None):
     prefixes = prefixes or {}
     receivers = [x for x in mods if x.get('slot') == 'Receiver']
     by_name = {}
@@ -105,7 +112,7 @@ def generate(mods, names, effects, qualities, ammo, book, prefixes=None):
     entries = []
     for mod in receivers:
         name = names.get(mod['id'], f'[{mod["id"]}]')
-        cells = [name, prefixes.get(mod['id']) or names.get(mod['id']) or 'Не указано', effect_text(mod, effects, qualities, ammo),
+        cells = [name, prefixes.get(mod['id']) or names.get(mod['id']) or 'Не указано', effect_text(mod, effects, qualities, ammo, damage_types),
                  number(mod.get('weight')), number(mod.get('cost')), perks(mod)]
         converted.append(cells)
         missing = [key for key in FIELDS if key not in mod]
@@ -181,7 +188,8 @@ def main(argv=None):
     prefix_candidates.update(load(PREFIXES))
     converted, report = generate(load(COMP / 'equipment/weapon_mods.json'),
         {item['id']: item['name'] for item in localized}, index(SYSTEM / 'damageEffects.json'),
-        index(SYSTEM / 'qualities.json'), index(EQUIP / 'ammo/ammo_types.json'), load(BOOK), prefix_candidates)
+        index(SYSTEM / 'qualities.json'), index(EQUIP / 'ammo/ammo_types.json'), load(BOOK), prefix_candidates,
+        load(COMP / 'i18n/ru-RU/screens/addItemModal.json')['filter']['damageTypes'])
     for path in (args.out_json, args.report):
         path.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps(converted, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')

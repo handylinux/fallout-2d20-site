@@ -1,4 +1,6 @@
 import tempfile
+import json
+import re
 import unittest
 from pathlib import Path
 
@@ -43,6 +45,23 @@ class HeavyPreviewTests(unittest.TestCase):
         heavy.render_heavy(self.comp, 'weapon_fat_man', 60, {}, output)
         with pymupdf.open(output) as doc:
             self.assertEqual(doc[0].get_text().count('НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ'), 1)
+
+    def test_full_order_renders_every_card_without_losing_description(self):
+        ids = json.loads(heavy.ORDER_FILE.read_text(encoding='utf-8'))
+        self.assertEqual(len(ids), 21)
+        self.assertEqual(len(ids), len(set(ids)))
+        self.assertEqual(ids[-1], 'weapon_gatling_plasma')
+        for i, wid in enumerate(ids):
+            output = self.root / f'{i}.pdf'
+            info = heavy.render_heavy(self.comp, wid, 60 + i, {}, output)
+            if info['font_size'] is not None:
+                self.assertGreaterEqual(info['font_size'], 6.5)
+            with pymupdf.open(output) as doc:
+                self.assertEqual(len(doc), 1)
+                text = re.sub(r'\s+', '', doc[0].get_text())
+                description = re.sub(r'\s+', '', self.comp.description(wid))
+                if description:
+                    self.assertIn(description, text, wid)
 
     def test_does_not_truncate_description_if_no_room(self):
         self.comp.descriptions['weapon_flamer'] = 'Длинное описание ' * 2000
