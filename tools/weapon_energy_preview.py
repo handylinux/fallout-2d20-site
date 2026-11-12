@@ -8,6 +8,7 @@ from pathlib import Path
 import pymupdf
 from reportlab.pdfgen import canvas
 import build_small_guns_book as small
+import companion_mods_receiver as conv
 import weapon_heavy_preview as heavy
 import weapon2pdf as w
 from weapons2cards import Companion, build_card
@@ -15,6 +16,25 @@ from weapons2cards import Companion, build_card
 SPECIALS = Path(__file__).resolve().parent.parent / 'data/weapons/energy-specials.ru.json'
 
 SAMPLES = [('weapon_laser_musket', 81), ('weapon_laser_gun', 82), ('weapon_plasma_gun', 83)]
+
+
+MUSKET_MODS = ('mod_three_crank_capacitor', 'mod_four_crank_capacitor',
+               'mod_five_crank_capacitor', 'mod_six_crank_capacitor')
+
+
+def musket_reference(comp, prefixes):
+    # Pick precisely the weapon-specific capacitors, not every energy mod.
+    allowed = {('Capacitor', mid) for mid in MUSKET_MODS}
+    data, problems = small.make_mod_data(comp, ['weapon_laser_musket'], prefixes,
+        allowed=allowed, title='МОДИФИКАЦИИ ЭНЕРГЕТИЧЕСКОГО ОРУЖИЯ')
+    actual = comp.slots.get('weapon_laser_musket', {}).get('Capacitor', [])
+    if set(actual) != set(MUSKET_MODS):
+        raise ValueError('Список конденсаторов мушкета изменился: требуется сверка')
+    section = data['sections'][0]
+    rows_by_id = dict(zip([mid for mid in actual if mid in MUSKET_MODS], section['rows']))
+    section['rows'] = [rows_by_id[mid] for mid in MUSKET_MODS]
+    section['category'] = 'УНИКАЛЬНЫЙ КОНДЕНСАТОР — ЛАЗЕРНЫЙ МУШКЕТ'
+    return data, problems
 
 
 def render_energy(comp, wid, source, source_page, page_num, out):
@@ -63,6 +83,14 @@ def build(source, output, report=None):
                 result.insert_pdf(original, from_page=source_number-1, to_page=source_number-1)
                 small.renumber_divider(result[-1], len(result), source_number=source_number)
                 references.append(len(result))
+            # Continuation of the common reference, not a second weapon-page table.
+            mod_data, problems = musket_reference(comp, conv.load(conv.PREFIXES))
+            extra = Path(tmp) / 'musket-reference.pdf'
+            small.tables.render(mod_data, extra, page_start=len(result) + 1)
+            with pymupdf.open(extra) as additional:
+                for i in range(len(additional)):
+                    result.insert_pdf(additional, from_page=i, to_page=i)
+                    references.append(len(result))
             result.insert_pdf(original, from_page=79, to_page=79)
             divider = len(result)
             small.renumber_divider(result[-1], divider, source_number=80)
@@ -79,12 +107,13 @@ def build(source, output, report=None):
     if report:
         Path(report).write_text('''# Энергетическое оружие: пробная сборка
 
-'''+f'Таблицы: {references[0]}–{references[-1]}; разделитель: {divider}; оружие: {pages[0]}–{pages[-1]}; всего страниц: {total}.\n\n'+'''Таблицы скопированы с физических страниц 78–79 исходного PDF; блоки модификаций оружия — со страниц 81–83. Это временное решение, не редактируемые JSON-таблицы. Основные характеристики и описания оружия — из рабочих данных Companion и с оригиналом не сверены.
+'''+f'Таблицы: {references[0]}–{references[-1]}; разделитель: {divider}; оружие: {pages[0]}–{pages[-1]}; всего страниц: {total}.\n\n'+'''Первые две страницы общих таблиц скопированы с физических страниц 78–79 исходного PDF; следующая страница — продолжение общей таблицы с уникальными конденсаторами мушкета из рабочих JSON Companion. Блоки модификаций оружия — со страниц 81–83 оригинала. Копии из PDF — временное решение, не редактируемые JSON-таблицы. Основные характеристики и описания оружия — из рабочих данных Companion и с оригиналом не сверены.
 
 ## Требует проверки
 
 - Особенность расхода патронов лазерного мушкета добавлена из оригинала; в рабочем описании Companion она отсутствует.
-- У лазерного мушкета на странице оружия есть конденсаторы 3–6 зарядов и штык, но на оригинальных общих страницах 78–79 их характеристик нет. Их ещё нужно добавить после сверки: не считать эту таблицу полной.
+- Конденсаторы мушкета 3–6 зарядов помещены в общую таблицу: характеристики взяты из Companion, в оригинальных общих таблицах они отсутствуют. Запись качества «Ствол X» и вес 3-зарядного требуют проверки; вес отсутствует в Companion и обозначен «?».
+- Штык мушкета отсутствует в исходных общих таблицах энергетического оружия; его характеристики ещё нужно добавить после сверки.
 - Для лазерного мушкета и лазерного пистолета исходник указывает «Проникающий 1», а в Companion у эффекта не указан числовой уровень; в текущих карточках он не отображается. Нужна сверка значений.
 - Страница исходного PDF с плазменным пистолетом повторяет описание лазерного пистолета; сейчас используется описание Companion.
 - Списки модификаций на исходных страницах лазерного и плазменного пистолетов отличаются от рабочих списков Companion; в сборке пока использован оригинал. Следует сверить применимость и характеристики.
