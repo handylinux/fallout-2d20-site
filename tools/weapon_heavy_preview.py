@@ -127,6 +127,28 @@ def render_heavy(comp, wid, page_num, prefixes, out):
         return {'mode': 'detailed', 'font_size': font_size, 'mod_count': len(rows)}
 
 
+def heavy_reference_data(comp, weapons, prefixes):
+    # The table contains shared mods usable by the heavy section (including
+    # BIG_GUNS items placed elsewhere by the original book). A name-only card
+    # also contributes any otherwise unique mods, so its details are never lost.
+    small_ids = json.loads(small.ORDER.read_text(encoding='utf-8'))
+    refs = list(dict.fromkeys(list(weapons) + [wid for wid in small_ids
+                            if wid in comp.weapons and comp.weapons[wid].get('mainSkill') == 'BIG_GUNS']))
+    allowed = set()
+    for wid in refs:
+        slot_map = comp.slots.get(wid) or {}
+        many = sum(len(ids) for ids in slot_map.values()) > MAX_DETAILED_MODS
+        for slot, ids in slot_map.items():
+            for mid in ids:
+                mod = comp.mods.get(mid)
+                if many or mod is None or len(set(mod.get('applies_to_ids') or [])) > 1:
+                    allowed.add((slot, mid))
+    if not allowed:
+        return None, []
+    return small.make_mod_data(comp, refs, prefixes, allowed=allowed,
+                               title='МОДИФИКАЦИИ ТЯЖЁЛОГО ОРУЖИЯ')
+
+
 def build(source, output, weapons=WEAPONS, report=None):
     source, output = Path(source), Path(output)
     if source.resolve() == output.resolve():
@@ -143,15 +165,22 @@ def build(source, output, weapons=WEAPONS, report=None):
     diagnostics = []
     with tempfile.TemporaryDirectory() as tmp:
         base = Path(tmp) / 'small-guns.pdf'
-        # Every name-only weapon contributes its mods to the earlier reference
-        # tables. Existing IDs are deduplicated with the small-guns entries.
-        reference_weapons = [wid for wid in weapons
-                             if len(build_rows(comp, wid, prefixes)) > MAX_DETAILED_MODS]
-        small.build(source, base, reference_weapons=reference_weapons)
+        # The small-guns reference contains only SMALL_GUNS modifications.
+        small.build(source, base)
+        mod_data, mod_problems = heavy_reference_data(comp, weapons, prefixes)
+        diagnostics.extend(mod_problems)
         with pymupdf.open(base) as base_pdf, pymupdf.open(source) as original, pymupdf.open() as result:
             if original.page_count < 57:
                 raise ValueError('В исходном PDF нужно минимум 57 страниц')
             result.insert_pdf(base_pdf)
+            mods_start = len(result) + 1
+            mods_pages = 0
+            if mod_data:
+                mod_file = Path(tmp) / 'heavy-mods.pdf'
+                small.tables.render(mod_data, mod_file, page_start=mods_start)
+                with pymupdf.open(mod_file) as mod_pdf:
+                    mods_pages = len(mod_pdf)
+                    result.insert_pdf(mod_pdf)
             result.insert_pdf(original, from_page=56, to_page=56)
             divider = len(result)
             small.renumber_divider(result[-1], divider, source_number=57)
@@ -159,7 +188,7 @@ def build(source, output, weapons=WEAPONS, report=None):
                 path = Path(tmp) / f'heavy-{index}.pdf'
                 info = render_heavy(comp, wid, len(result) + 1, prefixes, path)
                 if info['mode'] == 'names':
-                    diagnostics.append(f"{wid}: {info['mod_count']} модов, показаны только названия; характеристики в общей таблице модов перед стрелковым разделом")
+                    diagnostics.append(f"{wid}: {info['mod_count']} модов, показаны только названия; характеристики в таблице модов тяжёлого оружия")
                 elif info['font_size'] is not None and info['font_size'] < 8.4:
                     diagnostics.append(f"{wid}: компактная таблица, шрифт {info['font_size']} pt")
                 for slot, values in build_rows(comp, wid, prefixes):
@@ -174,11 +203,11 @@ def build(source, output, weapons=WEAPONS, report=None):
             report = Path(report)
             report.parent.mkdir(parents=True, exist_ok=True)
             text = '# Тяжёлое оружие: проверка сборки\n\n'
-            text += f'Разделитель: {divider}; оружие: {len(weapons)}; всего страниц: {total}.\n\n'
-            text += 'Рабочие данные Companion не сверены с книгой. Если модов более восьми, показаны только названия; характеристики находятся в общих таблицах перед стрелковым разделом.\n\n'
+            text += f'Таблицы тяжёлых модов: с {mods_start}, страниц {mods_pages}; разделитель: {divider}; оружие: {len(weapons)}; всего страниц: {total}.\n\n'
+            text += 'Рабочие данные Companion не сверены с книгой. В таблице тяжёлого оружия — моды со списком применимости более чем к одному оружию, а также все моды карточек с более чем восемью модами. Для таких карточек показаны только названия; характеристики находятся в таблице перед разделителем.\n\n'
             text += '## Требует внимания\n\n' + ('\n'.join('- ' + x for x in diagnostics) if diagnostics else 'Не обнаружено.') + '\n'
             report.write_text(text, encoding='utf-8')
-        return {'divider': divider, 'pages': total, 'weapons': len(weapons), 'issues': len(diagnostics)}
+        return {'mods_start': mods_start, 'mods_pages': mods_pages, 'divider': divider, 'pages': total, 'weapons': len(weapons), 'issues': len(diagnostics)}
 
 
 def main(argv=None):

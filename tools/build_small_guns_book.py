@@ -20,10 +20,13 @@ SLOT_ORDER = ['Receiver', 'Barrel', 'Magazine', 'Grip', 'Stock', 'Sight',
 SLOT_TITLES = {'Receiver': 'РЕСИВЕРА', 'Barrel': 'СТВОЛА', 'Magazine': 'МАГАЗИНА',
                'Grip': 'РУКОЯТИ', 'Stock': 'ЛОЖИ', 'Sight': 'ПРИЦЕЛА', 'Muzzle': 'ДУЛА',
                'Capacitor': 'КОНДЕНСАТОРА', 'Winch': 'ЛЕБЁДКИ', 'Frame': 'РАМЫ',
-               'Unique': 'УНИКАЛЬНЫЕ'}
+               'Unique': 'УНИКАЛЬНЫЕ', 'Fuel': 'ТОПЛИВА', 'Tank': 'БАКА',
+               'Nozzle': 'СОПЛА', 'Launcher': 'ПУСКОВОЙ УСТАНОВКИ',
+               'Canister': 'КАНИСТРЫ', 'Camera': 'КАМЕРЫ'}
 
 
-def make_mod_data(comp, weapon_ids, prefixes):
+def make_mod_data(comp, weapon_ids, prefixes, allowed=None,
+                  title="МОДИФИКАЦИИ СТРЕЛКОВОГО ОРУЖИЯ"):
     """Group all mods referenced by these weapons' slot lists; never guess missing IDs."""
     if len(set(weapon_ids)) != len(weapon_ids):
         raise ValueError('Повторяющийся ID оружия')
@@ -35,6 +38,8 @@ def make_mod_data(comp, weapon_ids, prefixes):
     for wid in weapon_ids:
         for slot, ids in (comp.slots.get(wid) or {}).items():
             for mid in ids:
+                if allowed is not None and (slot, mid) not in allowed:
+                    continue
                 slots.setdefault(slot, {})[mid] = None
                 mod = comp.mods.get(mid)
                 if mod is None:
@@ -75,7 +80,7 @@ def make_mod_data(comp, weapon_ids, prefixes):
         sections.append({'category': f'МОДИФИКАЦИИ {label}', 'rows': rows})
     if not sections:
         raise ValueError('В выбранных слотах нет модификаций')
-    data = {'title': 'МОДИФИКАЦИИ СТРЕЛКОВОГО ОРУЖИЯ', 'sections': sections}
+    data = {'title': title, 'sections': sections}
     return data, problems
 
 
@@ -94,14 +99,23 @@ def renumber_divider(page, number, source_number=13):
                      fontname='dividernum', fontsize=9.96, color=(0, 0, 0))
 
 
-def build(source, output, report=None, reference_weapons=()):
+def small_guns_reference_ids(comp, weapon_ids):
+    unknown = [wid for wid in weapon_ids if wid not in comp.weapons]
+    if unknown:
+        raise ValueError('Неизвестные ID оружия: ' + ', '.join(unknown))
+    return [wid for wid in weapon_ids if comp.weapons[wid].get('mainSkill') == 'SMALL_GUNS']
+
+
+def build(source, output, report=None):
     source, output = Path(source), Path(output)
     if source.resolve() == output.resolve():
         raise ValueError('Выходной файл не должен совпадать с исходным PDF')
     weapon_ids = json.loads(ORDER.read_text(encoding='utf-8'))
     comp = Companion()
     prefixes = conv.load(conv.PREFIXES)
-    reference_ids = list(dict.fromkeys(weapon_ids + list(reference_weapons)))
+    # Reference tables are grouped by skill, even if the original book put
+    # weapons of other skills in the small-guns section.
+    reference_ids = small_guns_reference_ids(comp, weapon_ids)
     data, problems = make_mod_data(comp, reference_ids, prefixes)
     w.register_fonts()
     with pymupdf.open(source) as original:

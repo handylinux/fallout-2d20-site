@@ -25,6 +25,13 @@ class SmallGunsBookTests(unittest.TestCase):
         self.assertTrue(any(section['category'] == 'МОДИФИКАЦИИ ЛЕБЁДКИ' for section in data['sections']))
         self.assertFalse(any('нет записи мода' in x for x in problems))
 
+    def test_small_reference_uses_skill_not_book_position(self):
+        comp = Companion()
+        ids = ['weapon_10mm_pistol', 'weapon_gauss_rifle', 'weapon_underwater_gun']
+        self.assertEqual(book.small_guns_reference_ids(comp, ids), ['weapon_10mm_pistol'])
+        with self.assertRaises(ValueError):
+            book.small_guns_reference_ids(comp, ['unknown'])
+
     def test_unknown_mod_remains_visible(self):
         comp = Companion()
         comp.slots['weapon_10mm_pistol'] = {'Receiver': ['mod_unknown_test']}

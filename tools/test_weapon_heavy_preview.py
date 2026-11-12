@@ -63,16 +63,22 @@ class HeavyPreviewTests(unittest.TestCase):
         self.assertEqual(info['mode'], 'detailed')
         self.assertEqual(info['mod_count'], 6)
 
-    def test_name_only_mods_are_in_shared_reference(self):
+    def test_name_only_mods_are_in_heavy_reference(self):
         ids = json.loads(heavy.ORDER_FILE.read_text(encoding='utf-8'))
         selected = [wid for wid in ids if len(heavy.build_rows(self.comp, wid, {})) > heavy.MAX_DETAILED_MODS]
-        small_ids = json.loads(heavy.small.ORDER.read_text(encoding='utf-8'))
-        data, _ = heavy.small.make_mod_data(self.comp, list(dict.fromkeys(small_ids + selected)), {})
+        data, _ = heavy.heavy_reference_data(self.comp, ids, {})
+        self.assertEqual(data['title'], 'МОДИФИКАЦИИ ТЯЖЁЛОГО ОРУЖИЯ')
         names = {(section['category'], row[0]) for section in data['sections'] for row in section['rows']}
         for wid in selected:
             for slot, values in heavy.build_rows(self.comp, wid, {}):
                 category = 'МОДИФИКАЦИИ ' + heavy.small.SLOT_TITLES[slot]
                 self.assertIn((category, values[0]), names, (wid, slot, values[0]))
+
+    def test_specific_single_weapon_mods_stay_on_weapon_page(self):
+        data, _ = heavy.heavy_reference_data(self.comp, ['weapon_flamer'], {})
+        names = {row[0] for section in data['sections'] for row in section['rows']} if data else set()
+        self.assertNotIn('Напалм', names)
+        self.assertTrue(any(row[0] == 'Напалм' for _, row in heavy.build_rows(self.comp, 'weapon_flamer', {})))
 
     def test_full_order_renders_every_card_without_losing_description(self):
         ids = json.loads(heavy.ORDER_FILE.read_text(encoding='utf-8'))
