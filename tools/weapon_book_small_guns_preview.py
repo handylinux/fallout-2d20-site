@@ -2,7 +2,7 @@
 """Interim book preview: source pages 1–13 and three generated weapon pages.
 
 The first 13 pages (including the mod tables) are copied from the source PDF,
-not regenerated. The three weapon pages are built from Companion data.
+not regenerated. The weapon pages are built from Companion data without weapon illustrations by default.
 """
 from __future__ import annotations
 
@@ -21,7 +21,8 @@ ORDER_FILE = Path(__file__).resolve().parent.parent / "data/weapons/small-guns-o
 WEAPONS = ("weapon_10mm_pistol", "weapon_44_pistol", "weapon_flare_gun")
 
 
-def build_preview(source: Path, output: Path, image_dir: Path, weapons=WEAPONS) -> int:
+def build_preview(source: Path, output: Path, image_dir: Path, weapons=WEAPONS,
+                  with_images: bool = False) -> int:
     source, output, image_dir = Path(source), Path(output), Path(image_dir)
     if source.resolve() == output.resolve():
         raise ValueError("Выходной файл не должен совпадать с исходным PDF")
@@ -39,11 +40,15 @@ def build_preview(source: Path, output: Path, image_dir: Path, weapons=WEAPONS) 
         with tempfile.TemporaryDirectory() as temp, pymupdf.open() as result:
             result.insert_pdf(original, from_page=0, to_page=SOURCE_PAGES - 1)
             for index, wid in enumerate(weapons):
-                image = (image_dir / (slugify(wid) + ".png")).resolve()
-                if not image.is_file():
-                    print(f"Нет изображения: {wid}", file=sys.stderr)
+                image_path = ""
+                if with_images:
+                    image = (image_dir / (slugify(wid) + ".png")).resolve()
+                    if image.is_file():
+                        image_path = str(image)
+                    else:
+                        print(f"Нет изображения: {wid}", file=sys.stderr)
                 card = build_card(companion, wid, page=SOURCE_PAGES + index + 1,
-                                  image=str(image) if image.is_file() else "")
+                                  image=image_path)
                 page_file = Path(temp) / f"{index}.pdf"
                 weapon2pdf.render_card(card, str(page_file))
                 with pymupdf.open(page_file) as page:
@@ -57,12 +62,13 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("source", type=Path, help="исходный справочник PDF")
     parser.add_argument("--image-dir", type=Path, default=Path("art"))
+    parser.add_argument("--with-images", action="store_true", help="необязательно: добавить изображения оружия")
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--full", action="store_true", help="весь стрелковый раздел по сохранённому порядку")
     args = parser.parse_args(argv)
     try:
         weapons = json.loads(ORDER_FILE.read_text(encoding="utf-8")) if args.full else WEAPONS
-        count = build_preview(args.source, args.out, args.image_dir, weapons)
+        count = build_preview(args.source, args.out, args.image_dir, weapons, args.with_images)
     except (OSError, ValueError, RuntimeError) as exc:
         parser.exit(1, f"Ошибка: {exc}\n")
     print(f"Сохранено {count} страниц: {args.out}")

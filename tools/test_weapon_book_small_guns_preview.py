@@ -1,6 +1,8 @@
 import tempfile
 import json
 import unittest
+from unittest.mock import patch
+from PIL import Image
 from pathlib import Path
 
 import pymupdf
@@ -33,6 +35,19 @@ class PreviewTests(unittest.TestCase):
                 text = doc[13 + i].get_text()
                 self.assertIn(title, text)
                 self.assertIn(str(14 + i), text.split())
+
+    def test_art_is_omitted_by_default_even_when_file_exists(self):
+        source = self.source(13)
+        Image.new("RGB", (30, 20), "red").save(self.root / "10mm-pistol.png")
+        real_render = preview.weapon2pdf.render_card
+        with patch.object(preview.weapon2pdf, "render_card", wraps=real_render) as render:
+            preview.build_preview(source, self.root / 'preview.pdf', self.root,
+                                  ("weapon_10mm_pistol",))
+        self.assertEqual(render.call_args.args[0]["image"], "")
+        with pymupdf.open(self.root / 'preview.pdf') as doc:
+            text = doc[13].get_text()
+            self.assertIn('10-ММ ПИСТОЛЕТ', text)
+            self.assertIn('Вес:', text)
 
     def test_full_order_is_unique_and_adds_10mm_smg(self):
         ids = json.loads(preview.ORDER_FILE.read_text(encoding="utf-8"))
