@@ -6,7 +6,7 @@
 <title>ПОСЛЕДОВАТЕЛЬ АПОКАЛИПСИСА — Fallout 2D20</title>
 <link rel="stylesheet" href="/fallout-2d20-site/assets/vendor/bootstrap.min.css">
 <style>/* ============================================================================
-   Fallout 2D20 — свои стили. Только классы проекта, никаких sppb-*/helix-*.
+   Fallout 2D20 — свои стили. Только классы проекта, никаких sppb / helix.
    Токены собраны из живого сайта (цвета, тени, паттерны).
    ========================================================================== */
 
@@ -413,13 +413,14 @@ body {
 .origins-row .cell--shadow { width: 100%; padding: 24px 18px 30px; }
 .cell__title {
   margin: 0 0 20px;
-  font-size: 1.6rem;
+  font-size: 32px;
   line-height: 1.2;
   text-align: center;
   text-transform: uppercase;
+  color: var(--f-link);            /* в эталоне все заголовки происхождений #b15b23 */
 }
-.cell__title a { color: var(--f-link); }
-.cell__title a:hover { color: var(--f-link); text-decoration: underline; }
+.cell__title a { color: inherit; }
+.cell__title a:hover { color: inherit; text-decoration: underline; }
 .cell__text {
   margin: 0;
   padding: 25px 0;
@@ -545,7 +546,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 14px;
-  padding: 10px 30px 10px 45px;
+  padding: 10px 45px;
   font-family: "Poppins", var(--f-font-title);
   font-size: 20px;
   font-weight: 700;
@@ -571,13 +572,27 @@ body {
   transition: transform .5s;
 }
 .cta:hover .cta__arrow { transform: translateX(6px); }
-.cta__arrow path { transition: transform .4s, fill 1s; }
-/* стрелка-шеврон из трёх полос: в покое видны все три, при hover выезжают */
-.cta__arrow .a1,
-.cta__arrow .a2,
-.cta__arrow .a3 { transform: translateX(0); }
-.cta:hover .cta__arrow .a1 { transform: translateX(-10px); }
-.cta:hover .cta__arrow .a2 { transform: translateX(-5px); }
+/* Стрелка из трёх полос — правила ровно из дампа (там у svg нет своего класса,
+   поэтому селекторы идут от .cta svg, а полосы зовутся one/two/three):
+     path.one {transition .4s; transform: translateX(-60%)}
+     path.two {transition .5s; transform: translateX(-30%)}
+   В покое полосы наложены друг на друга и дают ОДНУ толстую стрелку «>».
+   При hover все три уезжают в translateX(0%) и мигают (color_anim) —
+   отсюда «разъезжающаяся» стрелка. Классы .a1/.a2/.a3 — наш собственный
+   SVG из build_site.ARROW, поведение у него то же. */
+.cta svg path { transition: transform .4s; }
+.cta svg path.one, .cta svg path.a1 { transition-duration: .4s; transform: translateX(-60%); }
+.cta svg path.two, .cta svg path.a2 { transition-duration: .5s; transform: translateX(-30%); }
+.cta svg path.three, .cta svg path.a3 { transform: translateX(0); }
+.cta:hover svg path.one, .cta:hover svg path.a1,
+.cta:hover svg path.two, .cta:hover svg path.a2 { transform: translateX(0); }
+@keyframes cta-color-anim {
+  0%, 100% { fill: #fff; }
+  50%      { fill: #fbc638; }
+}
+.cta:hover svg path.one,   .cta:hover svg path.a1 { animation: cta-color-anim 1s infinite .6s; }
+.cta:hover svg path.two,   .cta:hover svg path.a2 { animation: cta-color-anim 1s infinite .4s; }
+.cta:hover svg path.three, .cta:hover svg path.a3 { animation: cta-color-anim 1s infinite .2s; }
 
 @keyframes cta-color {
   0%   { fill: #fff; }
@@ -1061,12 +1076,20 @@ html, body { overflow-x: hidden; }
 
 /* заголовки */
 .sp-heading { margin: 6px 0; font-weight: 700; }
-.sp-heading a { color: inherit; text-decoration: none; }
-.sp-heading a:hover { text-decoration: underline; }
+/* Ссылка в заголовке окрашивает заголовок: в эталоне только 2 из 9 карточек
+   снаряжения обёрнуты в <a> (Оружие, Одежда) — цвет там #b15b23, остальные #000. */
+.sp-heading a { color: var(--f-link); text-decoration: none; }
+.sp-heading a:hover { color: var(--f-link); text-decoration: underline; }
 .sp-heading--center { text-align: center; }
-h2.sp-heading { font-size: 30px; line-height: 1.2; }
-h3.sp-heading { font-size: 24px; }
+/* размеры — из bootstrap эталона: h2 2rem = 32px (calc(1.325rem + .9vw) при <1200px),
+   h3 1.75rem = 28px */
+h2.sp-heading { font-size: 32px; line-height: 1.2; }
+h3.sp-heading { font-size: 28px; }  /* 1.75rem у bootstrap эталона */
 h4.sp-heading { font-size: 20px; }
+@media (max-width: 1199px) {
+  h2.sp-heading { font-size: calc(1.325rem + .9vw); }
+  h3.sp-heading { font-size: calc(1.3rem + .6vw); }
+}
 
 /* текст */
 .sp-text { font-size: 16px; line-height: 1.55; }
@@ -1287,6 +1310,6 @@ details[open] > .sp-tab__title::after { transform: rotate(-135deg); margin-top: 
 
 <script src="/fallout-2d20-site/assets/vendor/bootstrap.bundle.min.js"></script>
 <script src="/fallout-2d20-site/assets/js/search.js"></script>
-<script src="/fallout-2d20-site/assets/js/site.js?v=a918ab36"></script>
+<script src="/fallout-2d20-site/assets/js/site.js?v=26cb0149"></script>
 </body>
 </html>

@@ -231,6 +231,14 @@ def col_inner_style(col):
 
 # id статьи/страницы Joomla → наш адрес; заполняется из gen_from_dump
 LINK_MAP = {}
+# Заголовки карточек, которые на живом сайте оказались БЕЗ ссылки, хотя в дампе
+# title_link заполнен: Joomla не смогла разрешить id/пункт меню (устаревшие id
+# 190/449/300 вместо реальных статей). Проверено по public/snaryazhenie/index.html:
+# обёрнуты в <a> только «Оружие» и «Одежда», остальные семь — голый <h2>.
+# Из-за этого в эталоне коричневых заголовков ровно два, остальные чёрные.
+NO_TITLE_LINK = {
+    'Боеприпасы', 'Броня', 'Препараты', 'Еда', 'Напитки', 'Книги и журналы', 'Разное',
+}
 
 
 def resolve_link(link):
@@ -268,6 +276,8 @@ def r_heading(a):
     align = (setting(a, 'alignment') or {}).get('xl') if isinstance(setting(a, 'alignment'), dict) else ''
     cls = 'sp-heading' + (' sp-heading--center' if align == 'center' else '')
     link = resolve_link(setting(a, 'title_link'))
+    if t.strip() in NO_TITLE_LINK:
+        link = ''
     inner = esc(t)
     if link:
         inner = '<a href="%s">%s</a>' % (esc(link), inner)
