@@ -1,0 +1,143 @@
+#!/usr/bin/env python3
+"""Editable-text compatibility version of the weapon mod table (Type0 fonts)."""
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path
+
+import pymupdf
+import weapon2pdf as w
+from weapon_mods_table import HEADERS, COL_WIDTHS
+
+REGULAR = str(Path(w.FONT_DIR) / 'Carlito-Regular.ttf')
+BOLD = str(Path(w.FONT_DIR) / 'Carlito-Bold.ttf')
+SIZE, LEADING = 10, 13
+TABLE_TOP, HEADER_H, CATEGORY_H, PAGE_BOTTOM = 100, 23, 23, 803
+BEIGE, ORANGE = (1, .922, .804), (1, .776, .455)
+BLACK, WHITE, BORDER = (0, 0, 0), (1, 1, 1), (.65, .65, .65)
+
+
+def wrap(text, font, width, size=SIZE):
+    """Wrap at words, including long words, without discarding characters."""
+    lines = []
+    for paragraph in text.split('\n'):
+        line = ''
+        for word in paragraph.split():
+            candidate = (line + ' ' + word).strip()
+            if font.text_length(candidate, fontsize=size) <= width:
+                line = candidate
+                continue
+            if line:
+                lines.append(line)
+                line = ''
+            for char in word:
+                if line and font.text_length(line + char, fontsize=size) > width:
+                    lines.append(line)
+                    line = ''
+                line += char
+        lines.append(line)
+    return lines or ['']
+
+
+def render(data, output, page_start=10):
+    rows = data.get('rows')
+    if not data.get('title') or not data.get('category'):
+        raise ValueError('Нужны title и category')
+    if not isinstance(rows, list) or not rows or any(
+        not isinstance(row, list) or len(row) != 6 or
+        any(not isinstance(v, str) for v in row) for row in rows
+    ) or page_start < 1:
+        raise ValueError('Нужны строки из шести текстовых ячеек и положительный номер страницы')
+    regular = pymupdf.Font(fontfile=REGULAR)
+    bold = pymupdf.Font(fontfile=BOLD)
+    doc = pymupdf.open()
+    page, y = None, 0
+
+    def text(page, x, baseline, value, name='body', size=SIZE, color=BLACK):
+        page.insert_text((x, baseline), value, fontname=name, fontsize=size, color=color)
+
+    def centered(page, rect, lines, font, name, size, leading, color=BLACK):
+        block = (len(lines) - 1) * leading + size
+        baseline = rect.y0 + (rect.height - block) / 2 + size * .85
+        for line in lines:
+            x = rect.x0 + (rect.width - font.text_length(line, fontsize=size)) / 2
+            text(page, x, baseline, line, name, size, color)
+            baseline += leading
+
+    def new_page():
+        page = doc.new_page(width=w.PAGE_W, height=w.PAGE_H)
+        page.insert_font(fontname='body', fontfile=REGULAR)
+        page.insert_font(fontname='bold', fontfile=BOLD)
+        x, by, width, height = w.paper_placement()
+        if Path(w.PAPER).is_file():
+            page.insert_image(pymupdf.Rect(x, w.PAGE_H - (by + height), x + width, w.PAGE_H - by),
+                              filename=w.PAPER, keep_proportion=False)
+        size = w.TITLE_SIZE
+        while size > 12 and bold.text_length(data['title'], fontsize=size) > w.CONTENT_W:
+            size -= .5
+        centered(page, pymupdf.Rect(w.MARGIN_L, w.TITLE_TOP, w.CONTENT_R, w.TITLE_TOP + size),
+                 [data['title']], bold, 'bold', size, size, BLACK)
+        page.draw_rect(pymupdf.Rect(w.PAGE_W_WORK_CENTER - w.RULE_W / 2, w.RULE_TOP,
+                                   w.PAGE_W_WORK_CENTER + w.RULE_W / 2, w.RULE_TOP + w.RULE_H),
+                       color=None, fill=BLACK)
+        page_no = str(page_start + len(doc) - 1)
+        x_num = w.MARGIN_L + 2.57 if (page_start + len(doc) - 1) % 2 == 0 else w.CONTENT_R - 2.57 - regular.text_length(page_no, fontsize=9.96)
+        text(page, x_num, w.PAGE_NUMBER_TOP + 9.96 * .75, page_no, size=9.96)
+        x = w.MARGIN_L
+        for width, name in zip(COL_WIDTHS, HEADERS):
+            rect = pymupdf.Rect(x, TABLE_TOP, x + width, TABLE_TOP + HEADER_H)
+            page.draw_rect(rect, color=BORDER, fill=BLACK, width=.25)
+            centered(page, rect, wrap(name, bold, width - 6, 9), bold, 'bold', 9, 11, WHITE)
+            x += width
+        category = pymupdf.Rect(w.MARGIN_L, TABLE_TOP + HEADER_H, w.CONTENT_R,
+                                TABLE_TOP + HEADER_H + CATEGORY_H)
+        page.draw_rect(category, color=BORDER, fill=BLACK, width=.25)
+        centered(page, category, wrap(data['category'], bold, w.CONTENT_W - 6, 10), bold, 'bold', 10, 12, WHITE)
+        return page, category.y1
+
+    for index, row in enumerate(rows):
+        lines = [wrap(value, regular, width - 6) for value, width in zip(row, COL_WIDTHS)]
+        height = max(len(cell) for cell in lines) * LEADING + 6
+        if height > PAGE_BOTTOM - (TABLE_TOP + HEADER_H + CATEGORY_H):
+            doc.close()
+            raise ValueError(f'Строка {index + 1} не помещается на страницу целиком')
+        if page is None or y + height > PAGE_BOTTOM:
+            page, y = new_page()
+        x = w.MARGIN_L
+        for col, (width, cell) in enumerate(zip(COL_WIDTHS, lines)):
+            rect = pymupdf.Rect(x, y, x + width, y + height)
+            page.draw_rect(rect, color=BORDER, fill=BEIGE if index % 2 == 0 else ORANGE, width=.25)
+            if col >= 3:
+                centered(page, rect, cell, regular, 'body', SIZE, LEADING)
+            else:
+                baseline = y + (height - ((len(cell) - 1) * LEADING + SIZE)) / 2 + SIZE * .85
+                for line in cell:
+                    text(page, x + 3, baseline, line)
+                    baseline += LEADING
+            x += width
+        y += height
+    output = Path(output)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        doc.save(str(output), garbage=4, deflate=True)
+    finally:
+        doc.close()
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('data', type=Path)
+    parser.add_argument('--out', type=Path, required=True)
+    parser.add_argument('--page-start', type=int, default=10)
+    args = parser.parse_args(argv)
+    try:
+        render(json.loads(args.data.read_text(encoding='utf-8')), args.out, args.page_start)
+    except (OSError, ValueError, RuntimeError) as exc:
+        parser.exit(1, f'Ошибка: {exc}\n')
+    print(args.out)
+    return 0
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())
