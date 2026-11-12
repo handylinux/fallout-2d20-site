@@ -4,6 +4,9 @@ import json
 import os
 import tempfile
 import unittest
+from unittest.mock import patch
+
+from PIL import Image
 
 import weapon2pdf as w
 
@@ -16,6 +19,32 @@ w.register_fonts()
 def base_card():
     with open(CARD_PATH, encoding="utf-8") as fh:
         return json.load(fh)
+
+
+class ImageLayoutTests(unittest.TestCase):
+    def test_image_box_respects_content_and_subtitle(self):
+        left, top, right, bottom = w.IMAGE_BOX
+        self.assertGreaterEqual(left, w.MARGIN_L)
+        self.assertLessEqual(right, w.CONTENT_R)
+        self.assertGreater(top, w.SUBTITLE_TOP + w.SUBTITLE_SIZE)
+        self.assertLess(bottom, w.STATS_TOP)
+
+    def test_render_uses_contain(self):
+        with patch.object(w, "place_image") as place:
+            w.draw_image(None, {"image": "weapon.png"})
+        place.assert_called_once_with(None, "weapon.png", w.IMAGE_BOX, fit="contain")
+
+    def test_wide_and_tall_images_keep_aspect_ratio(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            for width, height in [(400, 100), (100, 400)]:
+                path = os.path.join(tmp, f"{width}-{height}.png")
+                Image.new("RGB", (width, height), "red").save(path)
+                with patch.object(w, "_paper_image", return_value=Image.new("RGB", (2600, 1800), "white")):
+                    img = w.flatten_on_paper(path, w.IMAGE_BOX, dpi=72, fit="contain")
+                mask = img.point(lambda v: 255 if v < 128 else 0).getchannel("G")
+                bounds = mask.getbbox()
+                actual = (bounds[2] - bounds[0]) / (bounds[3] - bounds[1])
+                self.assertAlmostEqual(actual, width / height, delta=0.05)
 
 
 class WrapTextTests(unittest.TestCase):

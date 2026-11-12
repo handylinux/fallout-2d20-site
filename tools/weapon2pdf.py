@@ -9,7 +9,7 @@ docs/render/Справочник оружия-pinkibook-018.pdf:
     title ........... Carlito Bold 21.98 pt, uppercase, centred
     rule ............ 385.94 x 2.28 pt
     subtitle ........ 14.04 pt
-    image ........... fit into 21.43 .. 573.93 / 104 .. 304
+    image ........... proportionally inside content column, below subtitle
     stats table ..... 7 cols, header 34.97 pt, body 33.24 pt
     description ..... 12 pt / 17.4 pt, justified
     mods table ...... 50.1 pt label + 6 columns, fills to y 803.35
@@ -57,7 +57,8 @@ RULE_W = 385.94
 SUBTITLE_TOP = 87.53
 SUBTITLE_SIZE = 14.04
 
-IMAGE_BOX = (21.43, 78.98, 573.93, 331.64)  # x0, y0(top), x1, y1(bottom)
+IMAGE_BOX = (MARGIN_L, SUBTITLE_TOP + SUBTITLE_SIZE + 6,
+             CONTENT_R, 303.39)  # inside content, below subtitle and above stats
 
 STATS_TOP = 307.39
 STATS_HEADER_H = 34.97
@@ -299,7 +300,7 @@ def place_image(c, path, box, fit="contain") -> None:
 
 
 def draw_image(c, card) -> None:
-    place_image(c, card.get("image") or "", IMAGE_BOX, fit="stretch")
+    place_image(c, card.get("image") or "", IMAGE_BOX, fit="contain")
 
 
 def draw_title(c, card) -> None:
