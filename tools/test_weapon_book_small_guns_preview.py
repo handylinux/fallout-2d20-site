@@ -1,4 +1,5 @@
 import tempfile
+import json
 import unittest
 from pathlib import Path
 
@@ -32,6 +33,21 @@ class PreviewTests(unittest.TestCase):
                 text = doc[13 + i].get_text()
                 self.assertIn(title, text)
                 self.assertIn(str(14 + i), text.split())
+
+    def test_full_order_is_unique_and_adds_10mm_smg(self):
+        ids = json.loads(preview.ORDER_FILE.read_text(encoding="utf-8"))
+        self.assertEqual(len(ids), 44)
+        self.assertEqual(len(set(ids)), len(ids))
+        self.assertEqual(tuple(ids[:3]), preview.WEAPONS)
+        self.assertEqual(ids[-1], "weapon_10mm_smg")
+
+    def test_invalid_orders_are_rejected(self):
+        source = self.source(13)
+        output = self.root / 'preview.pdf'
+        for order in [("unknown_weapon",), ("weapon_10mm_pistol",) * 2]:
+            with self.assertRaises(ValueError):
+                preview.build_preview(source, output, self.root, order)
+            self.assertFalse(output.exists())
 
     def test_short_and_same_source_are_rejected(self):
         source = self.source(12)
