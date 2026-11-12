@@ -44,6 +44,17 @@ class CompanionTests(unittest.TestCase):
         self.assertEqual(card["effects"], ["Очередь"])
         self.assertIn("Изнуряющий", card["qualities"])
 
+    def test_energy_weapon_slots_are_data_driven(self):
+        card = cards.build_card(self.comp, "weapon_plasma_gun")
+        self.assertEqual([m["slot"] for m in card["mods"]],
+                         ["СТВОЛ", "КОНДЕНСАТОР", "РУКОЯТЬ", "ЛОЖА",
+                          "ПРИЦЕЛ"])
+
+    def test_capacitor_label_comes_from_companion(self):
+        self.assertEqual(self.comp.slot_label("Capacitor"), "КОНДЕНСАТОР")
+        self.assertEqual(self.comp.slot_label("Nozzle"), "СОПЛО")
+        self.assertEqual(self.comp.slot_label("Winch"), "ЛЕБЁДКА")
+
     def test_combined_damage_type(self):
         self.assertEqual(self.comp.damage_type(["energy", "physical"]),
                          "Энергетический и Физический")

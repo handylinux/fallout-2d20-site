@@ -29,18 +29,24 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 COMP = os.path.join(ROOT, "data", "companion")
 RU = os.path.join(COMP, "i18n", "ru-RU", "data")
 
-SLOT_ORDER = ["Receiver", "Barrel", "Grip", "Stock", "Magazine", "Sight",
-              "Muzzle"]
-SLOT_LABELS = {
+# Book order for the pages we have seen; the remaining slots (energy weapons,
+# robots) are appended alphabetically.  A weapon only shows the slots that are
+# actually present in weapon_mod_slots.json.
+SLOT_ORDER = ["Receiver", "Barrel", "Capacitor", "Nozzle", "Grip", "Stock",
+              "Magazine", "Sight", "Muzzle"]
+
+# Book spellings for the classic slots; everything else comes from the
+# Companion translation (weapon.modSlots in screens/weaponsAndArmor).
+SLOT_LABEL_OVERRIDES = {
     "Receiver": "РЕСИВЕР",
     "Barrel": "СТВОЛ",
+    "Capacitor": "КОНДЕНСАТОР",
+    "Nozzle": "СОПЛО",
     "Grip": "РУКОЯТЬ",
     "Stock": "ЛОЖА",
     "Magazine": "МАГАЗИН",
     "Sight": "ПРИЦЕЛ",
     "Muzzle": "ДУЛО",
-    "Nozzle": "СОПЛО",
-    "Capacitor": "КОНДЕНСАТОР",
 }
 
 
@@ -70,6 +76,9 @@ class Companion:
         self.damage_types = load(os.path.join(
             COMP, "i18n", "ru-RU", "screens",
             "addItemModal.json"))["filter"]["damageTypes"]
+        self.slot_labels = load(os.path.join(
+            COMP, "i18n", "ru-RU",
+            "screens-weaponsAndArmor.json"))["weapon"]["modSlots"]
 
         descriptions = os.path.join(ROOT, "data", "weapons",
                                     "descriptions.ru.json")
@@ -105,6 +114,14 @@ class Companion:
                 names.append(name)
         return names
 
+    def slot_label(self, slot):
+        if slot in SLOT_LABEL_OVERRIDES:
+            return SLOT_LABEL_OVERRIDES[slot]
+        name = self.slot_labels.get(slot.lower().rstrip("s"))
+        if not name:
+            name = self.slot_labels.get(slot.lower(), slot)
+        return name.upper()
+
     def mod_rows(self, wid):
         slots = self.slots.get(wid) or {}
         order = [s for s in SLOT_ORDER if slots.get(s)]
@@ -117,8 +134,7 @@ class Companion:
                 if name:
                     items.append(name)
             if items:
-                rows.append({"slot": SLOT_LABELS.get(slot, slot.upper()),
-                             "items": items})
+                rows.append({"slot": self.slot_label(slot), "items": items})
         return rows
 
     def description(self, wid):

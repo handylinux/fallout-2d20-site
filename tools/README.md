@@ -322,6 +322,7 @@ data/weapons/cards/revolver-44.json    карточка «Револьвер к�
 data/weapons/cards/10mm-pistol.json    пример: лёгкое оружие
 data/weapons/cards/gatling-gun.json    пример: тяжёлое оружие
 data/weapons/cards/cryolator.json      пример: энергетическое оружие
+data/weapons/cards/plasma-gun.json     пример: энергооружие со слотом «КОНДЕНСАТОР»
 tools/weapons2cards.py                 Companion JSON → карточки
 tools/weapon2pdf.py                    генератор PDF
 assets/fonts/Carlito-*.ttf             шрифт (OFL, метрический клон Calibri)
@@ -342,6 +343,14 @@ python3 tools/weapons2cards.py weapon_10mm_pistol --page 18 \
     --image assets/pdf/weapons/combat-rifle.png
 python3 tools/weapon2pdf.py data/weapons/cards/10mm-pistol.json \
     --out docs/render/out/10mm-pistol.pdf
+
+# набор и русские метки слотов берутся из weapon_mod_slots.json и
+# i18n/ru-RU/screens-weaponsAndArmor.json (weapon.modSlots) — у каждого типа
+# оружия свои категории (энергооружие: «КОНДЕНСАТОР», «СОПЛО» и т. д.)
+python3 tools/weapons2cards.py weapon_plasma_gun --page 21 \
+    --image assets/pdf/weapons/combat-rifle.png
+python3 tools/weapon2pdf.py data/weapons/cards/plasma-gun.json \
+    --out docs/render/out/plasma-gun.pdf
 ```
 
 Тесты (`tools/test_weapon2pdf.py`) проверяют перенос строк, разбиение
