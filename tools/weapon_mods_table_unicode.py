@@ -19,11 +19,12 @@ BEIGE, ORANGE = (1, .922, .804), (1, .776, .455)
 BLACK, WHITE, BORDER = (0, 0, 0), (1, 1, 1), (.65, .65, .65)
 DAMAGE_MARK = "\ue000"
 DAMAGE_SIZE = 10.5
+DAMAGE_GAP = 2.0  # breathing room before punctuation and following text
 
 
 def inline_width(text, font, size=SIZE):
     parts = text.split(DAMAGE_MARK)
-    return sum(font.text_length(part, fontsize=size) for part in parts) + (len(parts) - 1) * DAMAGE_SIZE
+    return sum(font.text_length(part, fontsize=size) for part in parts) + (len(parts) - 1) * (DAMAGE_SIZE + DAMAGE_GAP)
 
 
 def damage_tokens(text):
@@ -85,7 +86,7 @@ def render(data, output, page_start=10):
                                     x + DAMAGE_SIZE, baseline + DAMAGE_SIZE * .15)
                 icon_xref = page.insert_image(rect, filename=w.DAMAGE_ICON if not icon_xref else None,
                                               xref=icon_xref, keep_proportion=True)
-                x += DAMAGE_SIZE
+                x += DAMAGE_SIZE + DAMAGE_GAP
 
     def centered(page, rect, lines, font, name, size, leading, color=BLACK):
         block = (len(lines) - 1) * leading + size

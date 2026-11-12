@@ -47,6 +47,14 @@ class UnicodeTableTests(unittest.TestCase):
             self.assertEqual(len(images), 1)
             rects = page.get_image_rects(next(iter(images)))
             self.assertEqual(len(rects), 2)
+            raw = page.get_text('rawdict')
+            semicolons = [char for block in raw['blocks'] for line in block.get('lines', [])
+                          for span in line.get('spans', []) for char in span.get('chars', [])
+                          if char['c'] == ';']
+            self.assertEqual(len(semicolons), 2)
+            for rect, char in zip(sorted(rects, key=lambda r: r.x0),
+                                  sorted(semicolons, key=lambda c: c['bbox'][0])):
+                self.assertGreaterEqual(char['bbox'][0] - rect.x1, table.DAMAGE_GAP - .05)
             left = table.w.MARGIN_L + sum(table.COL_WIDTHS[:2])
             right = left + table.COL_WIDTHS[2]
             for rect in rects:
