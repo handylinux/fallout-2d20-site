@@ -344,8 +344,10 @@ python3 tools/weapon2pdf.py data/weapons/cards/revolver-44.json \
 # вытащить все картинки оружия из книги (~75 МБ PDF из Publisher)
 python3 tools/extract_pdf_images.py "Справочник оружия.pdf" --out art/ \
     --min-size 300
+# имена берутся с самой страницы: заголовок «БОЕВОЙ КАРАБИН» → weapon_combat_rifle
+# → art/combat-rifle.png (тот же слаг, что у карточки); если заголовок не
+# совпал с weapons.json — art/p018.png, а в report.csv пустой weapon_id
 # art/index.html — контактный лист со страницами, art/report.csv — таблица
-# файлы вида art/p018-01.png кладём как assets/pdf/weapons/<slug>.png
 
 # карточка из данных компаньона (описание — английское flavour)
 python3 tools/weapons2cards.py weapon_10mm_pistol --page 18 \

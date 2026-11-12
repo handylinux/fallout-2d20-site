@@ -21,7 +21,9 @@ from __future__ import annotations
 import argparse
 import csv
 import html
+import json
 import os
+import re
 import sys
 
 try:
@@ -29,6 +31,67 @@ try:
 except ImportError:  # pragma: no cover - dependency hint
     print("нужен pymupdf: python3 -m pip install pymupdf pillow", file=sys.stderr)
     raise SystemExit(2)
+
+
+WEAPONS_JSON = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "data", "companion", "i18n", "ru-RU", "data", "equipment", "weapons",
+    "weapons.json")
+
+
+def normalize_name(text: str) -> str:
+    """«БОЕВОЙ КАРАБИН» и «Боевой карабин» -> «боевой карабин»."""
+    text = (text or "").casefold().replace("ё", "е")
+    text = re.sub(r"[^0-9a-zа-я]+", " ", text)
+    return " ".join(text.split())
+
+
+def slug_of(weapon_id: str) -> str:
+    """weapon_10mm_pistol -> 10mm-pistol (как в tools/weapons2cards.py)."""
+    name = weapon_id[len("weapon_"):] if weapon_id.startswith("weapon_") \
+        else weapon_id
+    return name.replace("_", "-")
+
+
+def load_weapons(path: str | None) -> dict[str, str]:
+    if not path or not os.path.exists(path):
+        return {}
+    with open(path, encoding="utf-8") as fh:
+        data = json.load(fh)
+    return {normalize_name(item.get("name") or ""): item["id"]
+            for item in data if item.get("name")}
+
+
+def background_xrefs(page) -> set[int]:
+    """Картинки, растянутые на всю страницу (текстура бумаги)."""
+    out = set()
+    for img in page.get_images(full=True):
+        xref = img[0]
+        try:
+            rects = page.get_image_rects(xref)
+        except Exception:  # pragma: no cover - old pymupdf
+            continue
+        for rect in rects:
+            if (rect.width >= page.rect.width * 0.85
+                    and rect.height >= page.rect.height * 0.85):
+                out.add(xref)
+    return out
+
+
+def page_title(page) -> str:
+    """Самая крупная надпись в верхней части страницы — название оружия."""
+    best: list[tuple[float, str]] = []
+    for block in page.get_text("dict")["blocks"]:
+        for line in block.get("lines", []):
+            for span in line["spans"]:
+                text = (span["text"] or "").strip()
+                if not text or span["bbox"][1] > 130:
+                    continue
+                best.append((round(span["size"], 1), text))
+    if not best:
+        return ""
+    top = max(size for size, _ in best)
+    return " ".join(text for size, text in best if size >= top - 0.5).strip()
 
 
 def image_pixmap(doc, xref: int):
@@ -52,10 +115,13 @@ def repeated_xrefs(doc, pages: list[int], share: float) -> set[int]:
 
 
 def extract(pdf: str, out_dir: str, min_size: int, share: float,
-            pages: list[int] | None, keep_repeated: bool) -> list[dict]:
+            pages: list[int] | None, keep_repeated: bool,
+            weapons: dict[str, str] | None = None,
+            name_from_page: bool = True) -> list[dict]:
     doc = pymupdf.open(pdf)
     page_ids = [p - 1 for p in pages] if pages else list(range(doc.page_count))
     skip = set() if keep_repeated else repeated_xrefs(doc, page_ids, share)
+    weapons = weapons or {}
     os.makedirs(out_dir, exist_ok=True)
 
     rows: list[dict] = []
@@ -63,29 +129,42 @@ def extract(pdf: str, out_dir: str, min_size: int, share: float,
     for pno in page_ids:
         if not 0 <= pno < doc.page_count:
             continue
-        index = 0
-        for img in doc[pno].get_images(full=True):
+        page = doc[pno]
+        title = page_title(page) if name_from_page else ""
+        weapon_id = weapons.get(normalize_name(title), "")
+        base = slug_of(weapon_id) if weapon_id else f"p{pno + 1:03d}"
+
+        background = background_xrefs(page)
+        candidates = []
+        for img in page.get_images(full=True):
             xref, smask, width, height = img[0], img[1], img[2], img[3]
-            if xref in done:
+            if xref in done or xref in skip:
+                done.add(xref)
                 continue
-            if xref in skip:
+            if xref in background and not keep_repeated:
                 done.add(xref)
                 continue
             if width < min_size or height < min_size:
                 done.add(xref)
                 continue
+            candidates.append((width * height, xref, smask, width, height))
+        # the weapon art is the biggest picture on the page; keep the rest
+        # as <slug>-2.png, <slug>-3.png
+        candidates.sort(reverse=True)
+        for index, (_, xref, smask, width, height) in enumerate(candidates, 1):
             pix = image_pixmap(doc, xref)
             if pix is None:
                 done.add(xref)
                 continue
-            index += 1
-            name = f"p{pno + 1:03d}-{index:02d}.png"
+            name = f"{base}.png" if index == 1 else f"{base}-{index}.png"
             path = os.path.join(out_dir, name)
             pix.save(path)
             done.add(xref)
             rows.append({
                 "page": pno + 1,
                 "file": name,
+                "title": title,
+                "weapon_id": weapon_id,
                 "xref": xref,
                 "width": width,
                 "height": height,
@@ -100,7 +179,9 @@ def contact_sheet(rows: list[dict], out_dir: str) -> str:
     for r in rows:
         cards.append(
             f'<figure><img src="{html.escape(r["file"])}" loading="lazy">'
-            f'<figcaption>стр. {r["page"]} · {r["width"]}×{r["height"]}'
+            f'<figcaption>стр. {r["page"]}'
+            f'{(" · " + html.escape(r["title"])) if r.get("title") else ""}'
+            f' · {r["width"]}×{r["height"]}'
             f'<br><code>{html.escape(r["file"])}</code></figcaption></figure>')
     page = f"""<!doctype html>
 <html lang="ru"><head><meta charset="utf-8">
@@ -136,6 +217,10 @@ def main(argv=None) -> int:
                     help="доля страниц, с которой картинка считается текстурой")
     ap.add_argument("--keep-repeated", action="store_true",
                     help="не выкидывать повторяющиеся картинки")
+    ap.add_argument("--weapons", default=WEAPONS_JSON,
+                    help="weapons.json компаньона для имён по названию страницы")
+    ap.add_argument("--no-page-names", action="store_true",
+                    help="не читать название со страницы, оставить pNNN-01.png")
     ap.add_argument("--no-html", action="store_true")
     args = ap.parse_args(argv)
 
@@ -150,12 +235,17 @@ def main(argv=None) -> int:
             elif chunk:
                 pages.append(int(chunk))
 
+    weapons = {} if args.no_page_names else load_weapons(args.weapons)
+    if not args.no_page_names and not weapons:
+        print("weapons.json не найден — имена будут вида p018-01.png",
+              file=sys.stderr)
     rows = extract(args.pdf, args.out, args.min_size, args.share, pages,
-                   args.keep_repeated)
+                   args.keep_repeated, weapons, not args.no_page_names)
     with open(os.path.join(args.out, "report.csv"), "w", newline="",
               encoding="utf-8") as fh:
-        writer = csv.DictWriter(fh, fieldnames=["page", "file", "xref",
-                                                "width", "height", "smask"])
+        writer = csv.DictWriter(fh, fieldnames=["page", "file", "title",
+                                                "weapon_id", "xref", "width",
+                                                "height", "smask"])
         writer.writeheader()
         writer.writerows(rows)
     if not args.no_html:
