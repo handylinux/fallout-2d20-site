@@ -402,3 +402,16 @@ python tools/weapon_book_small_guns_preview.py "Справочник оружи�
 ```bash
 python tools/weapon_book_small_guns_preview.py "Справочник оружия.pdf" --image-dir art --full --out docs/render/out/small-guns-full.pdf
 ```
+
+### Прототип таблицы модификаций
+
+```bash
+python tools/weapon_mods_table.py data/weapons/mods-receiver-sample.json --out docs/render/out/mods-receiver-preview.pdf
+```
+
+Это отдельная пробная страница с редактируемым текстом, не встроенная в
+книгу. Данные — ручная расшифровка страницы 10 исходного PDF, они требуют
+сверки с первоисточником и Companion; пустые поля в строке 10-мм оставлены
+пустыми как в оригинале. Обозначение `DC` пока текстовое, иконку урона ещё
+нужно добавить. При длинной таблице строки переносятся на следующие страницы
+с повторением шапки. Файл данных не претендует на полный каталог модификаций.
