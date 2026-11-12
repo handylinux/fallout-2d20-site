@@ -111,6 +111,8 @@ class Companion:
         for e in w.get("effects") or []:
             name = (self.effects.get(e.get("effectId")) or {}).get("name")
             if name:
+                if e.get("value") is not None:  # «Проникающий 2»
+                    name = f"{name} {e['value']}"
                 names.append(name)
         return names
 

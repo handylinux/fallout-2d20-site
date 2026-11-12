@@ -482,16 +482,29 @@ def mods_layout(card) -> tuple[list[dict], float]:
         chunks = [items[i:i + 6] for i in range(0, len(items), 6)] or [[]]
         for ci, chunk in enumerate(chunks):
             cells = []
+            sizes = []
             max_lines = 1
             for i in range(6):
                 text = chunk[i] if i < len(chunk) else ""
                 col_w = MODS_EDGES[i + 2] - MODS_EDGES[i + 1] - MODS_H_PAD
-                lines = wrap_text(text, "Carlito", MODS_FONT_SIZE, col_w)
+                size = MODS_FONT_SIZE
+                lines = wrap_text(text, "Carlito", size, col_w)
+                # a single long word ("гиростабилизирующая") can be wider
+                # than the cell: shrink it, like the stats cells
+                while (any(sw(line, "Carlito", size) > col_w for line in lines)
+                       and size > 6.5):
+                    size -= 0.25
+                    lines = wrap_text(text, "Carlito", size, col_w)
+                if any(sw(line, "Carlito", size) > col_w for line in lines):
+                    print(f"warning: mod name too wide even at 6.5 pt: {text!r}",
+                          file=sys.stderr)
                 cells.append(lines)
+                sizes.append(size)
                 max_lines = max(max_lines, len(lines))
             h = max(MODS_MIN_ROW, max_lines * MODS_ROW_SLOPE + MODS_ROW_BASE)
             rows.append({
                 "cells": cells,
+                "sizes": sizes,
                 "h": h,
                 "cat_start": ci == 0,
                 "cat_end": ci == len(chunks) - 1,
@@ -589,15 +602,16 @@ def draw_mods(c, card) -> None:
                 if not lines:
                     continue
                 x0, x1 = MODS_EDGES[ci + 1], MODS_EDGES[ci + 2]
-                block_h = MODS_FONT_SIZE + (len(lines) - 1) * MODS_LEADING
+                size = row["sizes"][ci]
+                leading = size * MODS_LEADING / MODS_FONT_SIZE
+                block_h = size + (len(lines) - 1) * leading
                 start = ry + (row["h"] - block_h) / 2.0 + 0.6
                 c.setFillColor(BLACK)
-                c.setFont("Carlito", MODS_FONT_SIZE)
+                c.setFont("Carlito", size)
                 for li, line in enumerate(lines):
                     c.drawString(
-                        x0 + (x1 - x0 - sw(line, "Carlito", MODS_FONT_SIZE)) / 2.0,
-                        y_from_top(start + ASCENT * MODS_FONT_SIZE
-                                   + li * MODS_LEADING),
+                        x0 + (x1 - x0 - sw(line, "Carlito", size)) / 2.0,
+                        y_from_top(start + ASCENT * size + li * leading),
                         line,
                     )
             ry += row["h"]

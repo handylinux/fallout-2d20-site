@@ -55,6 +55,19 @@ class CompanionTests(unittest.TestCase):
         self.assertEqual(self.comp.slot_label("Nozzle"), "СОПЛО")
         self.assertEqual(self.comp.slot_label("Winch"), "ЛЕБЁДКА")
 
+    def test_effects_are_mapped_and_joined(self):
+        card = cards.build_card(self.comp, "weapon_tesla_cannon")
+        self.assertEqual(card["effects"], ["Дуга", "Проникающий 2"])
+
+    def test_three_effect_weapon(self):
+        card = cards.build_card(self.comp, "weapon_fat_man")
+        self.assertEqual(card["effects"],
+                         ["Порочный", "Разрушающий", "Радиоактивный"])
+
+    def test_weapon_without_effects(self):
+        card = cards.build_card(self.comp, "weapon_10mm_pistol")
+        self.assertEqual(card["effects"], [])
+
     def test_combined_damage_type(self):
         self.assertEqual(self.comp.damage_type(["energy", "physical"]),
                          "Энергетический и Физический")

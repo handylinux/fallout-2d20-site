@@ -47,6 +47,25 @@ class ModsLayoutTests(unittest.TestCase):
         self.assertTrue(rows[0]["cat_start"])
         self.assertTrue(rows[-1]["cat_end"])
 
+    def test_long_mod_word_shrinks_to_fit_its_cell(self):
+        card = {
+            "title": "Тест",
+            "mods": [{"slot": "СТВОЛ", "items": [
+                "Квантовая гиростабилизирующая линза"]}],
+        }
+        rows, _ = w.mods_layout(card)
+        col_w = (w.MODS_EDGES[2] - w.MODS_EDGES[1] - w.MODS_H_PAD)
+        self.assertLess(rows[0]["sizes"][0], w.MODS_FONT_SIZE)
+        for line in rows[0]["cells"][0]:
+            self.assertLessEqual(w.sw(line, "Carlito", rows[0]["sizes"][0]),
+                                 col_w)
+
+    def test_normal_mods_keep_the_base_size(self):
+        card = base_card()
+        rows, _ = w.mods_layout(card)
+        self.assertTrue(all(size == w.MODS_FONT_SIZE
+                            for row in rows for size in row["sizes"]))
+
     def test_empty_mods_is_reported(self):
         card = base_card()
         card["mods"] = [{"slot": "СТВОЛ", "items": []}]
