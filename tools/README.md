@@ -415,3 +415,17 @@ python tools/weapon_mods_table.py data/weapons/mods-receiver-sample.json --out d
 пустыми как в оригинале. Обозначение `DC` пока текстовое, иконку урона ещё
 нужно добавить. При длинной таблице строки переносятся на следующие страницы
 с повторением шапки. Файл данных не претендует на полный каталог модификаций.
+
+### Ресиверы из Companion: пробное сопоставление
+
+```bash
+python tools/companion_mods_receiver.py --out-json data/weapons/mods-receiver-companion.json --report docs/weapon-mods-receiver-comparison.md
+python tools/weapon_mods_table.py data/weapons/mods-receiver-companion.json --out docs/render/samples/mods-receiver-companion.pdf
+```
+
+Экспортирует только `Receiver`: операции урона, скорострельности, дистанции,
+боеприпасов, эффектов и качеств превращаются в текст. Цена, вес и перки берутся
+из Companion. `?` / «Не указано» — отсутствующее значение, а не ноль; неизвестные
+операции и ID остаются видимыми. Префиксы в данных не найдены. Отчёт сопоставляет
+строки образца по имени как неподтверждённых кандидатов; одинаковые имена и
+смысл эффектов необходимо проверять вручную. Это прототип, ещё не часть книги.
