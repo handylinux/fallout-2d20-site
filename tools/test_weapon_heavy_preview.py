@@ -46,17 +46,23 @@ class HeavyPreviewTests(unittest.TestCase):
         with pymupdf.open(output) as doc:
             self.assertEqual(doc[0].get_text().count('НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ'), 1)
 
-    def test_many_mods_use_readable_names_not_detailed_columns(self):
+    def test_unverified_plasma_does_not_claim_either_fake_mods_or_no_mods(self):
         output = self.root / 'gatling-plasma.pdf'
         info = heavy.render_heavy(self.comp, 'weapon_gatling_plasma', 80, {}, output)
-        self.assertEqual(info['mode'], 'names')
-        self.assertEqual(info['mod_count'], 17)
+        self.assertEqual(info['mode'], 'unverified')
         with pymupdf.open(output) as doc:
             text = doc[0].get_text()
-            self.assertIn('Укреплённый', text)
-            self.assertIn('Глушитель', text)
-            self.assertNotIn('ПРЕФИКС', text)
-            self.assertNotIn('НАЗВАНИЕ', text)
+            self.assertIn('МОДИФИКАЦИИ ТРЕБУЮТ ПРОВЕРКИ', text)
+            self.assertNotIn('Укреплённый', text)
+            self.assertNotIn('НЕТ ПОДДЕРЖИВАЕМЫХ', text)
+
+    def test_source_drone_has_no_mods(self):
+        output = self.root / 'drone.pdf'
+        heavy.render_source_heavy(self.comp, 'weapon_drone_cannon', 74, 'Справочник оружия.pdf', 72, output)
+        with pymupdf.open(output) as doc:
+            text = doc[0].get_text()
+            self.assertIn('НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ', text)
+            self.assertNotIn('Укреплённый', text)
 
     def test_detailed_mode_keeps_small_mod_sets(self):
         info = heavy.render_heavy(self.comp, 'weapon_flamer', 61, {}, self.root / 'flamer.pdf')
@@ -96,6 +102,23 @@ class HeavyPreviewTests(unittest.TestCase):
                 description = re.sub(r'\s+', '', self.comp.description(wid))
                 if description:
                     self.assertIn(description, text, wid)
+
+    def test_full_book_uses_source_blocks_and_preserves_descriptions(self):
+        ids = json.loads(heavy.ORDER_FILE.read_text(encoding='utf-8'))
+        output = self.root / 'book.pdf'
+        result = heavy.build('Справочник оружия.pdf', output, ids)
+        self.assertEqual(result['mods_pages'], 0)
+        with pymupdf.open(output) as doc:
+            for i, wid in enumerate(ids):
+                text = re.sub(r'\s+', '', doc[result['divider'] + i].get_text())
+                desc = re.sub(r'\s+', '', self.comp.description(wid))
+                if desc:
+                    self.assertIn(desc, text, wid)
+            drone = doc[result['divider'] + ids.index('weapon_drone_cannon')].get_text()
+            self.assertIn('НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ', drone)
+            plasma = doc[result['divider'] + ids.index('weapon_gatling_plasma')].get_text()
+            self.assertIn('МОДИФИКАЦИИ ТРЕБУЮТ ПРОВЕРКИ', plasma)
+            self.assertNotIn('Укреплённый', plasma)
 
     def test_does_not_truncate_description_if_no_room(self):
         self.comp.descriptions['weapon_flamer'] = 'Длинное описание ' * 2000

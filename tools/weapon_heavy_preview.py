@@ -23,6 +23,8 @@ from weapons2cards import Companion, build_card
 WEAPONS = ('weapon_fat_man', 'weapon_flamer', 'weapon_gatling_laser')
 ORDER_FILE = Path(__file__).resolve().parent.parent / 'data/weapons/heavy-guns-order.json'
 MAX_DETAILED_MODS = 8
+# Physical source pages; independent of editable output ordering.
+SOURCE_PAGES = {'weapon_fat_man': 58, 'weapon_flamer': 59, 'weapon_gatling_laser': 60, 'weapon_heavy_incinerator': 61, 'weapon_junk_jet': 62, 'weapon_minigun': 63, 'weapon_missile_launcher': 64, 'weapon_50_cal_machine_gun': 65, 'weapon_auto_grenade_launcher': 66, 'weapon_broadsider': 67, 'weapon_gatling_gun': 68, 'weapon_gauss_minigun': 69, 'weapon_cryolator': 70, 'weapon_tesla_cannon': 71, 'weapon_drone_cannon': 72, 'weapon_harpoon_gun': 73, 'weapon_tear_gas_launcher': 74, 'weapon_eugene': 75, 'weapon_plasma_caster': 76, 'weapon_sten_injector': 77}
 ORDER = ['Fuel', 'Receiver', 'Capacitor', 'Barrel', 'Tank', 'Grip', 'Stock', 'Magazine', 'Sight', 'Muzzle', 'Nozzle']
 
 
@@ -47,8 +49,49 @@ def build_rows(comp, wid, prefixes):
     return result
 
 
+def render_source_heavy(comp, wid, page_num, source, source_page, out):
+    """Preserve the original mod block as vector PDF, without weapon art."""
+    card = build_card(comp, wid, page=page_num, image='')
+    with pymupdf.open(source) as original:
+        page = original[source_page - 1]
+        words = [x for x in page.get_text('words') if 'МОДИФИКАЦИ' in x[4]]
+        if len(words) != 1:
+            raise ValueError(f'{wid}: не найден заголовок модификаций на странице {source_page}')
+        top = words[0][1] - 5
+        description = (card.get('description') or '').strip()
+        desc_bottom = w.DESC_TOP + len(w.wrap_text(description, 'Carlito', 10, w.DESC_RIGHT - w.DESC_LEFT)) * 15 if description else w.DESC_TOP
+        target_top = max(top, desc_bottom + 8)
+        if target_top >= 807:
+            raise ValueError(f'{wid}: описание не помещается над таблицей оригинала')
+        with tempfile.TemporaryDirectory() as tmp:
+            base = str(Path(tmp) / 'base.pdf')
+            c = canvas.Canvas(base, pagesize=(w.PAGE_W, w.PAGE_H))
+            c.setTitle(f"{card['title']} — справочник оружия")
+            w.draw_paper(c)
+            w.draw_title(c, card)
+            w.draw_stats(c, card)
+            w.draw_description(c, card, max_bottom=target_top - 8)
+            w.draw_page_number(c, page_num)
+            c.showPage()
+            c.save()
+            with pymupdf.open(base) as result:
+                clip = pymupdf.Rect(0, top, page.rect.width, 807)
+                target = pymupdf.Rect(0, target_top, page.rect.width, 807)
+                result[0].show_pdf_page(target, original, source_page - 1, clip=clip, keep_proportion=True)
+                result.save(str(out), garbage=4, deflate=True)
+    return {'mode': 'source', 'font_size': None, 'mod_count': None}
+
+
 def render_heavy(comp, wid, page_num, prefixes, out):
     card = build_card(comp, wid, page=page_num, image='')
+    if wid == 'weapon_gatling_plasma':
+        # The slot list conflicts with applies_to_ids; do not claim it has no mods.
+        c = canvas.Canvas(str(out), pagesize=(w.PAGE_W, w.PAGE_H))
+        w.draw_paper(c); w.draw_title(c, card); w.draw_stats(c, card)
+        w.draw_description(c, card, max_bottom=700)
+        w.draw_center_line(c, 710, 'МОДИФИКАЦИИ ТРЕБУЮТ ПРОВЕРКИ', 'Carlito-Bold', w.MODS_HEADING_SIZE)
+        w.draw_page_number(c, page_num); c.showPage(); c.save()
+        return {'mode': 'unverified', 'font_size': None, 'mod_count': 0}
     rows = build_rows(comp, wid, prefixes)
     if not rows:
         w.render_card(card, str(out))
@@ -167,8 +210,11 @@ def build(source, output, weapons=WEAPONS, report=None):
         base = Path(tmp) / 'small-guns.pdf'
         # The small-guns reference contains only SMALL_GUNS modifications.
         small.build(source, base)
-        mod_data, mod_problems = heavy_reference_data(comp, weapons, prefixes)
-        diagnostics.extend(mod_problems)
+        # The source has individual heavy-weapon tables; the Companion shared
+        # definitions are not reliable enough to replace them without a review.
+        mod_data = None
+        diagnostics.append('Таблица общих модов тяжёлого оружия временно не выводится: применение и характеристики требуют сверки.')
+        diagnostics.append('weapon_gatling_plasma: 17 слотов противоречат applies_to_ids; моды не показаны до проверки.')
         with pymupdf.open(base) as base_pdf, pymupdf.open(source) as original, pymupdf.open() as result:
             if original.page_count < 57:
                 raise ValueError('В исходном PDF нужно минимум 57 страниц')
@@ -186,14 +232,14 @@ def build(source, output, weapons=WEAPONS, report=None):
             small.renumber_divider(result[-1], divider, source_number=57)
             for index, wid in enumerate(weapons):
                 path = Path(tmp) / f'heavy-{index}.pdf'
-                info = render_heavy(comp, wid, len(result) + 1, prefixes, path)
+                if wid in SOURCE_PAGES:
+                    info = render_source_heavy(comp, wid, len(result) + 1, source, SOURCE_PAGES[wid], path)
+                else:
+                    info = render_heavy(comp, wid, len(result) + 1, prefixes, path)
                 if info['mode'] == 'names':
                     diagnostics.append(f"{wid}: {info['mod_count']} модов, показаны только названия; характеристики в таблице модов тяжёлого оружия")
                 elif info['font_size'] is not None and info['font_size'] < 8.4:
                     diagnostics.append(f"{wid}: компактная таблица, шрифт {info['font_size']} pt")
-                for slot, values in build_rows(comp, wid, prefixes):
-                    if values[2] in ('Не указано', 'Нет данных') or '[' in values[2] or '?' in values[3:5]:
-                        diagnostics.append(f"{wid} / {slot} / {values[0]}: эффект {values[2]}; вес {values[3]}; цена {values[4]}")
                 with pymupdf.open(path) as doc:
                     result.insert_pdf(doc)
             output.parent.mkdir(parents=True, exist_ok=True)
@@ -203,8 +249,8 @@ def build(source, output, weapons=WEAPONS, report=None):
             report = Path(report)
             report.parent.mkdir(parents=True, exist_ok=True)
             text = '# Тяжёлое оружие: проверка сборки\n\n'
-            text += f'Таблицы тяжёлых модов: с {mods_start}, страниц {mods_pages}; разделитель: {divider}; оружие: {len(weapons)}; всего страниц: {total}.\n\n'
-            text += 'Рабочие данные Companion не сверены с книгой. В таблице тяжёлого оружия — моды со списком применимости более чем к одному оружию, а также все моды карточек с более чем восемью модами. Для таких карточек показаны только названия; характеристики находятся в таблице перед разделителем.\n\n'
+            text += f'Отдельная таблица тяжёлых модов: пока не сформирована; разделитель: {divider}; оружие: {len(weapons)}; всего страниц: {total}.\n\n'
+            text += 'Для 20 страниц тяжёлого оружия блоки модификаций взяты из исходного PDF без перерисовки. Для гатлинг-плазмы модификации не подтверждены. Подробная сверка исходника с Companion приведена в docs/weapon-heavy-mods-comparison.md.\n\n'
             text += '## Требует внимания\n\n' + ('\n'.join('- ' + x for x in diagnostics) if diagnostics else 'Не обнаружено.') + '\n'
             report.write_text(text, encoding='utf-8')
         return {'mods_start': mods_start, 'mods_pages': mods_pages, 'divider': divider, 'pages': total, 'weapons': len(weapons), 'issues': len(diagnostics)}
