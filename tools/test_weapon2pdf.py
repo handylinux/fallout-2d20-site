@@ -182,6 +182,36 @@ class RenderTests(unittest.TestCase):
         self.assertAlmostEqual(bottom, w.MODS_BOTTOM, delta=0.6)
         self.assertLess(bottom - top, 2 * w.MODS_MIN_ROW)
 
+    def test_heading_follows_a_short_table(self):
+        card = base_card()
+        card["mods"] = [{"slot": "РЕСИВЕР", "items": ["Один"]}]
+        page = self.render(card)[0]
+        ys = [s["bbox"][1] for b in page.get_text("dict")["blocks"]
+              for line in b.get("lines", []) for s in line["spans"]
+              if "ПОДДЕРЖИВАЕМЫЕ" in s["text"]]
+        self.assertTrue(ys)
+        heading_top = min(ys)
+        self.assertGreater(heading_top, w.MODS_TOP)
+        self.assertAlmostEqual(heading_top + w.MODS_HEADING_GAP,
+                               w.MODS_BOTTOM - w.MODS_MIN_ROW, delta=4)
+
+    def test_heading_is_always_the_same_gap_above_the_table(self):
+        for items in (["Один"],
+                      [f"Мод номер {i}" for i in range(8)]):
+            card = base_card()
+            card["mods"] = [{"slot": "РЕСИВЕР", "items": items}]
+            page = self.render(card)[0]
+            heading_top = min(
+                s["bbox"][1] for b in page.get_text("dict")["blocks"]
+                for line in b.get("lines", []) for s in line["spans"]
+                if "ПОДДЕРЖИВАЕМЫЕ" in s["text"])
+            table_top = min(
+                it["rect"].y0 for it in page.get_drawings()
+                if it["type"] == "s" and it["rect"].width > 400
+                and it["rect"].y0 > w.MODS_TOP - 20)
+            self.assertAlmostEqual(heading_top + w.MODS_HEADING_GAP,
+                                   table_top, delta=2)
+
     def test_page_number_side_alternates(self):
         even = self.render(base_card())[0]
         odd_card = base_card()

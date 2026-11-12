@@ -75,6 +75,7 @@ DESC_LEADING = 17.4
 
 MODS_HEADING = "ПОДДЕРЖИВАЕМЫЕ МОДИФИКАЦИИ"
 MODS_HEADING_TOP = 488.29
+MODS_HEADING_GAP = 45.36  # heading top -> table top on the Publisher pages
 MODS_HEADING_SIZE = 18.0
 
 MODS_TOP = 533.65
@@ -540,9 +541,6 @@ def draw_mods(c, card) -> None:
                          "Carlito-Bold", MODS_HEADING_SIZE)
         return
 
-    draw_center_line(c, MODS_HEADING_TOP, MODS_HEADING, "Carlito-Bold",
-                     MODS_HEADING_SIZE)
-
     rows, total, ncols = mods_layout(card)
     edges = mods_edges(ncols)
     avail = MODS_BOTTOM - top
@@ -555,6 +553,9 @@ def draw_mods(c, card) -> None:
     # table always ends at MODS_BOTTOM no matter how many mods there are
     top = MODS_BOTTOM - sum(r["h"] for r in rows)
     bottom = MODS_BOTTOM
+    # the heading follows the table, so short tables do not leave a hole
+    draw_center_line(c, top - MODS_HEADING_GAP, MODS_HEADING, "Carlito-Bold",
+                     MODS_HEADING_SIZE)
 
     # category fills
     y = top
