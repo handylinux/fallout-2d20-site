@@ -36,6 +36,32 @@ class UnicodeTableTests(unittest.TestCase):
                 self.assertIn('РЕСИВЕР', page.get_text())
                 self.assertIn('ЭФФЕКТЫ', page.get_text())
 
+    def test_damage_icons_are_inline_and_only_in_effect_cells(self):
+        row = ['Название DC', 'Префикс', 'Урон: +1 DC; затем +2 DC; ACDC', '–', '+20', 'Перк']
+        table.render({'title': 'Таблица', 'category': 'Ресивер', 'rows': [row]}, self.out)
+        with pymupdf.open(self.out) as doc:
+            page = doc[0]
+            self.assertIn('Название DC', page.get_text())
+            self.assertIn('ACDC', page.get_text())
+            images = {img[0] for img in page.get_images() if img[2:4] == (41, 41)}
+            self.assertEqual(len(images), 1)
+            rects = page.get_image_rects(next(iter(images)))
+            self.assertEqual(len(rects), 2)
+            left = table.w.MARGIN_L + sum(table.COL_WIDTHS[:2])
+            right = left + table.COL_WIDTHS[2]
+            for rect in rects:
+                self.assertGreaterEqual(rect.x0, left)
+                self.assertLessEqual(rect.x1, right)
+                self.assertGreaterEqual(rect.y0, table.TABLE_TOP + table.HEADER_H + table.CATEGORY_H)
+                self.assertLessEqual(rect.y1, table.PAGE_BOTTOM)
+
+    def test_icon_width_used_when_wrapping(self):
+        font = pymupdf.Font(fontfile=table.REGULAR)
+        text = table.damage_tokens('Урон +1 DC, ещё +2 DC')
+        lines = table.wrap(text, font, 55)
+        self.assertEqual(' '.join(lines), text)
+        self.assertTrue(all(table.inline_width(line, font) <= 55 for line in lines))
+
     def test_long_word_is_not_truncated(self):
         font = pymupdf.Font(fontfile=table.REGULAR)
         value = 'Длинноесловобезпробелов'

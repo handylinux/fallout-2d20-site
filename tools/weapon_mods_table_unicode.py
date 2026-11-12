@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from pathlib import Path
 
 import pymupdf
@@ -16,6 +17,18 @@ SIZE, LEADING = 10, 13
 TABLE_TOP, HEADER_H, CATEGORY_H, PAGE_BOTTOM = 100, 23, 23, 803
 BEIGE, ORANGE = (1, .922, .804), (1, .776, .455)
 BLACK, WHITE, BORDER = (0, 0, 0), (1, 1, 1), (.65, .65, .65)
+DAMAGE_MARK = "\ue000"
+DAMAGE_SIZE = 10.5
+
+
+def inline_width(text, font, size=SIZE):
+    parts = text.split(DAMAGE_MARK)
+    return sum(font.text_length(part, fontsize=size) for part in parts) + (len(parts) - 1) * DAMAGE_SIZE
+
+
+def damage_tokens(text):
+    """Treat standalone DC in effect cells as a damage icon, not as text."""
+    return re.sub(r"(?<![\w])DC(?![\w])", DAMAGE_MARK, text)
 
 
 def wrap(text, font, width, size=SIZE):
@@ -25,14 +38,14 @@ def wrap(text, font, width, size=SIZE):
         line = ''
         for word in paragraph.split():
             candidate = (line + ' ' + word).strip()
-            if font.text_length(candidate, fontsize=size) <= width:
+            if inline_width(candidate, font, size) <= width:
                 line = candidate
                 continue
             if line:
                 lines.append(line)
                 line = ''
             for char in word:
-                if line and font.text_length(line + char, fontsize=size) > width:
+                if line and inline_width(line + char, font, size) > width:
                     lines.append(line)
                     line = ''
                 line += char
@@ -53,9 +66,26 @@ def render(data, output, page_start=10):
     bold = pymupdf.Font(fontfile=BOLD)
     doc = pymupdf.open()
     page, y = None, 0
+    icon_xref = 0
 
     def text(page, x, baseline, value, name='body', size=SIZE, color=BLACK):
         page.insert_text((x, baseline), value, fontname=name, fontsize=size, color=color)
+
+    def inline_text(page, x, baseline, line):
+        nonlocal icon_xref
+        parts = line.split(DAMAGE_MARK)
+        for i, part in enumerate(parts):
+            if part:
+                text(page, x, baseline, part)
+                x += regular.text_length(part, fontsize=SIZE)
+            if i < len(parts) - 1:
+                if not Path(w.DAMAGE_ICON).is_file():
+                    raise ValueError(f'Не найдена иконка урона: {w.DAMAGE_ICON}')
+                rect = pymupdf.Rect(x, baseline - DAMAGE_SIZE * .85,
+                                    x + DAMAGE_SIZE, baseline + DAMAGE_SIZE * .15)
+                icon_xref = page.insert_image(rect, filename=w.DAMAGE_ICON if not icon_xref else None,
+                                              xref=icon_xref, keep_proportion=True)
+                x += DAMAGE_SIZE
 
     def centered(page, rect, lines, font, name, size, leading, color=BLACK):
         block = (len(lines) - 1) * leading + size
@@ -97,7 +127,8 @@ def render(data, output, page_start=10):
         return page, category.y1
 
     for index, row in enumerate(rows):
-        lines = [wrap(value, regular, width - 6) for value, width in zip(row, COL_WIDTHS)]
+        lines = [wrap(damage_tokens(value) if col == 2 else value, regular, width - 6)
+                 for col, (value, width) in enumerate(zip(row, COL_WIDTHS))]
         height = max(len(cell) for cell in lines) * LEADING + 6
         if height > PAGE_BOTTOM - (TABLE_TOP + HEADER_H + CATEGORY_H):
             doc.close()
@@ -113,7 +144,7 @@ def render(data, output, page_start=10):
             else:
                 baseline = y + (height - ((len(cell) - 1) * LEADING + SIZE)) / 2 + SIZE * .85
                 for line in cell:
-                    text(page, x + 3, baseline, line)
+                    inline_text(page, x + 3, baseline, line)
                     baseline += LEADING
             x += width
         y += height
