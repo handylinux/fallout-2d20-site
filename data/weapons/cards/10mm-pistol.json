@@ -1,0 +1,76 @@
+{
+  "id": "weapon_10mm_pistol",
+  "title": "10-мм пистолет",
+  "weight": "4",
+  "cost": 50,
+  "rarity": 1,
+  "ammo": "10-мм",
+  "damageType": "Физический",
+  "damage": 4,
+  "fireRate": 2,
+  "range": "Близкая",
+  "effects": [],
+  "qualities": [
+    "Вплотную",
+    "Надежное"
+  ],
+  "description": "Small, dependable, reasonably powerful, and available, the 10mm pistol has been a staple widely the bombs first fell. Its wasteland combat since of customization mean and potential for that a versatility will keep its owner well-looked-after 10mm pistol safe for a long time.",
+  "image": "assets/pdf/weapons/combat-rifle.png",
+  "mods": [
+    {
+      "slot": "РЕСИВЕР",
+      "items": [
+        "Продвинутый",
+        "Бронебойный",
+        "Автоматический бронебойный",
+        "Для автоогня",
+        "Калиброванный",
+        "Калиброванный Усиленный",
+        "Чувствительный",
+        "Укреплённый",
+        "Автоматический укреплённый",
+        "Укреплённый проникающий автоматический",
+        "Усиленный",
+        "Автоматический усиленный",
+        "Скорострельный автоматический"
+      ]
+    },
+    {
+      "slot": "СТВОЛ",
+      "items": [
+        "Длинный",
+        "Портированный"
+      ]
+    },
+    {
+      "slot": "РУКОЯТЬ",
+      "items": [
+        "Удобная",
+        "Тактическая"
+      ]
+    },
+    {
+      "slot": "МАГАЗИН",
+      "items": [
+        "Большой магазин",
+        "Большой быстросъёмный",
+        "Быстросъёмный"
+      ]
+    },
+    {
+      "slot": "ПРИЦЕЛ",
+      "items": [
+        "Прицел разведчика",
+        "Коллиматорный"
+      ]
+    },
+    {
+      "slot": "ДУЛО",
+      "items": [
+        "Компенсатор",
+        "Глушитель"
+      ]
+    }
+  ],
+  "page": 18
+}

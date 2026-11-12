@@ -319,6 +319,10 @@ python3 tools/armor2page.py --only leather-armor
 ```
 data/weapons/cards/combat-rifle.json   карточка (страница 18 из Publisher)
 data/weapons/cards/revolver-44.json    карточка «Револьвер калибра .44»
+data/weapons/cards/10mm-pistol.json    пример: лёгкое оружие
+data/weapons/cards/gatling-gun.json    пример: тяжёлое оружие
+data/weapons/cards/cryolator.json      пример: энергетическое оружие
+tools/weapons2cards.py                 Companion JSON → карточки
 tools/weapon2pdf.py                    генератор PDF
 assets/fonts/Carlito-*.ttf             шрифт (OFL, метрический клон Calibri)
 assets/pdf/paper.jpg                   бумажная текстура из PDF
@@ -332,6 +336,12 @@ python3 tools/weapon2pdf.py data/weapons/cards/combat-rifle.json \
     --out docs/render/out/combat-rifle.pdf
 python3 tools/weapon2pdf.py data/weapons/cards/revolver-44.json \
     --out docs/render/out/revolver-44.pdf
+
+# карточка из данных компаньона (описание — английское flavour)
+python3 tools/weapons2cards.py weapon_10mm_pistol --page 18 \
+    --image assets/pdf/weapons/combat-rifle.png
+python3 tools/weapon2pdf.py data/weapons/cards/10mm-pistol.json \
+    --out docs/render/out/10mm-pistol.pdf
 ```
 
 Тесты (`tools/test_weapon2pdf.py`) проверяют перенос строк, разбиение

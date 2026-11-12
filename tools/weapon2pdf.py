@@ -85,7 +85,7 @@ MODS_LEADING = 13.08
 MODS_MIN_ROW = 20.73
 MODS_ROW_SLOPE = 12.5
 MODS_ROW_BASE = 6.0
-MODS_MAX_EXTRA = 46.8  # keep stretched rows <= ~67 pt (25 mm)
+MODS_MAX_EXTRA = 70.0  # keep a stretched row <= ~91 pt (32 mm)
 MODS_H_PAD = 7.2  # total left+right padding inside a mod cell
 MODS_LABEL_SIZE = 9.96
 
@@ -321,6 +321,35 @@ def draw_cell_text(c, x, y_top, w, h, text, font, size, leading=None,
         c.drawString(x + (w - sw(line, font, size)) / 2.0, baseline, line)
 
 
+def draw_fitted_cell(c, x, y_top, w, h, text, max_lines=2,
+                     start=STATS_BODY_SIZE, min_size=6.5, dy=1.0):
+    """Centre a stats value, shrinking and wrapping if it is too long."""
+    if not text:
+        return
+    size = start
+    avail = w - 6
+    lines = wrap_text(text, "Carlito", size, avail)
+    while (len(lines) > max_lines
+           or any(sw(line, "Carlito", size) > avail for line in lines)) \
+            and size > min_size:
+        size -= 0.5
+        lines = wrap_text(text, "Carlito", size, avail)
+    if len(lines) > max_lines:
+        lines = lines[:max_lines]
+        last = lines[-1]
+        while last and sw(last + "…", "Carlito", size) > avail:
+            last = last.rsplit(" ", 1)[0] if " " in last else last[:-1]
+        lines[-1] = last.rstrip(" .,;:") + "…"
+    leading = size * 1.25
+    block_h = size + (len(lines) - 1) * leading
+    start_y = y_top + (h - block_h) / 2.0 + dy
+    c.setFillColor(BLACK)
+    c.setFont("Carlito", size)
+    for i, line in enumerate(lines):
+        c.drawString(x + (w - sw(line, "Carlito", size)) / 2.0,
+                     y_from_top(start_y + ASCENT * size + i * leading), line)
+
+
 def draw_stats(c, card) -> None:
     top = STATS_TOP
     headline = top + STATS_HEADER_H
@@ -371,13 +400,7 @@ def draw_stats(c, card) -> None:
         x0, x1 = STATS_COLS[i], STATS_COLS[i + 1]
         if i == 2:
             continue
-        size = STATS_BODY_SIZE
-        while size > 6 and sw(value, "Carlito", size) > (x1 - x0 - 6):
-            size -= 0.25
-        draw_cell_text(
-            c, x0, headline, x1 - x0, STATS_BODY_H, value, "Carlito", size,
-            dy=1.0,
-        )
+        draw_fitted_cell(c, x0, headline, x1 - x0, STATS_BODY_H, value)
 
     # damage + CD icon, as one centred group
     x0, x1 = STATS_COLS[2], STATS_COLS[3]
