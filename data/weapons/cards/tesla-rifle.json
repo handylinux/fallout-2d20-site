@@ -1,0 +1,51 @@
+{
+  "id": "weapon_tesla_rifle",
+  "title": "Карабин Теслы",
+  "weight": "8",
+  "cost": 180,
+  "rarity": 4,
+  "ammo": "Энергоячейка",
+  "damageType": "Энергетический",
+  "damage": 4,
+  "fireRate": 2,
+  "range": "Средняя",
+  "effects": [
+    "Дуга"
+  ],
+  "qualities": [
+    "Двуручное"
+  ],
+  "description": "The Tesla gun is a firearm that takes the energy from a fusion cell and launches the energy out as a coil of electrical energy. The energy generally seeks out a way to dissipate allowing for it to arc out to multiple targets in a single shot.",
+  "image": "assets/pdf/weapons/combat-rifle.png",
+  "mods": [
+    {
+      "slot": "СТВОЛ",
+      "items": [
+        "Автоматический ствол",
+        "Улучшенный ствол",
+        "Квантовая гиростабилизирующая линза",
+        "Расщепитель"
+      ]
+    },
+    {
+      "slot": "СОПЛО",
+      "items": [
+        "Фокусировщик луча"
+      ]
+    },
+    {
+      "slot": "ПРИЦЕЛ",
+      "items": [
+        "Коллиматорный"
+      ]
+    },
+    {
+      "slot": "ДУЛО",
+      "items": [
+        "Фокусировщик луча",
+        "Разделитель луча"
+      ]
+    }
+  ],
+  "page": 22
+}

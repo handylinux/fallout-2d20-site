@@ -1,0 +1,64 @@
+{
+  "id": "weapon_plasma_gun",
+  "title": "Плазменный пистолет",
+  "weight": "4",
+  "cost": 123,
+  "rarity": 3,
+  "ammo": "Плазменный картридж",
+  "damageType": "Энергетический и Физический",
+  "damage": 6,
+  "fireRate": 1,
+  "range": "Близкая",
+  "effects": [],
+  "qualities": [
+    "Вплотную"
+  ],
+  "description": "Plasma guns, or plasma casters, are high-tech weapons firing super heated ionized gas, or plasma. Powered by a plasma cartridge, these weapons are rare and potent, delivering damage through the high-speed impact of the plasma bolt and then thermal transfer as the heat from the plasma bolt is transferred into the target at the moment of impact.",
+  "image": "assets/pdf/weapons/combat-rifle.png",
+  "mods": [
+    {
+      "slot": "СТВОЛ",
+      "items": [
+        "Автоматический ствол",
+        "Улучшенный ствол",
+        "Длинный",
+        "Снайперский"
+      ]
+    },
+    {
+      "slot": "КОНДЕНСАТОР",
+      "items": [
+        "Тюнер бета-волн",
+        "Усиленный конденсатор",
+        "Фотонная мешалка",
+        "Возбудитель фотонов"
+      ]
+    },
+    {
+      "slot": "РУКОЯТЬ",
+      "items": [
+        "Тактическая"
+      ]
+    },
+    {
+      "slot": "ЛОЖА",
+      "items": [
+        "Ложа стрелка",
+        "С компенсатором отдачи",
+        "Стандартная ложа"
+      ]
+    },
+    {
+      "slot": "ПРИЦЕЛ",
+      "items": [
+        "Длинный оптический ночного видения",
+        "Длинный оптический",
+        "Прицел разведчика",
+        "Коллиматорный",
+        "Короткий оптический ночного видения",
+        "Короткий оптический"
+      ]
+    }
+  ],
+  "page": 21
+}

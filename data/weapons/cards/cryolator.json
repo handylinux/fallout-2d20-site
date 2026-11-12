@@ -1,0 +1,48 @@
+{
+  "id": "weapon_cryolator",
+  "title": "Криолятор",
+  "weight": "14",
+  "cost": 300,
+  "rarity": 4,
+  "ammo": "Крио-элемент",
+  "damageType": "Энергетический",
+  "damage": 4,
+  "fireRate": 4,
+  "range": "Близкая",
+  "effects": [
+    "Очередь"
+  ],
+  "qualities": [
+    "Двуручное",
+    "Изнуряющий"
+  ],
+  "description": "The cryolator, a machine designed with the ability to perform cryogenic freezing while maintaining mobility. Operating on a similar principle to a flamer, the cryolater takes pressurized nitrogen gas from a cryo cell and liquefies it, spraying the concentrated chemical element over a desired area in range.",
+  "image": "assets/pdf/weapons/combat-rifle.png",
+  "mods": [
+    {
+      "slot": "СТВОЛ",
+      "items": [
+        "Кристаллизирующий ствол"
+      ]
+    },
+    {
+      "slot": "ЛОЖА",
+      "items": [
+        "С компенсатором отдачи"
+      ]
+    },
+    {
+      "slot": "МАГАЗИН",
+      "items": [
+        "Термоядерный магазин"
+      ]
+    },
+    {
+      "slot": "ПРИЦЕЛ",
+      "items": [
+        "Коллиматорный"
+      ]
+    }
+  ],
+  "page": 20
+}

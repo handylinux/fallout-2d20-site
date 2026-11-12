@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.DS_Store
+node_modules/
+
+# generated drafts of the PDF weapon cards
+docs/render/out/
+docs/render/pdf-extract/

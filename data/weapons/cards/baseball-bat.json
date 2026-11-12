@@ -1,0 +1,31 @@
+{
+  "id": "weapon_baseball_bat",
+  "title": "Бейсбольная бита",
+  "weight": "3",
+  "cost": 25,
+  "rarity": 1,
+  "ammo": "",
+  "damageType": "Физический",
+  "damage": 4,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [],
+  "qualities": [
+    "Двуручное"
+  ],
+  "description": "Baseball bats were once used in the sport of baseball, considered America's number-one pastime during the pre-War era. Two hundred years later, they have been re-purposed as crude but effective melee weapons. While most are made a single piece of wood-normally ash, but other hardwoods are often used a few can be found made of aluminum instead, making for a lighter, harder bat.",
+  "image": "assets/pdf/weapons/combat-rifle.png",
+  "mods": [
+    {
+      "slot": "УНИКАЛЬНЫЙ",
+      "items": [
+        "Колючая",
+        "Лезвия",
+        "Обмотанная цепью",
+        "Заостренная",
+        "Шипастая"
+      ]
+    }
+  ],
+  "page": 26
+}

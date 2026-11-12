@@ -1,0 +1,26 @@
+{
+  "id": "weapon_fat_man",
+  "title": "Толстяк",
+  "weight": "31",
+  "cost": 512,
+  "rarity": 4,
+  "ammo": "Ядерный минизаряд",
+  "damageType": "Физический",
+  "damage": 21,
+  "fireRate": 0,
+  "range": "Средняя",
+  "effects": [
+    "Порочный",
+    "Разрушающий",
+    "Радиоактивный"
+  ],
+  "qualities": [
+    "Двуручное",
+    "Неточное",
+    "Врыв"
+  ],
+  "description": "The M42 Nuclear Catapult is a shoulder-fired infan try support weapon which launches compact tactical nuclear warheads-mini-nukes, each about the size of a football-over a moderate distance to inflict massive destruction upon the target location.",
+  "image": "assets/pdf/weapons/combat-rifle.png",
+  "mods": [],
+  "page": 24
+}
