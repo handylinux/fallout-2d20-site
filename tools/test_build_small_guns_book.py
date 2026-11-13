@@ -45,11 +45,23 @@ class SmallGunsBookTests(unittest.TestCase):
             self.assertIn('УНИКАЛЬНЫЙ', text)
             self.assertNotIn('Не указано', text)
             self.assertIn('ЛЕБЁДКА', text)
+            self.assertIn('Крюк-кошка Физический\n0\n', text)
             self.assertIn('Проникающий 2', text)
             self.assertIn('Ненадёжное', text)
             self.assertIn('Наука! 2', text)
             self.assertIn('на расстояние до двух зон', text)
         self.assertIn('weapon-boarding-comparison.md', report.read_text(encoding='utf-8'))
+
+    def test_user_confirmed_large_mag_and_receivers(self):
+        comp = Companion()
+        self.assertEqual(comp.mods['mod_large_magazine']['cost'], 8)
+        original = conv.load(book.ROOT / 'data/companion/equipment/weapon_mods.json')
+        self.assertEqual(next(m['cost'] for m in original if m['id'] == 'mod_large_magazine'), -3)
+        self.assertEqual(len(comp.slots['weapon_10mm_pistol']['Receiver']), 13)
+        data, _ = book.make_mod_data(comp, ['weapon_10mm_pistol'], {})
+        magazine = next(s for s in data['sections'] if s['category'] == 'МОДИФИКАЦИИ МАГАЗИНА')
+        row = next(r for r in magazine['rows'] if r[0] == 'Большой магазин')
+        self.assertEqual(row[4], '+8')
 
     def test_unknown_mod_remains_visible(self):
         comp = Companion()

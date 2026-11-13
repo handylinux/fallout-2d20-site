@@ -2,7 +2,8 @@
   "weapon_laser_musket": {
     "effects": [
       "Проникающий 1"
-    ]
+    ],
+    "ammo": "Энергоячейка"
   },
   "weapon_laser_gun": {
     "effects": [

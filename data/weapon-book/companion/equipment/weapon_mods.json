@@ -2717,7 +2717,7 @@
     "skill": "REPAIR",
     "rarity": "Uncommon",
     "materials": "Common x 5 Uncommon x 3",
-    "cost": -3,
+    "cost": 8,
     "weight": 1,
     "applies_to_ids": [
       "weapon_10mm_pistol",

@@ -24,6 +24,7 @@ class EnergyPreviewTest(unittest.TestCase):
                     self.assertEqual(text.count('ПОДДЕРЖИВАЕМЫЕ МОДИФИКАЦИИ'), 1)
                     self.assertIn('КОНДЕНСАТОР', text)
                 self.assertIn('Особенность:', doc[84].get_text())
+                self.assertIn('Энергоячейка', doc[84].get_text())
                 self.assertIn('отдельной сверки', report.read_text(encoding='utf8'))
 
     def test_reference_unique_mods_order_and_prefix_override(self):
