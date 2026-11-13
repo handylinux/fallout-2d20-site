@@ -6,20 +6,20 @@
 
 Голосование: уникальное большинство строго более половины доступных числовых голосов и минимум три источника; меньшее покрытие и ничьи — на ручную проверку. Отсутствующее, неопознанное и неоднозначное значение не голосует; прочерк, «<1» и выражения вроде «6+1» не подменяются числом. Зафиксированные решения пользователя имеют приоритет. Разные проекты могут использовать общий первоисточник; это голоса записей, не доказательство независимости.
 
-Обработано записей Companion: 146; заголовков PDF извлечено: 83; страниц сайта вручную сверено: 17. Точные однозначные сопоставления: focharactersheet: 122, lonestar: 115, pipboy: 45, pipboy3000: 102.
+Обработано записей Companion: 146; заголовков PDF извлечено: 83; страниц сайта вручную сверено: 21. Точные однозначные сопоставления: focharactersheet: 122, lonestar: 115, pipboy: 45, pipboy3000: 102.
 Расходящихся полей: 129; предварительное большинство: 125; остальные — без решения.
 
-Ссылки на проверенные страницы сайта — в `data/weapon-audit/site-observations.json`. Подтверждённые решения пользователя, например скорострельность абордажного пистолета 0, не отменяются большинством.
+Источники сайта (включая локальный дамп) — в `data/weapon-audit/site-observations.json`, внешние транскрипции — в `data/weapon-audit/external-observations.json`. Подтверждённые решения пользователя, например скорострельность абордажного пистолета 0, не отменяются большинством.
 
 Полный машиночитаемый список с голосами: `data/weapon-audit/numeric-audit.json`. Источники и версии: `data/weapon-audit/sources/README.md`, фиксированный коммит 2e66c7dc7c07d1fe1e62b1585e8764f453417193.
 
 | ID | Поле | Голоса по источникам | Предварительный результат |
 |---|---|---|---|
-| `weapon_gauss_rifle` (Карабин Гаусса) | Редкость | companion: 5; original_pdf стр.20: 4; pipboy: 4; lonestar: 4; focharactersheet: 4; pipboy3000: 4 | большинство 4 — не проверено применение |
+| `weapon_gauss_rifle` (Карабин Гаусса) | Редкость | companion: 5; site: 4; original_pdf стр.20: 4; pipboy: 4; lonestar: 4; focharactersheet: 4; pipboy3000: 4 | большинство 4 — в сборке |
 | `weapon_double_barrel_shotgun` (Двуствольный дробовик) | Цена | companion: 39; original_pdf стр.24: 39; pipboy: 39; lonestar: 39; focharactersheet: 30; pipboy3000: 39 | большинство 39 — не проверено применение |
-| `weapon_gamma_gun` (Гамма-пушка) | Вес | companion: 3; original_pdf стр.84: 4; pipboy: 3; lonestar: 3; focharactersheet: 3 | большинство 3 — не проверено применение |
-| `weapon_gamma_gun` (Гамма-пушка) | Цена | companion: 15; original_pdf стр.84: 50; pipboy: 156; lonestar: 156; focharactersheet: 156 | большинство 156 — не проверено применение |
-| `weapon_gamma_gun` (Гамма-пушка) | Редкость | companion: 5; original_pdf стр.84: 2; pipboy: 5; lonestar: 5; focharactersheet: 5 | большинство 5 — не проверено применение |
+| `weapon_gamma_gun` (Гамма-пушка) | Вес | companion: 3; site: 4; core_rulebook_transcription: 3; original_pdf стр.84: 4; pipboy: 3; lonestar: 3; focharactersheet: 3 | большинство 3 — не проверено применение |
+| `weapon_gamma_gun` (Гамма-пушка) | Цена | companion: 15; site: 50; core_rulebook_transcription: 156; original_pdf стр.84: 50; pipboy: 156; lonestar: 156; focharactersheet: 156 | большинство 156 — в сборке |
+| `weapon_gamma_gun` (Гамма-пушка) | Редкость | companion: 5; site: 2; core_rulebook_transcription: 5; original_pdf стр.84: 2; pipboy: 5; lonestar: 5; focharactersheet: 5 | большинство 5 — не проверено применение |
 | `weapon_fat_man` (Толстяк) | Цена | companion: 512; original_pdf стр.58: 512; pipboy: 512; lonestar: 352; focharactersheet: 512; pipboy3000: 512 | большинство 512 — не проверено применение |
 | `weapon_flamer` (Огнемёт) | Редкость | companion: 3; original_pdf стр.59: 3; pipboy: 3; lonestar: 2; focharactersheet: 3 | большинство 3 — не проверено применение |
 | `weapon_heavy_incinerator` (Тяжёлый инсинератор) | Вес | companion: 20; original_pdf стр.61: 16; pipboy: 20; lonestar: 19; focharactersheet: 20 | большинство 20 — не проверено применение |
@@ -109,11 +109,11 @@
 | `weapon_sten_injector` (Стен-инжектор) | Скорострельность | companion: 4; original_pdf стр.77: 3 | **проверить** |
 | `weapon_pistol_injector` (Пистолет-инжектор) | Урон | companion: 0; site: 5; original_pdf стр.47: 4 | согласовано пользователем: 4 |
 | `weapon_pistol_injector` (Пистолет-инжектор) | Скорострельность | companion: 4; site: 0; original_pdf стр.47: 0 | большинство 0 — в сборке |
-| `weapon_crossbow` (Арбалет) | Скорострельность | companion: 2; original_pdf стр.55: 2; lonestar: 0; focharactersheet: 0; pipboy3000: 0 | большинство 0 — не проверено применение |
+| `weapon_crossbow` (Арбалет) | Скорострельность | companion: 2; site: 0; original_pdf стр.55: 2; lonestar: 0; focharactersheet: 0; pipboy3000: 0 | большинство 0 — в сборке |
 | `weapon_boarding_pistol` (Абордажный пистолет) | Скорострельность | companion: 3; site: 0; original_pdf стр.51: 3 | согласовано пользователем: 0 |
-| `weapon_pulse_mine` (Pulse Mine) | Урон | companion: 9; focharactersheet: 6; pipboy3000: 6 | большинство 6 — не проверено применение |
+| `weapon_pulse_mine` (Pulse Mine) | Урон | companion: 9; site: 6; focharactersheet: 6; pipboy3000: 6 | большинство 6 — в сборке |
 | `weapon_pulse_mine` (Pulse Mine) | Вес | companion: 0.5; lonestar: 1; focharactersheet: 1 | большинство 1 — не проверено применение |
-| `weapon_pulse_mine` (Pulse Mine) | Цена | companion: 135; lonestar: 100; focharactersheet: 100; pipboy3000: 100 | большинство 100 — не проверено применение |
+| `weapon_pulse_mine` (Pulse Mine) | Цена | companion: 135; site: 100; lonestar: 100; focharactersheet: 100; pipboy3000: 100 | большинство 100 — в сборке |
 | `weapon_bumper_sword` (Большой меч) | Вес | companion: 12; lonestar: 3; focharactersheet: 12 | большинство 12 — не проверено применение |
 | `weapon_bumper_sword` (Большой меч) | Цена | companion: 125; lonestar: 90; focharactersheet: 125; pipboy3000: 125 | большинство 125 — не проверено применение |
 | `weapon_bumper_sword` (Большой меч) | Редкость | companion: 2; lonestar: 4; focharactersheet: 2; pipboy3000: 2 | большинство 2 — не проверено применение |

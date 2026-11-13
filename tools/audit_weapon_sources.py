@@ -23,7 +23,12 @@ APPROVED = {('weapon_boarding_pistol', 'fireRate'): '0',
 APPLIED = {('weapon_tesla_rifle', 'damage'): '5',
            ('weapon_alien_disintegrator', 'fireRate'): '2',
            ('weapon_pistol_injector', 'fireRate'): '0',
-           ('weapon_pistol_injector', 'damage'): '4'}
+           ('weapon_pistol_injector', 'damage'): '4',
+           ('weapon_gauss_rifle', 'rarity'): '4',
+           ('weapon_crossbow', 'fireRate'): '0',
+           ('weapon_pulse_mine', 'damage'): '6',
+           ('weapon_pulse_mine', 'cost'): '100',
+           ('weapon_gamma_gun', 'cost'): '156'}
 FILES = {'pipboy': 'weapons.json', 'lonestar': 'lonestar_weapons.json',
          'focharactersheet': 'focharactersheet_weapons.json', 'pipboy3000': 'pipboy3000_weapons.json'}
 KEYS = {'pipboy': {'damage': 'damageRating', 'fireRate': 'fireRate', 'weight': 'weight', 'cost': 'cost', 'rarity': 'rarity'},
@@ -107,6 +112,7 @@ def run():
     site = read(ROOT / 'data/weapon-audit/site-observations.json')
     names = {r['id']: r.get('name', '') for r in read(RU)}
     refs = {source: read(SOURCES / file) for source, file in FILES.items()}
+    external = read(ROOT / 'data/weapon-audit/external-observations.json')
     indexes = {'pipboy': unique_index(refs['pipboy'], lambda x: namekey(x.get('name_ru'))),
                'lonestar': unique_index(refs['lonestar'], lambda x: namekey(x.get('name_en'))),
                'focharactersheet': unique_index(refs['focharactersheet'], lambda x: namekey(x.get('name_en'))),
@@ -135,6 +141,10 @@ def run():
             site_value = number(site.get(wid, {}).get(field))
             if site_value is not None:
                 votes['site'] = site_value
+            for source_name, values in external.get(wid, {}).items():
+                external_value = number(values.get(field))
+                if external_value is not None:
+                    votes[source_name] = external_value
             pdf_value = original.get(wid, {}).get(field)
             if pdf_value is not None:
                 votes['original_pdf'] = pdf_value
@@ -181,7 +191,7 @@ def render(data):
              'Голосование: уникальное большинство строго более половины доступных числовых голосов и минимум три источника; меньшее покрытие и ничьи — на ручную проверку. Отсутствующее, неопознанное и неоднозначное значение не голосует; прочерк, «<1» и выражения вроде «6+1» не подменяются числом. Зафиксированные решения пользователя имеют приоритет. Разные проекты могут использовать общий первоисточник; это голоса записей, не доказательство независимости.', '',
              f"Обработано записей Companion: {data['weapon_count']}; заголовков PDF извлечено: {data['pdf_headers_extracted']}; страниц сайта вручную сверено: {data['site_records']}. Точные однозначные сопоставления: "+', '.join(f'{k}: {v}' for k,v in sorted(data['matched'].items()))+'.',
              f"Расходящихся полей: {len(diffs)}; предварительное большинство: {sum(x['majority'] is not None for x in diffs)}; остальные — без решения.", '',
-             'Ссылки на проверенные страницы сайта — в `data/weapon-audit/site-observations.json`. Подтверждённые решения пользователя, например скорострельность абордажного пистолета 0, не отменяются большинством.', '',
+             'Источники сайта (включая локальный дамп) — в `data/weapon-audit/site-observations.json`, внешние транскрипции — в `data/weapon-audit/external-observations.json`. Подтверждённые решения пользователя, например скорострельность абордажного пистолета 0, не отменяются большинством.', '',
              'Полный машиночитаемый список с голосами: `data/weapon-audit/numeric-audit.json`. Источники и версии: `data/weapon-audit/sources/README.md`, фиксированный коммит '+data['reference_commit']+'.', '',
              '| ID | Поле | Голоса по источникам | Предварительный результат |', '|---|---|---|---|']
     for row in diffs:

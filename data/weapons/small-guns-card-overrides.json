@@ -10,5 +10,11 @@
   "weapon_pistol_injector": {
     "fireRate": 0,
     "damage": 4
+  },
+  "weapon_gauss_rifle": {
+    "rarity": 4
+  },
+  "weapon_crossbow": {
+    "fireRate": 0
   }
 }

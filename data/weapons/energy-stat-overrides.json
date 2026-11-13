@@ -32,5 +32,8 @@
   },
   "weapon_alien_disintegrator": {
     "fireRate": 2
+  },
+  "weapon_gamma_gun": {
+    "cost": 156
   }
 }

@@ -129,5 +129,44 @@
     "weight": 5,
     "cost": 333,
     "rarity": 5
+  },
+  "weapon_gauss_rifle": {
+    "url": null,
+    "source": "jos_sppagebuilder.zip, page ID 100, first stats block",
+    "damage": 10,
+    "fireRate": 1,
+    "weight": 16,
+    "cost": 228,
+    "rarity": 4
+  },
+  "weapon_crossbow": {
+    "url": null,
+    "source": "jos_sppagebuilder.zip, page ID 132, first stats block",
+    "damage": 5,
+    "fireRate": 0,
+    "weight": 3,
+    "cost": 44,
+    "rarity": 2
+  },
+  "weapon_gamma_gun": {
+    "url": null,
+    "source": "jos_sppagebuilder.zip, page ID 262, first stats block",
+    "damage": 3,
+    "fireRate": 1,
+    "weight": 4,
+    "cost": 50,
+    "rarity": 2
+  },
+  "weapon_pulse_mine": {
+    "url": null,
+    "source": "jos_sppagebuilder.zip, page ID 210, first stats block",
+    "damage": 6,
+    "cost": 100,
+    "rarity": 3,
+    "weight": "<1",
+    "range": "not listed",
+    "effects": [
+      "Оглушающий"
+    ]
   }
 }

@@ -6,7 +6,12 @@
   },
   "weapon_pulse_mine": {
     "title": "Импульсная мина",
-    "range": "Средняя"
+    "range": "-",
+    "damage": 6,
+    "cost": 100,
+    "effects": [
+      "Оглушающий"
+    ]
   },
   "unarmed_human": {
     "fireRate": 0,
