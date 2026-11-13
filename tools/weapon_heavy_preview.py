@@ -66,7 +66,7 @@ def render_source_heavy(comp, wid, page_num, source, source_page, out, extra_des
         top = words[0][1] - 5
         description = (card.get('description') or '').strip()
         desc_bottom = w.DESC_TOP + len(w.wrap_text(description, 'Carlito', 10, w.DESC_RIGHT - w.DESC_LEFT)) * 15 if description else w.DESC_TOP
-        target_top = max(top, desc_bottom + 8)
+        target_top = max(top, desc_bottom + 9)
         if target_top >= 807:
             raise ValueError(f'{wid}: описание не помещается над таблицей оригинала')
         with tempfile.TemporaryDirectory() as tmp:

@@ -561,13 +561,13 @@ def mods_layout(card) -> tuple[list[dict], float, int]:
     return rows, sum(r["h"] for r in rows), ncols
 
 
-def draw_mods(c, card, block=None) -> None:
+def draw_mods(c, card, block=None, no_mods_heading_top=None) -> None:
     mods = card.get("mods") or []
 
     if block is None:
         block = mods_block(card)
     if block is None:
-        draw_center_line(c, MODS_HEADING_TOP, card.get("no_mods_label", "НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ"),
+        draw_center_line(c, no_mods_heading_top if no_mods_heading_top is not None else MODS_HEADING_TOP, card.get("no_mods_label", "НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ"),
                          "Carlito-Bold", MODS_HEADING_SIZE)
         return
 
@@ -672,8 +672,19 @@ def render_card(card, out_path: str) -> None:
     draw_title(c, card)
     draw_stats(c, card)
     block = mods_block(card)
-    draw_description(c, card, max_bottom=description_bottom_from(block))
-    draw_mods(c, card, block)
+    heading_top = None
+    if block is None:
+        # Without a table, move the label down only as far as the description
+        # needs, rather than truncating text against a fixed early heading.
+        text = (card.get("description") or "").strip()
+        lines = wrap_text(text, "Carlito", 10, DESC_RIGHT - DESC_LEFT) if text else []
+        min_leading = DESC_LEADING - 4 * 0.6
+        heading_top = max(MODS_HEADING_TOP, DESC_TOP + len(lines) * min_leading + 11)
+        if heading_top + MODS_HEADING_SIZE > MODS_BOTTOM:
+            raise ValueError(f"{card.get('id')}: описание не помещается на странице")
+    bottom = heading_top - 10 if heading_top is not None else description_bottom_from(block)
+    draw_description(c, card, max_bottom=bottom)
+    draw_mods(c, card, block, no_mods_heading_top=heading_top)
     draw_page_number(c, int(card.get("page") or 0))
     c.showPage()
     c.save()

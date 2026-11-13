@@ -301,3 +301,20 @@ class CardFixtureTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+class NoModsDescriptionLayoutTest(unittest.TestCase):
+    def test_long_description_does_not_get_cut_off(self):
+        import tempfile
+        from pathlib import Path
+        import pymupdf
+        import weapon2pdf as w
+        w.register_fonts()
+        text = ('Обычный текст описания, который занимает место на странице. ' * 12) + ' ЗАВЕРШЕНИЕОПИСАНИЯ'
+        card = {'id': 'test_long', 'title': 'Проверка', 'page': 1, 'description': text, 'mods': [], 'weight': 1, 'cost': 1, 'rarity': 1}
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / 'page.pdf'
+            w.render_card(card, str(out))
+            with pymupdf.open(out) as pdf:
+                content = pdf[0].get_text()
+                self.assertIn('ЗАВЕРШЕНИЕОПИСАНИЯ', content)
+                self.assertIn('НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ', content)
