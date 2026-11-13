@@ -117,8 +117,14 @@ class HeavyPreviewTests(unittest.TestCase):
             drone = doc[result['divider'] + ids.index('weapon_drone_cannon')].get_text()
             self.assertIn('НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ', drone)
             plasma = doc[result['divider'] + ids.index('weapon_gatling_plasma')].get_text()
-            self.assertIn('МОДИФИКАЦИИ ТРЕБУЮТ ПРОВЕРКИ', plasma)
+            self.assertIn('ПОДДЕРЖИВАЕМЫЕ МОДИФИКАЦИИ', plasma)
+            self.assertNotIn('МОДИФИКАЦИИ ТРЕБУЮТ ПРОВЕРКИ', plasma)
             self.assertNotIn('Укреплённый', plasma)
+            for name in ('Портированный', 'Удобная ложа', 'Коллиматорный', 'Фокусировщик', 'Разделитель луча'):
+                self.assertIn(name, plasma)
+            self.assertIn('+81', plasma)
+            self.assertIn('+90', plasma)
+            self.assertIn('«Отдача» (6)', plasma)
 
     def test_does_not_truncate_description_if_no_room(self):
         self.comp.descriptions['weapon_flamer'] = 'Длинное описание ' * 2000

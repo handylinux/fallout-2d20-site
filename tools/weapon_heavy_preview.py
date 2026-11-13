@@ -25,6 +25,7 @@ from weapons2cards import Companion, build_card
 WEAPONS = ('weapon_fat_man', 'weapon_flamer', 'weapon_gatling_laser')
 ORDER_FILE = Path(__file__).resolve().parent.parent / 'data/weapons/heavy-guns-order.json'
 CARD_OVERRIDES = Path(__file__).resolve().parent.parent / 'data/weapons/heavy-card-overrides.json'
+SITE_SPECIFIC_MODS = Path(__file__).resolve().parent.parent / 'data/weapons/heavy-site-specific-mods.json'
 MAX_DETAILED_MODS = policy.MAX_DETAILED_MODS
 # Physical source pages; independent of editable output ordering.
 SOURCE_PAGES = {'weapon_fat_man': 58, 'weapon_flamer': 59, 'weapon_gatling_laser': 60, 'weapon_heavy_incinerator': 61, 'weapon_junk_jet': 62, 'weapon_minigun': 63, 'weapon_missile_launcher': 64, 'weapon_50_cal_machine_gun': 65, 'weapon_auto_grenade_launcher': 66, 'weapon_broadsider': 67, 'weapon_gatling_gun': 68, 'weapon_gauss_minigun': 69, 'weapon_cryolator': 70, 'weapon_tesla_cannon': 71, 'weapon_drone_cannon': 72, 'weapon_harpoon_gun': 73, 'weapon_tear_gas_launcher': 74, 'weapon_eugene': 75, 'weapon_plasma_caster': 76, 'weapon_sten_injector': 77}
@@ -88,13 +89,13 @@ def render_source_heavy(comp, wid, page_num, source, source_page, out, extra_des
     return {'mode': 'source', 'font_size': None, 'mod_count': None}
 
 
-def render_heavy(comp, wid, page_num, prefixes, out, extra_description='', card_overrides=None, unique_slots=(), unique_mods=(), mod_overrides=None, slot_labels=None):
+def render_heavy(comp, wid, page_num, prefixes, out, extra_description='', card_overrides=None, unique_slots=(), unique_mods=(), mod_overrides=None, slot_labels=None, site_mod_rows=None):
     card = build_card(comp, wid, page=page_num, image='')
     if card_overrides:
         card.update(card_overrides)
     if extra_description:
         card['description'] = (card.get('description', '') + '\n\n' + extra_description).strip()
-    if wid == 'weapon_gatling_plasma':
+    if wid == 'weapon_gatling_plasma' and site_mod_rows is None:
         # The slot list conflicts with applies_to_ids; do not claim it has no mods.
         c = canvas.Canvas(str(out), pagesize=(w.PAGE_W, w.PAGE_H))
         w.draw_paper(c); w.draw_title(c, card); w.draw_stats(c, card)
@@ -102,7 +103,11 @@ def render_heavy(comp, wid, page_num, prefixes, out, extra_description='', card_
         w.draw_center_line(c, 710, 'МОДИФИКАЦИИ ТРЕБУЮТ ПРОВЕРКИ', 'Carlito-Bold', w.MODS_HEADING_SIZE)
         w.draw_page_number(c, page_num); c.showPage(); c.save()
         return {'mode': 'unverified', 'font_size': None, 'mod_count': 0}
-    rows = build_rows(comp, wid, prefixes)
+    if site_mod_rows is not None:
+        fields = ('name', 'prefix', 'effects', 'weight', 'cost', 'perks')
+        rows = [(item['slot'], [item[key] for key in fields]) for item in site_mod_rows]
+    else:
+        rows = build_rows(comp, wid, prefixes)
     if not rows:
         w.render_card(card, str(out))
         return {'mode': 'none', 'font_size': None, 'mod_count': 0}
@@ -125,7 +130,8 @@ def render_heavy(comp, wid, page_num, prefixes, out, extra_description='', card_
         unique_mods = set(unique_mods)
         ordered_slots = comp.slots.get(wid) or {}
         slot_order = [s for s in ORDER if ordered_slots.get(s)] + sorted(s for s in ordered_slots if s not in ORDER and ordered_slots[s])
-        ids_in_order = [(slot, mid) for slot in slot_order for mid in ordered_slots[slot]]
+        ids_in_order = ([(item['slot'], item['id']) for item in site_mod_rows] if site_mod_rows is not None
+                        else [(slot, mid) for slot in slot_order for mid in ordered_slots[slot]])
         valid_fields = {'name': 0, 'prefix': 1, 'effects': 2, 'weight': 3, 'cost': 4, 'perks': 5}
         for (_, mid), (_, values) in zip(ids_in_order, rows):
             for field, value in (mod_overrides or {}).get(mid, {}).items():
@@ -241,6 +247,7 @@ def build(source, output, weapons=WEAPONS, report=None):
     w.register_fonts()
     diagnostics = []
     card_overrides = json.loads(CARD_OVERRIDES.read_text(encoding='utf-8'))
+    site_specific = json.loads(SITE_SPECIFIC_MODS.read_text(encoding='utf-8'))
     with tempfile.TemporaryDirectory() as tmp:
         base = Path(tmp) / 'small-guns.pdf'
         # The small-guns reference contains only SMALL_GUNS modifications.
@@ -249,7 +256,7 @@ def build(source, output, weapons=WEAPONS, report=None):
         # definitions are not reliable enough to replace them without a review.
         mod_data = None
         diagnostics.append('Таблица общих модов тяжёлого оружия временно не выводится: применение и характеристики требуют сверки.')
-        diagnostics.append('weapon_gatling_plasma: 17 слотов противоречат applies_to_ids; моды не показаны до проверки.')
+        diagnostics.append('weapon_gatling_plasma: применены пять модов сайта; 17 конфликтующих слотов Companion не использованы.')
         with pymupdf.open(base) as base_pdf, pymupdf.open(source) as original, pymupdf.open() as result:
             if original.page_count < 57:
                 raise ValueError('В исходном PDF нужно минимум 57 страниц')
@@ -272,7 +279,8 @@ def build(source, output, weapons=WEAPONS, report=None):
                                                card_overrides=card_overrides.get(wid))
                 else:
                     info = render_heavy(comp, wid, len(result) + 1, prefixes, path,
-                                        card_overrides=card_overrides.get(wid))
+                                        card_overrides=card_overrides.get(wid),
+                                        site_mod_rows=site_specific.get(wid, {}).get('mods'))
                 if info['mode'] == 'names':
                     diagnostics.append(f"{wid}: {info['mod_count']} модов, показаны только названия; характеристики в таблице модов тяжёлого оружия")
                 elif info['font_size'] is not None and info['font_size'] < 8.4:
@@ -287,7 +295,7 @@ def build(source, output, weapons=WEAPONS, report=None):
             report.parent.mkdir(parents=True, exist_ok=True)
             text = '# Тяжёлое оружие: проверка сборки\n\n'
             text += f'Отдельная таблица тяжёлых модов: пока не сформирована; разделитель: {divider}; оружие: {len(weapons)}; всего страниц: {total}.\n\n'
-            text += 'Для 20 страниц тяжёлого оружия блоки модификаций взяты из исходного PDF без перерисовки. Для гатлинг-плазмы модификации не подтверждены. Подробная сверка исходника с Companion приведена в docs/weapon-heavy-mods-comparison.md.\n\n'
+            text += 'Для 20 страниц тяжёлого оружия блоки модификаций взяты из исходного PDF без перерисовки. Для гатлинг-плазмы пять модификаций взяты с сайта; их сверка с книгами не завершена. Подробная сверка исходника с Companion приведена в docs/weapon-heavy-mods-comparison.md.\n\n'
             text += '## Требует внимания\n\n' + ('\n'.join('- ' + x for x in diagnostics) if diagnostics else 'Не обнаружено.') + '\n'
             report.write_text(text, encoding='utf-8')
         return {'mods_start': mods_start, 'mods_pages': mods_pages, 'divider': divider, 'pages': total, 'weapons': len(weapons), 'issues': len(diagnostics)}
