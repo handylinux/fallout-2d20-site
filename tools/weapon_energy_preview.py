@@ -21,6 +21,7 @@ SOURCE_PAGES = dict(zip([
     'weapon_alien_atomizer', 'weapon_alien_disintegrator', 'weapon_alien_blaster',
     'weapon_microwave_emitter', 'weapon_arc_welder', 'weapon_assaultron_head_laser'
 ], range(81, 95)))
+MOD_OVERRIDES = Path(__file__).resolve().parent.parent / 'data/weapons/energy-mod-overrides.json'
 OVERRIDES = Path(__file__).resolve().parent.parent / 'data/weapons/energy-stat-overrides.json'
 SPECIALS = Path(__file__).resolve().parent.parent / 'data/weapons/energy-specials.ru.json'
 
@@ -41,6 +42,13 @@ def musket_reference(comp, prefixes):
         raise ValueError('Список конденсаторов мушкета изменился: требуется сверка')
     section = data['sections'][0]
     rows_by_id = dict(zip([mid for mid in actual if mid in MUSKET_MODS], section['rows']))
+    overrides = json.loads(MOD_OVERRIDES.read_text(encoding='utf-8')).get('weapon_laser_musket', {})
+    columns = {'name': 0, 'prefix': 1, 'effects': 2, 'weight': 3, 'cost': 4, 'perks': 5}
+    for mid, row in rows_by_id.items():
+        for key, value in overrides.get(mid, {}).items():
+            if key not in columns or not isinstance(value, str):
+                raise ValueError(f'{mid}: неверное поле поправки {key}')
+            row[columns[key]] = value
     section['rows'] = [rows_by_id[mid] for mid in MUSKET_MODS]
     section['category'] = 'УНИКАЛЬНЫЙ КОНДЕНСАТОР — ЛАЗЕРНЫЙ МУШКЕТ'
     return data, problems
@@ -55,7 +63,8 @@ def render_energy(comp, wid, source, source_page, page_num, out):
             raise ValueError('Конденсаторы лазера штурмотрона требуют сверки применимости')
         return heavy.render_heavy(comp, wid, page_num, conv.load(conv.PREFIXES), out,
                                   extra_description=special, card_overrides=overrides,
-                                  unique_mods=unique)
+                                  unique_mods=unique,
+                                  mod_overrides=json.loads(MOD_OVERRIDES.read_text(encoding='utf-8')).get(wid))
     if source_page not in (82, 83):
         special = json.loads(SPECIALS.read_text(encoding='utf-8')).get(wid, '')
         return heavy.render_source_heavy(comp, wid, page_num, source, source_page, out, extra_description=special, card_overrides=overrides)
@@ -148,8 +157,8 @@ def build(source, output, report=None, full=False):
 ## Требует проверки
 
 - Особенность расхода патронов лазерного мушкета добавлена из оригинала; в рабочем описании Companion она отсутствует.
-- Конденсаторы мушкета 3–6 зарядов помещены в общую таблицу: характеристики взяты из Companion, в оригинальных общих таблицах они отсутствуют. Запись качества «Ствол X» и вес 3-зарядного требуют проверки; вес отсутствует в Companion и обозначен «?».
-- Четыре уникальных конденсатора головного лазера штурмотрона показаны с характеристиками на странице оружия; термоядерный магазин бластера пришельцев — в общей таблице. Данные Companion и качество «Ствол X» требуют сверки.
+- Конденсаторы мушкета 3–6 зарядов: на сайте разъяснён расход зарядов; в общей таблице вместо неясной записи «Ствол X» указан расход на атаку. Вес 3-зарядного указан прочерком как на сайте.
+- Четыре уникальных конденсатора головного лазера штурмотрона показаны на странице оружия: расход зарядов, перки и прочерк веса MK III взяты с сайта, отличия от Companion записаны в docs/weapon-site-comparison.md. Термоядерный магазин бластера пришельцев находится в общей таблице.
 - Головной лазер штурмотрона: оригинал указывает энергоячейку и не указывает качества; Companion — ядерный блок и «Двуручное». В карточке пока выбран оригинал.
 - Пистолет института и запись weapon_assaultron_head пока не добавлены: требуется проверить моды и возможный дубль головного лазера.
 - Штык мушкета отсутствует в исходных общих таблицах энергетического оружия; его характеристики ещё нужно добавить после сверки.

@@ -559,3 +559,11 @@ python tools\weapon_energy_preview.py ".\Справочник оружия.pdf" 
 `data/weapons/small-guns-mod-overrides.json`. Дополнительное описание и эффекты
 оружия — в `data/weapons/small-guns-card-overrides.json`; сравнение источников —
 в `docs/weapon-boarding-comparison.md`. Оригинальная копия Companion не меняется.
+
+### Сверка с сайтом
+
+Сайт fallout-2d20.ru используется как дополнительный источник наряду с PDF и
+Companion. Ручная сверка и ссылки — в `docs/weapon-site-comparison.md`; она
+пока охватывает только перечисленные страницы. Поправки по сайту для уникальных
+конденсаторов мушкета и головного лазера хранятся в
+`data/weapons/energy-mod-overrides.json` и не меняют исходные данные Companion.

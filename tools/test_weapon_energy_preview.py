@@ -32,7 +32,8 @@ class EnergyPreviewTest(unittest.TestCase):
         rows = data['sections'][0]['rows']
         self.assertEqual([r[0] for r in rows], ['3-зарядный', '4-зарядный', '5-зарядный', '6-зарядный'])
         self.assertEqual(rows[0][1], 'Проверочный')
-        self.assertEqual(rows[0][3], '?')
+        self.assertEqual(rows[0][3], '—')
+        self.assertIn('расходует 3 заряда на атаку', rows[0][2])
         self.assertTrue(any('weight' in p for p in problems))
 
     def test_full_energy_section_matches_source_order_and_keeps_specials(self):
@@ -66,8 +67,11 @@ class EnergyPreviewTest(unittest.TestCase):
                 self.assertIn('ПРЕФИКС', head)
                 for mod in ('MK III', 'MK IV', 'MK V', 'MK VI'):
                     self.assertEqual(head.splitlines().count(mod), 2)
-                self.assertIn('Ствол X 3', head)
-                self.assertIn('Ствол X 6', head)
+                self.assertIn('расходует 3 заряда на атаку', head)
+                self.assertIn('расходует 6 зарядов на атаку', head)
+                self.assertIn('робототехнике', head)
+                self.assertIn('Наука! 3', head)
+                self.assertNotIn('Ствол X', head)
                 self.assertIn('Наука! 1', head)
                 self.assertNotIn('Science!', head)
                 self.assertNotIn('Science!', ref)
