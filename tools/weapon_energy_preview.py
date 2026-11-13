@@ -120,7 +120,8 @@ def build(source, output, report=None, full=False):
                 raise ValueError('В исходном PDF отсутствуют требуемые страницы')
             references = []
             for source_number in (78, 79):
-                borders.append_reference_page(result, original, source_number, len(result) + 1)
+                result.insert_pdf(original, from_page=source_number-1, to_page=source_number-1)
+                small.renumber_divider(result[-1], len(result), source_number=source_number)
                 references.append(len(result))
             # Continuation of the common reference, not a second weapon-page table.
             prefixes = conv.load(conv.PREFIXES)

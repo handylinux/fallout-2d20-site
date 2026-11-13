@@ -59,19 +59,3 @@ def place_source_block(target_page, source, source_index, clip, target_top, targ
     return boxes
 
 
-def append_reference_page(result, original, source_number, page_number):
-    """Reproduce a source reference page with in-margin proportional tables."""
-    page = result.new_page(width=w.PAGE_W, height=w.PAGE_H)
-    x, by, width, height = w.paper_placement()
-    page.insert_image(pymupdf.Rect(x, w.PAGE_H - by - height, x + width, w.PAGE_H - by), filename=w.PAPER)
-    src = original[source_number - 1]
-    clip = pymupdf.Rect(0, 0, src.rect.width, 807)
-    boxes = place_source_block(page, original, source_number - 1, clip, target_top=0, target_bottom=807)
-    if not boxes:
-        raise ValueError(f'Страница {source_number}: не найдены таблицы для рамки')
-    fontfile = str(__import__('pathlib').Path(w.FONT_DIR) / 'Carlito-Regular.ttf')
-    font = pymupdf.Font(fontfile=fontfile)
-    page.insert_font(fontname='frameno', fontfile=fontfile)
-    label = str(page_number)
-    pos = w.MARGIN_L + 2.57 if page_number % 2 == 0 else w.CONTENT_R - 2.57 - font.text_length(label, fontsize=9.96)
-    page.insert_text((pos, w.PAGE_NUMBER_TOP + 9.96 * .75), label, fontname='frameno', fontsize=9.96)
