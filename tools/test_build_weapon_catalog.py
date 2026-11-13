@@ -15,8 +15,8 @@ class CompleteWorkingCatalogTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             output = Path(temp) / 'catalog.pdf'
             info = book.build(source, output)
-            self.assertEqual(info['pages'], 173)
-            self.assertEqual(info['closing'], [169, 170, 171, 172, 173])
+            self.assertEqual(info['pages'], 174)
+            self.assertEqual(info['closing'], [170, 171, 172, 173, 174])
             with pymupdf.open(output) as doc:
                 text = lambda n: doc[n-1].get_text()
                 self.assertIn('ЛАЗЕРНЫЙ ПИСТОЛЕТ ИНСТИТУТА', text(info['weapons']['energy'][0]))
@@ -40,12 +40,12 @@ class CompleteWorkingCatalogTest(unittest.TestCase):
                 self.assertIn('ПЛАЗМЕННАЯ МИНА', mine)
                 self.assertIn('НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ', mine)
                 self.assertNotIn('Тяжёлый ствол', mine)
-                words = doc[82].get_text('words')
+                words = doc[83].get_text('words')
                 capacitor = next(x for x in words if x[4] == '6-зарядный')
                 magazine = next(x for x in words if x[4] == 'МАГАЗИНА')
                 self.assertGreater(magazine[1] - capacitor[3], 15)
                 self.assertIn('Редкость: 4', text(21))
-                self.assertIn('Цена: 156', text(88))
+                self.assertIn('Цена: 156', text(89))
                 self.assertIn('0\nСредняя', text(56))
                 pistol = doc[47].get_text()
                 self.assertIn('ПИСТОЛЕТ-ИНЪЕКТОР', pistol)
@@ -53,13 +53,13 @@ class CompleteWorkingCatalogTest(unittest.TestCase):
                 self.assertIn('Усмирение 3', pistol)
                 self.assertNotIn('Усмирение X', pistol)
                 self.assertIn('0\nБлизкая', pistol)
-                sten = text(79)
+                sten = text(80)
                 self.assertIn('СТЕН-ИНЪЕКТОР', sten)
                 self.assertIn('3\nСредняя', sten)
                 self.assertIn('Усмирение 3', sten)
                 self.assertIn('Яд', sten)
                 self.assertNotIn('Усмирение X', sten)
-                self.assertTrue(any(word[4] == '4' and 340 < word[1] < 390 for word in doc[78].get_text('words')))
+                self.assertTrue(any(word[4] == '4' and 340 < word[1] < 390 for word in doc[79].get_text('words')))
                 injector = doc[47]
                 self.assertTrue(any(word[4] == '4' and 340 < word[1] < 390 for word in injector.get_text('words')))
                 grid = doc[85]

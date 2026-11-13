@@ -1,0 +1,25 @@
+{
+  "mods": [
+    {
+      "id": "mod_gunner_sight",
+      "slot": "Sight",
+      "name": "Прицел стрелка",
+      "prefix": "Тактический",
+      "effects": "Перебросить кубик места попадания",
+      "weight": "+1",
+      "cost": "+5",
+      "perks": "—",
+      "weapons": [
+        "weapon_junk_jet",
+        "weapon_gauss_minigun",
+        "weapon_eugene"
+      ],
+      "source_pages": [62, 69, 75],
+      "mask_boxes": [
+        {"page": 62, "x0": 182.5, "y0": 695.5, "x1": 560, "y1": 727.3},
+        {"page": 69, "x0": 194, "y0": 773.2, "x1": 559, "y1": 805.2},
+        {"page": 75, "x0": 184, "y0": 773.2, "x1": 559, "y1": 805.2}
+      ]
+    }
+  ]
+}

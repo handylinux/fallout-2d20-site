@@ -232,6 +232,41 @@ def heavy_reference_data(comp, weapons, prefixes):
                                title='МОДИФИКАЦИИ ТЯЖЁЛОГО ОРУЖИЯ')
 
 
+def confirmed_common_mod_data(comp):
+    """Load curated, book-verified heavy mods shared with identical values."""
+    path = Path(__file__).resolve().parent.parent / 'data/weapons/heavy-common-mods.ru.json'
+    raw = json.loads(path.read_text(encoding='utf-8'))
+    rows = []
+    masks = []
+    for entry in raw['mods']:
+        mid, slot = entry['id'], entry['slot']
+        mod = comp.mods.get(mid)
+        if not mod or not entry['weapons']:
+            raise ValueError(f'{mid}: common heavy mod missing in Companion')
+        for wid in entry['weapons']:
+            if wid not in (mod.get('applies_to_ids') or []) or mid not in (comp.slots.get(wid) or {}).get(slot, []):
+                raise ValueError(f'{mid}: unverified slot/applicability for {wid}')
+        if mod.get('weight') != 1 or mod.get('cost') != 5 or mod.get('perk1') or mod.get('perk2'):
+            raise ValueError(f'{mid}: shared values changed; re-check source pages')
+        rows.append([entry['name'], entry['prefix'], entry['effects'], entry['weight'], entry['cost'], entry['perks']])
+        masks.extend(entry['mask_boxes'])
+    data = {'title': 'ОБЩИЕ МОДИФИКАЦИИ ТЯЖЁЛОГО ОРУЖИЯ',
+            'sections': [{'category': 'МОДИФИКАЦИИ ПРИЦЕЛА', 'rows': rows}]}
+    return data, masks
+
+
+def mask_common_mod_details(source_doc, mask_boxes):
+    """Leave just the common mod name in each original weapon table."""
+    pages = set()
+    for box in mask_boxes:
+        page = source_doc[int(box['page']) - 1]
+        rect = pymupdf.Rect(box['x0'], box['y0'], box['x1'], box['y1'])
+        page.add_redact_annot(rect, fill=False, cross_out=False)
+        pages.add(int(box['page']) - 1)
+    for index in pages:
+        source_doc[index].apply_redactions(images=0, graphics=0, text=0)
+
+
 def build(source, output, weapons=WEAPONS, report=None):
     source, output = Path(source), Path(output)
     if source.resolve() == output.resolve():
@@ -252,30 +287,29 @@ def build(source, output, weapons=WEAPONS, report=None):
         base = Path(tmp) / 'small-guns.pdf'
         # The small-guns reference contains only SMALL_GUNS modifications.
         small.build(source, base)
-        # The source has individual heavy-weapon tables; the Companion shared
-        # definitions are not reliable enough to replace them without a review.
-        mod_data = None
-        diagnostics.append('Таблица общих модов тяжёлого оружия временно не выводится: применение и характеристики требуют сверки.')
+        mod_data, mask_boxes = confirmed_common_mod_data(comp)
+        diagnostics.append('Общая таблица включает только подтверждённые совпадающие строки; прочие моды остаются в источниках оружия.')
         diagnostics.append('weapon_gatling_plasma: применены пять модов сайта; 17 конфликтующих слотов Companion не использованы.')
         with pymupdf.open(base) as base_pdf, pymupdf.open(source) as original, pymupdf.open() as result:
             if original.page_count < 57:
                 raise ValueError('В исходном PDF нужно минимум 57 страниц')
             result.insert_pdf(base_pdf)
             mods_start = len(result) + 1
-            mods_pages = 0
-            if mod_data:
-                mod_file = Path(tmp) / 'heavy-mods.pdf'
-                small.tables.render(mod_data, mod_file, page_start=mods_start)
-                with pymupdf.open(mod_file) as mod_pdf:
-                    mods_pages = len(mod_pdf)
-                    result.insert_pdf(mod_pdf)
+            mod_file = Path(tmp) / 'heavy-mods.pdf'
+            small.tables.render(mod_data, mod_file, page_start=mods_start)
+            with pymupdf.open(mod_file) as mod_pdf:
+                mods_pages = len(mod_pdf)
+                result.insert_pdf(mod_pdf)
+            mask_common_mod_details(original, mask_boxes)
+            source_for_cards = Path(tmp) / 'heavy-source-with-common-mods-extracted.pdf'
+            original.save(source_for_cards, garbage=4, deflate=True)
             result.insert_pdf(original, from_page=56, to_page=56)
             divider = len(result)
             small.renumber_divider(result[-1], divider, source_number=57)
             for index, wid in enumerate(weapons):
                 path = Path(tmp) / f'heavy-{index}.pdf'
                 if wid in SOURCE_PAGES:
-                    info = render_source_heavy(comp, wid, len(result) + 1, source, SOURCE_PAGES[wid], path,
+                    info = render_source_heavy(comp, wid, len(result) + 1, source_for_cards, SOURCE_PAGES[wid], path,
                                                card_overrides=card_overrides.get(wid))
                 else:
                     info = render_heavy(comp, wid, len(result) + 1, prefixes, path,
@@ -294,8 +328,8 @@ def build(source, output, weapons=WEAPONS, report=None):
             report = Path(report)
             report.parent.mkdir(parents=True, exist_ok=True)
             text = '# Тяжёлое оружие: проверка сборки\n\n'
-            text += f'Отдельная таблица тяжёлых модов: пока не сформирована; разделитель: {divider}; оружие: {len(weapons)}; всего страниц: {total}.\n\n'
-            text += 'Для 20 страниц тяжёлого оружия блоки модификаций взяты из исходного PDF без перерисовки. Для гатлинг-плазмы пять модификаций взяты с сайта; их сверка с книгами не завершена. Подробная сверка исходника с Companion приведена в docs/weapon-heavy-mods-comparison.md.\n\n'
+            text += f'Общая таблица тяжёлых модов: {mods_pages} стр. (только моды с одинаковыми подтверждёнными параметрами); разделитель: {divider}; оружие: {len(weapons)}; всего страниц: {total}.\n\n'
+            text += 'Блоки модификаций для оружия взяты из исходного PDF. Подтверждённый общий «Прицел стрелка» перенесён в таблицу; на страницах оружия сохранено только название. Для гатлинг-плазмы пять модификаций взяты с сайта; их сверка с книгами не завершена. Подробная сверка исходника с Companion приведена в docs/weapon-heavy-mods-comparison.md.\n\n'
             text += '## Требует внимания\n\n' + ('\n'.join('- ' + x for x in diagnostics) if diagnostics else 'Не обнаружено.') + '\n'
             report.write_text(text, encoding='utf-8')
         return {'mods_start': mods_start, 'mods_pages': mods_pages, 'divider': divider, 'pages': total, 'weapons': len(weapons), 'issues': len(diagnostics)}
