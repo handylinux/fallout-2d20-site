@@ -25,6 +25,12 @@ class ReceiverConverterTests(unittest.TestCase):
         text = c.effect_text({'damageTypeOverride': {'op': 'weird', 'value': 'energy'}}, {}, {}, {}, labels)
         self.assertIn('weird', text)
 
+    def test_science_perk_is_localized_without_losing_level(self):
+        self.assertEqual(c.perks({'perk1': 'Science! 2', 'perk2': 'Gun Nut 3'}),
+                         'Наука! 2, Фанатик оружия 3')
+        self.assertEqual(c.perks({'perk1': 'Science!', 'perk2': ''}), 'Наука!')
+        self.assertEqual(c.perks({'perk1': 'Science!Extra', 'perk2': ''}), 'Science!Extra')
+
     def test_unknown_or_missing_values_are_visible(self):
         self.assertEqual(c.number(None), '?')
         self.assertEqual(c.effect_text({}, {}, {}, {}), 'Не указано')
