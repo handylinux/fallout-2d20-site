@@ -1,0 +1,554 @@
+{
+  "weapon_10mm_pistol": {
+    "site_page_id": "95",
+    "site_title": "10-мм Пистолет"
+  },
+  "weapon_44_pistol": {
+    "site_page_id": "94",
+    "site_title": "Револьвер Калибра .44"
+  },
+  "weapon_flare_gun": {
+    "site_page_id": "97",
+    "site_title": "Сигнальный пистолет"
+  },
+  "weapon_assault_rifle": {
+    "site_page_id": "98",
+    "site_title": "Штурмовая винтовка"
+  },
+  "weapon_combat_rifle": {
+    "site_page_id": "99",
+    "site_title": "Боевой карабин"
+  },
+  "weapon_combat_shotgun": {
+    "site_page_id": "106",
+    "site_title": "Боевой дробовик"
+  },
+  "weapon_gauss_rifle": {
+    "site_page_id": "100",
+    "site_title": "Карабин гаусса"
+  },
+  "weapon_gauss_pistol": {
+    "site_page_id": "149",
+    "site_title": "Пистолет Гаусса"
+  },
+  "weapon_hunting_rifle": {
+    "site_page_id": "102",
+    "site_title": "Охотничья винтовка"
+  },
+  "weapon_submachine_gun": {
+    "site_page_id": "105",
+    "site_title": "Пистолет-пулемёт Томпсона (Томми-ган)"
+  },
+  "weapon_double_barrel_shotgun": {
+    "site_page_id": "107",
+    "site_title": "Двуствольный дробовик"
+  },
+  "weapon_pipe_bolt_action": {
+    "site_page_id": "108",
+    "site_title": "Гладкоствол с болтовым затвором"
+  },
+  "weapon_pipe_gun": {
+    "site_page_id": "109",
+    "site_title": "Гладкоствол"
+  },
+  "weapon_pipe_revolver": {
+    "site_page_id": "110",
+    "site_title": "Гладкоствольный револьвер"
+  },
+  "weapon_railway_rifle": {
+    "site_page_id": "111",
+    "site_title": "Железнодорожная винтовка"
+  },
+  "weapon_syringer": {
+    "site_page_id": "112",
+    "site_title": "Инъекционный карабин"
+  },
+  "weapon_357_magnum_revolver": {
+    "site_page_id": "138",
+    "site_title": "Револьвер «Магнум» кал. 357"
+  },
+  "weapon_12_7mm_pistol": {
+    "site_page_id": "139",
+    "site_title": "12,7-мм пистолет"
+  },
+  "weapon_12_7mm_smg": {
+    "site_page_id": "141",
+    "site_title": "12,7-мм пистолет-пулемёт"
+  },
+  "weapon_25mm_grenade_apw": {
+    "site_page_id": "142",
+    "site_title": "Противопехотный 25-мм гранатомёт (GRA)"
+  },
+  "weapon_9mm_pistol": {
+    "site_page_id": "143",
+    "site_title": "9-мм пистолет"
+  },
+  "weapon_anti_materiel_rifle": {
+    "site_page_id": "144",
+    "site_title": "Крупнокалиберная снайперская винтовка"
+  },
+  "weapon_battle_rifle": {
+    "site_page_id": "145",
+    "site_title": "Самозарядная винтовка (GRA)"
+  },
+  "weapon_black_powder_blunderbuss": {
+    "site_page_id": "146",
+    "site_title": "Пороховой мушкетон"
+  },
+  "weapon_black_powder_rifle": {
+    "site_page_id": "148",
+    "site_title": "Пороховой карабин"
+  },
+  "weapon_black_powder_pistol": {
+    "site_page_id": "147",
+    "site_title": "Пороховой пистолет"
+  },
+  "weapon_gauss_shotgun": {
+    "site_page_id": "150",
+    "site_title": "Дробовик Гаусса"
+  },
+  "weapon_lever_action_rifle": {
+    "site_page_id": "151",
+    "site_title": "Карабин с рычажным затвором"
+  },
+  "weapon_light_machine_gun": {
+    "site_page_id": "152",
+    "site_title": "Лёгкий пулемёт"
+  },
+  "weapon_pump_action_shotgun": {
+    "site_page_id": "153",
+    "site_title": "Помповый дробовик"
+  },
+  "weapon_radium_rifle": {
+    "site_page_id": "154",
+    "site_title": "Радиевый карабин"
+  },
+  "weapon_sniper_rifle": {
+    "site_page_id": "155",
+    "site_title": "Снайперская винтовка"
+  },
+  "weapon_m79_grenade_launcher": {
+    "site_page_id": "156",
+    "site_title": "Гранатомёт M79"
+  },
+  "weapon_pistol_injector": {
+    "site_page_id": "185",
+    "site_title": "Пистолет-инъектор"
+  },
+  "weapon_ghoul_rifle": {
+    "site_page_id": "184",
+    "site_title": "Карабин Гуля"
+  },
+  "weapon_ghoul_pistol": {
+    "site_page_id": "183",
+    "site_title": "Пистолет Гуля"
+  },
+  "weapon_sten": {
+    "site_page_id": "182",
+    "site_title": "Стен"
+  },
+  "weapon_boarding_pistol": {
+    "site_page_id": "360",
+    "site_title": "Абордажный пистолет"
+  },
+  "weapon_magnum_monicon": {
+    "site_page_id": "365",
+    "site_title": "Магнумномикон"
+  },
+  "weapon_chinese_assault_rifle": {
+    "site_page_id": "366",
+    "site_title": "Китайский автомат"
+  },
+  "weapon_crossbow": {
+    "site_page_id": "132",
+    "site_title": "Арбалет"
+  },
+  "weapon_bow": {
+    "site_page_id": "130",
+    "site_title": "Лук"
+  },
+  "weapon_fat_man": {
+    "site_page_id": "290",
+    "site_title": "Толстяк"
+  },
+  "weapon_flamer": {
+    "site_page_id": "291",
+    "site_title": "Огнемет"
+  },
+  "weapon_gatling_laser": {
+    "site_page_id": "292",
+    "site_title": "Гатлинг-лазер"
+  },
+  "weapon_heavy_incinerator": {
+    "site_page_id": "296",
+    "site_title": "Тяжёлый инсинератор"
+  },
+  "weapon_junk_jet": {
+    "site_page_id": "311",
+    "site_title": "Хламотрон"
+  },
+  "weapon_minigun": {
+    "site_page_id": "312",
+    "site_title": "Миниган"
+  },
+  "weapon_missile_launcher": {
+    "site_page_id": "313",
+    "site_title": "Ракетная установка"
+  },
+  "weapon_50_cal_machine_gun": {
+    "site_page_id": "347",
+    "site_title": "Пулемёт калибра 50"
+  },
+  "weapon_auto_grenade_launcher": {
+    "site_page_id": "348",
+    "site_title": "Автоматический гранатомёт"
+  },
+  "weapon_broadsider": {
+    "site_page_id": "355",
+    "site_title": "Залп"
+  },
+  "weapon_gatling_gun": {
+    "site_page_id": "350",
+    "site_title": "Гатлинг"
+  },
+  "weapon_gauss_minigun": {
+    "site_page_id": "352",
+    "site_title": "Миниган Гаусса"
+  },
+  "weapon_cryolator": {
+    "site_page_id": "356",
+    "site_title": "Криолятор"
+  },
+  "weapon_tesla_cannon": {
+    "site_page_id": "354",
+    "site_title": "Пушка Теслы"
+  },
+  "weapon_drone_cannon": {
+    "site_page_id": "349",
+    "site_title": "Пушка робота"
+  },
+  "weapon_harpoon_gun": {
+    "site_page_id": "358",
+    "site_title": "Гарпуномёт"
+  },
+  "weapon_tear_gas_launcher": {
+    "site_page_id": "364",
+    "site_title": "Гранатомет со слезоточивым газом"
+  },
+  "weapon_eugene": {
+    "site_page_id": "367",
+    "site_title": "Юджин"
+  },
+  "weapon_plasma_caster": {
+    "site_page_id": "353",
+    "site_title": "Плазмакастер"
+  },
+  "weapon_sten_injector": {
+    "site_page_id": "359",
+    "site_title": "Стен-Инъектор"
+  },
+  "weapon_gatling_plasma": {
+    "site_page_id": "351",
+    "site_title": "Гатлинг-плазма"
+  },
+  "weapon_laser_musket": {
+    "site_page_id": "259",
+    "site_title": "Лазерный мушкет"
+  },
+  "weapon_laser_gun": {
+    "site_page_id": "260",
+    "site_title": "Лазерный пистолет"
+  },
+  "weapon_plasma_gun": {
+    "site_page_id": "261",
+    "site_title": "Плазменный пистолет"
+  },
+  "weapon_gamma_gun": {
+    "site_page_id": "262",
+    "site_title": "Гамма-пушка"
+  },
+  "weapon_mesmetron": {
+    "site_page_id": "288",
+    "site_title": "Гипнотрон"
+  },
+  "weapon_wattz_2000": {
+    "site_page_id": "368",
+    "site_title": "Лазерное ружьё WATTZ 2000"
+  },
+  "weapon_tesla_rifle": {
+    "site_page_id": "268",
+    "site_title": "Карабин Теслы"
+  },
+  "weapon_acid_soaker": {
+    "site_page_id": "270",
+    "site_title": "Кислоплюй"
+  },
+  "weapon_alien_atomizer": {
+    "site_page_id": "263",
+    "site_title": "Атомайзер инопланетян"
+  },
+  "weapon_alien_disintegrator": {
+    "site_page_id": "264",
+    "site_title": "Дезинтегратор Чужого"
+  },
+  "weapon_alien_blaster": {
+    "site_page_id": "271",
+    "site_title": "Бластер Чужих"
+  },
+  "weapon_microwave_emitter": {
+    "site_page_id": "267",
+    "site_title": "Микроволновый эмиттер"
+  },
+  "weapon_arc_welder": {
+    "site_page_id": "265",
+    "site_title": "Электросварка"
+  },
+  "weapon_assaultron_head_laser": {
+    "site_page_id": "266",
+    "site_title": "Головной лазер штурмотрона"
+  },
+  "weapon_sword": {
+    "site_page_id": "157",
+    "site_title": "Меч"
+  },
+  "weapon_combat_knife": {
+    "site_page_id": "158",
+    "site_title": "Боевой нож"
+  },
+  "weapon_machete": {
+    "site_page_id": "159",
+    "site_title": "Мачете"
+  },
+  "weapon_ripper": {
+    "site_page_id": "160",
+    "site_title": "Потрошитель"
+  },
+  "weapon_switchblade": {
+    "site_page_id": "163",
+    "site_title": "Выкидной нож"
+  },
+  "weapon_shishkebab": {
+    "site_page_id": "162",
+    "site_title": "Шиш-кебаб"
+  },
+  "weapon_auto_axe": {
+    "site_page_id": "188",
+    "site_title": "Автотопор"
+  },
+  "weapon_baseball_bat_aluminum": {
+    "site_page_id": "165",
+    "site_title": "Алюминиевая бейсбольная бита"
+  },
+  "weapon_tire_iron": {
+    "site_page_id": "176",
+    "site_title": "Балонный ключ"
+  },
+  "weapon_baseball_bat": {
+    "site_page_id": "164",
+    "site_title": "Бейсбольная бита"
+  },
+  "weapon_chainsaw": {
+    "site_page_id": "192",
+    "site_title": "Бензопила"
+  },
+  "weapon_pool_cue": {
+    "site_page_id": "170",
+    "site_title": "Бильярдный кий"
+  },
+  "weapon_bumper_sword": {
+    "site_page_id": "190",
+    "site_title": "Большой меч"
+  },
+  "weapon_war_drum": {
+    "site_page_id": "199",
+    "site_title": "Военный барабан"
+  },
+  "weapon_guitar_sword": {
+    "site_page_id": "195",
+    "site_title": "Гитара-меч"
+  },
+  "weapon_board": {
+    "site_page_id": "166",
+    "site_title": "Дрын"
+  },
+  "weapon_baton": {
+    "site_page_id": "172",
+    "site_title": "Дубинка"
+  },
+  "weapon_assaultron_blade": {
+    "site_page_id": "187",
+    "site_title": "Клинок штурмотрона"
+  },
+  "weapon_sledgehammer": {
+    "site_page_id": "173",
+    "site_title": "Кувалда"
+  },
+  "weapon_atom_staff": {
+    "site_page_id": "363",
+    "site_title": "Посох Атома"
+  },
+  "weapon_proton_axe": {
+    "site_page_id": "198",
+    "site_title": "Протонный топор"
+  },
+  "weapon_pipe_wrench": {
+    "site_page_id": "168",
+    "site_title": "Разводной ключ"
+  },
+  "weapon_lead_pipe": {
+    "site_page_id": "167",
+    "site_title": "Свинцовая труба"
+  },
+  "weapon_rolling_pin": {
+    "site_page_id": "171",
+    "site_title": "Скалка"
+  },
+  "weapon_super_sledge": {
+    "site_page_id": "175",
+    "site_title": "Супермолот"
+  },
+  "weapon_death_tambo": {
+    "site_page_id": "193",
+    "site_title": "Танбо смерти"
+  },
+  "weapon_walking_cane": {
+    "site_page_id": "177",
+    "site_title": "Трость"
+  },
+  "weapon_multi_purpose_axe": {
+    "site_page_id": "197",
+    "site_title": "Универсальный топор"
+  },
+  "weapon_mr_handy_buzz_blade": {
+    "site_page_id": "196",
+    "site_title": "Циркулярный резак Мистера Помощника"
+  },
+  "weapon_mining_drill": {
+    "site_page_id": "369",
+    "site_title": "Шахтерский перфоратор"
+  },
+  "weapon_cattle_prod": {
+    "site_page_id": "191",
+    "site_title": "Электрошокер"
+  },
+  "weapon_institute_laser": {
+    "site_page_id": "140",
+    "site_title": "ЛАЗЕР ИНСТИТУТА"
+  },
+  "weapon_ballistic_fist": {
+    "site_page_id": "189",
+    "site_title": "Баллистический кулак"
+  },
+  "weapon_boxing_glove": {
+    "site_page_id": "178",
+    "site_title": "Боксерская перчатка"
+  },
+  "weapon_knuckles": {
+    "site_page_id": "180",
+    "site_title": "Кастет"
+  },
+  "weapon_deathclaw_gauntlet": {
+    "site_page_id": "179",
+    "site_title": "Перчатка когтя смерти"
+  },
+  "weapon_displacer_glove": {
+    "site_page_id": "194",
+    "site_title": "Перчатка-вытеснитель"
+  },
+  "weapon_power_fist": {
+    "site_page_id": "181",
+    "site_title": "Силовой кастет"
+  },
+  "weapon_javelin": {
+    "site_page_id": "136",
+    "site_title": "Дротик"
+  },
+  "weapon_throwing_knife": {
+    "site_page_id": "134",
+    "site_title": "Метательные ножи"
+  },
+  "weapon_tomahawk": {
+    "site_page_id": "135",
+    "site_title": "Томагавк"
+  },
+  "weapon_pulse_mine": {
+    "site_page_id": "210",
+    "site_title": "Импульсная мина"
+  },
+  "weapon_baseball_grenade": {
+    "site_page_id": "200",
+    "site_title": "Бейсбольная граната"
+  },
+  "weapon_detonator": {
+    "site_page_id": "213",
+    "site_title": "Детонатор"
+  },
+  "weapon_dynamite": {
+    "site_page_id": "214",
+    "site_title": "Динамит"
+  },
+  "weapon_smoke_grenade": {
+    "site_page_id": "220",
+    "site_title": "Дымовая граната"
+  },
+  "weapon_pulse_grenade": {
+    "site_page_id": "205",
+    "site_title": "Импульсная граната"
+  },
+  "weapon_molotov": {
+    "site_page_id": "202",
+    "site_title": "Коктейль молотова"
+  },
+  "weapon_cryo_mine": {
+    "site_page_id": "212",
+    "site_title": "Криомина"
+  },
+  "weapon_cryogenic_grenade": {
+    "site_page_id": "211",
+    "site_title": "Криогенная граната"
+  },
+  "weapon_bottlecap_mine": {
+    "site_page_id": "206",
+    "site_title": "Крышкомина"
+  },
+  "weapon_frag_grenade": {
+    "site_page_id": "201",
+    "site_title": "Осколочная граната"
+  },
+  "weapon_frag_mine": {
+    "site_page_id": "207",
+    "site_title": "Осколочная мина"
+  },
+  "weapon_plasma_grenade": {
+    "site_page_id": "204",
+    "site_title": "Плазменная граната"
+  },
+  "weapon_plasma_mine": {
+    "site_page_id": "209",
+    "site_title": "Плазменная мина"
+  },
+  "weapon_plastic_explosives": {
+    "site_page_id": "218",
+    "site_title": "Пластиковая взрывчатка"
+  },
+  "weapon_powder_charge": {
+    "site_page_id": "219",
+    "site_title": "Пороховой заряд"
+  },
+  "weapon_flash_bang": {
+    "site_page_id": "216",
+    "site_title": "Светошумовая граната"
+  },
+  "weapon_dynamite_bundle": {
+    "site_page_id": "215",
+    "site_title": "Связка динамита"
+  },
+  "weapon_nuka_grenade": {
+    "site_page_id": "203",
+    "site_title": "Ядерная граната"
+  },
+  "weapon_nuke_mine": {
+    "site_page_id": "208",
+    "site_title": "Ядерная мина"
+  }
+}
