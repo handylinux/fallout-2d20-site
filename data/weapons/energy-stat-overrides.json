@@ -1,0 +1,32 @@
+{
+  "weapon_laser_musket": {
+    "effects": [
+      "Проникающий 1"
+    ]
+  },
+  "weapon_laser_gun": {
+    "effects": [
+      "Проникающий 1"
+    ]
+  },
+  "weapon_tesla_rifle": {
+    "damage": 5
+  },
+  "weapon_alien_blaster": {
+    "damageType": "Энергетический и Радиационный",
+    "effects": [
+      "Порочный"
+    ],
+    "qualities": [
+      "Вплотную",
+      "Неточное"
+    ]
+  },
+  "weapon_assaultron_head_laser": {
+    "ammo": "Энергоячейка",
+    "effects": [
+      "Проникающий 1"
+    ],
+    "qualities": []
+  }
+}

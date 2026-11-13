@@ -35,6 +35,38 @@ class EnergyPreviewTest(unittest.TestCase):
         self.assertEqual(rows[0][3], '?')
         self.assertTrue(any('weight' in p for p in problems))
 
+    def test_full_energy_section_matches_source_order_and_keeps_specials(self):
+        import json
+        import re
+        from weapons2cards import Companion
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / 'full.pdf'
+            result = energy.build('Справочник оружия.pdf', output, full=True)
+            self.assertEqual(result['pages'], 98)
+            self.assertEqual(result['divider'], 84)
+            ids = json.loads(energy.ORDER.read_text(encoding='utf8'))
+            comp = Companion()
+            with pymupdf.open(output) as doc:
+                ref = doc[82].get_text()
+                for value in ('ЛАЗЕРНЫЙ МУШКЕТ', 'ГОЛОВНОЙ ЛАЗЕР ШТУРМОТРОНА', 'MK III', 'MK VI', 'Термоядерный магазин'):
+                    self.assertIn(re.sub(r'\s+', '', value), re.sub(r'\s+', '', ref))
+                for i, wid in enumerate(ids):
+                    text = re.sub(r'\s+', '', doc[84 + i].get_text())
+                    desc = re.sub(r'\s+', '', comp.description(wid))
+                    if desc:
+                        self.assertIn(desc, text, wid)
+                    self.assertIn('МОДИФИКАЦИ', text, wid)
+                head = doc[97].get_text()
+                self.assertIn('Энергоячейка', head)
+                self.assertIn('Проникающий 1', head)
+                self.assertIn('Особенность:', head)
+                alien = doc[94].get_text()
+                self.assertIn('Радиационный', alien)
+                self.assertIn('Порочный', alien)
+                self.assertIn('Особенности:', alien)
+                for n in (92, 93):
+                    self.assertIn('МОДИФИКАЦИИ НЕИЗВЕСТНЫ', doc[n].get_text())
+
     def test_refuses_to_overwrite_source(self):
         with self.assertRaises(ValueError):
             energy.build('Справочник оружия.pdf', 'Справочник оружия.pdf')
