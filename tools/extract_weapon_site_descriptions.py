@@ -6,7 +6,7 @@ with zipfile.ZipFile('jos_sppagebuilder.zip') as z:d=json.loads(z.read('jos_sppa
 def norm(s):return re.sub(r'[^а-яa-z0-9]','',s.lower().replace('ё','е'))
 by=collections.defaultdict(list); by_id={x['id']:x for x in d}
 for x in d:by[norm(x['title'])].append(x)
-alias={'weapon_44_pistol':'94','weapon_combat_rifle':'99','weapon_submachine_gun':'105','weapon_25mm_grenade_apw':'142','weapon_battle_rifle':'145','weapon_black_powder_rifle':'148','weapon_pistol_injector':'185','weapon_sten_injector':'359','weapon_alien_atomizer':'263','weapon_alien_disintegrator':'264','weapon_alien_blaster':'271','weapon_arc_welder':'265','weapon_baseball_bat_aluminum':'165','weapon_institute_laser':'140','weapon_pulse_mine':'210'}
+alias={'weapon_44_pistol':'94','weapon_combat_rifle':'99','weapon_submachine_gun':'105','weapon_25mm_grenade_apw':'142','weapon_battle_rifle':'145','weapon_black_powder_rifle':'148','weapon_pistol_injector':'185','weapon_sten_injector':'359','weapon_alien_atomizer':'263','weapon_alien_disintegrator':'264','weapon_alien_blaster':'271','weapon_arc_welder':'265','weapon_baseball_bat_aluminum':'165','weapon_institute_laser':'140','weapon_pulse_mine':'210','weapon_mining_drill':'369','weapon_cryogenic_grenade':'211'}
 class Parser(HTMLParser):
  def __init__(self):super().__init__(convert_charrefs=True);self.parts=[]
  def handle_data(self,data):self.parts.append(data)
@@ -35,6 +35,8 @@ for wid in ids:
   if wid in ('weapon_laser_musket','weapon_alien_blaster','weapon_assaultron_head_laser'):
    v=re.split(r'Особенности?\s*:',v, maxsplit=1, flags=re.I)[0].strip()
   if re.search(r'\{[^}]+\}',v):skipped[wid]='обнаружен шорткод';continue
+  if wid == 'weapon_mining_drill':
+   v = v.replace('горнодобывающая дрель', 'шахтёрский бур').replace('В дрель встроена', 'В бур встроена')
   result[wid]=v;mapping[wid]={'site_page_id':row['id'],'site_title':row['title'].strip()}
  except (ValueError,IndexError,AttributeError,TypeError) as e:skipped[wid]=str(e)
 open('data/weapons/descriptions-site-candidates.ru.json','w').write(json.dumps(result,ensure_ascii=False,indent=2)+'\n')

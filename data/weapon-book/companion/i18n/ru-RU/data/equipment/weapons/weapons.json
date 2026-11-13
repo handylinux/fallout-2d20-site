@@ -456,7 +456,7 @@
   },
   {
     "id": "weapon_cryogenic_grenade",
-    "name": "Криогенная граната",
+    "name": "Криограната",
     "rangeName": "Средняя",
     "flavour": "A thrown grenade that freezes affected targets in a cryogenic blast.",
     "stockNames": {
@@ -926,7 +926,7 @@
   },
   {
     "id": "weapon_mining_drill",
-    "name": "Шахтерский перфоратор",
+    "name": "Шахтёрский бур",
     "rangeName": "Близкая",
     "flavour": "",
     "stockNames": {
