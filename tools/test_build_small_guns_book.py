@@ -32,6 +32,21 @@ class SmallGunsBookTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             book.small_guns_reference_ids(comp, ['unknown'])
 
+    def test_small_unique_mods_go_on_weapon_page_not_reference(self):
+        output = self.root / 'full.pdf'
+        report = self.root / 'report.md'
+        result = book.build('Справочник оружия.pdf', output, report)
+        self.assertEqual(result['mods_pages'], 4)
+        with pymupdf.open(output) as doc:
+            reference = ' '.join(p.get_text() for p in doc[9:13])
+            self.assertNotIn('Аэродинамический', reference)
+            self.assertNotIn('МОДИФИКАЦИИ ЛЕБЁДКИ', reference)
+            text = next(p.get_text() for p in doc if 'АБОРДАЖНЫЙ ПИСТОЛЕТ' in p.get_text())
+            self.assertIn('УНИКАЛЬНЫЙ', text)
+            self.assertIn('Не указано', text)
+            self.assertIn('ЛЕБЁДКА', text)
+        self.assertIn('mod_aerodynamic_barrel', report.read_text(encoding='utf-8'))
+
     def test_unknown_mod_remains_visible(self):
         comp = Companion()
         comp.slots['weapon_10mm_pistol'] = {'Receiver': ['mod_unknown_test']}

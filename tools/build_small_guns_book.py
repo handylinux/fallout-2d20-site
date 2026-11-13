@@ -10,6 +10,7 @@ import tempfile
 import pymupdf
 import companion_mods_receiver as conv
 import weapon2pdf as w
+import weapon_mod_policy as policy
 import weapon_mods_table_unicode as tables
 from weapons2cards import Companion, build_card
 
@@ -116,8 +117,36 @@ def build(source, output, report=None):
     # Reference tables are grouped by skill, even if the original book put
     # weapons of other skills in the small-guns section.
     reference_ids = small_guns_reference_ids(comp, weapon_ids)
-    data, problems = make_mod_data(comp, reference_ids, prefixes)
     w.register_fonts()
+    # Only remove specific mods from the reference if their detailed card fits.
+    import weapon_heavy_preview as detail
+    detailed = {}
+    fit_problems = []
+    with tempfile.TemporaryDirectory() as trial:
+        for wid in reference_ids:
+            specific = policy.specific_mods(comp, wid)
+            if not specific:
+                continue
+            try:
+                detail.render_heavy(comp, wid, 1, prefixes, Path(trial) / 'trial.pdf', unique_mods=specific)
+            except ValueError as exc:
+                fit_problems.append(f'{wid}: подробная таблица не помещается; моды оставлены в общей таблице ({exc})')
+            else:
+                detailed[wid] = specific
+    all_pairs = {(slot, mid) for wid in reference_ids
+                 for slot, mids in (comp.slots.get(wid) or {}).items() for mid in mids}
+    excluded = set().union(*detailed.values()) if detailed else set()
+    data, problems = make_mod_data(comp, reference_ids, prefixes, allowed=all_pairs - excluded)
+    # Keep the final frame category on page 13, as in the approved four-page reference.
+    for section in data['sections']:
+        if section['category'] == 'МОДИФИКАЦИИ РАМЫ':
+            section['page_break_before'] = True
+    problems.extend(fit_problems)
+    for wid, pairs in detailed.items():
+        for slot, mid in sorted(pairs):
+            mod = comp.mods.get(mid) or {}
+            if conv.effect_text(mod, {}, {}, {}) == 'Не указано':
+                problems.append(f'{wid}: {slot} / {mid}: эффект не указан в Companion, на странице оставлено «Не указано»')
     with pymupdf.open(source) as original:
         if original.page_count < 13:
             raise ValueError('В исходном PDF нужно минимум 13 страниц')
@@ -134,7 +163,11 @@ def build(source, output, report=None):
             for i, wid in enumerate(weapon_ids):
                 card = build_card(comp, wid, page=len(result) + 1, image='')
                 page_file = Path(tmp) / f'weapon-{i}.pdf'
-                w.render_card(card, str(page_file))
+                if wid in detailed:
+                    detail.render_heavy(comp, wid, len(result) + 1, prefixes, page_file,
+                                        unique_mods=detailed[wid])
+                else:
+                    w.render_card(card, str(page_file))
                 with pymupdf.open(page_file) as weapon_page:
                     result.insert_pdf(weapon_page)
             output.parent.mkdir(parents=True, exist_ok=True)
@@ -148,6 +181,7 @@ def build(source, output, report=None):
                           f'Оружия: {len(weapon_ids)}. Страниц модов: {mod_pages}. '
                           f'Разделитель: стр. {divider_number}. Всего страниц: {total}.\n\n'
                           f'Категории: {counts}.\n\n'
+                          'Немногочисленные уникальные моды приведены подробно на странице оружия, если таблица помещается; из общей таблицы они исключены. '
                           'Отбор по спискам слотов оружия в рабочей копии Companion. '
                           'Пустые поля не интерпретируются как нули; совпадение правил с книгой не проверено.\n\n'
                           '## Требует проверки\n\n' +

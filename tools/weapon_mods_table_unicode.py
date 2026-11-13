@@ -147,7 +147,7 @@ def render(data, output, page_start=10):
             if height > PAGE_BOTTOM - (TABLE_TOP + HEADER_H + CATEGORY_H):
                 doc.close()
                 raise ValueError(f'Строка {index + 1} не помещается на страницу целиком')
-            if page is None or y + height + (CATEGORY_H if index == 0 else 0) > PAGE_BOTTOM:
+            if page is None or (index == 0 and section.get('page_break_before')) or y + height + (CATEGORY_H if index == 0 else 0) > PAGE_BOTTOM:
                 page, y = new_page(category_name)
             elif index == 0:
                 y = draw_category(page, y, category_name)

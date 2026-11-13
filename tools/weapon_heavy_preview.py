@@ -18,11 +18,12 @@ from reportlab.platypus import Paragraph, Table, TableStyle
 import build_small_guns_book as small
 import companion_mods_receiver as conv
 import weapon2pdf as w
+import weapon_mod_policy as policy
 from weapons2cards import Companion, build_card
 
 WEAPONS = ('weapon_fat_man', 'weapon_flamer', 'weapon_gatling_laser')
 ORDER_FILE = Path(__file__).resolve().parent.parent / 'data/weapons/heavy-guns-order.json'
-MAX_DETAILED_MODS = 8
+MAX_DETAILED_MODS = policy.MAX_DETAILED_MODS
 # Physical source pages; independent of editable output ordering.
 SOURCE_PAGES = {'weapon_fat_man': 58, 'weapon_flamer': 59, 'weapon_gatling_laser': 60, 'weapon_heavy_incinerator': 61, 'weapon_junk_jet': 62, 'weapon_minigun': 63, 'weapon_missile_launcher': 64, 'weapon_50_cal_machine_gun': 65, 'weapon_auto_grenade_launcher': 66, 'weapon_broadsider': 67, 'weapon_gatling_gun': 68, 'weapon_gauss_minigun': 69, 'weapon_cryolator': 70, 'weapon_tesla_cannon': 71, 'weapon_drone_cannon': 72, 'weapon_harpoon_gun': 73, 'weapon_tear_gas_launcher': 74, 'weapon_eugene': 75, 'weapon_plasma_caster': 76, 'weapon_sten_injector': 77}
 ORDER = ['Fuel', 'Receiver', 'Capacitor', 'Barrel', 'Tank', 'Grip', 'Stock', 'Magazine', 'Sight', 'Muzzle', 'Nozzle']
@@ -86,7 +87,7 @@ def render_source_heavy(comp, wid, page_num, source, source_page, out, extra_des
     return {'mode': 'source', 'font_size': None, 'mod_count': None}
 
 
-def render_heavy(comp, wid, page_num, prefixes, out, extra_description='', card_overrides=None, unique_slots=()):
+def render_heavy(comp, wid, page_num, prefixes, out, extra_description='', card_overrides=None, unique_slots=(), unique_mods=()):
     card = build_card(comp, wid, page=page_num, image='')
     if card_overrides:
         card.update(card_overrides)
@@ -120,6 +121,11 @@ def render_heavy(comp, wid, page_num, prefixes, out, extra_description='', card_
             w.flatten_on_color(w.DAMAGE_ICON, 10, 10, color, dpi=144).save(path, 'JPEG', quality=95)
             paths.append(path)
 
+        unique_mods = set(unique_mods)
+        ordered_slots = comp.slots.get(wid) or {}
+        slot_order = [s for s in ORDER if ordered_slots.get(s)] + sorted(s for s in ordered_slots if s not in ORDER and ordered_slots[s])
+        ids_in_order = [(slot, mid) for slot in slot_order for mid in ordered_slots[slot]]
+
         def make_table(font_size, padding):
             leading = max(10.0, font_size * 1.23)
             style = ParagraphStyle('heavy', fontName='Carlito', fontSize=font_size, leading=leading, alignment=TA_LEFT)
@@ -138,14 +144,25 @@ def render_heavy(comp, wid, page_num, prefixes, out, extra_description='', card_
                         ('TOPPADDING', (0, 0), (-1, -1), padding), ('BOTTOMPADDING', (0, 0), (-1, -1), padding)]
             prev, group_start, group_index = None, 1, -1
             for index, (slot, values) in enumerate(rows, 1):
-                if slot != prev:
+                is_unique = slot in unique_slots or ids_in_order[index - 1] in unique_mods
+                group = (slot, is_unique)
+                if group != prev:
                     if prev is not None:
                         commands.append(('SPAN', (0, group_start), (0, index - 1)))
-                    group_start, group_index, prev = index, group_index + 1, slot
+                    group_start, group_index, prev = index, group_index + 1, group
                 color = w.BEIGE if group_index % 2 == 0 else w.ORANGE
-                label = comp.slot_label(slot) + (' УНИКАЛЬНЫЙ' if slot in unique_slots else '')
+                label = comp.slot_label(slot) + (' УНИКАЛЬНЫЙ' if is_unique else '')
+                def value_cell(j, value):
+                    cell_style = centre if j in (3, 4, 5) else style
+                    if j in (0, 1):
+                        # Avoid splitting a single long Russian name into a trailing letter.
+                        word_width = max((w.sw(word, 'Carlito', font_size) for word in value.split()), default=0)
+                        if word_width > widths[j + 1] - 4:
+                            fit_size = max(6.5, font_size * (widths[j + 1] - 4) / word_width)
+                            cell_style = ParagraphStyle(f'fit-{index}-{j}', parent=style, fontSize=fit_size)
+                    return paragraph(value, cell_style, paths[group_index % 2])
                 cells.append([paragraph(label, white, paths[group_index % 2])] +
-                             [paragraph(v, centre if j in (3, 4, 5) else style, paths[group_index % 2]) for j, v in enumerate(values)])
+                             [value_cell(j, value) for j, value in enumerate(values)])
                 commands.extend([('BACKGROUND', (1, index), (-1, index), color),
                                  ('BACKGROUND', (0, index), (0, index), w.BLACK)])
             commands.append(('SPAN', (0, group_start), (0, len(rows))))

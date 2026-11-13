@@ -11,6 +11,7 @@ import build_small_guns_book as small
 import companion_mods_receiver as conv
 import weapon_heavy_preview as heavy
 import weapon2pdf as w
+import weapon_mod_policy as policy
 from weapons2cards import Companion, build_card
 
 ORDER = Path(__file__).resolve().parent.parent / 'data/weapons/energy-guns-order.json'
@@ -49,9 +50,12 @@ def render_energy(comp, wid, source, source_page, page_num, out):
     overrides = json.loads(OVERRIDES.read_text(encoding='utf-8')).get(wid, {})
     if wid == 'weapon_assaultron_head_laser':
         special = json.loads(SPECIALS.read_text(encoding='utf-8')).get(wid, '')
+        unique = policy.specific_mods(comp, wid)
+        if len(unique) != 4:
+            raise ValueError('Конденсаторы лазера штурмотрона требуют сверки применимости')
         return heavy.render_heavy(comp, wid, page_num, conv.load(conv.PREFIXES), out,
                                   extra_description=special, card_overrides=overrides,
-                                  unique_slots=('Capacitor',))
+                                  unique_mods=unique)
     if source_page not in (82, 83):
         special = json.loads(SPECIALS.read_text(encoding='utf-8')).get(wid, '')
         return heavy.render_source_heavy(comp, wid, page_num, source, source_page, out, extra_description=special, card_overrides=overrides)
