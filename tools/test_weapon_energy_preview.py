@@ -48,8 +48,10 @@ class EnergyPreviewTest(unittest.TestCase):
             comp = Companion()
             with pymupdf.open(output) as doc:
                 ref = doc[82].get_text()
-                for value in ('ЛАЗЕРНЫЙ МУШКЕТ', 'ГОЛОВНОЙ ЛАЗЕР ШТУРМОТРОНА', 'MK III', 'MK VI', 'Термоядерный магазин'):
+                for value in ('ЛАЗЕРНЫЙ МУШКЕТ', 'Термоядерный магазин'):
                     self.assertIn(re.sub(r'\s+', '', value), re.sub(r'\s+', '', ref))
+                self.assertNotIn('ГОЛОВНОЙ ЛАЗЕР ШТУРМОТРОНА', ref)
+                self.assertNotIn('MK III', ref)
                 for i, wid in enumerate(ids):
                     text = re.sub(r'\s+', '', doc[84 + i].get_text())
                     desc = re.sub(r'\s+', '', comp.description(wid))
@@ -60,6 +62,12 @@ class EnergyPreviewTest(unittest.TestCase):
                 self.assertIn('Энергоячейка', head)
                 self.assertIn('Проникающий 1', head)
                 self.assertIn('Особенность:', head)
+                self.assertIn('УНИКАЛЬНЫЙ', head)
+                self.assertIn('ПРЕФИКС', head)
+                for mod in ('MK III', 'MK IV', 'MK V', 'MK VI'):
+                    self.assertEqual(head.splitlines().count(mod), 2)
+                self.assertIn('Ствол X 3', head)
+                self.assertIn('Ствол X 6', head)
                 alien = doc[94].get_text()
                 self.assertIn('Радиационный', alien)
                 self.assertIn('Порочный', alien)

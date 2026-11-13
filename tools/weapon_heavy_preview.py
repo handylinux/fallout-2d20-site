@@ -86,8 +86,12 @@ def render_source_heavy(comp, wid, page_num, source, source_page, out, extra_des
     return {'mode': 'source', 'font_size': None, 'mod_count': None}
 
 
-def render_heavy(comp, wid, page_num, prefixes, out):
+def render_heavy(comp, wid, page_num, prefixes, out, extra_description='', card_overrides=None, unique_slots=()):
     card = build_card(comp, wid, page=page_num, image='')
+    if card_overrides:
+        card.update(card_overrides)
+    if extra_description:
+        card['description'] = (card.get('description', '') + '\n\n' + extra_description).strip()
     if wid == 'weapon_gatling_plasma':
         # The slot list conflicts with applies_to_ids; do not claim it has no mods.
         c = canvas.Canvas(str(out), pagesize=(w.PAGE_W, w.PAGE_H))
@@ -139,7 +143,7 @@ def render_heavy(comp, wid, page_num, prefixes, out):
                         commands.append(('SPAN', (0, group_start), (0, index - 1)))
                     group_start, group_index, prev = index, group_index + 1, slot
                 color = w.BEIGE if group_index % 2 == 0 else w.ORANGE
-                label = comp.slot_label(slot)
+                label = comp.slot_label(slot) + (' УНИКАЛЬНЫЙ' if slot in unique_slots else '')
                 cells.append([paragraph(label, white, paths[group_index % 2])] +
                              [paragraph(v, centre if j in (3, 4, 5) else style, paths[group_index % 2]) for j, v in enumerate(values)])
                 commands.extend([('BACKGROUND', (1, index), (-1, index), color),

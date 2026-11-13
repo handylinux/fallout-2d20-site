@@ -47,7 +47,12 @@ def musket_reference(comp, prefixes):
 
 def render_energy(comp, wid, source, source_page, page_num, out):
     overrides = json.loads(OVERRIDES.read_text(encoding='utf-8')).get(wid, {})
-    if source_page not in (82, 83, 94):
+    if wid == 'weapon_assaultron_head_laser':
+        special = json.loads(SPECIALS.read_text(encoding='utf-8')).get(wid, '')
+        return heavy.render_heavy(comp, wid, page_num, conv.load(conv.PREFIXES), out,
+                                  extra_description=special, card_overrides=overrides,
+                                  unique_slots=('Capacitor',))
+    if source_page not in (82, 83):
         special = json.loads(SPECIALS.read_text(encoding='utf-8')).get(wid, '')
         return heavy.render_source_heavy(comp, wid, page_num, source, source_page, out, extra_description=special, card_overrides=overrides)
     # These two original pages have a grid but no heading. Preserve its contents
@@ -107,16 +112,6 @@ def build(source, output, report=None, full=False):
             # Continuation of the common reference, not a second weapon-page table.
             prefixes = conv.load(conv.PREFIXES)
             mod_data, problems = musket_reference(comp, prefixes)
-            if full and any(wid == 'weapon_assaultron_head_laser' for wid, _ in weapons):
-                head_ids = ('mod_capacitor_mk_iii', 'mod_capacitor_mk_iv', 'mod_capacitor_mk_v', 'mod_capacitor_mk_vi')
-                head, head_problems = small.make_mod_data(comp, ['weapon_assaultron_head_laser'], prefixes,
-                    allowed={('Capacitor', mid) for mid in head_ids}, title=mod_data['title'])
-                rows = head['sections'][0]['rows']
-                if len(rows) != 4:
-                    raise ValueError('Конденсаторы лазера штурмотрона требуют сверки')
-                head['sections'][0]['category'] = 'УНИКАЛЬНЫЙ КОНДЕНСАТОР — ГОЛОВНОЙ ЛАЗЕР ШТУРМОТРОНА'
-                mod_data['sections'].extend(head['sections'])
-                problems.extend(head_problems)
             if full and any(wid == 'weapon_alien_blaster' for wid, _ in weapons):
                 magazine, magazine_problems = small.make_mod_data(comp, ['weapon_alien_blaster'], prefixes,
                     allowed={('Magazine', 'mod_fusion_mag')}, title=mod_data['title'])
@@ -144,13 +139,13 @@ def build(source, output, report=None, full=False):
     if report:
         Path(report).write_text('''# Энергетическое оружие: пробная сборка
 
-'''+f'Таблицы: {references[0]}–{references[-1]}; разделитель: {divider}; оружие: {pages[0]}–{pages[-1]}; всего страниц: {total}.\n\n'+'''Первые две страницы общих таблиц скопированы с физических страниц 78–79 исходного PDF; следующая страница — продолжение общей таблицы с уникальными конденсаторами мушкета из рабочих JSON Companion. Блоки модификаций оружия — со страниц 81–94 оригинала для выбранного оружия. Копии из PDF — временное решение, не редактируемые JSON-таблицы. Основные характеристики и описания оружия — из рабочих данных Companion; перечисленные ниже расхождения частично исправлены в energy-stat-overrides.json, остальные характеристики полностью не сверены.
+'''+f'Таблицы: {references[0]}–{references[-1]}; разделитель: {divider}; оружие: {pages[0]}–{pages[-1]}; всего страниц: {total}.\n\n'+'''Первые две страницы общих таблиц скопированы с физических страниц 78–79 исходного PDF; следующая страница — продолжение общей таблицы с уникальными конденсаторами мушкета из рабочих JSON Companion. Блоки модификаций оружия взяты со страниц 81–94 оригинала, кроме конденсаторов головного лазера штурмотрона: они набраны из рабочих JSON Companion на странице оружия. Копии из PDF — временное решение, не редактируемые JSON-таблицы. Основные характеристики и описания оружия — из рабочих данных Companion; перечисленные ниже расхождения частично исправлены в energy-stat-overrides.json, остальные характеристики полностью не сверены.
 
 ## Требует проверки
 
 - Особенность расхода патронов лазерного мушкета добавлена из оригинала; в рабочем описании Companion она отсутствует.
 - Конденсаторы мушкета 3–6 зарядов помещены в общую таблицу: характеристики взяты из Companion, в оригинальных общих таблицах они отсутствуют. Запись качества «Ствол X» и вес 3-зарядного требуют проверки; вес отсутствует в Companion и обозначен «?».
-- Конденсаторы головного лазера штурмотрона и термоядерный магазин бластера пришельцев (в полной сборке) добавлены в общую таблицу из Companion; их значения и качество «Ствол X» требуют сверки.
+- Четыре уникальных конденсатора головного лазера штурмотрона показаны с характеристиками на странице оружия; термоядерный магазин бластера пришельцев — в общей таблице. Данные Companion и качество «Ствол X» требуют сверки.
 - Головной лазер штурмотрона: оригинал указывает энергоячейку и не указывает качества; Companion — ядерный блок и «Двуручное». В карточке пока выбран оригинал.
 - Пистолет института и запись weapon_assaultron_head пока не добавлены: требуется проверить моды и возможный дубль головного лазера.
 - Штык мушкета отсутствует в исходных общих таблицах энергетического оружия; его характеристики ещё нужно добавить после сверки.
