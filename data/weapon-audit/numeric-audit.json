@@ -10295,10 +10295,12 @@
         "4": 1
       },
       "majority": null,
-      "status": "review",
+      "status": "approved_by_user",
       "website": "https://www.fallout-2d20.ru/oruzhie/strelkovoe-oruzhie/pistolet-inektor",
       "original_pdf_page": 47,
-      "errata": "not_checked"
+      "errata": "not_checked",
+      "book_value": "4",
+      "approved_by_user": "4"
     },
     {
       "weapon_id": "weapon_pistol_injector",
@@ -15787,10 +15789,12 @@
         "4": 1
       },
       "majority": null,
-      "status": "review",
+      "status": "approved_by_user",
       "website": "https://www.fallout-2d20.ru/oruzhie/strelkovoe-oruzhie/pistolet-inektor",
       "original_pdf_page": 47,
-      "errata": "not_checked"
+      "errata": "not_checked",
+      "book_value": "4",
+      "approved_by_user": "4"
     },
     {
       "weapon_id": "weapon_pistol_injector",

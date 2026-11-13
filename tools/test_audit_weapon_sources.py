@@ -30,6 +30,9 @@ class NumericAuditTest(unittest.TestCase):
         pistol = next(row for row in data['comparisons'] if row['weapon_id'] == 'weapon_boarding_pistol' and row['field'] == 'fireRate')
         self.assertEqual(pistol['votes']['original_pdf'], '3')
         self.assertEqual(pistol['approved_by_user'], '0')
+        injector_damage = next(row for row in data['comparisons'] if row['weapon_id'] == 'weapon_pistol_injector' and row['field'] == 'damage')
+        self.assertEqual(injector_damage['approved_by_user'], '4')
+        self.assertEqual(injector_damage['book_value'], '4')
         melee_rate = next(row for row in data['comparisons'] if row['weapon_id'] == 'weapon_sword' and row['field'] == 'fireRate')
         self.assertNotIn('original_pdf', melee_rate['votes'])
 

@@ -18,10 +18,12 @@ SOURCES = ROOT / 'data/weapon-audit/sources'
 COMP = ROOT / 'data/companion/equipment/weapons.json'
 RU = ROOT / 'data/companion/i18n/ru-RU/data/equipment/weapons/weapons.json'
 FIELDS = ('damage', 'fireRate', 'weight', 'cost', 'rarity')
-APPROVED = {('weapon_boarding_pistol', 'fireRate'): '0'}
+APPROVED = {('weapon_boarding_pistol', 'fireRate'): '0',
+            ('weapon_pistol_injector', 'damage'): '4'}
 APPLIED = {('weapon_tesla_rifle', 'damage'): '5',
            ('weapon_alien_disintegrator', 'fireRate'): '2',
-           ('weapon_pistol_injector', 'fireRate'): '0'}
+           ('weapon_pistol_injector', 'fireRate'): '0',
+           ('weapon_pistol_injector', 'damage'): '4'}
 FILES = {'pipboy': 'weapons.json', 'lonestar': 'lonestar_weapons.json',
          'focharactersheet': 'focharactersheet_weapons.json', 'pipboy3000': 'pipboy3000_weapons.json'}
 KEYS = {'pipboy': {'damage': 'damageRating', 'fireRate': 'fireRate', 'weight': 'weight', 'cost': 'cost', 'rarity': 'rarity'},

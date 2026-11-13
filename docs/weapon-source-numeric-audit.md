@@ -107,7 +107,7 @@
 | `weapon_auto_grenade_launcher` (Автоматический гранатомёт) | Цена | companion: 450; original_pdf стр.66: 450; lonestar: 450; focharactersheet: 350; pipboy3000: 450 | большинство 450 — не проверено применение |
 | `weapon_sten_injector` (Стен-инжектор) | Урон | companion: 3; original_pdf стр.77: 4 | **проверить** |
 | `weapon_sten_injector` (Стен-инжектор) | Скорострельность | companion: 4; original_pdf стр.77: 3 | **проверить** |
-| `weapon_pistol_injector` (Пистолет-инжектор) | Урон | companion: 0; site: 5; original_pdf стр.47: 4 | **проверить** |
+| `weapon_pistol_injector` (Пистолет-инжектор) | Урон | companion: 0; site: 5; original_pdf стр.47: 4 | согласовано пользователем: 4 |
 | `weapon_pistol_injector` (Пистолет-инжектор) | Скорострельность | companion: 4; site: 0; original_pdf стр.47: 0 | большинство 0 — в сборке |
 | `weapon_crossbow` (Арбалет) | Скорострельность | companion: 2; original_pdf стр.55: 2; lonestar: 0; focharactersheet: 0; pipboy3000: 0 | большинство 0 — не проверено применение |
 | `weapon_boarding_pistol` (Абордажный пистолет) | Скорострельность | companion: 3; site: 0; original_pdf стр.51: 3 | согласовано пользователем: 0 |

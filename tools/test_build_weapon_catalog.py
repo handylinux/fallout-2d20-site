@@ -39,6 +39,8 @@ class CompleteWorkingCatalogTest(unittest.TestCase):
                 pistol = doc[47].get_text()
                 self.assertIn('ПИСТОЛЕТ-ИНЖЕКТОР', pistol)
                 self.assertIn('0\nБлизкая', pistol)
+                injector = doc[47]
+                self.assertTrue(any(word[4] == '4' and 340 < word[1] < 390 for word in injector.get_text('words')))
                 grid = doc[85]
                 frames = [d['rect'] for d in grid.get_drawings() if d.get('type') == 's' and abs((d.get('width') or 0)-.7) < .01]
                 word = [x for x in grid.get_text('words') if x[4] == 'КОНДЕНСАТОР'][0]
