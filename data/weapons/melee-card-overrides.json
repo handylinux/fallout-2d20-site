@@ -1,5 +1,8 @@
 {
   "weapon_sword": {
     "description": "Swords have been in use for almost as long as wars have been fought and remained widespread as symbols of status and prestige amongst soldiers-particularly officers across the world right up until the Great War. Many of the swords found in the wastelands are those used by Chinese officers during the Great War, often taken from battlefields as a trophy by American troops. Others are museum pieces or replicas from private collections, with many resembling the cavalry sabers used during the American Revolution."
+  },
+  "weapon_sledgehammer": {
+    "description": "Тяжёлый металлический молот на длинной деревянной рукояти. До Великой войны использовался для дробления камней или разрушения конструкций и вещей. Тяжёлое и медлительное оружие, но в руках сильного человека или супермутанта становится грозным."
   }
 }

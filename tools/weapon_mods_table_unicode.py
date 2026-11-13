@@ -147,10 +147,13 @@ def render(data, output, page_start=10):
             if height > PAGE_BOTTOM - (TABLE_TOP + HEADER_H + CATEGORY_H):
                 doc.close()
                 raise ValueError(f'Строка {index + 1} не помещается на страницу целиком')
-            if page is None or (index == 0 and section.get('page_break_before')) or y + height + (CATEGORY_H if index == 0 else 0) > PAGE_BOTTOM:
+            gap = section.get('gap_before', 0) if index == 0 and page is not None else 0
+            if not isinstance(gap, (int, float)) or gap < 0:
+                raise ValueError('Некорректный отступ между таблицами')
+            if page is None or (index == 0 and section.get('page_break_before')) or y + gap + height + (CATEGORY_H if index == 0 else 0) > PAGE_BOTTOM:
                 page, y = new_page(category_name)
             elif index == 0:
-                y = draw_category(page, y, category_name)
+                y = draw_category(page, y + gap, category_name)
             x = w.MARGIN_L
             for col, (width, cell) in enumerate(zip(COL_WIDTHS, lines)):
                 rect = pymupdf.Rect(x, y, x + width, y + height)

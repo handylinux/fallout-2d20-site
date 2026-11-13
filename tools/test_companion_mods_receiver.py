@@ -28,6 +28,7 @@ class ReceiverConverterTests(unittest.TestCase):
     def test_science_perk_is_localized_without_losing_level(self):
         self.assertEqual(c.perks({'perk1': 'Science! 2', 'perk2': 'Gun Nut 3'}),
                          'Наука! 2, Фанатик оружия 3')
+        self.assertEqual(c.perks({'perk1': 'Blacksmith 2', 'perk2': ''}), 'Кузнец 2')
         self.assertEqual(c.perks({'perk1': 'Science!', 'perk2': ''}), 'Наука!')
         self.assertEqual(c.perks({'perk1': 'Science!Extra', 'perk2': ''}), 'Science!Extra')
 

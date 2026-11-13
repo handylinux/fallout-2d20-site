@@ -591,3 +591,9 @@ Companion. Ручная сверка и ссылки — в `docs/weapon-site-co
 Порядок добавленных разделов и поправки — `data/weapons/remaining-order.json` и
 `data/weapons/remaining-card-overrides.json`. Приложение с пистолетом института
 пока следует за ближним боем; категории и непроверенные правила перечислены в отчёте.
+
+Для ближнего и рукопашного оружия параметры проверенных модов по сайту хранятся
+по ID конкретного оружия в `data/weapons/melee-site-mod-overrides.json`,
+а категории — в `data/weapons/melee-slot-labels.json`. Непроверенный слот
+помечается «НЕ УТОЧНЁН»; полная сверка не завершена. Причины расхождений:
+`docs/weapon-melee-site-review.md`.

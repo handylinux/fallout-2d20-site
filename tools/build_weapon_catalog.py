@@ -6,6 +6,7 @@ import tempfile
 from pathlib import Path
 
 import pymupdf
+from reportlab.pdfgen import canvas
 import build_small_guns_book as small
 import companion_mods_receiver as conv
 import weapon2pdf as w
@@ -28,6 +29,10 @@ def build(source, output, report=None):
     comp = Companion()
     groups = json.loads(ORDER.read_text(encoding='utf-8'))
     overrides = json.loads(OVERRIDES.read_text(encoding='utf-8'))
+    mod_overrides = conv.load(melee.MOD_OVERRIDES)
+    slot_labels = conv.load(melee.SLOT_LABELS)
+    comp.mods_ru['mod_heavy']['name'] = 'Утяжелённая'
+    comp.mods_ru['mod_lead_lining']['name'] = 'Свинцовая подкладка'
     if list(groups) != ['energy', 'unarmed', 'thrown', 'explosives']:
         raise ValueError('Некорректные категории')
     all_ids = sum(groups.values(), [])
@@ -52,7 +57,7 @@ def build(source, output, report=None):
                 pairs = {(slot, mid) for wid in ids if wid != 'weapon_plasma_mine'
                          for slot, mids in (comp.slots.get(wid) or {}).items() for mid in mids}
                 allowed = pairs - (set().union(*specific.values()) if specific else set())
-                if allowed:
+                if allowed and group != 'unarmed':
                     data, warnings = small.make_mod_data(comp, ids, prefixes, allowed=allowed,
                                                title=TITLES.get(group, 'МОДИФИКАЦИИ ОРУЖИЯ'))
                     for section in data['sections']:
@@ -65,6 +70,17 @@ def build(source, output, report=None):
                     with pymupdf.open(tablefile) as table:
                         result.insert_pdf(table)
                     references[group] = list(range(start, len(result)+1))
+                if group in ('unarmed', 'thrown', 'explosives'):
+                    title = {'unarmed': 'РУКОПАШНОЕ ОРУЖИЕ', 'thrown': 'МЕТАТЕЛЬНОЕ ОРУЖИЕ',
+                             'explosives': 'ВЗРЫВЧАТКА'}[group]
+                    divider_file = tmp / (group + '-divider.pdf')
+                    c = canvas.Canvas(str(divider_file), pagesize=(w.PAGE_W, w.PAGE_H))
+                    w.draw_paper(c)
+                    w.draw_center_line(c, 360, title, 'Carlito-Bold', w.TITLE_SIZE)
+                    w.draw_page_number(c, len(result) + 1)
+                    c.showPage(); c.save()
+                    with pymupdf.open(divider_file) as divider:
+                        result.insert_pdf(divider)
                 pages[group] = []
                 for wid in ids:
                     pagefile = tmp / (wid + '.pdf')
@@ -82,7 +98,8 @@ def build(source, output, report=None):
                             card_override['no_mods_label'] = 'МОДИФИКАЦИИ ТРЕБУЮТ ПРОВЕРКИ'
                         heavy.render_heavy(comp, wid, len(result)+1, prefixes, pagefile,
                                            unique_mods=specific[wid], card_overrides=card_override,
-                                           slot_labels={'Unique': 'МОД'})
+                                           mod_overrides=mod_overrides.get(wid),
+                                           slot_labels={'Unique': slot_labels.get(wid, 'НЕ УТОЧНЁН')})
                     with pymupdf.open(pagefile) as page:
                         result.insert_pdf(page)
                     pages[group].append(len(result))

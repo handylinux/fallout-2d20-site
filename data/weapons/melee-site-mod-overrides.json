@@ -1,0 +1,370 @@
+{
+  "weapon_sledgehammer": {
+    "mod_heavy": {
+      "name": "Тяжёлая",
+      "prefix": "Тяжёлая",
+      "effects": "Урон: +2 DC",
+      "weight": "+9",
+      "cost": "+30",
+      "perks": "Кузнец 2"
+    },
+    "mod_puncturing": {
+      "name": "Прокалывающая",
+      "prefix": "Прокалывающая",
+      "effects": "Урон: +1 DC; Добавить эффект «Проникающий 1»",
+      "weight": "+5",
+      "cost": "+18",
+      "perks": "Кузнец 2"
+    }
+  },
+  "weapon_boxing_glove": {
+    "mod_lead_lining": {
+      "name": "Свинцовая подкладка",
+      "prefix": "Свинцовая",
+      "effects": "Урон: +2 DC",
+      "weight": "+1",
+      "cost": "+7",
+      "perks": "Кузнец 1"
+    },
+    "mod_spiked": {
+      "name": "Шипастая",
+      "prefix": "Шипастая",
+      "effects": "Добавить эффект «Проникающий 1»",
+      "weight": "—",
+      "cost": "+3",
+      "perks": "—"
+    },
+    "mod_puncturing": {
+      "name": "Колючая",
+      "prefix": "Колючая",
+      "effects": "Урон: +1 DC; Добавить эффект «Проникающий 1»",
+      "weight": "—",
+      "cost": "+4",
+      "perks": "Кузнец 1"
+    }
+  },
+  "weapon_knuckles": {
+    "mod_sharp": {
+      "name": "Заострённый",
+      "prefix": "Заострённый",
+      "effects": "Добавить эффект «Устойчивый»",
+      "weight": "—",
+      "cost": "+3",
+      "perks": "—"
+    },
+    "mod_spiked": {
+      "name": "Шипованный",
+      "prefix": "Шипованный",
+      "effects": "Добавить эффект «Проникающий 1»",
+      "weight": "—",
+      "cost": "+3",
+      "perks": "—"
+    },
+    "mod_puncturing": {
+      "name": "Прокалывающий",
+      "prefix": "Прокалывающий",
+      "effects": "Урон: +1 DC; Добавить эффект «Проникающий 1»",
+      "weight": "—",
+      "cost": "+4",
+      "perks": "Кузнец 1"
+    },
+    "mod_bladed": {
+      "name": "Лезвия",
+      "prefix": "Клинковый",
+      "effects": "Урон: +1 DC; Добавить эффект «Устойчивый»",
+      "weight": "—",
+      "cost": "+5",
+      "perks": "Кузнец 1"
+    }
+  },
+  "weapon_power_fist": {
+    "mod_puncturing": {
+      "name": "Прокалывающий",
+      "prefix": "Прокалывающий",
+      "effects": "Урон: +2 DC; Добавить эффект «Проникающий 1»",
+      "weight": "+1",
+      "cost": "+45",
+      "perks": "Кузнец 2"
+    },
+    "mod_heating_coil": {
+      "name": "Нагревательная спираль",
+      "prefix": "Раскалённый",
+      "effects": "Урон: +2 DC; тип урона: энергетический",
+      "weight": "—",
+      "cost": "+100",
+      "perks": "Кузнец 3"
+    }
+  },
+  "weapon_baseball_bat": {
+    "mod_barbed": {
+      "name": "Колючая",
+      "prefix": "Колючая",
+      "effects": "Добавить эффект «Проникающий 1»",
+      "weight": "—",
+      "cost": "+5",
+      "perks": "—"
+    },
+    "mod_spiked": {
+      "name": "Шипастая",
+      "prefix": "Шипастая",
+      "effects": "Урон: +1 DC; Добавить эффект «Проникающий 1»",
+      "weight": "+1",
+      "cost": "+7",
+      "perks": "—"
+    },
+    "mod_sharp": {
+      "name": "Заострённая",
+      "prefix": "Заострённая",
+      "effects": "Урон: +1 DC; Добавить эффект «Устойчивый»",
+      "weight": "+1",
+      "cost": "+7",
+      "perks": "—"
+    },
+    "mod_chain_wrapped": {
+      "name": "Обмотанная цепью",
+      "prefix": "Обмотанная цепью",
+      "effects": "Урон: +2 DC",
+      "weight": "+1",
+      "cost": "+10",
+      "perks": "Кузнец 1"
+    },
+    "mod_bladed": {
+      "name": "Лезвия",
+      "prefix": "Клинковая",
+      "effects": "Урон: +2 DC; Добавить эффект «Устойчивый»",
+      "weight": "+2",
+      "cost": "+12",
+      "perks": "Кузнец 2"
+    }
+  },
+  "weapon_baseball_bat_aluminum": {
+    "mod_barbed": {
+      "name": "Колючая",
+      "prefix": "Колючая",
+      "effects": "Добавить эффект «Проникающий 1»",
+      "weight": "—",
+      "cost": "+5",
+      "perks": "Кузнец 1"
+    },
+    "mod_spiked": {
+      "name": "Шипастая",
+      "prefix": "Шипастая",
+      "effects": "Урон: +1 DC; Добавить эффект «Проникающий 1»",
+      "weight": "+1",
+      "cost": "+7",
+      "perks": "Кузнец 1"
+    },
+    "mod_sharp": {
+      "name": "Заострённая",
+      "prefix": "Заострённая",
+      "effects": "Урон: +1 DC; Добавить эффект «Устойчивый»",
+      "weight": "+1",
+      "cost": "+7",
+      "perks": "Кузнец 1"
+    },
+    "mod_chain_wrapped": {
+      "name": "Обмотанная цепью",
+      "prefix": "Обмотанная цепью",
+      "effects": "Урон: +2 DC",
+      "weight": "+1",
+      "cost": "+10",
+      "perks": "Кузнец 1"
+    },
+    "mod_bladed": {
+      "name": "Лезвия",
+      "prefix": "Клинковая",
+      "effects": "Урон: +2 DC; Добавить эффект «Устойчивый»",
+      "weight": "+2",
+      "cost": "+12",
+      "perks": "Кузнец 2"
+    }
+  },
+  "weapon_board": {
+    "mod_spiked": {
+      "name": "Шипованный",
+      "prefix": "Шипованный",
+      "effects": "Урон: +1 DC; Добавить эффект «Проникающий 1»",
+      "weight": "+1",
+      "cost": "+6",
+      "perks": "—"
+    },
+    "mod_puncturing": {
+      "name": "Прокалывающий",
+      "prefix": "Прокалывающий",
+      "effects": "Урон: +2 DC",
+      "weight": "+1",
+      "cost": "+10",
+      "perks": "Кузнец 1"
+    },
+    "mod_bladed": {
+      "name": "Лезвия",
+      "prefix": "Клинковый",
+      "effects": "Урон: +2 DC; Добавить эффект «Устойчивый»",
+      "weight": "+2",
+      "cost": "+10",
+      "perks": "Кузнец 2"
+    }
+  },
+  "weapon_rolling_pin": {
+    "mod_spiked": {
+      "name": "Шипастая",
+      "prefix": "Шипастая",
+      "effects": "Урон: +1 DC; Добавить эффект «Проникающий 1»",
+      "weight": "—",
+      "cost": "+3",
+      "perks": "—"
+    },
+    "mod_sharp": {
+      "name": "Заострённая",
+      "prefix": "Заострённая",
+      "effects": "Урон: +1 DC; Добавить эффект «Устойчивый»",
+      "weight": "—",
+      "cost": "+3",
+      "perks": "—"
+    }
+  },
+  "weapon_pool_cue": {
+    "mod_barbed": {
+      "name": "Прокалывающий",
+      "prefix": "Прокалывающий",
+      "effects": "Добавить эффект «Проникающий 1»",
+      "weight": "—",
+      "cost": "+2",
+      "perks": "—"
+    },
+    "mod_sharp": {
+      "name": "Заострённый",
+      "prefix": "Заострённый",
+      "effects": "Урон: +1 DC; Добавить эффект «Устойчивый»",
+      "weight": "—",
+      "cost": "+3",
+      "perks": "—"
+    }
+  },
+  "weapon_walking_cane": {
+    "mod_barbed": {
+      "name": "Колючая",
+      "prefix": "Колючая",
+      "effects": "Урон: +1 DC; Добавить эффект «Проникающий 1»",
+      "weight": "—",
+      "cost": "+3",
+      "perks": "—"
+    },
+    "mod_spiked": {
+      "name": "Шипастая",
+      "prefix": "Шипастая",
+      "effects": "Урон: +1 DC; Добавить эффект «Проникающий 1»",
+      "weight": "—",
+      "cost": "+3",
+      "perks": "—"
+    }
+  },
+  "weapon_tire_iron": {
+    "mod_bladed": {
+      "name": "Лезвия",
+      "prefix": "Клинковый",
+      "effects": "Урон: +1 DC; Добавить эффект «Устойчивый»",
+      "weight": "+1",
+      "cost": "+12",
+      "perks": "Кузнец 2"
+    }
+  },
+  "weapon_baton": {
+    "mod_electrified": {
+      "name": "Электризованная",
+      "prefix": "Шокирующая",
+      "effects": "Урон: +2 DC; тип урона: энергетический",
+      "weight": "—",
+      "cost": "+15",
+      "perks": "Кузнец 2, Наука! 1"
+    },
+    "mod_stun_pack": {
+      "name": "Электрошокер",
+      "prefix": "Оглушающая",
+      "effects": "Урон: +3 DC; тип урона: энергетический; Добавить эффект «Оглушающий»",
+      "weight": "—",
+      "cost": "+30",
+      "perks": "Кузнец 2, Наука! 1"
+    }
+  },
+  "weapon_super_sledge": {
+    "mod_heating_coil": {
+      "name": "Нагревательная спираль",
+      "prefix": "Раскалённая",
+      "effects": "Урон: +1 DC; тип урона: энергетический",
+      "weight": "—",
+      "cost": "+180",
+      "perks": "Кузнец 2"
+    },
+    "mod_stun_pack": {
+      "name": "Электрошокер",
+      "prefix": "Оглушающая",
+      "effects": "Урон: +2 DC; тип урона: энергетический; Добавить эффект «Оглушающий»",
+      "weight": "—",
+      "cost": "+360",
+      "perks": "Кузнец 3, Наука! 1"
+    }
+  },
+  "weapon_pipe_wrench": {
+    "mod_hooked": {
+      "name": "Крюк",
+      "prefix": "Загнутый",
+      "effects": "Урон: +1 DC; при успешной атаке потратьте 2 ОД, чтобы обезоружить противника",
+      "weight": "—",
+      "cost": "+9",
+      "perks": "—"
+    },
+    "mod_heavy": {
+      "name": "Утяжелённый",
+      "prefix": "Увесистый",
+      "effects": "Урон: +2 DC",
+      "weight": "+7",
+      "cost": "+12",
+      "perks": "Кузнец 1"
+    },
+    "mod_puncturing": {
+      "name": "Прокалывающий",
+      "prefix": "Прокалывающий",
+      "effects": "Урон: +2 DC; Добавить эффект «Проникающий»",
+      "weight": "+1",
+      "cost": "+13",
+      "perks": "Кузнец 1"
+    },
+    "mod_extra_heavy": {
+      "name": "Сверхтяжёлый",
+      "prefix": "Сверхтяжёлый",
+      "effects": "Урон: +3 DC",
+      "weight": "+2",
+      "cost": "+22",
+      "perks": "Кузнец 2"
+    }
+  },
+  "weapon_lead_pipe": {
+    "mod_heavy": {
+      "name": "Утяжелённая",
+      "prefix": "Утяжелённая",
+      "effects": "Урон: +2 DC",
+      "weight": "+2",
+      "cost": "+11",
+      "perks": "Кузнец 2"
+    },
+    "mod_spiked": {
+      "name": "Шипастая",
+      "prefix": "Шипастая",
+      "effects": "Урон: +1 DC; Добавить эффект «Проникающий 1»",
+      "weight": "+1",
+      "cost": "+4",
+      "perks": "—"
+    }
+  },
+  "weapon_deathclaw_gauntlet": {
+    "mod_extra_claw": {
+      "name": "Дополнительный коготь",
+      "prefix": "Большая",
+      "effects": "Урон: +1 DC; при успешной атаке потратьте 2 ОД, чтобы обезоружить противника",
+      "weight": "+2",
+      "cost": "+22",
+      "perks": "—"
+    }
+  }
+}

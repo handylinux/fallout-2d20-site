@@ -81,7 +81,10 @@ def render_energy(comp, wid, source, source_page, page_num, out):
         matches = [word for word in page.get_text('words') if word[4] == 'КОНДЕНСАТОР']
         if len(matches) != 1:
             raise ValueError(f'{wid}: не найдено начало таблицы оригинала')
-        grid_top = matches[0][1] - 12
+        boxes = borders.table_boxes(page, max(0, matches[0][1] - 30), 807)
+        if not boxes:
+            raise ValueError(f'{wid}: не найдена рамка таблицы')
+        grid_top = boxes[0].y0 - 1
         heading_top = grid_top - w.MODS_HEADING_GAP
         description = (card.get('description') or '').strip()
         if description and w.DESC_TOP + len(w.wrap_text(description, 'Carlito', 10, w.DESC_RIGHT-w.DESC_LEFT))*15 > heading_top - 10:
@@ -129,6 +132,7 @@ def build(source, output, report=None, full=False):
             if full and any(wid == 'weapon_alien_blaster' for wid, _ in weapons):
                 magazine, magazine_problems = small.make_mod_data(comp, ['weapon_alien_blaster'], prefixes,
                     allowed={('Magazine', 'mod_fusion_mag')}, title=mod_data['title'])
+                magazine['sections'][0]['gap_before'] = 12
                 mod_data['sections'].extend(magazine['sections'])
                 problems.extend(magazine_problems)
             extra = Path(tmp) / 'musket-reference.pdf'

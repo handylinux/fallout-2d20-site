@@ -96,6 +96,7 @@ def perks(mod):
         value = mod.get(key)
         if value:
             value = re.sub(r'^Gun Nut\b', 'Фанатик оружия', value)
+            value = re.sub(r'^Blacksmith\b', 'Кузнец', value)
             value = re.sub(r'^Science!(?=\s|$)', 'Наука!', value)
             out.append(value)
     if out:
