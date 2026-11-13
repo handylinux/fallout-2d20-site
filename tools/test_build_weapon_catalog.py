@@ -38,7 +38,7 @@ class CompleteWorkingCatalogTest(unittest.TestCase):
                 self.assertNotIn('Врыв', pulse_mine)
                 mine = text(info['weapons']['explosives'][14])
                 self.assertIn('ПЛАЗМЕННАЯ МИНА', mine)
-                self.assertIn('МОДИФИКАЦИИ ТРЕБУЮТ ПРОВЕРКИ', mine)
+                self.assertIn('НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ', mine)
                 self.assertNotIn('Тяжёлый ствол', mine)
                 words = doc[82].get_text('words')
                 capacitor = next(x for x in words if x[4] == '6-зарядный')

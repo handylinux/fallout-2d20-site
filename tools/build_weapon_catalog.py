@@ -91,11 +91,8 @@ def build(source, output, report=None):
                         card = build_card(comp, wid, page=len(result)+1, image='')
                         card.update(card_override)
                         card['mods'] = []
-                        card['no_mods_label'] = 'МОДИФИКАЦИИ ТРЕБУЮТ ПРОВЕРКИ'
                         w.render_card(card, str(pagefile))
                     else:
-                        if not comp.slots.get(wid) and not comp.weapons[wid].get('withoutMods'):
-                            card_override['no_mods_label'] = 'МОДИФИКАЦИИ ТРЕБУЮТ ПРОВЕРКИ'
                         heavy.render_heavy(comp, wid, len(result)+1, prefixes, pagefile,
                                            unique_mods=specific[wid], card_overrides=card_override,
                                            mod_overrides=mod_overrides.get(wid),

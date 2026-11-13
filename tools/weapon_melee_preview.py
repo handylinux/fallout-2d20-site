@@ -56,8 +56,6 @@ def build(source, output, report=None):
                 # All melee cards use the requested dash, even when a source
                 # incorrectly provides a ranged-distance label.
                 card_override["range"] = "-"
-                if not comp.slots.get(wid) and not comp.weapons[wid].get("withoutMods"):
-                    card_override["no_mods_label"] = "МОДИФИКАЦИИ ТРЕБУЮТ ПРОВЕРКИ"
                 heavy.render_heavy(comp, wid, len(result)+1, prefixes, pagefile,
                                    unique_mods=specifics[wid], card_overrides=card_override,
                                    mod_overrides=mod_overrides.get(wid),
