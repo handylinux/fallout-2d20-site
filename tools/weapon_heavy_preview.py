@@ -87,7 +87,7 @@ def render_source_heavy(comp, wid, page_num, source, source_page, out, extra_des
     return {'mode': 'source', 'font_size': None, 'mod_count': None}
 
 
-def render_heavy(comp, wid, page_num, prefixes, out, extra_description='', card_overrides=None, unique_slots=(), unique_mods=(), mod_overrides=None):
+def render_heavy(comp, wid, page_num, prefixes, out, extra_description='', card_overrides=None, unique_slots=(), unique_mods=(), mod_overrides=None, slot_labels=None):
     card = build_card(comp, wid, page=page_num, image='')
     if card_overrides:
         card.update(card_overrides)
@@ -157,7 +157,7 @@ def render_heavy(comp, wid, page_num, prefixes, out, extra_description='', card_
                         commands.append(('SPAN', (0, group_start), (0, index - 1)))
                     group_start, group_index, prev = index, group_index + 1, group
                 color = w.BEIGE if group_index % 2 == 0 else w.ORANGE
-                label = comp.slot_label(slot) + (' УНИКАЛЬНЫЙ' if is_unique else '')
+                label = (slot_labels or {}).get(slot, comp.slot_label(slot)) + (' УНИКАЛЬНЫЙ' if is_unique else '')
                 def value_cell(j, value):
                     cell_style = centre if j in (3, 4, 5) else style
                     if j in (0, 1):

@@ -580,3 +580,8 @@ Companion. Ручная сверка и ссылки — в `docs/weapon-site-co
 вписываются в поля и получают рамки по границам исходных ячеек
 (`weapon_table_borders.py`); генерируемые таблицы также обведены. Общие
 справочные таблицы сохранены в прежнем виде по просьбе пользователя.
+
+Первые шесть оружий ближнего боя из исходника собираются командой
+`python3 tools/weapon_melee_preview.py 'Справочник оружия.pdf' --out docs/render/samples/book-melee-original.pdf --report docs/weapon-melee-report.md`.
+Порядок и поправки карточек находятся в `data/weapons/melee-original-order.json`
+и `data/weapons/melee-card-overrides.json`; прочее оружие раздела пока не добавлено.
