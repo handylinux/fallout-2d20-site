@@ -53,6 +53,9 @@ def build(source, output, report=None):
             for wid in ids:
                 pagefile = tmp / f'{wid}.pdf'
                 card_override = dict(overrides.get(wid, {}))
+                # All melee cards use the requested dash, even when a source
+                # incorrectly provides a ranged-distance label.
+                card_override["range"] = "-"
                 if not comp.slots.get(wid) and not comp.weapons[wid].get("withoutMods"):
                     card_override["no_mods_label"] = "МОДИФИКАЦИИ ТРЕБУЮТ ПРОВЕРКИ"
                 heavy.render_heavy(comp, wid, len(result)+1, prefixes, pagefile,

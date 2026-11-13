@@ -26,6 +26,16 @@ class MeleeBookTest(unittest.TestCase):
                 self.assertIn('Мечи использовались', sword)
                 self.assertNotIn('widespread', sword)
                 self.assertNotIn('wideРазброс', sword)
+                for offset in (12, 19, 29):
+                    card = text = doc[info['weapons'][offset] - 1].get_text()
+                    self.assertNotIn('Близкая', card)
+                auto_axe = doc[info['weapons'][6] - 1].get_text()
+                self.assertIn('ЛЕЗВИЕ', auto_axe)
+                self.assertNotIn('Не указано', auto_axe)
+                self.assertIn('Каждое ОД', auto_axe)
+                chainsaw = doc[info['weapons'][10] - 1].get_text()
+                self.assertIn('ШИНА', chainsaw)
+                self.assertIn('можно добавить к любому другому моду', chainsaw.replace('\n', ' '))
 
 if __name__ == '__main__':
     unittest.main()

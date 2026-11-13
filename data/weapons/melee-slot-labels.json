@@ -20,5 +20,9 @@
   "weapon_baton": "ДУБИНКА",
   "weapon_tire_iron": "КЛЮЧ",
   "weapon_walking_cane": "ТРОСТЬ",
-  "weapon_assaultron_blade": "ЛЕЗВИЕ"
+  "weapon_assaultron_blade": "ЛЕЗВИЕ",
+  "weapon_auto_axe": "ЛЕЗВИЕ",
+  "weapon_chainsaw": "ШИНА",
+  "weapon_atom_staff": "ПОСОХ",
+  "weapon_super_sledge": "СУПЕРМОЛОТ"
 }
