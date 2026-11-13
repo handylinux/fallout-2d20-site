@@ -1,0 +1,83 @@
+{
+  "id": "weapon_institute_laser",
+  "title": "Institute Laser",
+  "category": "Energy Weapons",
+  "weight": "4",
+  "cost": 50,
+  "rarity": 2,
+  "ammo": "Energy Cell",
+  "damageType": "Energy",
+  "damage": 3,
+  "fireRate": 3,
+  "range": "Close",
+  "effects": [
+    "Burst"
+  ],
+  "qualities": [
+    "Close Quarters",
+    "Inaccurate"
+  ],
+  "description": "Developed by The Institute after the Great War.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "BARREL",
+      "items": [
+        "Automatic Barrel",
+        "Improved Barrel",
+        "Long Barrel"
+      ]
+    },
+    {
+      "slot": "CAPACITOR",
+      "items": [
+        "Beta Wave Tuner",
+        "Boosted Capacitor",
+        "Photon Agitator",
+        "Photon Exciter"
+      ]
+    },
+    {
+      "slot": "STOCK",
+      "items": [
+        "Standard Stock"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Long Night Vision Scope",
+        "Long Scope",
+        "Recon Scope",
+        "Reflex Sight",
+        "Short Night Vision Scope",
+        "Short Scope"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Beam Focuser",
+        "Beam Splitter",
+        "Gyro Compensating Lens"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 72
+}

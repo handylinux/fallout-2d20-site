@@ -1,0 +1,62 @@
+{
+  "id": "weapon_minigun",
+  "title": "Minigun",
+  "category": "Heavy Weapons",
+  "weight": "27",
+  "cost": 382,
+  "rarity": 2,
+  "ammo": "5mm Round",
+  "damageType": "Physical",
+  "damage": 3,
+  "fireRate": 5,
+  "range": "Medium",
+  "effects": [
+    "Spread",
+    "Burst"
+  ],
+  "qualities": [
+    "Two-Handed",
+    "Gatling",
+    "Inaccurate"
+  ],
+  "description": "The minigun is a motorized Gatling-style rapid fire weapon.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "BARREL",
+      "items": [
+        "Accelerated Barrel",
+        "Tri-Barrel"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Reflex Sight"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Shredder"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 52
+}

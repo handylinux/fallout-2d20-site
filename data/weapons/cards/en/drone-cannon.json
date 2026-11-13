@@ -1,0 +1,81 @@
+{
+  "id": "weapon_drone_cannon",
+  "title": "Drone Cannon",
+  "category": "Heavy Weapons",
+  "weight": "18",
+  "cost": 600,
+  "rarity": 5,
+  "ammo": "Alien Power Module",
+  "damageType": "Energy",
+  "damage": 8,
+  "fireRate": 0,
+  "range": "Medium",
+  "effects": [],
+  "qualities": [
+    "Two-Handed",
+    "Blast"
+  ],
+  "description": "Found on the arms of guardian drones—a form of alien robot sometimes seen on board crashed alien spacecraft—these potent, if strange, energy weapons fire a ball of energy that acts a little like a grenade, bouncing for a few seconds before exploding.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        "Hardened",
+        "Powerful",
+        "Hair Trigger"
+      ]
+    },
+    {
+      "slot": "BARREL",
+      "items": [
+        "Long",
+        "Ported"
+      ]
+    },
+    {
+      "slot": "STOCK",
+      "items": [
+        "Full Stock",
+        "Recoil Compensating Stock"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Reflex Sight",
+        "Short Scope",
+        "Long Scope",
+        "Short Night Vision Scope",
+        "Long Night Vision Scope",
+        "Recon Scope"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Bayonet",
+        "Compensator",
+        "Muzzle Break",
+        "Suppressor"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 46
+}

@@ -2,6 +2,7 @@ __pycache__/
 *.pyc
 .DS_Store
 node_modules/
+.venv/
 
 # generated drafts of the PDF weapon cards
 docs/render/out/

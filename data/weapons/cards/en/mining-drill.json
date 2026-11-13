@@ -1,0 +1,40 @@
+{
+  "id": "weapon_mining_drill",
+  "title": "Mining Drill",
+  "category": "Melee Weapons",
+  "weight": "18",
+  "cost": 100,
+  "rarity": 4,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 2,
+  "fireRate": 0,
+  "range": "Close",
+  "effects": [
+    "Piercing 2",
+    "Breaking"
+  ],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 118
+}

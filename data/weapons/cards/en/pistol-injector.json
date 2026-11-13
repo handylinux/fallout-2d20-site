@@ -1,0 +1,41 @@
+{
+  "id": "weapon_pistol_injector",
+  "title": "Pistol Injector",
+  "category": "Light Weapons",
+  "weight": "5",
+  "cost": 333,
+  "rarity": 5,
+  "ammo": "Tranquilizer Dart",
+  "damageType": "Physical",
+  "damage": 0,
+  "fireRate": 4,
+  "range": "Close",
+  "effects": [
+    "Persistent"
+  ],
+  "qualities": [
+    "Tranquilizer X",
+    "Close Quarters",
+    "Reliable"
+  ],
+  "description": "The first word in non-violent de-escalation - the Vault-Tec Pistol Injector is perfect for those who must intervene but do not want to resort to violence. For emergency use only.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 33
+}

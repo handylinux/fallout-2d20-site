@@ -1,0 +1,56 @@
+{
+  "id": "weapon_mesmetron",
+  "title": "Mesmetron",
+  "category": "Energy Weapons",
+  "weight": "2",
+  "cost": 120,
+  "rarity": 4,
+  "ammo": "Gamma Round",
+  "damageType": "Energy",
+  "damage": 3,
+  "fireRate": 1,
+  "range": "Medium",
+  "effects": [
+    "Stun"
+  ],
+  "qualities": [],
+  "description": "A weapon similar to the gamma gun with the ability to create blasts of high intense energy. This approach creates variable waves that, when received by the brain of a sentient creature, overwhelms the senses and distorts perception making individuals confused and more susceptible.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "CAPACITOR",
+      "items": [
+        "Beta Wave Tuner"
+      ]
+    },
+    {
+      "slot": "GRIP",
+      "items": [
+        "Sharpshooter's Grip"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Reflex Sight"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 75
+}

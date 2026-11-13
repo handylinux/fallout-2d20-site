@@ -1,0 +1,42 @@
+{
+  "id": "weapon_nuke_mine",
+  "title": "Nuke Mine",
+  "category": "Explosive Weapons",
+  "weight": "1",
+  "cost": 100,
+  "rarity": 4,
+  "ammo": "",
+  "damageType": "Energy",
+  "damage": 9,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [
+    "Vicious",
+    "Breaking",
+    "Radioactive"
+  ],
+  "qualities": [
+    "Mine",
+    "Blast"
+  ],
+  "description": "It is a nuclear variant of a landmine.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 95
+}

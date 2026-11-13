@@ -1,0 +1,61 @@
+{
+  "id": "weapon_gauss_minigun",
+  "title": "Gauss Minigun",
+  "category": "Energy Weapons",
+  "weight": "38",
+  "cost": 912,
+  "rarity": 6,
+  "ammo": "2mm EC Round",
+  "damageType": "Physical",
+  "damage": 6,
+  "fireRate": 3,
+  "range": "Long",
+  "effects": [
+    "Burst",
+    "Piercing"
+  ],
+  "qualities": [
+    "Two-Handed",
+    "Gatling"
+  ],
+  "description": "The Gauss Minigun is a powerful, automatic ballistic weapon that rapidly fires hypervelocity 2mm rounds that deal devastating damage. Given their scarce ammunition and the sheer rate of fire it possesses—particularly when modified—this is a powerful weapon that demands a wealthy and well-supplied owner. It can even be fitted with a Tesla coil, charging rounds with electricity as they're fired.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "BARREL",
+      "items": [
+        "Tri-Barrel"
+      ]
+    },
+    {
+      "slot": "CAPACITOR",
+      "items": [
+        "Tesla Coil Capacitor",
+        "Tesla Coil Dynamo"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Gunner Sight"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 67
+}

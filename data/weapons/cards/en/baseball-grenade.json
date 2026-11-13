@@ -1,0 +1,38 @@
+{
+  "id": "weapon_baseball_grenade",
+  "title": "Baseball Grenade",
+  "category": "Explosive Weapons",
+  "weight": "1",
+  "cost": 40,
+  "rarity": 1,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 5,
+  "fireRate": 0,
+  "range": "Medium",
+  "effects": [],
+  "qualities": [
+    "Thrown",
+    "Blast"
+  ],
+  "description": "Little more than a hollowed-out baseball filled with an improvised explosive mixture.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 82
+}

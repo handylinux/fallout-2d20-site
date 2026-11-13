@@ -1,0 +1,57 @@
+{
+  "id": "weapon_gauss_pistol",
+  "title": "Gauss Pistol",
+  "category": "Energy Weapons",
+  "weight": "6",
+  "cost": 334,
+  "rarity": 5,
+  "ammo": "2mm EC Round",
+  "damageType": "Physical",
+  "damage": 8,
+  "fireRate": 1,
+  "range": "Medium",
+  "effects": [
+    "Piercing"
+  ],
+  "qualities": [],
+  "description": "A handheld alternative to a full-sized gauss rifle. Despite its small size, it maintains formidable stopping power over considerable distances, and in the hands of a skilled user, it can bring down even the most durable foes.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "BARREL",
+      "items": [
+        "Shielded Barrel"
+      ]
+    },
+    {
+      "slot": "CAPACITOR",
+      "items": [
+        "Capacitor Boosting Coil",
+        "Full Capacitors"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Reflex Sight"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 68
+}

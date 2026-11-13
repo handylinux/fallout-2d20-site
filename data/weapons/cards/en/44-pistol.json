@@ -1,0 +1,68 @@
+{
+  "id": "weapon_44_pistol",
+  "title": ".44 Pistol",
+  "category": "Light Weapons",
+  "weight": "4",
+  "cost": 99,
+  "rarity": 2,
+  "ammo": ".44 Magnum Round",
+  "damageType": "Physical",
+  "damage": 6,
+  "fireRate": 1,
+  "range": "Close",
+  "effects": [
+    "Vicious"
+  ],
+  "qualities": [
+    "Close Quarters"
+  ],
+  "description": "The .44 pistol is a double-action revolver, chambered to use the .44 Magnum cartridge. It's a powerful gun, though not as customizable as other handguns. Due to their simple, rugged design, they're prized by their owners, but not so uncommon as to be truly rare.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        "Advanced",
+        "Hardened",
+        "Powerful"
+      ]
+    },
+    {
+      "slot": "BARREL",
+      "items": [
+        "Bull Barrel",
+        "Snubnose"
+      ]
+    },
+    {
+      "slot": "GRIP",
+      "items": [
+        "Comfort Grip"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Recon Scope",
+        "Reflex Sight"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 2
+}

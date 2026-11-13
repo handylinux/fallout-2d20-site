@@ -1,0 +1,52 @@
+{
+  "id": "weapon_acid_soaker",
+  "title": "Acid Soaker",
+  "category": "Energy Weapons",
+  "weight": "3",
+  "cost": 125,
+  "rarity": 3,
+  "ammo": "Acid Concentrate",
+  "damageType": "Energy",
+  "damage": 3,
+  "fireRate": 2,
+  "range": "Close",
+  "effects": [
+    "Burst",
+    "Persistent"
+  ],
+  "qualities": [],
+  "description": "The acid soaker is a small gun modified to receive a corrosive compound.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "CONCENTRATE",
+      "items": [
+        "Caustic"
+      ]
+    },
+    {
+      "slot": "CONTAINER",
+      "items": [
+        "Large Ampoule",
+        "Large Vial"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 55
+}

@@ -1,0 +1,78 @@
+{
+  "id": "weapon_double_barrel_shotgun",
+  "title": "Double-Barrel Shotgun",
+  "category": "Light Weapons",
+  "weight": "9",
+  "cost": 39,
+  "rarity": 1,
+  "ammo": "Shotgun Shell",
+  "damageType": "Physical",
+  "damage": 5,
+  "fireRate": 0,
+  "range": "Close",
+  "effects": [
+    "Vicious",
+    "Spread"
+  ],
+  "qualities": [
+    "Two-Handed",
+    "Inaccurate"
+  ],
+  "description": "Before the Great War, double-barrel shotguns were mainly used for hunting and home defense.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        "Advanced",
+        "Hair Trigger",
+        "Hardened",
+        "Powerful"
+      ]
+    },
+    {
+      "slot": "BARREL",
+      "items": [
+        "Long",
+        "Sawed-Off"
+      ]
+    },
+    {
+      "slot": "STOCK",
+      "items": [
+        "Full Stock",
+        "Marksman's Stock",
+        "Recoil Compensating Stock"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Reflex Sight"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Muzzle Break"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 21
+}

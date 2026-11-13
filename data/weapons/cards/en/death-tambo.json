@@ -1,0 +1,37 @@
+{
+  "id": "weapon_death_tambo",
+  "title": "Death Tambo",
+  "category": "Melee Weapons",
+  "weight": "1",
+  "cost": 40,
+  "rarity": 2,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 4,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [
+    "Piercing"
+  ],
+  "qualities": [],
+  "description": "A bladed tambourine weapon; the jingling it makes raises the complication range on sneak attacks.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 114
+}

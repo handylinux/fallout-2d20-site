@@ -1,0 +1,74 @@
+{
+  "id": "weapon_12_7mm_smg",
+  "title": "12.7mm SMG",
+  "category": "Light Weapons",
+  "weight": "5",
+  "cost": 510,
+  "rarity": 4,
+  "ammo": "12.7mm Round",
+  "damageType": "Physical",
+  "damage": 5,
+  "fireRate": 3,
+  "range": "Close",
+  "effects": [
+    "Burst"
+  ],
+  "qualities": [
+    "Two-Handed",
+    "Inaccurate"
+  ],
+  "description": "An uncommon mixture of compact weapon and large-caliber round, the 12.7mm submachine gun features an unconventional top-mounted magazine, lying parallel to the weapon's barrel. While small and lightweight itself, the weapon's recoil and rate of fire can make it tricky to handle.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        "Armor-Piercing",
+        "Hardened",
+        "Powerful"
+      ]
+    },
+    {
+      "slot": "STOCK",
+      "items": [
+        "Full Stock",
+        "Recoil Compensating Stock"
+      ]
+    },
+    {
+      "slot": "MAGAZINE",
+      "items": [
+        "Large Magazine"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Reflex Sight"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Suppressor"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 6
+}

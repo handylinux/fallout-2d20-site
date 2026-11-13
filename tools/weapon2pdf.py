@@ -30,6 +30,7 @@ import io
 import json
 import math
 import os
+import re
 import sys
 
 from reportlab.lib.colors import Color
@@ -74,6 +75,11 @@ DESC_TOP = 404.57
 DESC_SIZE = 12.0
 DESC_LEADING = 17.4
 
+DEFAULT_LABELS = {
+    "weight": "Вес", "cost": "Цена", "rarity": "Редкость",
+    "mods_heading": "ПОДДЕРЖИВАЕМЫЕ МОДИФИКАЦИИ",
+    "no_mods": "НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ",
+}
 MODS_HEADING = "ПОДДЕРЖИВАЕМЫЕ МОДИФИКАЦИИ"
 MODS_HEADING_TOP = 488.29
 MODS_HEADING_GAP = 45.36  # heading top -> table top on the Publisher pages
@@ -322,7 +328,12 @@ def draw_title(c, card) -> None:
         RULE_W, -RULE_H, stroke=0, fill=1,
     )
 
-    subtitle = "Вес: {weight}, Цена: {cost}, Редкость: {rarity}".format(**card)
+    labels = {**DEFAULT_LABELS, **(card.get("labels") or {})}
+    subtitle = "{weight}: {weight_value}, {cost}: {cost_value}, {rarity}: {rarity_value}".format(
+        weight=labels["weight"], weight_value=card.get("weight", ""),
+        cost=labels["cost"], cost_value=card.get("cost", ""),
+        rarity=labels["rarity"], rarity_value=card.get("rarity", ""),
+    )
     draw_center_line(c, SUBTITLE_TOP, subtitle, "Carlito", SUBTITLE_SIZE)
 
 
@@ -392,12 +403,14 @@ def draw_stats(c, card) -> None:
     ]
 
     # header labels
-    for i, label in enumerate(HEADERS):
+    labels = card.get("labels") or {}
+    headers = labels.get("headers", HEADERS)
+    for i, label in enumerate(headers):
         x0, x1 = STATS_COLS[i], STATS_COLS[i + 1]
         size = STATS_HEADER_SIZE
         if i == 3:
             size = STATS_HEADER_TIGHT_SIZE
-            lines = ["СКОРОСТЬ", "СТРЕЛЬБЫ"]
+            lines = label.split("\n") if "\n" in label else ["СКОРОСТЬ", "СТРЕЛЬБЫ"]
             leading = 15.48
             block_h = size + (len(lines) - 1) * leading
             start = top + (STATS_HEADER_H - block_h) / 2.0 + 1.5
@@ -571,8 +584,12 @@ def draw_mods(c, card, block=None, no_mods_heading_top=None) -> None:
 
     if block is None:
         block = mods_block(card)
+    labels = {**DEFAULT_LABELS, **(card.get("labels") or {})}
     if block is None:
-        draw_center_line(c, no_mods_heading_top if no_mods_heading_top is not None else MODS_HEADING_TOP, card.get("no_mods_label", "НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ"),
+        no_mods_top = (no_mods_heading_top if no_mods_heading_top is not None
+                       else MODS_HEADING_TOP)
+        draw_center_line(c, no_mods_top,
+                         card.get("no_mods_label", labels["no_mods"]),
                          "Carlito-Bold", MODS_HEADING_SIZE)
         return
 
@@ -580,8 +597,8 @@ def draw_mods(c, card, block=None, no_mods_heading_top=None) -> None:
     edges = mods_edges(ncols)
     bottom = MODS_BOTTOM
     # the heading follows the table, so short tables do not leave a hole
-    draw_center_line(c, top - MODS_HEADING_GAP, MODS_HEADING, "Carlito-Bold",
-                     MODS_HEADING_SIZE)
+    draw_center_line(c, top - MODS_HEADING_GAP, labels["mods_heading"],
+                     "Carlito-Bold", MODS_HEADING_SIZE)
 
     # category fills
     y = top
@@ -668,10 +685,7 @@ def draw_page_number(c, page: int, total_pages: int | None = None) -> None:
                  PAGE_NUMBER_SIZE, align="right")
 
 
-def render_card(card, out_path: str) -> None:
-    c = canvas.Canvas(out_path, pagesize=(PAGE_W, PAGE_H))
-    c.setTitle(f"{card.get('title', '')} — справочник оружия")
-    c.setAuthor("fallout-2d20.ru")
+def draw_card_page(c, card) -> None:
     draw_paper(c)
     draw_image(c, card)   # opaque paper copy: must stay behind the text
     draw_title(c, card)
@@ -691,7 +705,39 @@ def render_card(card, out_path: str) -> None:
     draw_description(c, card, max_bottom=bottom)
     draw_mods(c, card, block, no_mods_heading_top=heading_top)
     draw_page_number(c, int(card.get("page") or 0))
+
+
+def render_card(card, out_path: str) -> None:
+    c = canvas.Canvas(out_path, pagesize=(PAGE_W, PAGE_H))
+    c.setTitle(f"{card.get('title', '')} — справочник оружия")
+    c.setAuthor("fallout-2d20.ru")
+    draw_card_page(c, card)
     c.showPage()
+    c.save()
+
+
+def render_catalog(cards: list[dict], out_path: str) -> None:
+    """Render a multi-page catalog with PDF outline sections and weapon entries."""
+    c = canvas.Canvas(out_path, pagesize=(PAGE_W, PAGE_H), pageCompression=1)
+    c.setTitle("Fallout 2d20 Weapon Catalog")
+    c.setAuthor("Fallout 2d20 Companion data")
+    c.setSubject("English weapon reference catalog")
+    seen_categories = set()
+    for page, card in enumerate(cards, 1):
+        category = card.get("category") or "Other"
+        weapon_bookmark = "weapon-" + str(card.get("id", page)).replace("/", "-")
+        c.bookmarkPage(weapon_bookmark)
+        if category not in seen_categories:
+            category_bookmark = "category-" + re.sub(r"[^A-Za-z0-9_-]", "-", category)
+            c.bookmarkPage(category_bookmark)
+            c.addOutlineEntry(category, category_bookmark, level=0)
+            seen_categories.add(category)
+        c.addOutlineEntry(card.get("title", card.get("id", "Weapon")),
+                          weapon_bookmark, level=1)
+        card["page"] = page
+        draw_card_page(c, card)
+        if page < len(cards):
+            c.showPage()
     c.save()
 
 

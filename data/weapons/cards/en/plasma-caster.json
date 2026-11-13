@@ -1,0 +1,52 @@
+{
+  "id": "weapon_plasma_caster",
+  "title": "Plasma Caster",
+  "category": "Energy Weapons",
+  "weight": "30",
+  "cost": 700,
+  "rarity": 5,
+  "ammo": "Fusion Core",
+  "damageType": "Energy and Physical",
+  "damage": 8,
+  "fireRate": 3,
+  "range": "Medium",
+  "effects": [],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "The Tesla cannon is a shoulder-mounted directed energy weapon using technology based on designs by Nikola Tesla. The weapon entered limited production pre-War, and is a rare sight in the Wastelands, but some branches of the Brotherhood of Steel have sought out the technology and attempted to recreate it for their own needs.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "BARREL",
+      "items": [
+        "Long"
+      ]
+    },
+    {
+      "slot": "CAPACITOR",
+      "items": [
+        "Calibrated Capacitor",
+        "High Speed Electrode",
+        "Pulse Capacitor"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 77
+}

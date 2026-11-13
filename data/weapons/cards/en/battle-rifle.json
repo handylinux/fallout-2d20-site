@@ -1,0 +1,65 @@
+{
+  "id": "weapon_battle_rifle",
+  "title": "Battle Rifle",
+  "category": "Light Weapons",
+  "weight": "10",
+  "cost": 150,
+  "rarity": 3,
+  "ammo": ".308 Round",
+  "damageType": "Physical",
+  "damage": 7,
+  "fireRate": 1,
+  "range": "Medium",
+  "effects": [],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "Something of a relic of old 20th-century engineering, this sturdy, gas-operated semi-automatic rifle is nevertheless a solid choice of rifle for the discerning raider or mercenary. Its old-fashioned construction makes for a durable weapon with considerable stopping power, but it isn't easily modified.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        "Hair Trigger",
+        "Hardened",
+        "Powerful"
+      ]
+    },
+    {
+      "slot": "BARREL",
+      "items": [
+        "Long"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Reflex Sight",
+        "Short Scope"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Bayonet"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 11
+}

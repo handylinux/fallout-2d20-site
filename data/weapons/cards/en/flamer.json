@@ -1,0 +1,70 @@
+{
+  "id": "weapon_flamer",
+  "title": "Flamer",
+  "category": "Energy Weapons",
+  "weight": "16",
+  "cost": 137,
+  "rarity": 3,
+  "ammo": "Flamer Fuel",
+  "damageType": "Energy",
+  "damage": 3,
+  "fireRate": 4,
+  "range": "Close",
+  "effects": [
+    "Spread",
+    "Burst",
+    "Persistent"
+  ],
+  "qualities": [
+    "Two-Handed",
+    "Inaccurate",
+    "Debilitating"
+  ],
+  "description": "A flamethrower, or flamer, is a weapon which sprays an ignited fuel mixture over an area.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "BARREL",
+      "items": [
+        "Long"
+      ]
+    },
+    {
+      "slot": "NOZZLE",
+      "items": [
+        "Compression Nozzle",
+        "Vaporization Nozzle"
+      ]
+    },
+    {
+      "slot": "FUEL",
+      "items": [
+        "Napalm Fuel"
+      ]
+    },
+    {
+      "slot": "TANK",
+      "items": [
+        "Huge Tank",
+        "Large Tank"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 63
+}

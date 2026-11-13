@@ -1,0 +1,51 @@
+{
+  "id": "weapon_m79_grenade_launcher",
+  "title": "M79 Grenade Launcher",
+  "category": "Light Weapons",
+  "weight": "6",
+  "cost": 300,
+  "rarity": 3,
+  "ammo": "40mm Grenade",
+  "damageType": "Physical",
+  "damage": 6,
+  "fireRate": 0,
+  "range": "Long",
+  "effects": [],
+  "qualities": [
+    "Two-Handed",
+    "Blast"
+  ],
+  "description": "A grenade launcher is designed to launch large-caliber projectiles.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "BARREL",
+      "items": [
+        "Long"
+      ]
+    },
+    {
+      "slot": "STOCK",
+      "items": [
+        "Full Stock"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 28
+}

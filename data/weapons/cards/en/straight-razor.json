@@ -1,0 +1,35 @@
+{
+  "id": "weapon_straight_razor",
+  "title": "Straight Razor",
+  "category": "Other Weapons",
+  "weight": "",
+  "cost": "",
+  "rarity": "",
+  "ammo": "",
+  "damageType": "",
+  "damage": "",
+  "fireRate": "",
+  "range": "-",
+  "effects": [],
+  "qualities": [],
+  "description": "",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 146
+}

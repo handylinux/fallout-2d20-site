@@ -1,0 +1,52 @@
+{
+  "id": "weapon_bow",
+  "title": "Bow",
+  "category": "Light Weapons",
+  "weight": "3",
+  "cost": 44,
+  "rarity": 1,
+  "ammo": "Arrow",
+  "damageType": "Physical",
+  "damage": 3,
+  "fireRate": 2,
+  "range": "Medium",
+  "effects": [],
+  "qualities": [
+    "Two-Handed",
+    "Suppressed"
+  ],
+  "description": "A bolt-action rifle commonly found in the hands of super mutants and raiders. The simple design made them common amongst hunters and survivalists before the Great War, and they're endlessly customizable. It seems fanciful to suggest that the simple short-barrelled slug-thrower carried by a super mutant could be turned into a precision sniper's rifle, yet that describes the hunting rifle perfectly.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Illuminated Sight",
+        "Iron Sight"
+      ]
+    },
+    {
+      "slot": "FRAME",
+      "items": [
+        "Block Frame"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 16
+}

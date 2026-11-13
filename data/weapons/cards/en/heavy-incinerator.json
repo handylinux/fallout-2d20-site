@@ -1,0 +1,42 @@
+{
+  "id": "weapon_heavy_incinerator",
+  "title": "Heavy Incinerator",
+  "category": "Energy Weapons",
+  "weight": "20",
+  "cost": 350,
+  "rarity": 4,
+  "ammo": "Flamer Fuel",
+  "damageType": "Energy",
+  "damage": 5,
+  "fireRate": 3,
+  "range": "Medium",
+  "effects": [
+    "Spread",
+    "Burst",
+    "Persistent"
+  ],
+  "qualities": [
+    "Two-Handed",
+    "Debilitating"
+  ],
+  "description": "Like a flamethrower, a heavy incinerator also propels ignited fuel mixtures to burn a target.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 71
+}

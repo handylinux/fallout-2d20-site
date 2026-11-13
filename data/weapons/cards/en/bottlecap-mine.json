@@ -1,0 +1,38 @@
+{
+  "id": "weapon_bottlecap_mine",
+  "title": "Bottlecap Mine",
+  "category": "Explosive Weapons",
+  "weight": "1",
+  "cost": 75,
+  "rarity": 2,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 6,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [],
+  "qualities": [
+    "Mine",
+    "Blast"
+  ],
+  "description": "The Bottlecap mine is crudely put together, yet a formidable explosive.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 83
+}

@@ -1,0 +1,40 @@
+{
+  "id": "weapon_arc_welder",
+  "title": "Arc Welder",
+  "category": "Energy Weapons",
+  "weight": "15",
+  "cost": 370,
+  "rarity": 4,
+  "ammo": "2mm EC Round",
+  "damageType": "Energy",
+  "damage": 3,
+  "fireRate": 4,
+  "range": "Close",
+  "effects": [
+    "Burst",
+    "Persistent"
+  ],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "This odd weapon can discharge a constant, high-voltage stream of electricity. While painful and damaging to living creatures, it is especially effective against robots and enemies in Power Armor, as electricity discharges into delicate components.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 59
+}

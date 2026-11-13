@@ -1,0 +1,106 @@
+{
+  "id": "weapon_pipe_gun",
+  "title": "Pipe Gun",
+  "category": "Light Weapons",
+  "weight": "2",
+  "cost": 30,
+  "rarity": 0,
+  "ammo": ".38 Round",
+  "damageType": "Physical",
+  "damage": 3,
+  "fireRate": 2,
+  "range": "Close",
+  "effects": [],
+  "qualities": [
+    "Close Quarters",
+    "Unreliable"
+  ],
+  "description": "A crude, homemade weapon, normally seen in the hands of those who can't make, buy or scavenge anything better.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        ".45 Receiver",
+        "9mm Receiver",
+        "Armor-Piercing",
+        "Armor Piercing Automatic",
+        "Automatic",
+        "Calibrated",
+        "Calibrated Powerful",
+        "Hardened",
+        "Hardened Automatic",
+        "Hardened Piercing Auto",
+        "Powerful",
+        "Powerful Automatic",
+        "Rapid Automatic"
+      ]
+    },
+    {
+      "slot": "BARREL",
+      "items": [
+        "Finned",
+        "Long",
+        "Ported"
+      ]
+    },
+    {
+      "slot": "GRIP",
+      "items": [
+        "Sharpshooter's Grip"
+      ]
+    },
+    {
+      "slot": "STOCK",
+      "items": [
+        "Full Stock",
+        "Marksman's Stock"
+      ]
+    },
+    {
+      "slot": "MAGAZINE",
+      "items": [
+        "Large Magazine",
+        "Large Quick-Eject Mag",
+        "Quick-Eject Mag"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Long Night Vision Scope",
+        "Long Scope",
+        "Recon Scope",
+        "Reflex Sight",
+        "Short Night Vision Scope",
+        "Short Scope"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Bayonet",
+        "Compensator",
+        "Muzzle Break",
+        "Suppressor"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 31
+}

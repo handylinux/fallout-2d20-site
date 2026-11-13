@@ -1,0 +1,78 @@
+{
+  "id": "weapon_gatling_gun",
+  "title": "Gatling Gun",
+  "category": "Heavy Weapons",
+  "weight": "20",
+  "cost": 350,
+  "rarity": 1,
+  "ammo": "5mm Round",
+  "damageType": "Physical",
+  "damage": 3,
+  "fireRate": 3,
+  "range": "Medium",
+  "effects": [
+    "Burst"
+  ],
+  "qualities": [
+    "Two-Handed",
+    "Gatling",
+    "Inaccurate"
+  ],
+  "description": "Originally referred to as \"Gatling's battery gun\", these weapons resemble an old-fashioned version of a minigun, with the rotating barrels operated by a hand-crank rather than an electric motor. Naturally, this means that it has a slower rate of fire than its more advanced counterpart, but the weapon is no less functional for its old-fashioned design.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        "Speedy Receiver"
+      ]
+    },
+    {
+      "slot": "BARREL",
+      "items": [
+        "Long"
+      ]
+    },
+    {
+      "slot": "GRIP",
+      "items": [
+        "Comfort Grip"
+      ]
+    },
+    {
+      "slot": "MAGAZINE",
+      "items": [
+        "Extra-Large Magazine"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Front Sight Ring"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Large Bayonet"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 49
+}

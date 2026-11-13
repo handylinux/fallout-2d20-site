@@ -1,0 +1,44 @@
+{
+  "id": "weapon_assaultron_blade",
+  "title": "Assaultron Blade",
+  "category": "Melee Weapons",
+  "weight": "3",
+  "cost": 50,
+  "rarity": 3,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 4,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [
+    "Piercing"
+  ],
+  "qualities": [],
+  "description": "A mechanical blade fitted to an Assaultron robot's chassis, capable of delivering a piercing blow.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "UNIQUE",
+      "items": [
+        "Electrified Blade"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 104
+}

@@ -1,0 +1,60 @@
+{
+  "id": "weapon_broadsider",
+  "title": "Broadsider",
+  "category": "Heavy Weapons",
+  "weight": "16",
+  "cost": 140,
+  "rarity": 5,
+  "ammo": "Cannonball",
+  "damageType": "Physical",
+  "damage": 10,
+  "fireRate": 0,
+  "range": "Medium",
+  "effects": [
+    "Vicious"
+  ],
+  "qualities": [
+    "Two-Handed",
+    "Blast"
+  ],
+  "description": "The broadsider is a naval cannon that has been modified with a chassis that allows for it to be a portable weapon. In addition to having a portable frame, the firing mechanism has been altered to include electronic triggers to avoid the traditional fuse. The cannon requires traditional loading however, with cannonballs being loaded directly into the muzzle.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "BARREL",
+      "items": [
+        "Light Barrel",
+        "Long Barrel"
+      ]
+    },
+    {
+      "slot": "CANISTER",
+      "items": [
+        "Multi Shot Canister"
+      ]
+    },
+    {
+      "slot": "LAUNCHER",
+      "items": [
+        "M79 Launcher"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 45
+}

@@ -1,0 +1,61 @@
+{
+  "id": "weapon_missile_launcher",
+  "title": "Missile Launcher",
+  "category": "Heavy Weapons",
+  "weight": "21",
+  "cost": 314,
+  "rarity": 4,
+  "ammo": "Missile",
+  "damageType": "Physical",
+  "damage": 11,
+  "fireRate": 0,
+  "range": "Long",
+  "effects": [],
+  "qualities": [
+    "Two-Handed",
+    "Blast"
+  ],
+  "description": "A refined, highly adaptable multipurpose missile weapon.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "BARREL",
+      "items": [
+        "Quad Barrel",
+        "Tri-Barrel"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Night Vision Scope",
+        "Scope",
+        "Targeting Computer"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Shredder",
+        "Stabilizer"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 53
+}
