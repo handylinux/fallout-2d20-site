@@ -1,0 +1,10 @@
+{
+  "weapon_combat_knife": {"url": "https://www.fallout-2d20.ru/oruzhie/oruzhie-blizhnego-boya/boevoj-nozh", "damage": 3, "weight": 1, "cost": 25, "rarity": 1},
+  "weapon_ripper": {"url": "https://www.fallout-2d20.ru/oruzhie/oruzhie-blizhnego-boya/potroshitel", "damage": 4, "weight": 6, "cost": 50, "rarity": 2},
+  "weapon_shishkebab": {"url": "https://www.fallout-2d20.ru/oruzhie/oruzhie-blizhnego-boya/shish-kebab", "damage": 5, "weight": 3, "cost": 200, "rarity": 3},
+  "weapon_boarding_pistol": {"url": "https://www.fallout-2d20.ru/oruzhie/strelkovoe-oruzhie/abordazhnyj-pistolet", "damage": 5, "fireRate": 0, "weight": 9, "cost": 55, "rarity": 2},
+  "weapon_sword": {"url": "https://www.fallout-2d20.ru/oruzhie/oruzhie-blizhnego-boya/mech", "damage": 4, "weight": 3, "cost": 50, "rarity": 2},
+  "weapon_baseball_bat": {"url": "https://www.fallout-2d20.ru/oruzhie/oruzhie-blizhnego-boya/bejsbolnaya-bita", "damage": 4, "weight": 3, "cost": 25, "rarity": 1},
+  "weapon_sledgehammer": {"url": "https://www.fallout-2d20.ru/oruzhie/oruzhie-blizhnego-boya/kuvalda", "damage": 5, "weight": 12, "cost": 40, "rarity": 2},
+  "weapon_tear_gas_launcher": {"url": "https://www.fallout-2d20.ru/oruzhie/tyazhjoloe-oruzhie/granatomet-so-slezotochivym-gazom", "damage": 4, "fireRate": 0, "weight": 18, "cost": 254, "rarity": 3, "site_category": "Тяжёлое оружие"}
+}

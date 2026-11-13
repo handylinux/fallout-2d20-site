@@ -597,3 +597,9 @@ Companion. Ручная сверка и ссылки — в `docs/weapon-site-co
 а категории — в `data/weapons/melee-slot-labels.json`. Непроверенный слот
 помечается «НЕ УТОЧНЁН»; полная сверка не завершена. Причины расхождений:
 `docs/weapon-melee-site-review.md`.
+
+Предварительный машинный аудит источников: `python3 tools/audit_weapon_sources.py`.
+Числовые данные и голоса сохраняются в `data/weapon-audit/numeric-audit.json`,
+список разногласий — `docs/weapon-source-numeric-audit.md`. Снимки референсов
+зафиксированы по коммиту, веса Pip-Boy 3000 исключены до проверки единиц,
+большинство предварительное и не изменяет данные карточек.
