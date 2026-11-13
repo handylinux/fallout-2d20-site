@@ -43,9 +43,13 @@ class SmallGunsBookTests(unittest.TestCase):
             self.assertNotIn('МОДИФИКАЦИИ ЛЕБЁДКИ', reference)
             text = next(p.get_text() for p in doc if 'АБОРДАЖНЫЙ ПИСТОЛЕТ' in p.get_text())
             self.assertIn('УНИКАЛЬНЫЙ', text)
-            self.assertIn('Не указано', text)
+            self.assertNotIn('Не указано', text)
             self.assertIn('ЛЕБЁДКА', text)
-        self.assertIn('mod_aerodynamic_barrel', report.read_text(encoding='utf-8'))
+            self.assertIn('Проникающий 2', text)
+            self.assertIn('Ненадёжное', text)
+            self.assertIn('Наука! 2', text)
+            self.assertIn('на расстояние до двух зон', text)
+        self.assertIn('weapon-boarding-comparison.md', report.read_text(encoding='utf-8'))
 
     def test_unknown_mod_remains_visible(self):
         comp = Companion()

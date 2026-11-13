@@ -87,7 +87,7 @@ def render_source_heavy(comp, wid, page_num, source, source_page, out, extra_des
     return {'mode': 'source', 'font_size': None, 'mod_count': None}
 
 
-def render_heavy(comp, wid, page_num, prefixes, out, extra_description='', card_overrides=None, unique_slots=(), unique_mods=()):
+def render_heavy(comp, wid, page_num, prefixes, out, extra_description='', card_overrides=None, unique_slots=(), unique_mods=(), mod_overrides=None):
     card = build_card(comp, wid, page=page_num, image='')
     if card_overrides:
         card.update(card_overrides)
@@ -125,6 +125,12 @@ def render_heavy(comp, wid, page_num, prefixes, out, extra_description='', card_
         ordered_slots = comp.slots.get(wid) or {}
         slot_order = [s for s in ORDER if ordered_slots.get(s)] + sorted(s for s in ordered_slots if s not in ORDER and ordered_slots[s])
         ids_in_order = [(slot, mid) for slot in slot_order for mid in ordered_slots[slot]]
+        valid_fields = {'name': 0, 'prefix': 1, 'effects': 2, 'weight': 3, 'cost': 4, 'perks': 5}
+        for (_, mid), (_, values) in zip(ids_in_order, rows):
+            for field, value in (mod_overrides or {}).get(mid, {}).items():
+                if field not in valid_fields or not isinstance(value, str):
+                    raise ValueError(f'{wid}: неверное поле поправки {mid}.{field}')
+                values[valid_fields[field]] = value
 
         def make_table(font_size, padding):
             leading = max(10.0, font_size * 1.23)

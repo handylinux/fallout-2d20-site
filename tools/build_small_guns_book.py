@@ -16,6 +16,8 @@ from weapons2cards import Companion, build_card
 
 ROOT = Path(__file__).resolve().parent.parent
 ORDER = ROOT / 'data/weapons/small-guns-order.json'
+CARD_OVERRIDES = ROOT / 'data/weapons/small-guns-card-overrides.json'
+MOD_OVERRIDES = ROOT / 'data/weapons/small-guns-mod-overrides.json'
 SLOT_ORDER = ['Receiver', 'Barrel', 'Magazine', 'Grip', 'Stock', 'Sight',
               'Muzzle', 'Capacitor', 'Winch', 'Frame']
 SLOT_TITLES = {'Receiver': 'РЕСИВЕРА', 'Barrel': 'СТВОЛА', 'Magazine': 'МАГАЗИНА',
@@ -114,6 +116,8 @@ def build(source, output, report=None):
     weapon_ids = json.loads(ORDER.read_text(encoding='utf-8'))
     comp = Companion()
     prefixes = conv.load(conv.PREFIXES)
+    card_overrides = conv.load(CARD_OVERRIDES)
+    mod_overrides = conv.load(MOD_OVERRIDES)
     # Reference tables are grouped by skill, even if the original book put
     # weapons of other skills in the small-guns section.
     reference_ids = small_guns_reference_ids(comp, weapon_ids)
@@ -128,7 +132,8 @@ def build(source, output, report=None):
             if not specific:
                 continue
             try:
-                detail.render_heavy(comp, wid, 1, prefixes, Path(trial) / 'trial.pdf', unique_mods=specific)
+                detail.render_heavy(comp, wid, 1, prefixes, Path(trial) / 'trial.pdf', unique_mods=specific,
+                                    card_overrides=card_overrides.get(wid), mod_overrides=mod_overrides.get(wid))
             except ValueError as exc:
                 fit_problems.append(f'{wid}: подробная таблица не помещается; моды оставлены в общей таблице ({exc})')
             else:
@@ -145,7 +150,7 @@ def build(source, output, report=None):
     for wid, pairs in detailed.items():
         for slot, mid in sorted(pairs):
             mod = comp.mods.get(mid) or {}
-            if conv.effect_text(mod, {}, {}, {}) == 'Не указано':
+            if not (mod_overrides.get(wid, {}).get(mid) or {}).get('effects') and conv.effect_text(mod, {}, {}, {}) == 'Не указано':
                 problems.append(f'{wid}: {slot} / {mid}: эффект не указан в Companion, на странице оставлено «Не указано»')
     with pymupdf.open(source) as original:
         if original.page_count < 13:
@@ -165,7 +170,8 @@ def build(source, output, report=None):
                 page_file = Path(tmp) / f'weapon-{i}.pdf'
                 if wid in detailed:
                     detail.render_heavy(comp, wid, len(result) + 1, prefixes, page_file,
-                                        unique_mods=detailed[wid])
+                                        unique_mods=detailed[wid], card_overrides=card_overrides.get(wid),
+                                        mod_overrides=mod_overrides.get(wid))
                 else:
                     w.render_card(card, str(page_file))
                 with pymupdf.open(page_file) as weapon_page:
@@ -184,6 +190,7 @@ def build(source, output, report=None):
                           'Немногочисленные уникальные моды приведены подробно на странице оружия, если таблица помещается; из общей таблицы они исключены. '
                           'Отбор по спискам слотов оружия в рабочей копии Companion. '
                           'Пустые поля не интерпретируются как нули; совпадение правил с книгой не проверено.\n\n'
+                          'Абордажный пистолет: параметры четырёх модов взяты со страницы сайта, особое правило — из оригинального PDF; расхождения и источник приведены в docs/weapon-boarding-comparison.md.\n\n'
                           '## Требует проверки\n\n' +
                           ('\n'.join(f'- {p}' for p in sorted(set(problems))) if problems else 'Не найдено.') + '\n',
                           encoding='utf-8')

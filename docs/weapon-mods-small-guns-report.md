@@ -6,6 +6,8 @@
 
 Немногочисленные уникальные моды приведены подробно на странице оружия, если таблица помещается; из общей таблицы они исключены. Отбор по спискам слотов оружия в рабочей копии Companion. Пустые поля не интерпретируются как нули; совпадение правил с книгой не проверено.
 
+Абордажный пистолет: параметры четырёх модов взяты со страницы сайта, особое правило — из оригинального PDF; расхождения и источник приведены в docs/weapon-boarding-comparison.md.
+
 ## Требует проверки
 
 - mod_10mm_receiver: изменения характеристик не указаны
@@ -17,6 +19,3 @@
 - mod_quick_eject_mag: weight не указано
 - mod_reflex_sight: weight не указано
 - mod_sharpshooters_grip: weight не указано
-- weapon_boarding_pistol: Barrel / mod_aerodynamic_barrel: эффект не указан в Companion, на странице оставлено «Не указано»
-- weapon_boarding_pistol: Winch / mod_protected_winch: эффект не указан в Companion, на странице оставлено «Не указано»
-- weapon_boarding_pistol: Winch / mod_reinforced_winch: эффект не указан в Companion, на странице оставлено «Не указано»
