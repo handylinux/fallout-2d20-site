@@ -19,6 +19,9 @@ COMP = ROOT / 'data/companion/equipment/weapons.json'
 RU = ROOT / 'data/companion/i18n/ru-RU/data/equipment/weapons/weapons.json'
 FIELDS = ('damage', 'fireRate', 'weight', 'cost', 'rarity')
 APPROVED = {('weapon_boarding_pistol', 'fireRate'): '0'}
+APPLIED = {('weapon_tesla_rifle', 'damage'): '5',
+           ('weapon_alien_disintegrator', 'fireRate'): '2',
+           ('weapon_pistol_injector', 'fireRate'): '0'}
 FILES = {'pipboy': 'weapons.json', 'lonestar': 'lonestar_weapons.json',
          'focharactersheet': 'focharactersheet_weapons.json', 'pipboy3000': 'pipboy3000_weapons.json'}
 KEYS = {'pipboy': {'damage': 'damageRating', 'fireRate': 'fireRate', 'weight': 'weight', 'cost': 'cost', 'rarity': 'rarity'},
@@ -63,6 +66,23 @@ def unique_index(rows, key):
     return {key: rows[0] for key, rows in index.items() if len(rows) == 1}
 
 
+def stat_cells(page):
+    """Read integer cells only if exactly one geometric match is available."""
+    words = page.get_text('words')
+    result = {}
+    for label, field in (('УРОН', 'damage'), ('СКОРОСТЬ', 'fireRate')):
+        headings = [word for word in words if word[4] == label and 290 <= word[1] < 350]
+        if len(headings) != 1:
+            continue
+        heading = headings[0]
+        matches = [word[4] for word in words if re.fullmatch(r'\d+', word[4])
+                   and 340 <= word[1] <= 390
+                   and abs((word[0] + word[2] - heading[0] - heading[2]) / 2) < 30]
+        if len(matches) == 1:
+            result[field] = matches[0]
+    return result
+
+
 def original_pdf_values():
     """Extract explicit printed header values only; no inferred numeric cells."""
     paths = read(ROOT / 'data/weapon-audit/original-page-map.json')
@@ -75,7 +95,7 @@ def original_pdf_values():
                 continue
             weight, cost, rarity = matches[0]
             result[wid] = {'weight': number(weight), 'cost': number(cost),
-                           'rarity': number(rarity), 'page': page}
+                           'rarity': number(rarity), 'page': page, **stat_cells(pdf[page-1])}
     return result
 
 
@@ -138,6 +158,8 @@ def run():
                            'votes': votes, 'counts': dict(counts), 'majority': winner,
                            'status': ('agreement' if len(counts) == 1 else 'provisional_majority' if winner is not None else 'review'),
                            'website': site.get(wid, {}).get('url'), 'original_pdf_page': original.get(wid, {}).get('page'), 'errata': 'not_checked'}
+            if (wid, field) in APPLIED:
+                record['book_value'] = APPLIED[(wid, field)]
             if (wid, field) in APPROVED:
                 record['approved_by_user'] = APPROVED[(wid, field)]
                 record['status'] = 'approved_by_user'
@@ -152,7 +174,7 @@ def render(data):
     diffs = data['differences']
     labels = {'damage': 'Урон', 'fireRate': 'Скорострельность', 'weight': 'Вес', 'cost': 'Цена', 'rarity': 'Редкость'}
     lines = ['# Сверка оружия: предварительный машинный аудит', '',
-             'Это не глобальная сверка всех источников: первичная эррата, моды, эффекты, качества, боеприпасы и категории здесь не проверены. Сайт пока сверён лишь для восьми предметов; остальные не голосуют. Из исходного PDF извлечены только числовые вес, цена и редкость; урон и скорострельность не считываются. Совпадение точных названий и ID не доказывает идентичность варианта; для публикации требуется проверка. Результат не меняет PDF или JSON оружия.', '',
+             'Это не глобальная сверка всех источников: первичная эррата, моды, эффекты, качества, боеприпасы и категории здесь не проверены. Сайт сверён лишь для части предметов; остальные не голосуют. Из исходного PDF извлечены вес, цена, редкость и однозначно читаемые числовые ячейки урона и скорострельности. Сопоставление колонок по геометрии требует проверки по исходным страницам. Совпадение точных названий и ID не доказывает идентичность варианта; для публикации требуется проверка. Этот скрипт не меняет PDF или JSON оружия; отдельно отмечены известные применённые поправки, а для остальных применение ещё не проверено.', '',
              'Вес Pip-Boy 3000 не участвует: значения систематически вдвое меньше; единицы не подтверждены. Преобразование без проверки не выполняется.', '',
              'Голосование: уникальное большинство строго более половины доступных числовых голосов и минимум три источника; меньшее покрытие и ничьи — на ручную проверку. Отсутствующее, неопознанное и неоднозначное значение не голосует; прочерк, «<1» и выражения вроде «6+1» не подменяются числом. Зафиксированные решения пользователя имеют приоритет. Разные проекты могут использовать общий первоисточник; это голоса записей, не доказательство независимости.', '',
              f"Обработано записей Companion: {data['weapon_count']}; заголовков PDF извлечено: {data['pdf_headers_extracted']}; страниц сайта вручную сверено: {data['site_records']}. Точные однозначные сопоставления: "+', '.join(f'{k}: {v}' for k,v in sorted(data['matched'].items()))+'.',
@@ -162,7 +184,7 @@ def render(data):
              '| ID | Поле | Голоса по источникам | Предварительный результат |', '|---|---|---|---|']
     for row in diffs:
         votes = '; '.join(f'{k}' + (f' стр.{row["original_pdf_page"]}' if k == 'original_pdf' else '') + f': {v}' for k, v in row['votes'].items())
-        result = ('согласовано пользователем: '+row['approved_by_user']) if 'approved_by_user' in row else (('большинство '+row['majority']+' — не применено') if row['majority'] is not None else '**проверить**')
+        result = ('согласовано пользователем: '+row['approved_by_user']) if 'approved_by_user' in row else (('большинство '+row['majority'] + (' — в сборке' if row.get('book_value') == row['majority'] else ' — не проверено применение')) if row['majority'] is not None else '**проверить**')
         lines.append(f"| `{row['weapon_id']}` ({row['name_ru']}) | {labels[row['field']]} | {votes} | {result} |")
     return '\n'.join(lines)+'\n'
 

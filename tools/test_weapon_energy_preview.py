@@ -76,6 +76,12 @@ class EnergyPreviewTest(unittest.TestCase):
                 self.assertIn('Наука! 1', head)
                 self.assertNotIn('Science!', head)
                 self.assertNotIn('Science!', ref)
+                disintegrator = doc[93]
+                word = [w for w in disintegrator.get_text('words') if w[4] == 'СКОРОСТЬ'][0]
+                speed = [w[4] for w in disintegrator.get_text('words')
+                         if w[4].isdigit() and 340 < w[1] < 390
+                         and abs((w[0]+w[2]-word[0]-word[2])/2) < 20]
+                self.assertEqual(speed, ['2'])
                 alien = doc[94].get_text()
                 self.assertIn('Радиационный', alien)
                 self.assertIn('Порочный', alien)

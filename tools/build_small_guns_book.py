@@ -173,6 +173,7 @@ def build(source, output, report=None):
                                         unique_mods=detailed[wid], card_overrides=card_overrides.get(wid),
                                         mod_overrides=mod_overrides.get(wid))
                 else:
+                    card.update(card_overrides.get(wid, {}))
                     w.render_card(card, str(page_file))
                 with pymupdf.open(page_file) as weapon_page:
                     result.insert_pdf(weapon_page)

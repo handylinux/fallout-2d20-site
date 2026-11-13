@@ -3,7 +3,7 @@
   "reference_commit": "2e66c7dc7c07d1fe1e62b1585e8764f453417193",
   "weapon_count": 146,
   "pdf_headers_extracted": 83,
-  "site_records": 8,
+  "site_records": 17,
   "fields": [
     "damage",
     "fireRate",
@@ -24,12 +24,13 @@
       "field": "damage",
       "votes": {
         "companion": "6",
+        "original_pdf": "6",
         "focharactersheet": "6"
       },
       "counts": {
-        "6": 2
+        "6": 3
       },
-      "majority": null,
+      "majority": "6",
       "status": "agreement",
       "website": null,
       "original_pdf_page": 15,
@@ -41,11 +42,12 @@
       "field": "fireRate",
       "votes": {
         "companion": "1",
+        "original_pdf": "1",
         "lonestar": "1",
         "focharactersheet": "1"
       },
       "counts": {
-        "1": 3
+        "1": 4
       },
       "majority": "1",
       "status": "agreement",
@@ -116,11 +118,12 @@
       "field": "damage",
       "votes": {
         "companion": "4",
+        "original_pdf": "4",
         "pipboy": "4",
         "focharactersheet": "4"
       },
       "counts": {
-        "4": 3
+        "4": 4
       },
       "majority": "4",
       "status": "agreement",
@@ -134,12 +137,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "2",
+        "original_pdf": "2",
         "pipboy": "2",
         "lonestar": "2",
         "focharactersheet": "2"
       },
       "counts": {
-        "2": 4
+        "2": 5
       },
       "majority": "2",
       "status": "agreement",
@@ -213,12 +217,13 @@
       "field": "damage",
       "votes": {
         "companion": "3",
+        "original_pdf": "3",
         "pipboy": "3",
         "focharactersheet": "3",
         "pipboy3000": "3"
       },
       "counts": {
-        "3": 4
+        "3": 5
       },
       "majority": "3",
       "status": "agreement",
@@ -232,13 +237,14 @@
       "field": "fireRate",
       "votes": {
         "companion": "0",
+        "original_pdf": "0",
         "pipboy": "0",
         "lonestar": "0",
         "focharactersheet": "0",
         "pipboy3000": "0"
       },
       "counts": {
-        "0": 5
+        "0": 6
       },
       "majority": "0",
       "status": "agreement",
@@ -314,11 +320,12 @@
       "field": "damage",
       "votes": {
         "companion": "5",
+        "original_pdf": "5",
         "focharactersheet": "5",
         "pipboy3000": "5"
       },
       "counts": {
-        "5": 3
+        "5": 4
       },
       "majority": "5",
       "status": "agreement",
@@ -332,12 +339,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "2",
+        "original_pdf": "2",
         "lonestar": "2",
         "focharactersheet": "2",
         "pipboy3000": "2"
       },
       "counts": {
-        "2": 4
+        "2": 5
       },
       "majority": "2",
       "status": "agreement",
@@ -409,10 +417,11 @@
       "name_ru": "Китайский автомат",
       "field": "damage",
       "votes": {
-        "companion": "4"
+        "companion": "4",
+        "original_pdf": "4"
       },
       "counts": {
-        "4": 1
+        "4": 2
       },
       "majority": null,
       "status": "agreement",
@@ -425,10 +434,11 @@
       "name_ru": "Китайский автомат",
       "field": "fireRate",
       "votes": {
-        "companion": "4"
+        "companion": "4",
+        "original_pdf": "4"
       },
       "counts": {
-        "4": 1
+        "4": 2
       },
       "majority": null,
       "status": "agreement",
@@ -493,12 +503,13 @@
       "field": "damage",
       "votes": {
         "companion": "5",
+        "original_pdf": "5",
         "pipboy": "5",
         "focharactersheet": "5",
         "pipboy3000": "5"
       },
       "counts": {
-        "5": 4
+        "5": 5
       },
       "majority": "5",
       "status": "agreement",
@@ -512,13 +523,14 @@
       "field": "fireRate",
       "votes": {
         "companion": "2",
+        "original_pdf": "2",
         "pipboy": "2",
         "lonestar": "2",
         "focharactersheet": "2",
         "pipboy3000": "2"
       },
       "counts": {
-        "2": 5
+        "2": 6
       },
       "majority": "2",
       "status": "agreement",
@@ -594,12 +606,13 @@
       "field": "damage",
       "votes": {
         "companion": "10",
+        "original_pdf": "10",
         "pipboy": "10",
         "focharactersheet": "10",
         "pipboy3000": "10"
       },
       "counts": {
-        "10": 4
+        "10": 5
       },
       "majority": "10",
       "status": "agreement",
@@ -613,13 +626,14 @@
       "field": "fireRate",
       "votes": {
         "companion": "1",
+        "original_pdf": "1",
         "pipboy": "1",
         "lonestar": "1",
         "focharactersheet": "1",
         "pipboy3000": "1"
       },
       "counts": {
-        "1": 5
+        "1": 6
       },
       "majority": "1",
       "status": "agreement",
@@ -696,11 +710,12 @@
       "field": "damage",
       "votes": {
         "companion": "6",
+        "original_pdf": "6",
         "focharactersheet": "6",
         "pipboy3000": "6"
       },
       "counts": {
-        "6": 3
+        "6": 4
       },
       "majority": "6",
       "status": "agreement",
@@ -714,12 +729,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "0",
+        "original_pdf": "0",
         "lonestar": "0",
         "focharactersheet": "0",
         "pipboy3000": "0"
       },
       "counts": {
-        "0": 4
+        "0": 5
       },
       "majority": "0",
       "status": "agreement",
@@ -792,11 +808,12 @@
       "field": "damage",
       "votes": {
         "companion": "3",
+        "original_pdf": "3",
         "pipboy": "3",
         "focharactersheet": "3"
       },
       "counts": {
-        "3": 3
+        "3": 4
       },
       "majority": "3",
       "status": "agreement",
@@ -810,12 +827,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "3",
+        "original_pdf": "3",
         "pipboy": "3",
         "lonestar": "3",
         "focharactersheet": "3"
       },
       "counts": {
-        "3": 4
+        "3": 5
       },
       "majority": "3",
       "status": "agreement",
@@ -889,12 +907,13 @@
       "field": "damage",
       "votes": {
         "companion": "5",
+        "original_pdf": "5",
         "pipboy": "5",
         "focharactersheet": "5",
         "pipboy3000": "5"
       },
       "counts": {
-        "5": 4
+        "5": 5
       },
       "majority": "5",
       "status": "agreement",
@@ -908,13 +927,14 @@
       "field": "fireRate",
       "votes": {
         "companion": "2",
+        "original_pdf": "2",
         "pipboy": "2",
         "lonestar": "2",
         "focharactersheet": "2",
         "pipboy3000": "2"
       },
       "counts": {
-        "2": 5
+        "2": 6
       },
       "majority": "2",
       "status": "agreement",
@@ -990,12 +1010,13 @@
       "field": "damage",
       "votes": {
         "companion": "5",
+        "original_pdf": "5",
         "pipboy": "5",
         "focharactersheet": "5",
         "pipboy3000": "5"
       },
       "counts": {
-        "5": 4
+        "5": 5
       },
       "majority": "5",
       "status": "agreement",
@@ -1009,13 +1030,14 @@
       "field": "fireRate",
       "votes": {
         "companion": "0",
+        "original_pdf": "0",
         "pipboy": "0",
         "lonestar": "0",
         "focharactersheet": "0",
         "pipboy3000": "0"
       },
       "counts": {
-        "0": 5
+        "0": 6
       },
       "majority": "0",
       "status": "agreement",
@@ -1092,12 +1114,13 @@
       "field": "damage",
       "votes": {
         "companion": "5",
+        "original_pdf": "5",
         "focharactersheet": "5"
       },
       "counts": {
-        "5": 2
+        "5": 3
       },
-      "majority": null,
+      "majority": "5",
       "status": "agreement",
       "website": null,
       "original_pdf_page": 25,
@@ -1109,11 +1132,12 @@
       "field": "fireRate",
       "votes": {
         "companion": "0",
+        "original_pdf": "0",
         "lonestar": "0",
         "focharactersheet": "0"
       },
       "counts": {
-        "0": 3
+        "0": 4
       },
       "majority": "0",
       "status": "agreement",
@@ -1184,12 +1208,13 @@
       "field": "damage",
       "votes": {
         "companion": "3",
+        "original_pdf": "3",
         "focharactersheet": "3"
       },
       "counts": {
-        "3": 2
+        "3": 3
       },
-      "majority": null,
+      "majority": "3",
       "status": "agreement",
       "website": null,
       "original_pdf_page": 26,
@@ -1201,11 +1226,12 @@
       "field": "fireRate",
       "votes": {
         "companion": "2",
+        "original_pdf": "2",
         "lonestar": "2",
         "focharactersheet": "2"
       },
       "counts": {
-        "2": 3
+        "2": 4
       },
       "majority": "2",
       "status": "agreement",
@@ -1276,12 +1302,13 @@
       "field": "damage",
       "votes": {
         "companion": "4",
+        "original_pdf": "4",
         "focharactersheet": "4"
       },
       "counts": {
-        "4": 2
+        "4": 3
       },
-      "majority": null,
+      "majority": "4",
       "status": "agreement",
       "website": null,
       "original_pdf_page": 27,
@@ -1293,11 +1320,12 @@
       "field": "fireRate",
       "votes": {
         "companion": "1",
+        "original_pdf": "1",
         "lonestar": "1",
         "focharactersheet": "1"
       },
       "counts": {
-        "1": 3
+        "1": 4
       },
       "majority": "1",
       "status": "agreement",
@@ -1368,11 +1396,12 @@
       "field": "damage",
       "votes": {
         "companion": "10",
+        "original_pdf": "10",
         "focharactersheet": "10",
         "pipboy3000": "10"
       },
       "counts": {
-        "10": 3
+        "10": 4
       },
       "majority": "10",
       "status": "agreement",
@@ -1386,12 +1415,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "0",
+        "original_pdf": "0",
         "lonestar": "0",
         "focharactersheet": "0",
         "pipboy3000": "0"
       },
       "counts": {
-        "0": 4
+        "0": 5
       },
       "majority": "0",
       "status": "agreement",
@@ -1464,12 +1494,13 @@
       "field": "damage",
       "votes": {
         "companion": "3",
+        "original_pdf": "3",
         "pipboy": "3",
         "focharactersheet": "3",
         "pipboy3000": "3"
       },
       "counts": {
-        "3": 4
+        "3": 5
       },
       "majority": "3",
       "status": "agreement",
@@ -1483,13 +1514,14 @@
       "field": "fireRate",
       "votes": {
         "companion": "0",
+        "original_pdf": "0",
         "pipboy": "0",
         "lonestar": "0",
         "focharactersheet": "0",
         "pipboy3000": "0"
       },
       "counts": {
-        "0": 5
+        "0": 6
       },
       "majority": "0",
       "status": "agreement",
@@ -1658,16 +1690,18 @@
       "field": "damage",
       "votes": {
         "companion": "5",
+        "site": "5",
+        "original_pdf": "5",
         "pipboy": "5",
         "focharactersheet": "5",
         "pipboy3000": "5"
       },
       "counts": {
-        "5": 4
+        "5": 6
       },
       "majority": "5",
       "status": "agreement",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/lazernyj-mushket",
       "original_pdf_page": 81,
       "errata": "not_checked"
     },
@@ -1677,17 +1711,19 @@
       "field": "fireRate",
       "votes": {
         "companion": "0",
+        "site": "0",
+        "original_pdf": "0",
         "pipboy": "0",
         "lonestar": "0",
         "focharactersheet": "0",
         "pipboy3000": "0"
       },
       "counts": {
-        "0": 5
+        "0": 7
       },
       "majority": "0",
       "status": "agreement",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/lazernyj-mushket",
       "original_pdf_page": 81,
       "errata": "not_checked"
     },
@@ -1697,17 +1733,18 @@
       "field": "weight",
       "votes": {
         "companion": "13",
+        "site": "13",
         "original_pdf": "13",
         "pipboy": "13",
         "lonestar": "13",
         "focharactersheet": "13"
       },
       "counts": {
-        "13": 5
+        "13": 6
       },
       "majority": "13",
       "status": "agreement",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/lazernyj-mushket",
       "original_pdf_page": 81,
       "errata": "not_checked"
     },
@@ -1717,6 +1754,7 @@
       "field": "cost",
       "votes": {
         "companion": "57",
+        "site": "57",
         "original_pdf": "57",
         "pipboy": "57",
         "lonestar": "57",
@@ -1724,11 +1762,11 @@
         "pipboy3000": "57"
       },
       "counts": {
-        "57": 6
+        "57": 7
       },
       "majority": "57",
       "status": "agreement",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/lazernyj-mushket",
       "original_pdf_page": 81,
       "errata": "not_checked"
     },
@@ -1738,6 +1776,7 @@
       "field": "rarity",
       "votes": {
         "companion": "1",
+        "site": "1",
         "original_pdf": "1",
         "pipboy": "1",
         "lonestar": "1",
@@ -1745,11 +1784,11 @@
         "pipboy3000": "1"
       },
       "counts": {
-        "1": 6
+        "1": 7
       },
       "majority": "1",
       "status": "agreement",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/lazernyj-mushket",
       "original_pdf_page": 81,
       "errata": "not_checked"
     },
@@ -1759,11 +1798,12 @@
       "field": "damage",
       "votes": {
         "companion": "4",
+        "original_pdf": "4",
         "pipboy": "4",
         "focharactersheet": "4"
       },
       "counts": {
-        "4": 3
+        "4": 4
       },
       "majority": "4",
       "status": "agreement",
@@ -1777,12 +1817,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "2",
+        "original_pdf": "2",
         "pipboy": "2",
         "lonestar": "2",
         "focharactersheet": "2"
       },
       "counts": {
-        "2": 4
+        "2": 5
       },
       "majority": "2",
       "status": "agreement",
@@ -1856,11 +1897,12 @@
       "field": "damage",
       "votes": {
         "companion": "6",
+        "original_pdf": "6",
         "pipboy": "6",
         "focharactersheet": "6"
       },
       "counts": {
-        "6": 3
+        "6": 4
       },
       "majority": "6",
       "status": "agreement",
@@ -1874,12 +1916,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "1",
+        "original_pdf": "1",
         "pipboy": "1",
         "lonestar": "1",
         "focharactersheet": "1"
       },
       "counts": {
-        "1": 4
+        "1": 5
       },
       "majority": "1",
       "status": "agreement",
@@ -1953,11 +1996,12 @@
       "field": "damage",
       "votes": {
         "companion": "3",
+        "original_pdf": "3",
         "pipboy": "3",
         "focharactersheet": "3"
       },
       "counts": {
-        "3": 3
+        "3": 4
       },
       "majority": "3",
       "status": "agreement",
@@ -1971,12 +2015,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "1",
+        "original_pdf": "1",
         "pipboy": "1",
         "lonestar": "1",
         "focharactersheet": "1"
       },
       "counts": {
-        "1": 4
+        "1": 5
       },
       "majority": "1",
       "status": "agreement",
@@ -2054,12 +2099,13 @@
       "field": "damage",
       "votes": {
         "companion": "21",
+        "original_pdf": "21",
         "pipboy": "21",
         "focharactersheet": "21",
         "pipboy3000": "21"
       },
       "counts": {
-        "21": 4
+        "21": 5
       },
       "majority": "21",
       "status": "agreement",
@@ -2073,13 +2119,14 @@
       "field": "fireRate",
       "votes": {
         "companion": "0",
+        "original_pdf": "0",
         "pipboy": "0",
         "lonestar": "0",
         "focharactersheet": "0",
         "pipboy3000": "0"
       },
       "counts": {
-        "0": 5
+        "0": 6
       },
       "majority": "0",
       "status": "agreement",
@@ -2156,11 +2203,12 @@
       "field": "damage",
       "votes": {
         "companion": "3",
+        "original_pdf": "3",
         "pipboy": "3",
         "focharactersheet": "3"
       },
       "counts": {
-        "3": 3
+        "3": 4
       },
       "majority": "3",
       "status": "agreement",
@@ -2174,12 +2222,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "4",
+        "original_pdf": "4",
         "pipboy": "4",
         "lonestar": "4",
         "focharactersheet": "4"
       },
       "counts": {
-        "4": 4
+        "4": 5
       },
       "majority": "4",
       "status": "agreement",
@@ -2254,15 +2303,17 @@
       "field": "damage",
       "votes": {
         "companion": "3",
+        "site": "3",
+        "original_pdf": "3",
         "pipboy": "3",
         "pipboy3000": "3"
       },
       "counts": {
-        "3": 3
+        "3": 5
       },
       "majority": "3",
       "status": "agreement",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/tyazhjoloe-oruzhie/gatling-lazer",
       "original_pdf_page": 60,
       "errata": "not_checked"
     },
@@ -2272,15 +2323,17 @@
       "field": "fireRate",
       "votes": {
         "companion": "6",
+        "site": "6",
+        "original_pdf": "6",
         "pipboy": "6",
         "pipboy3000": "6"
       },
       "counts": {
-        "6": 3
+        "6": 5
       },
       "majority": "6",
       "status": "agreement",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/tyazhjoloe-oruzhie/gatling-lazer",
       "original_pdf_page": 60,
       "errata": "not_checked"
     },
@@ -2290,15 +2343,16 @@
       "field": "weight",
       "votes": {
         "companion": "19",
+        "site": "19",
         "original_pdf": "19",
         "pipboy": "19"
       },
       "counts": {
-        "19": 3
+        "19": 4
       },
       "majority": "19",
       "status": "agreement",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/tyazhjoloe-oruzhie/gatling-lazer",
       "original_pdf_page": 60,
       "errata": "not_checked"
     },
@@ -2308,16 +2362,17 @@
       "field": "cost",
       "votes": {
         "companion": "804",
+        "site": "804",
         "original_pdf": "804",
         "pipboy": "804",
         "pipboy3000": "804"
       },
       "counts": {
-        "804": 4
+        "804": 5
       },
       "majority": "804",
       "status": "agreement",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/tyazhjoloe-oruzhie/gatling-lazer",
       "original_pdf_page": 60,
       "errata": "not_checked"
     },
@@ -2327,16 +2382,17 @@
       "field": "rarity",
       "votes": {
         "companion": "3",
+        "site": "3",
         "original_pdf": "3",
         "pipboy": "3",
         "pipboy3000": "3"
       },
       "counts": {
-        "3": 4
+        "3": 5
       },
       "majority": "3",
       "status": "agreement",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/tyazhjoloe-oruzhie/gatling-lazer",
       "original_pdf_page": 60,
       "errata": "not_checked"
     },
@@ -2346,11 +2402,12 @@
       "field": "damage",
       "votes": {
         "companion": "5",
+        "original_pdf": "5",
         "pipboy": "5",
         "focharactersheet": "5"
       },
       "counts": {
-        "5": 3
+        "5": 4
       },
       "majority": "5",
       "status": "agreement",
@@ -2364,12 +2421,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "3",
+        "original_pdf": "3",
         "pipboy": "3",
         "lonestar": "3",
         "focharactersheet": "3"
       },
       "counts": {
-        "3": 4
+        "3": 5
       },
       "majority": "3",
       "status": "agreement",
@@ -2448,16 +2506,18 @@
       "field": "damage",
       "votes": {
         "companion": "6",
+        "site": "6",
+        "original_pdf": "6",
         "pipboy": "6",
         "focharactersheet": "6",
         "pipboy3000": "6"
       },
       "counts": {
-        "6": 4
+        "6": 6
       },
       "majority": "6",
       "status": "agreement",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/tyazhjoloe-oruzhie/khlamotron",
       "original_pdf_page": 62,
       "errata": "not_checked"
     },
@@ -2467,18 +2527,20 @@
       "field": "fireRate",
       "votes": {
         "companion": "1",
+        "site": "1",
+        "original_pdf": "0",
         "pipboy": "1",
         "lonestar": "0",
         "focharactersheet": "1",
         "pipboy3000": "1"
       },
       "counts": {
-        "1": 4,
-        "0": 1
+        "1": 5,
+        "0": 2
       },
       "majority": "1",
       "status": "provisional_majority",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/tyazhjoloe-oruzhie/khlamotron",
       "original_pdf_page": 62,
       "errata": "not_checked"
     },
@@ -2488,18 +2550,19 @@
       "field": "weight",
       "votes": {
         "companion": "30",
+        "site": "30",
         "original_pdf": "30",
         "pipboy": "30",
         "lonestar": "20",
         "focharactersheet": "30"
       },
       "counts": {
-        "30": 4,
+        "30": 5,
         "20": 1
       },
       "majority": "30",
       "status": "provisional_majority",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/tyazhjoloe-oruzhie/khlamotron",
       "original_pdf_page": 62,
       "errata": "not_checked"
     },
@@ -2509,6 +2572,7 @@
       "field": "cost",
       "votes": {
         "companion": "285",
+        "site": "286",
         "original_pdf": "286",
         "pipboy": "285",
         "lonestar": "392",
@@ -2517,12 +2581,12 @@
       },
       "counts": {
         "285": 4,
-        "286": 1,
+        "286": 2,
         "392": 1
       },
       "majority": "285",
       "status": "provisional_majority",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/tyazhjoloe-oruzhie/khlamotron",
       "original_pdf_page": 62,
       "errata": "not_checked"
     },
@@ -2532,6 +2596,7 @@
       "field": "rarity",
       "votes": {
         "companion": "3",
+        "site": "3",
         "original_pdf": "3",
         "pipboy": "3",
         "lonestar": "2",
@@ -2539,12 +2604,12 @@
         "pipboy3000": "3"
       },
       "counts": {
-        "3": 5,
+        "3": 6,
         "2": 1
       },
       "majority": "3",
       "status": "provisional_majority",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/tyazhjoloe-oruzhie/khlamotron",
       "original_pdf_page": 62,
       "errata": "not_checked"
     },
@@ -2554,12 +2619,13 @@
       "field": "damage",
       "votes": {
         "companion": "3",
+        "original_pdf": "3",
         "pipboy": "3",
         "focharactersheet": "3",
         "pipboy3000": "3"
       },
       "counts": {
-        "3": 4
+        "3": 5
       },
       "majority": "3",
       "status": "agreement",
@@ -2573,13 +2639,14 @@
       "field": "fireRate",
       "votes": {
         "companion": "5",
+        "original_pdf": "5",
         "pipboy": "5",
         "lonestar": "5",
         "focharactersheet": "5",
         "pipboy3000": "5"
       },
       "counts": {
-        "5": 5
+        "5": 6
       },
       "majority": "5",
       "status": "agreement",
@@ -2657,11 +2724,12 @@
       "field": "damage",
       "votes": {
         "companion": "11",
+        "original_pdf": "11",
         "focharactersheet": "11",
         "pipboy3000": "11"
       },
       "counts": {
-        "11": 3
+        "11": 4
       },
       "majority": "11",
       "status": "agreement",
@@ -2675,12 +2743,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "0",
+        "original_pdf": "0",
         "lonestar": "0",
         "focharactersheet": "0",
         "pipboy3000": "0"
       },
       "counts": {
-        "0": 4
+        "0": 5
       },
       "majority": "0",
       "status": "agreement",
@@ -2754,12 +2823,13 @@
       "votes": {
         "companion": "4",
         "site": "4",
+        "original_pdf": "4",
         "pipboy": "4",
         "focharactersheet": "4",
         "pipboy3000": "4"
       },
       "counts": {
-        "4": 5
+        "4": 6
       },
       "majority": "4",
       "status": "agreement",
@@ -2856,15 +2926,17 @@
       "votes": {
         "companion": "3",
         "site": "3",
+        "original_pdf": "4",
         "pipboy": "3",
         "focharactersheet": "3",
         "pipboy3000": "3"
       },
       "counts": {
-        "3": 5
+        "3": 5,
+        "4": 1
       },
       "majority": "3",
-      "status": "agreement",
+      "status": "provisional_majority",
       "website": "https://www.fallout-2d20.ru/oruzhie/oruzhie-blizhnego-boya/boevoj-nozh",
       "original_pdf_page": 97,
       "errata": "not_checked"
@@ -2958,12 +3030,13 @@
       "field": "damage",
       "votes": {
         "companion": "3",
+        "original_pdf": "3",
         "pipboy": "3",
         "focharactersheet": "3",
         "pipboy3000": "3"
       },
       "counts": {
-        "3": 4
+        "3": 5
       },
       "majority": "3",
       "status": "agreement",
@@ -3058,12 +3131,13 @@
       "votes": {
         "companion": "4",
         "site": "4",
+        "original_pdf": "4",
         "pipboy": "4",
         "focharactersheet": "4",
         "pipboy3000": "4"
       },
       "counts": {
-        "4": 5
+        "4": 6
       },
       "majority": "4",
       "status": "agreement",
@@ -3161,12 +3235,13 @@
       "votes": {
         "companion": "5",
         "site": "5",
+        "original_pdf": "5",
         "pipboy": "5",
         "focharactersheet": "5",
         "pipboy3000": "5"
       },
       "counts": {
-        "5": 5
+        "5": 6
       },
       "majority": "5",
       "status": "agreement",
@@ -3267,12 +3342,13 @@
       "field": "damage",
       "votes": {
         "companion": "2",
+        "original_pdf": "2",
         "pipboy": "2",
         "focharactersheet": "2",
         "pipboy3000": "2"
       },
       "counts": {
-        "2": 4
+        "2": 5
       },
       "majority": "2",
       "status": "agreement",
@@ -6067,12 +6143,13 @@
       "field": "damage",
       "votes": {
         "companion": "6",
+        "original_pdf": "6",
         "focharactersheet": "6"
       },
       "counts": {
-        "6": 2
+        "6": 3
       },
-      "majority": null,
+      "majority": "6",
       "status": "agreement",
       "website": null,
       "original_pdf_page": 46,
@@ -6084,12 +6161,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "0",
+        "original_pdf": "0",
         "focharactersheet": "0"
       },
       "counts": {
-        "0": 2
+        "0": 3
       },
-      "majority": null,
+      "majority": "0",
       "status": "agreement",
       "website": null,
       "original_pdf_page": 46,
@@ -6155,12 +6233,13 @@
       "field": "damage",
       "votes": {
         "companion": "3",
+        "original_pdf": "3",
         "focharactersheet": "3"
       },
       "counts": {
-        "3": 2
+        "3": 3
       },
-      "majority": null,
+      "majority": "3",
       "status": "agreement",
       "website": null,
       "original_pdf_page": 88,
@@ -6172,12 +6251,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "2",
+        "original_pdf": "2",
         "focharactersheet": "2"
       },
       "counts": {
-        "2": 2
+        "2": 3
       },
-      "majority": null,
+      "majority": "2",
       "status": "agreement",
       "website": null,
       "original_pdf_page": 88,
@@ -6243,12 +6323,13 @@
       "field": "damage",
       "votes": {
         "companion": "5",
+        "original_pdf": "5",
         "focharactersheet": "5"
       },
       "counts": {
-        "5": 2
+        "5": 3
       },
-      "majority": null,
+      "majority": "5",
       "status": "agreement",
       "website": null,
       "original_pdf_page": 91,
@@ -6260,12 +6341,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "2",
+        "original_pdf": "2",
         "focharactersheet": "2"
       },
       "counts": {
-        "2": 2
+        "2": 3
       },
-      "majority": null,
+      "majority": "2",
       "status": "agreement",
       "website": null,
       "original_pdf_page": 91,
@@ -6333,14 +6415,16 @@
       "name_ru": "Головной лазер Штурмотрона",
       "field": "damage",
       "votes": {
-        "companion": "5"
+        "companion": "5",
+        "site": "5",
+        "original_pdf": "5"
       },
       "counts": {
-        "5": 1
+        "5": 3
       },
-      "majority": null,
+      "majority": "5",
       "status": "agreement",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/golovnoj-lazer-shturmotrona",
       "original_pdf_page": 94,
       "errata": "not_checked"
     },
@@ -6349,14 +6433,16 @@
       "name_ru": "Головной лазер Штурмотрона",
       "field": "fireRate",
       "votes": {
-        "companion": "0"
+        "companion": "0",
+        "site": "0",
+        "original_pdf": "0"
       },
       "counts": {
-        "0": 1
+        "0": 3
       },
-      "majority": null,
+      "majority": "0",
       "status": "agreement",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/golovnoj-lazer-shturmotrona",
       "original_pdf_page": 94,
       "errata": "not_checked"
     },
@@ -6366,14 +6452,15 @@
       "field": "weight",
       "votes": {
         "companion": "8",
+        "site": "8",
         "original_pdf": "8"
       },
       "counts": {
-        "8": 2
+        "8": 3
       },
-      "majority": null,
+      "majority": "8",
       "status": "agreement",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/golovnoj-lazer-shturmotrona",
       "original_pdf_page": 94,
       "errata": "not_checked"
     },
@@ -6383,14 +6470,15 @@
       "field": "cost",
       "votes": {
         "companion": "500",
+        "site": "500",
         "original_pdf": "500"
       },
       "counts": {
-        "500": 2
+        "500": 3
       },
-      "majority": null,
+      "majority": "500",
       "status": "agreement",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/golovnoj-lazer-shturmotrona",
       "original_pdf_page": 94,
       "errata": "not_checked"
     },
@@ -6400,14 +6488,15 @@
       "field": "rarity",
       "votes": {
         "companion": "3",
+        "site": "3",
         "original_pdf": "3"
       },
       "counts": {
-        "3": 2
+        "3": 3
       },
-      "majority": null,
+      "majority": "3",
       "status": "agreement",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/golovnoj-lazer-shturmotrona",
       "original_pdf_page": 94,
       "errata": "not_checked"
     },
@@ -6417,12 +6506,13 @@
       "field": "damage",
       "votes": {
         "companion": "3",
+        "original_pdf": "3",
         "focharactersheet": "3"
       },
       "counts": {
-        "3": 2
+        "3": 3
       },
-      "majority": null,
+      "majority": "3",
       "status": "agreement",
       "website": null,
       "original_pdf_page": 85,
@@ -6434,12 +6524,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "1",
+        "original_pdf": "1",
         "focharactersheet": "1"
       },
       "counts": {
-        "1": 2
+        "1": 3
       },
-      "majority": null,
+      "majority": "1",
       "status": "agreement",
       "website": null,
       "original_pdf_page": 85,
@@ -6505,18 +6596,21 @@
       "field": "damage",
       "votes": {
         "companion": "4",
+        "site": "5",
+        "original_pdf": "5",
         "focharactersheet": "5",
         "pipboy3000": "5"
       },
       "counts": {
         "4": 1,
-        "5": 2
+        "5": 4
       },
       "majority": "5",
       "status": "provisional_majority",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/karabin-tesly",
       "original_pdf_page": 87,
-      "errata": "not_checked"
+      "errata": "not_checked",
+      "book_value": "5"
     },
     {
       "weapon_id": "weapon_tesla_rifle",
@@ -6524,16 +6618,18 @@
       "field": "fireRate",
       "votes": {
         "companion": "2",
+        "site": "2",
+        "original_pdf": "2",
         "lonestar": "2",
         "focharactersheet": "2",
         "pipboy3000": "2"
       },
       "counts": {
-        "2": 4
+        "2": 6
       },
       "majority": "2",
       "status": "agreement",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/karabin-tesly",
       "original_pdf_page": 87,
       "errata": "not_checked"
     },
@@ -6543,16 +6639,17 @@
       "field": "weight",
       "votes": {
         "companion": "8",
+        "site": "8",
         "original_pdf": "8",
         "lonestar": "8",
         "focharactersheet": "8"
       },
       "counts": {
-        "8": 4
+        "8": 5
       },
       "majority": "8",
       "status": "agreement",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/karabin-tesly",
       "original_pdf_page": 87,
       "errata": "not_checked"
     },
@@ -6562,17 +6659,18 @@
       "field": "cost",
       "votes": {
         "companion": "180",
+        "site": "180",
         "original_pdf": "180",
         "lonestar": "180",
         "focharactersheet": "180",
         "pipboy3000": "180"
       },
       "counts": {
-        "180": 5
+        "180": 6
       },
       "majority": "180",
       "status": "agreement",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/karabin-tesly",
       "original_pdf_page": 87,
       "errata": "not_checked"
     },
@@ -6582,17 +6680,18 @@
       "field": "rarity",
       "votes": {
         "companion": "4",
+        "site": "4",
         "original_pdf": "4",
         "lonestar": "4",
         "focharactersheet": "4",
         "pipboy3000": "4"
       },
       "counts": {
-        "4": 5
+        "4": 6
       },
       "majority": "4",
       "status": "agreement",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/karabin-tesly",
       "original_pdf_page": 87,
       "errata": "not_checked"
     },
@@ -6602,11 +6701,12 @@
       "field": "damage",
       "votes": {
         "companion": "10",
+        "original_pdf": "10",
         "focharactersheet": "10",
         "pipboy3000": "10"
       },
       "counts": {
-        "10": 3
+        "10": 4
       },
       "majority": "10",
       "status": "agreement",
@@ -6620,11 +6720,12 @@
       "field": "fireRate",
       "votes": {
         "companion": "0",
+        "original_pdf": "0",
         "focharactersheet": "0",
         "pipboy3000": "0"
       },
       "counts": {
-        "0": 3
+        "0": 4
       },
       "majority": "0",
       "status": "agreement",
@@ -6694,11 +6795,12 @@
       "field": "damage",
       "votes": {
         "companion": "4",
+        "original_pdf": "4",
         "focharactersheet": "4",
         "pipboy3000": "4"
       },
       "counts": {
-        "4": 3
+        "4": 4
       },
       "majority": "4",
       "status": "agreement",
@@ -6712,11 +6814,12 @@
       "field": "fireRate",
       "votes": {
         "companion": "4",
+        "original_pdf": "4",
         "focharactersheet": "4",
         "pipboy3000": "4"
       },
       "counts": {
-        "4": 3
+        "4": 4
       },
       "majority": "4",
       "status": "agreement",
@@ -6787,11 +6890,12 @@
       "field": "damage",
       "votes": {
         "companion": "12",
+        "original_pdf": "12",
         "focharactersheet": "12",
         "pipboy3000": "12"
       },
       "counts": {
-        "12": 3
+        "12": 4
       },
       "majority": "12",
       "status": "agreement",
@@ -6805,11 +6909,12 @@
       "field": "fireRate",
       "votes": {
         "companion": "0",
+        "original_pdf": "0",
         "focharactersheet": "0",
         "pipboy3000": "0"
       },
       "counts": {
-        "0": 3
+        "0": 4
       },
       "majority": "0",
       "status": "agreement",
@@ -6879,12 +6984,13 @@
       "field": "damage",
       "votes": {
         "companion": "5",
+        "original_pdf": "5",
         "focharactersheet": "5"
       },
       "counts": {
-        "5": 2
+        "5": 3
       },
-      "majority": null,
+      "majority": "5",
       "status": "agreement",
       "website": null,
       "original_pdf_page": 30,
@@ -6896,11 +7002,12 @@
       "field": "fireRate",
       "votes": {
         "companion": "1",
+        "original_pdf": "1",
         "lonestar": "1",
         "focharactersheet": "1"
       },
       "counts": {
-        "1": 3
+        "1": 4
       },
       "majority": "1",
       "status": "agreement",
@@ -6971,11 +7078,12 @@
       "field": "damage",
       "votes": {
         "companion": "6",
+        "original_pdf": "6",
         "focharactersheet": "6",
         "pipboy3000": "6"
       },
       "counts": {
-        "6": 3
+        "6": 4
       },
       "majority": "6",
       "status": "agreement",
@@ -6989,12 +7097,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "1",
+        "original_pdf": "1",
         "lonestar": "1",
         "focharactersheet": "1",
         "pipboy3000": "1"
       },
       "counts": {
-        "1": 4
+        "1": 5
       },
       "majority": "1",
       "status": "agreement",
@@ -7067,15 +7176,17 @@
       "field": "damage",
       "votes": {
         "companion": "5",
+        "site": "5",
+        "original_pdf": "5",
         "focharactersheet": "5",
         "pipboy3000": "5"
       },
       "counts": {
-        "5": 3
+        "5": 5
       },
       "majority": "5",
       "status": "agreement",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/strelkovoe-oruzhie/12-7-mm-pistolet-pulemjot",
       "original_pdf_page": 32,
       "errata": "not_checked"
     },
@@ -7085,16 +7196,19 @@
       "field": "fireRate",
       "votes": {
         "companion": "3",
+        "site": "3",
+        "original_pdf": "2",
         "lonestar": "3",
         "focharactersheet": "3",
         "pipboy3000": "3"
       },
       "counts": {
-        "3": 4
+        "3": 5,
+        "2": 1
       },
       "majority": "3",
-      "status": "agreement",
-      "website": null,
+      "status": "provisional_majority",
+      "website": "https://www.fallout-2d20.ru/oruzhie/strelkovoe-oruzhie/12-7-mm-pistolet-pulemjot",
       "original_pdf_page": 32,
       "errata": "not_checked"
     },
@@ -7104,18 +7218,19 @@
       "field": "weight",
       "votes": {
         "companion": "5",
+        "site": "5",
         "original_pdf": "13",
         "lonestar": "8",
         "focharactersheet": "5"
       },
       "counts": {
-        "5": 2,
+        "5": 3,
         "13": 1,
         "8": 1
       },
-      "majority": null,
-      "status": "review",
-      "website": null,
+      "majority": "5",
+      "status": "provisional_majority",
+      "website": "https://www.fallout-2d20.ru/oruzhie/strelkovoe-oruzhie/12-7-mm-pistolet-pulemjot",
       "original_pdf_page": 32,
       "errata": "not_checked"
     },
@@ -7125,19 +7240,20 @@
       "field": "cost",
       "votes": {
         "companion": "510",
+        "site": "510",
         "original_pdf": "144",
         "lonestar": "420",
         "focharactersheet": "510",
         "pipboy3000": "510"
       },
       "counts": {
-        "510": 3,
+        "510": 4,
         "144": 1,
         "420": 1
       },
       "majority": "510",
       "status": "provisional_majority",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/strelkovoe-oruzhie/12-7-mm-pistolet-pulemjot",
       "original_pdf_page": 32,
       "errata": "not_checked"
     },
@@ -7147,18 +7263,19 @@
       "field": "rarity",
       "votes": {
         "companion": "4",
+        "site": "4",
         "original_pdf": "2",
         "lonestar": "4",
         "focharactersheet": "4",
         "pipboy3000": "4"
       },
       "counts": {
-        "4": 4,
+        "4": 5,
         "2": 1
       },
       "majority": "4",
       "status": "provisional_majority",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/strelkovoe-oruzhie/12-7-mm-pistolet-pulemjot",
       "original_pdf_page": 32,
       "errata": "not_checked"
     },
@@ -7168,11 +7285,12 @@
       "field": "damage",
       "votes": {
         "companion": "4",
+        "original_pdf": "4",
         "focharactersheet": "4",
         "pipboy3000": "4"
       },
       "counts": {
-        "4": 3
+        "4": 4
       },
       "majority": "4",
       "status": "agreement",
@@ -7186,12 +7304,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "1",
+        "original_pdf": "1",
         "lonestar": "2",
         "focharactersheet": "1",
         "pipboy3000": "1"
       },
       "counts": {
-        "1": 3,
+        "1": 4,
         "2": 1
       },
       "majority": "1",
@@ -7268,11 +7387,12 @@
       "field": "damage",
       "votes": {
         "companion": "3",
+        "original_pdf": "3",
         "focharactersheet": "3",
         "pipboy3000": "3"
       },
       "counts": {
-        "3": 3
+        "3": 4
       },
       "majority": "3",
       "status": "agreement",
@@ -7286,12 +7406,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "2",
+        "original_pdf": "2",
         "lonestar": "1",
         "focharactersheet": "2",
         "pipboy3000": "2"
       },
       "counts": {
-        "2": 3,
+        "2": 4,
         "1": 1
       },
       "majority": "2",
@@ -7368,11 +7489,12 @@
       "field": "damage",
       "votes": {
         "companion": "8",
+        "original_pdf": "8",
         "focharactersheet": "8",
         "pipboy3000": "8"
       },
       "counts": {
-        "8": 3
+        "8": 4
       },
       "majority": "8",
       "status": "agreement",
@@ -7386,12 +7508,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "0",
+        "original_pdf": "0",
         "lonestar": "0",
         "focharactersheet": "0",
         "pipboy3000": "0"
       },
       "counts": {
-        "0": 4
+        "0": 5
       },
       "majority": "0",
       "status": "agreement",
@@ -7467,11 +7590,12 @@
       "field": "damage",
       "votes": {
         "companion": "7",
+        "original_pdf": "7",
         "focharactersheet": "7",
         "pipboy3000": "7"
       },
       "counts": {
-        "7": 3
+        "7": 4
       },
       "majority": "7",
       "status": "agreement",
@@ -7485,12 +7609,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "1",
+        "original_pdf": "1",
         "lonestar": "1",
         "focharactersheet": "1",
         "pipboy3000": "1"
       },
       "counts": {
-        "1": 4
+        "1": 5
       },
       "majority": "1",
       "status": "agreement",
@@ -7563,11 +7688,12 @@
       "field": "damage",
       "votes": {
         "companion": "7",
+        "original_pdf": "7",
         "focharactersheet": "7",
         "pipboy3000": "7"
       },
       "counts": {
-        "7": 3
+        "7": 4
       },
       "majority": "7",
       "status": "agreement",
@@ -7581,12 +7707,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "0",
+        "original_pdf": "0",
         "lonestar": "0",
         "focharactersheet": "0",
         "pipboy3000": "0"
       },
       "counts": {
-        "0": 4
+        "0": 5
       },
       "majority": "0",
       "status": "agreement",
@@ -7662,11 +7789,12 @@
       "field": "damage",
       "votes": {
         "companion": "7",
+        "original_pdf": "7",
         "focharactersheet": "7",
         "pipboy3000": "7"
       },
       "counts": {
-        "7": 3
+        "7": 4
       },
       "majority": "7",
       "status": "agreement",
@@ -7680,12 +7808,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "0",
+        "original_pdf": "0",
         "lonestar": "0",
         "focharactersheet": "0",
         "pipboy3000": "0"
       },
       "counts": {
-        "0": 4
+        "0": 5
       },
       "majority": "0",
       "status": "agreement",
@@ -7758,11 +7887,12 @@
       "field": "damage",
       "votes": {
         "companion": "8",
+        "original_pdf": "8",
         "focharactersheet": "8",
         "pipboy3000": "8"
       },
       "counts": {
-        "8": 3
+        "8": 4
       },
       "majority": "8",
       "status": "agreement",
@@ -7776,12 +7906,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "0",
+        "original_pdf": "0",
         "lonestar": "0",
         "focharactersheet": "0",
         "pipboy3000": "0"
       },
       "counts": {
-        "0": 4
+        "0": 5
       },
       "majority": "0",
       "status": "agreement",
@@ -7854,11 +7985,12 @@
       "field": "damage",
       "votes": {
         "companion": "8",
+        "original_pdf": "8",
         "focharactersheet": "8",
         "pipboy3000": "8"
       },
       "counts": {
-        "8": 3
+        "8": 4
       },
       "majority": "8",
       "status": "agreement",
@@ -7872,12 +8004,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "1",
+        "original_pdf": "1",
         "lonestar": "1",
         "focharactersheet": "1",
         "pipboy3000": "1"
       },
       "counts": {
-        "1": 4
+        "1": 5
       },
       "majority": "1",
       "status": "agreement",
@@ -7950,11 +8083,12 @@
       "field": "damage",
       "votes": {
         "companion": "7",
+        "original_pdf": "7",
         "focharactersheet": "7",
         "pipboy3000": "7"
       },
       "counts": {
-        "7": 3
+        "7": 4
       },
       "majority": "7",
       "status": "agreement",
@@ -7968,12 +8102,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "0",
+        "original_pdf": "0",
         "lonestar": "0",
         "focharactersheet": "0",
         "pipboy3000": "0"
       },
       "counts": {
-        "0": 4
+        "0": 5
       },
       "majority": "0",
       "status": "agreement",
@@ -8046,11 +8181,12 @@
       "field": "damage",
       "votes": {
         "companion": "7",
+        "original_pdf": "7",
         "focharactersheet": "7",
         "pipboy3000": "7"
       },
       "counts": {
-        "7": 3
+        "7": 4
       },
       "majority": "7",
       "status": "agreement",
@@ -8064,12 +8200,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "0",
+        "original_pdf": "0",
         "lonestar": "0",
         "focharactersheet": "0",
         "pipboy3000": "0"
       },
       "counts": {
-        "0": 4
+        "0": 5
       },
       "majority": "0",
       "status": "agreement",
@@ -8142,11 +8279,12 @@
       "field": "damage",
       "votes": {
         "companion": "5",
+        "original_pdf": "5",
         "focharactersheet": "5",
         "pipboy3000": "5"
       },
       "counts": {
-        "5": 3
+        "5": 4
       },
       "majority": "5",
       "status": "agreement",
@@ -8160,12 +8298,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "4",
+        "original_pdf": "4",
         "lonestar": "4",
         "focharactersheet": "4",
         "pipboy3000": "4"
       },
       "counts": {
-        "4": 4
+        "4": 5
       },
       "majority": "4",
       "status": "agreement",
@@ -8238,11 +8377,12 @@
       "field": "damage",
       "votes": {
         "companion": "5",
+        "original_pdf": "5",
         "focharactersheet": "5",
         "pipboy3000": "5"
       },
       "counts": {
-        "5": 3
+        "5": 4
       },
       "majority": "5",
       "status": "agreement",
@@ -8256,12 +8396,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "1",
+        "original_pdf": "1",
         "lonestar": "1",
         "focharactersheet": "1",
         "pipboy3000": "1"
       },
       "counts": {
-        "1": 4
+        "1": 5
       },
       "majority": "1",
       "status": "agreement",
@@ -8334,11 +8475,12 @@
       "field": "damage",
       "votes": {
         "companion": "4",
+        "original_pdf": "4",
         "focharactersheet": "4",
         "pipboy3000": "4"
       },
       "counts": {
-        "4": 3
+        "4": 4
       },
       "majority": "4",
       "status": "agreement",
@@ -8352,12 +8494,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "3",
+        "original_pdf": "3",
         "lonestar": "3",
         "focharactersheet": "3",
         "pipboy3000": "3"
       },
       "counts": {
-        "3": 4
+        "3": 5
       },
       "majority": "3",
       "status": "agreement",
@@ -8430,11 +8573,12 @@
       "field": "damage",
       "votes": {
         "companion": "7",
+        "original_pdf": "7",
         "focharactersheet": "7",
         "pipboy3000": "7"
       },
       "counts": {
-        "7": 3
+        "7": 4
       },
       "majority": "7",
       "status": "agreement",
@@ -8448,12 +8592,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "0",
+        "original_pdf": "0",
         "lonestar": "0",
         "focharactersheet": "0",
         "pipboy3000": "0"
       },
       "counts": {
-        "0": 4
+        "0": 5
       },
       "majority": "0",
       "status": "agreement",
@@ -8526,11 +8671,12 @@
       "field": "damage",
       "votes": {
         "companion": "3",
+        "original_pdf": "3",
         "focharactersheet": "3",
         "pipboy3000": "3"
       },
       "counts": {
-        "3": 3
+        "3": 4
       },
       "majority": "3",
       "status": "agreement",
@@ -8544,12 +8690,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "2",
+        "original_pdf": "2",
         "lonestar": "2",
         "focharactersheet": "2",
         "pipboy3000": "2"
       },
       "counts": {
-        "2": 4
+        "2": 5
       },
       "majority": "2",
       "status": "agreement",
@@ -8622,11 +8769,12 @@
       "field": "damage",
       "votes": {
         "companion": "6",
+        "original_pdf": "6",
         "focharactersheet": "6",
         "pipboy3000": "6"
       },
       "counts": {
-        "6": 3
+        "6": 4
       },
       "majority": "6",
       "status": "agreement",
@@ -8640,12 +8788,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "3",
+        "original_pdf": "3",
         "lonestar": "3",
         "focharactersheet": "3",
         "pipboy3000": "3"
       },
       "counts": {
-        "3": 4
+        "3": 5
       },
       "majority": "3",
       "status": "agreement",
@@ -8718,15 +8867,18 @@
       "field": "damage",
       "votes": {
         "companion": "8",
+        "site": "8",
+        "original_pdf": "6",
         "focharactersheet": "8",
         "pipboy3000": "8"
       },
       "counts": {
-        "8": 3
+        "8": 4,
+        "6": 1
       },
       "majority": "8",
-      "status": "agreement",
-      "website": null,
+      "status": "provisional_majority",
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/dezintegrator-chuzhogo",
       "original_pdf_page": 90,
       "errata": "not_checked"
     },
@@ -8736,19 +8888,23 @@
       "field": "fireRate",
       "votes": {
         "companion": "7",
+        "site": "2",
+        "original_pdf": "3",
         "lonestar": "2",
         "focharactersheet": "2",
         "pipboy3000": "2"
       },
       "counts": {
         "7": 1,
-        "2": 3
+        "2": 4,
+        "3": 1
       },
       "majority": "2",
       "status": "provisional_majority",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/dezintegrator-chuzhogo",
       "original_pdf_page": 90,
-      "errata": "not_checked"
+      "errata": "not_checked",
+      "book_value": "2"
     },
     {
       "weapon_id": "weapon_alien_disintegrator",
@@ -8756,17 +8912,18 @@
       "field": "weight",
       "votes": {
         "companion": "7",
+        "site": "7",
         "original_pdf": "3",
         "lonestar": "7",
         "focharactersheet": "7"
       },
       "counts": {
-        "7": 3,
+        "7": 4,
         "3": 1
       },
       "majority": "7",
       "status": "provisional_majority",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/dezintegrator-chuzhogo",
       "original_pdf_page": 90,
       "errata": "not_checked"
     },
@@ -8776,18 +8933,19 @@
       "field": "cost",
       "votes": {
         "companion": "921",
+        "site": "921",
         "original_pdf": "1536",
         "lonestar": "921",
         "focharactersheet": "921",
         "pipboy3000": "921"
       },
       "counts": {
-        "921": 4,
+        "921": 5,
         "1536": 1
       },
       "majority": "921",
       "status": "provisional_majority",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/dezintegrator-chuzhogo",
       "original_pdf_page": 90,
       "errata": "not_checked"
     },
@@ -8797,17 +8955,18 @@
       "field": "rarity",
       "votes": {
         "companion": "5",
+        "site": "5",
         "original_pdf": "5",
         "lonestar": "5",
         "focharactersheet": "5",
         "pipboy3000": "5"
       },
       "counts": {
-        "5": 5
+        "5": 6
       },
       "majority": "5",
       "status": "agreement",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/dezintegrator-chuzhogo",
       "original_pdf_page": 90,
       "errata": "not_checked"
     },
@@ -8817,15 +8976,18 @@
       "field": "damage",
       "votes": {
         "companion": "3",
+        "site": "3",
+        "original_pdf": "6",
         "focharactersheet": "3",
         "pipboy3000": "3"
       },
       "counts": {
-        "3": 3
+        "3": 4,
+        "6": 1
       },
       "majority": "3",
-      "status": "agreement",
-      "website": null,
+      "status": "provisional_majority",
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/elektrosvarka",
       "original_pdf_page": 93,
       "errata": "not_checked"
     },
@@ -8835,16 +8997,19 @@
       "field": "fireRate",
       "votes": {
         "companion": "4",
+        "site": "4",
+        "original_pdf": "3",
         "lonestar": "4",
         "focharactersheet": "4",
         "pipboy3000": "4"
       },
       "counts": {
-        "4": 4
+        "4": 5,
+        "3": 1
       },
       "majority": "4",
-      "status": "agreement",
-      "website": null,
+      "status": "provisional_majority",
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/elektrosvarka",
       "original_pdf_page": 93,
       "errata": "not_checked"
     },
@@ -8854,17 +9019,18 @@
       "field": "weight",
       "votes": {
         "companion": "15",
+        "site": "15",
         "original_pdf": "3",
         "lonestar": "15",
         "focharactersheet": "15"
       },
       "counts": {
-        "15": 3,
+        "15": 4,
         "3": 1
       },
       "majority": "15",
       "status": "provisional_majority",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/elektrosvarka",
       "original_pdf_page": 93,
       "errata": "not_checked"
     },
@@ -8874,18 +9040,19 @@
       "field": "cost",
       "votes": {
         "companion": "370",
+        "site": "370",
         "original_pdf": "1536",
         "lonestar": "370",
         "focharactersheet": "370",
         "pipboy3000": "370"
       },
       "counts": {
-        "370": 4,
+        "370": 5,
         "1536": 1
       },
       "majority": "370",
       "status": "provisional_majority",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/elektrosvarka",
       "original_pdf_page": 93,
       "errata": "not_checked"
     },
@@ -8895,18 +9062,19 @@
       "field": "rarity",
       "votes": {
         "companion": "4",
+        "site": "4",
         "original_pdf": "5",
         "lonestar": "4",
         "focharactersheet": "4",
         "pipboy3000": "4"
       },
       "counts": {
-        "4": 4,
+        "4": 5,
         "5": 1
       },
       "majority": "4",
       "status": "provisional_majority",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/elektrosvarka",
       "original_pdf_page": 93,
       "errata": "not_checked"
     },
@@ -8916,11 +9084,12 @@
       "field": "damage",
       "votes": {
         "companion": "6",
+        "original_pdf": "6",
         "focharactersheet": "6",
         "pipboy3000": "6"
       },
       "counts": {
-        "6": 3
+        "6": 4
       },
       "majority": "6",
       "status": "agreement",
@@ -8934,12 +9103,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "1",
+        "original_pdf": "1",
         "lonestar": "1",
         "focharactersheet": "1",
         "pipboy3000": "1"
       },
       "counts": {
-        "1": 4
+        "1": 5
       },
       "majority": "1",
       "status": "agreement",
@@ -9012,11 +9182,12 @@
       "field": "damage",
       "votes": {
         "companion": "7",
+        "original_pdf": "7",
         "focharactersheet": "7",
         "pipboy3000": "7"
       },
       "counts": {
-        "7": 3
+        "7": 4
       },
       "majority": "7",
       "status": "agreement",
@@ -9030,12 +9201,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "3",
+        "original_pdf": "3",
         "lonestar": "3",
         "focharactersheet": "3",
         "pipboy3000": "3"
       },
       "counts": {
-        "3": 4
+        "3": 5
       },
       "majority": "3",
       "status": "agreement",
@@ -9108,11 +9280,12 @@
       "field": "damage",
       "votes": {
         "companion": "6",
+        "original_pdf": "6",
         "focharactersheet": "6",
         "pipboy3000": "6"
       },
       "counts": {
-        "6": 3
+        "6": 4
       },
       "majority": "6",
       "status": "agreement",
@@ -9126,12 +9299,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "2",
+        "original_pdf": "2",
         "lonestar": "2",
         "focharactersheet": "2",
         "pipboy3000": "2"
       },
       "counts": {
-        "2": 4
+        "2": 5
       },
       "majority": "2",
       "status": "agreement",
@@ -9205,11 +9379,12 @@
       "field": "damage",
       "votes": {
         "companion": "8",
+        "original_pdf": "8",
         "focharactersheet": "8",
         "pipboy3000": "8"
       },
       "counts": {
-        "8": 3
+        "8": 4
       },
       "majority": "8",
       "status": "agreement",
@@ -9223,12 +9398,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "0",
+        "original_pdf": "0",
         "lonestar": "0",
         "focharactersheet": "0",
         "pipboy3000": "0"
       },
       "counts": {
-        "0": 4
+        "0": 5
       },
       "majority": "0",
       "status": "agreement",
@@ -9301,12 +9477,13 @@
       "field": "damage",
       "votes": {
         "companion": "3",
+        "original_pdf": "3",
         "pipboy3000": "3"
       },
       "counts": {
-        "3": 2
+        "3": 3
       },
-      "majority": null,
+      "majority": "3",
       "status": "agreement",
       "website": null,
       "original_pdf_page": 68,
@@ -9318,12 +9495,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "3",
+        "original_pdf": "3",
         "pipboy3000": "3"
       },
       "counts": {
-        "3": 2
+        "3": 3
       },
-      "majority": null,
+      "majority": "3",
       "status": "agreement",
       "website": null,
       "original_pdf_page": 68,
@@ -9472,11 +9650,12 @@
       "field": "damage",
       "votes": {
         "companion": "6",
+        "original_pdf": "6",
         "focharactersheet": "6",
         "pipboy3000": "6"
       },
       "counts": {
-        "6": 3
+        "6": 4
       },
       "majority": "6",
       "status": "agreement",
@@ -9490,12 +9669,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "3",
+        "original_pdf": "3",
         "lonestar": "3",
         "focharactersheet": "3",
         "pipboy3000": "3"
       },
       "counts": {
-        "3": 4
+        "3": 5
       },
       "majority": "3",
       "status": "agreement",
@@ -9568,11 +9748,12 @@
       "field": "damage",
       "votes": {
         "companion": "8",
+        "original_pdf": "8",
         "focharactersheet": "8",
         "pipboy3000": "8"
       },
       "counts": {
-        "8": 3
+        "8": 4
       },
       "majority": "8",
       "status": "agreement",
@@ -9586,12 +9767,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "3",
+        "original_pdf": "3",
         "lonestar": "3",
         "focharactersheet": "3",
         "pipboy3000": "3"
       },
       "counts": {
-        "3": 4
+        "3": 5
       },
       "majority": "3",
       "status": "agreement",
@@ -9664,11 +9846,12 @@
       "field": "damage",
       "votes": {
         "companion": "8",
+        "original_pdf": "8",
         "focharactersheet": "8",
         "pipboy3000": "8"
       },
       "counts": {
-        "8": 3
+        "8": 4
       },
       "majority": "8",
       "status": "agreement",
@@ -9682,12 +9865,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "0",
+        "original_pdf": "0",
         "lonestar": "0",
         "focharactersheet": "0",
         "pipboy3000": "0"
       },
       "counts": {
-        "0": 4
+        "0": 5
       },
       "majority": "0",
       "status": "agreement",
@@ -9759,10 +9943,11 @@
       "name_ru": "Подводное ружье",
       "field": "damage",
       "votes": {
-        "companion": "8"
+        "companion": "8",
+        "original_pdf": "8"
       },
       "counts": {
-        "8": 1
+        "8": 2
       },
       "majority": null,
       "status": "agreement",
@@ -9775,10 +9960,11 @@
       "name_ru": "Подводное ружье",
       "field": "fireRate",
       "votes": {
-        "companion": "0"
+        "companion": "0",
+        "original_pdf": "0"
       },
       "counts": {
-        "0": 1
+        "0": 2
       },
       "majority": null,
       "status": "agreement",
@@ -9842,10 +10028,11 @@
       "name_ru": "Карабин Гуля",
       "field": "damage",
       "votes": {
-        "companion": "7"
+        "companion": "7",
+        "original_pdf": "7"
       },
       "counts": {
-        "7": 1
+        "7": 2
       },
       "majority": null,
       "status": "agreement",
@@ -9858,10 +10045,11 @@
       "name_ru": "Карабин Гуля",
       "field": "fireRate",
       "votes": {
-        "companion": "0"
+        "companion": "0",
+        "original_pdf": "0"
       },
       "counts": {
-        "0": 1
+        "0": 2
       },
       "majority": null,
       "status": "agreement",
@@ -9925,10 +10113,11 @@
       "name_ru": "Пистолет Гуля",
       "field": "damage",
       "votes": {
-        "companion": "8"
+        "companion": "8",
+        "original_pdf": "8"
       },
       "counts": {
-        "8": 1
+        "8": 2
       },
       "majority": null,
       "status": "agreement",
@@ -9941,10 +10130,11 @@
       "name_ru": "Пистолет Гуля",
       "field": "fireRate",
       "votes": {
-        "companion": "3"
+        "companion": "3",
+        "original_pdf": "3"
       },
       "counts": {
-        "3": 1
+        "3": 2
       },
       "majority": null,
       "status": "agreement",
@@ -10008,13 +10198,15 @@
       "name_ru": "Стен-инжектор",
       "field": "damage",
       "votes": {
-        "companion": "3"
+        "companion": "3",
+        "original_pdf": "4"
       },
       "counts": {
-        "3": 1
+        "3": 1,
+        "4": 1
       },
       "majority": null,
-      "status": "agreement",
+      "status": "review",
       "website": null,
       "original_pdf_page": 77,
       "errata": "not_checked"
@@ -10024,13 +10216,15 @@
       "name_ru": "Стен-инжектор",
       "field": "fireRate",
       "votes": {
-        "companion": "4"
+        "companion": "4",
+        "original_pdf": "3"
       },
       "counts": {
-        "4": 1
+        "4": 1,
+        "3": 1
       },
       "majority": null,
-      "status": "agreement",
+      "status": "review",
       "website": null,
       "original_pdf_page": 77,
       "errata": "not_checked"
@@ -10091,14 +10285,18 @@
       "name_ru": "Пистолет-инжектор",
       "field": "damage",
       "votes": {
-        "companion": "0"
+        "companion": "0",
+        "site": "5",
+        "original_pdf": "4"
       },
       "counts": {
-        "0": 1
+        "0": 1,
+        "5": 1,
+        "4": 1
       },
       "majority": null,
-      "status": "agreement",
-      "website": null,
+      "status": "review",
+      "website": "https://www.fallout-2d20.ru/oruzhie/strelkovoe-oruzhie/pistolet-inektor",
       "original_pdf_page": 47,
       "errata": "not_checked"
     },
@@ -10107,16 +10305,20 @@
       "name_ru": "Пистолет-инжектор",
       "field": "fireRate",
       "votes": {
-        "companion": "4"
+        "companion": "4",
+        "site": "0",
+        "original_pdf": "0"
       },
       "counts": {
-        "4": 1
+        "4": 1,
+        "0": 2
       },
-      "majority": null,
-      "status": "agreement",
-      "website": null,
+      "majority": "0",
+      "status": "provisional_majority",
+      "website": "https://www.fallout-2d20.ru/oruzhie/strelkovoe-oruzhie/pistolet-inektor",
       "original_pdf_page": 47,
-      "errata": "not_checked"
+      "errata": "not_checked",
+      "book_value": "0"
     },
     {
       "weapon_id": "weapon_pistol_injector",
@@ -10124,14 +10326,15 @@
       "field": "weight",
       "votes": {
         "companion": "5",
+        "site": "5",
         "original_pdf": "5"
       },
       "counts": {
-        "5": 2
+        "5": 3
       },
-      "majority": null,
+      "majority": "5",
       "status": "agreement",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/strelkovoe-oruzhie/pistolet-inektor",
       "original_pdf_page": 47,
       "errata": "not_checked"
     },
@@ -10141,14 +10344,15 @@
       "field": "cost",
       "votes": {
         "companion": "333",
+        "site": "333",
         "original_pdf": "333"
       },
       "counts": {
-        "333": 2
+        "333": 3
       },
-      "majority": null,
+      "majority": "333",
       "status": "agreement",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/strelkovoe-oruzhie/pistolet-inektor",
       "original_pdf_page": 47,
       "errata": "not_checked"
     },
@@ -10158,14 +10362,15 @@
       "field": "rarity",
       "votes": {
         "companion": "5",
+        "site": "5",
         "original_pdf": "5"
       },
       "counts": {
-        "5": 2
+        "5": 3
       },
-      "majority": null,
+      "majority": "5",
       "status": "agreement",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/strelkovoe-oruzhie/pistolet-inektor",
       "original_pdf_page": 47,
       "errata": "not_checked"
     },
@@ -10174,10 +10379,11 @@
       "name_ru": "Магнумномикон",
       "field": "damage",
       "votes": {
-        "companion": "8"
+        "companion": "8",
+        "original_pdf": "8"
       },
       "counts": {
-        "8": 1
+        "8": 2
       },
       "majority": null,
       "status": "agreement",
@@ -10190,10 +10396,11 @@
       "name_ru": "Магнумномикон",
       "field": "fireRate",
       "votes": {
-        "companion": "1"
+        "companion": "1",
+        "original_pdf": "1"
       },
       "counts": {
-        "1": 1
+        "1": 2
       },
       "majority": null,
       "status": "agreement",
@@ -10255,10 +10462,11 @@
       "name_ru": "Юджин",
       "field": "damage",
       "votes": {
-        "companion": "3"
+        "companion": "3",
+        "original_pdf": "3"
       },
       "counts": {
-        "3": 1
+        "3": 2
       },
       "majority": null,
       "status": "agreement",
@@ -10271,10 +10479,11 @@
       "name_ru": "Юджин",
       "field": "fireRate",
       "votes": {
-        "companion": "4"
+        "companion": "4",
+        "original_pdf": "4"
       },
       "counts": {
-        "4": 1
+        "4": 2
       },
       "majority": null,
       "status": "agreement",
@@ -10339,12 +10548,13 @@
       "field": "damage",
       "votes": {
         "companion": "4",
-        "site": "4"
+        "site": "4",
+        "original_pdf": "4"
       },
       "counts": {
-        "4": 2
+        "4": 3
       },
-      "majority": null,
+      "majority": "4",
       "status": "agreement",
       "website": "https://www.fallout-2d20.ru/oruzhie/tyazhjoloe-oruzhie/granatomet-so-slezotochivym-gazom",
       "original_pdf_page": 74,
@@ -10356,12 +10566,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "0",
-        "site": "0"
+        "site": "0",
+        "original_pdf": "0"
       },
       "counts": {
-        "0": 2
+        "0": 3
       },
-      "majority": null,
+      "majority": "0",
       "status": "agreement",
       "website": "https://www.fallout-2d20.ru/oruzhie/tyazhjoloe-oruzhie/granatomet-so-slezotochivym-gazom",
       "original_pdf_page": 74,
@@ -10427,11 +10638,12 @@
       "field": "damage",
       "votes": {
         "companion": "5",
+        "original_pdf": "5",
         "focharactersheet": "5",
         "pipboy3000": "5"
       },
       "counts": {
-        "5": 3
+        "5": 4
       },
       "majority": "5",
       "status": "agreement",
@@ -10445,12 +10657,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "2",
+        "original_pdf": "2",
         "lonestar": "0",
         "focharactersheet": "0",
         "pipboy3000": "0"
       },
       "counts": {
-        "2": 1,
+        "2": 2,
         "0": 3
       },
       "majority": "0",
@@ -10524,12 +10737,13 @@
       "field": "damage",
       "votes": {
         "companion": "5",
-        "site": "5"
+        "site": "5",
+        "original_pdf": "5"
       },
       "counts": {
-        "5": 2
+        "5": 3
       },
-      "majority": null,
+      "majority": "5",
       "status": "agreement",
       "website": "https://www.fallout-2d20.ru/oruzhie/strelkovoe-oruzhie/abordazhnyj-pistolet",
       "original_pdf_page": 51,
@@ -10541,13 +10755,14 @@
       "field": "fireRate",
       "votes": {
         "companion": "3",
-        "site": "0"
+        "site": "0",
+        "original_pdf": "3"
       },
       "counts": {
-        "3": 1,
+        "3": 2,
         "0": 1
       },
-      "majority": null,
+      "majority": "3",
       "status": "approved_by_user",
       "website": "https://www.fallout-2d20.ru/oruzhie/strelkovoe-oruzhie/abordazhnyj-pistolet",
       "original_pdf_page": 51,
@@ -10613,10 +10828,11 @@
       "name_ru": "Лазерное ружьё Wattz 2000",
       "field": "damage",
       "votes": {
-        "companion": "6"
+        "companion": "6",
+        "original_pdf": "6"
       },
       "counts": {
-        "6": 1
+        "6": 2
       },
       "majority": null,
       "status": "agreement",
@@ -10629,10 +10845,11 @@
       "name_ru": "Лазерное ружьё Wattz 2000",
       "field": "fireRate",
       "votes": {
-        "companion": "0"
+        "companion": "0",
+        "original_pdf": "0"
       },
       "counts": {
-        "0": 1
+        "0": 2
       },
       "majority": null,
       "status": "agreement",
@@ -10696,10 +10913,11 @@
       "name_ru": "Стен",
       "field": "damage",
       "votes": {
-        "companion": "4"
+        "companion": "4",
+        "original_pdf": "4"
       },
       "counts": {
-        "4": 1
+        "4": 2
       },
       "majority": null,
       "status": "agreement",
@@ -10712,10 +10930,11 @@
       "name_ru": "Стен",
       "field": "fireRate",
       "votes": {
-        "companion": "3"
+        "companion": "3",
+        "original_pdf": "3"
       },
       "counts": {
-        "3": 1
+        "3": 2
       },
       "majority": null,
       "status": "agreement",
@@ -13827,18 +14046,20 @@
       "field": "fireRate",
       "votes": {
         "companion": "1",
+        "site": "1",
+        "original_pdf": "0",
         "pipboy": "1",
         "lonestar": "0",
         "focharactersheet": "1",
         "pipboy3000": "1"
       },
       "counts": {
-        "1": 4,
-        "0": 1
+        "1": 5,
+        "0": 2
       },
       "majority": "1",
       "status": "provisional_majority",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/tyazhjoloe-oruzhie/khlamotron",
       "original_pdf_page": 62,
       "errata": "not_checked"
     },
@@ -13848,18 +14069,19 @@
       "field": "weight",
       "votes": {
         "companion": "30",
+        "site": "30",
         "original_pdf": "30",
         "pipboy": "30",
         "lonestar": "20",
         "focharactersheet": "30"
       },
       "counts": {
-        "30": 4,
+        "30": 5,
         "20": 1
       },
       "majority": "30",
       "status": "provisional_majority",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/tyazhjoloe-oruzhie/khlamotron",
       "original_pdf_page": 62,
       "errata": "not_checked"
     },
@@ -13869,6 +14091,7 @@
       "field": "cost",
       "votes": {
         "companion": "285",
+        "site": "286",
         "original_pdf": "286",
         "pipboy": "285",
         "lonestar": "392",
@@ -13877,12 +14100,12 @@
       },
       "counts": {
         "285": 4,
-        "286": 1,
+        "286": 2,
         "392": 1
       },
       "majority": "285",
       "status": "provisional_majority",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/tyazhjoloe-oruzhie/khlamotron",
       "original_pdf_page": 62,
       "errata": "not_checked"
     },
@@ -13892,6 +14115,7 @@
       "field": "rarity",
       "votes": {
         "companion": "3",
+        "site": "3",
         "original_pdf": "3",
         "pipboy": "3",
         "lonestar": "2",
@@ -13899,12 +14123,12 @@
         "pipboy3000": "3"
       },
       "counts": {
-        "3": 5,
+        "3": 6,
         "2": 1
       },
       "majority": "3",
       "status": "provisional_majority",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/tyazhjoloe-oruzhie/khlamotron",
       "original_pdf_page": 62,
       "errata": "not_checked"
     },
@@ -13973,6 +14197,28 @@
       "status": "provisional_majority",
       "website": "https://www.fallout-2d20.ru/oruzhie/oruzhie-blizhnego-boya/mech",
       "original_pdf_page": 96,
+      "errata": "not_checked"
+    },
+    {
+      "weapon_id": "weapon_combat_knife",
+      "name_ru": "Боевой нож",
+      "field": "damage",
+      "votes": {
+        "companion": "3",
+        "site": "3",
+        "original_pdf": "4",
+        "pipboy": "3",
+        "focharactersheet": "3",
+        "pipboy3000": "3"
+      },
+      "counts": {
+        "3": 5,
+        "4": 1
+      },
+      "majority": "3",
+      "status": "provisional_majority",
+      "website": "https://www.fallout-2d20.ru/oruzhie/oruzhie-blizhnego-boya/boevoj-nozh",
+      "original_pdf_page": 97,
       "errata": "not_checked"
     },
     {
@@ -14859,18 +15105,21 @@
       "field": "damage",
       "votes": {
         "companion": "4",
+        "site": "5",
+        "original_pdf": "5",
         "focharactersheet": "5",
         "pipboy3000": "5"
       },
       "counts": {
         "4": 1,
-        "5": 2
+        "5": 4
       },
       "majority": "5",
       "status": "provisional_majority",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/karabin-tesly",
       "original_pdf_page": 87,
-      "errata": "not_checked"
+      "errata": "not_checked",
+      "book_value": "5"
     },
     {
       "weapon_id": "weapon_cryolator",
@@ -14894,21 +15143,44 @@
     {
       "weapon_id": "weapon_12_7mm_smg",
       "name_ru": "12,7-мм пистолет-пулемёт",
+      "field": "fireRate",
+      "votes": {
+        "companion": "3",
+        "site": "3",
+        "original_pdf": "2",
+        "lonestar": "3",
+        "focharactersheet": "3",
+        "pipboy3000": "3"
+      },
+      "counts": {
+        "3": 5,
+        "2": 1
+      },
+      "majority": "3",
+      "status": "provisional_majority",
+      "website": "https://www.fallout-2d20.ru/oruzhie/strelkovoe-oruzhie/12-7-mm-pistolet-pulemjot",
+      "original_pdf_page": 32,
+      "errata": "not_checked"
+    },
+    {
+      "weapon_id": "weapon_12_7mm_smg",
+      "name_ru": "12,7-мм пистолет-пулемёт",
       "field": "weight",
       "votes": {
         "companion": "5",
+        "site": "5",
         "original_pdf": "13",
         "lonestar": "8",
         "focharactersheet": "5"
       },
       "counts": {
-        "5": 2,
+        "5": 3,
         "13": 1,
         "8": 1
       },
-      "majority": null,
-      "status": "review",
-      "website": null,
+      "majority": "5",
+      "status": "provisional_majority",
+      "website": "https://www.fallout-2d20.ru/oruzhie/strelkovoe-oruzhie/12-7-mm-pistolet-pulemjot",
       "original_pdf_page": 32,
       "errata": "not_checked"
     },
@@ -14918,19 +15190,20 @@
       "field": "cost",
       "votes": {
         "companion": "510",
+        "site": "510",
         "original_pdf": "144",
         "lonestar": "420",
         "focharactersheet": "510",
         "pipboy3000": "510"
       },
       "counts": {
-        "510": 3,
+        "510": 4,
         "144": 1,
         "420": 1
       },
       "majority": "510",
       "status": "provisional_majority",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/strelkovoe-oruzhie/12-7-mm-pistolet-pulemjot",
       "original_pdf_page": 32,
       "errata": "not_checked"
     },
@@ -14940,18 +15213,19 @@
       "field": "rarity",
       "votes": {
         "companion": "4",
+        "site": "4",
         "original_pdf": "2",
         "lonestar": "4",
         "focharactersheet": "4",
         "pipboy3000": "4"
       },
       "counts": {
-        "4": 4,
+        "4": 5,
         "2": 1
       },
       "majority": "4",
       "status": "provisional_majority",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/strelkovoe-oruzhie/12-7-mm-pistolet-pulemjot",
       "original_pdf_page": 32,
       "errata": "not_checked"
     },
@@ -14961,12 +15235,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "1",
+        "original_pdf": "1",
         "lonestar": "2",
         "focharactersheet": "1",
         "pipboy3000": "1"
       },
       "counts": {
-        "1": 3,
+        "1": 4,
         "2": 1
       },
       "majority": "1",
@@ -15043,12 +15318,13 @@
       "field": "fireRate",
       "votes": {
         "companion": "2",
+        "original_pdf": "2",
         "lonestar": "1",
         "focharactersheet": "2",
         "pipboy3000": "2"
       },
       "counts": {
-        "2": 3,
+        "2": 4,
         "1": 1
       },
       "majority": "2",
@@ -15246,22 +15522,47 @@
     {
       "weapon_id": "weapon_alien_disintegrator",
       "name_ru": "Дезинтегратор пришельцев",
+      "field": "damage",
+      "votes": {
+        "companion": "8",
+        "site": "8",
+        "original_pdf": "6",
+        "focharactersheet": "8",
+        "pipboy3000": "8"
+      },
+      "counts": {
+        "8": 4,
+        "6": 1
+      },
+      "majority": "8",
+      "status": "provisional_majority",
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/dezintegrator-chuzhogo",
+      "original_pdf_page": 90,
+      "errata": "not_checked"
+    },
+    {
+      "weapon_id": "weapon_alien_disintegrator",
+      "name_ru": "Дезинтегратор пришельцев",
       "field": "fireRate",
       "votes": {
         "companion": "7",
+        "site": "2",
+        "original_pdf": "3",
         "lonestar": "2",
         "focharactersheet": "2",
         "pipboy3000": "2"
       },
       "counts": {
         "7": 1,
-        "2": 3
+        "2": 4,
+        "3": 1
       },
       "majority": "2",
       "status": "provisional_majority",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/dezintegrator-chuzhogo",
       "original_pdf_page": 90,
-      "errata": "not_checked"
+      "errata": "not_checked",
+      "book_value": "2"
     },
     {
       "weapon_id": "weapon_alien_disintegrator",
@@ -15269,17 +15570,18 @@
       "field": "weight",
       "votes": {
         "companion": "7",
+        "site": "7",
         "original_pdf": "3",
         "lonestar": "7",
         "focharactersheet": "7"
       },
       "counts": {
-        "7": 3,
+        "7": 4,
         "3": 1
       },
       "majority": "7",
       "status": "provisional_majority",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/dezintegrator-chuzhogo",
       "original_pdf_page": 90,
       "errata": "not_checked"
     },
@@ -15289,19 +15591,63 @@
       "field": "cost",
       "votes": {
         "companion": "921",
+        "site": "921",
         "original_pdf": "1536",
         "lonestar": "921",
         "focharactersheet": "921",
         "pipboy3000": "921"
       },
       "counts": {
-        "921": 4,
+        "921": 5,
         "1536": 1
       },
       "majority": "921",
       "status": "provisional_majority",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/dezintegrator-chuzhogo",
       "original_pdf_page": 90,
+      "errata": "not_checked"
+    },
+    {
+      "weapon_id": "weapon_arc_welder",
+      "name_ru": "Дуговая сварка",
+      "field": "damage",
+      "votes": {
+        "companion": "3",
+        "site": "3",
+        "original_pdf": "6",
+        "focharactersheet": "3",
+        "pipboy3000": "3"
+      },
+      "counts": {
+        "3": 4,
+        "6": 1
+      },
+      "majority": "3",
+      "status": "provisional_majority",
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/elektrosvarka",
+      "original_pdf_page": 93,
+      "errata": "not_checked"
+    },
+    {
+      "weapon_id": "weapon_arc_welder",
+      "name_ru": "Дуговая сварка",
+      "field": "fireRate",
+      "votes": {
+        "companion": "4",
+        "site": "4",
+        "original_pdf": "3",
+        "lonestar": "4",
+        "focharactersheet": "4",
+        "pipboy3000": "4"
+      },
+      "counts": {
+        "4": 5,
+        "3": 1
+      },
+      "majority": "4",
+      "status": "provisional_majority",
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/elektrosvarka",
+      "original_pdf_page": 93,
       "errata": "not_checked"
     },
     {
@@ -15310,17 +15656,18 @@
       "field": "weight",
       "votes": {
         "companion": "15",
+        "site": "15",
         "original_pdf": "3",
         "lonestar": "15",
         "focharactersheet": "15"
       },
       "counts": {
-        "15": 3,
+        "15": 4,
         "3": 1
       },
       "majority": "15",
       "status": "provisional_majority",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/elektrosvarka",
       "original_pdf_page": 93,
       "errata": "not_checked"
     },
@@ -15330,18 +15677,19 @@
       "field": "cost",
       "votes": {
         "companion": "370",
+        "site": "370",
         "original_pdf": "1536",
         "lonestar": "370",
         "focharactersheet": "370",
         "pipboy3000": "370"
       },
       "counts": {
-        "370": 4,
+        "370": 5,
         "1536": 1
       },
       "majority": "370",
       "status": "provisional_majority",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/elektrosvarka",
       "original_pdf_page": 93,
       "errata": "not_checked"
     },
@@ -15351,18 +15699,19 @@
       "field": "rarity",
       "votes": {
         "companion": "4",
+        "site": "4",
         "original_pdf": "5",
         "lonestar": "4",
         "focharactersheet": "4",
         "pipboy3000": "4"
       },
       "counts": {
-        "4": 4,
+        "4": 5,
         "5": 1
       },
       "majority": "4",
       "status": "provisional_majority",
-      "website": null,
+      "website": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/elektrosvarka",
       "original_pdf_page": 93,
       "errata": "not_checked"
     },
@@ -15388,17 +15737,94 @@
       "errata": "not_checked"
     },
     {
+      "weapon_id": "weapon_sten_injector",
+      "name_ru": "Стен-инжектор",
+      "field": "damage",
+      "votes": {
+        "companion": "3",
+        "original_pdf": "4"
+      },
+      "counts": {
+        "3": 1,
+        "4": 1
+      },
+      "majority": null,
+      "status": "review",
+      "website": null,
+      "original_pdf_page": 77,
+      "errata": "not_checked"
+    },
+    {
+      "weapon_id": "weapon_sten_injector",
+      "name_ru": "Стен-инжектор",
+      "field": "fireRate",
+      "votes": {
+        "companion": "4",
+        "original_pdf": "3"
+      },
+      "counts": {
+        "4": 1,
+        "3": 1
+      },
+      "majority": null,
+      "status": "review",
+      "website": null,
+      "original_pdf_page": 77,
+      "errata": "not_checked"
+    },
+    {
+      "weapon_id": "weapon_pistol_injector",
+      "name_ru": "Пистолет-инжектор",
+      "field": "damage",
+      "votes": {
+        "companion": "0",
+        "site": "5",
+        "original_pdf": "4"
+      },
+      "counts": {
+        "0": 1,
+        "5": 1,
+        "4": 1
+      },
+      "majority": null,
+      "status": "review",
+      "website": "https://www.fallout-2d20.ru/oruzhie/strelkovoe-oruzhie/pistolet-inektor",
+      "original_pdf_page": 47,
+      "errata": "not_checked"
+    },
+    {
+      "weapon_id": "weapon_pistol_injector",
+      "name_ru": "Пистолет-инжектор",
+      "field": "fireRate",
+      "votes": {
+        "companion": "4",
+        "site": "0",
+        "original_pdf": "0"
+      },
+      "counts": {
+        "4": 1,
+        "0": 2
+      },
+      "majority": "0",
+      "status": "provisional_majority",
+      "website": "https://www.fallout-2d20.ru/oruzhie/strelkovoe-oruzhie/pistolet-inektor",
+      "original_pdf_page": 47,
+      "errata": "not_checked",
+      "book_value": "0"
+    },
+    {
       "weapon_id": "weapon_crossbow",
       "name_ru": "Арбалет",
       "field": "fireRate",
       "votes": {
         "companion": "2",
+        "original_pdf": "2",
         "lonestar": "0",
         "focharactersheet": "0",
         "pipboy3000": "0"
       },
       "counts": {
-        "2": 1,
+        "2": 2,
         "0": 3
       },
       "majority": "0",
@@ -15413,13 +15839,14 @@
       "field": "fireRate",
       "votes": {
         "companion": "3",
-        "site": "0"
+        "site": "0",
+        "original_pdf": "3"
       },
       "counts": {
-        "3": 1,
+        "3": 2,
         "0": 1
       },
-      "majority": null,
+      "majority": "3",
       "status": "approved_by_user",
       "website": "https://www.fallout-2d20.ru/oruzhie/strelkovoe-oruzhie/abordazhnyj-pistolet",
       "original_pdf_page": 51,

@@ -36,6 +36,9 @@ class CompleteWorkingCatalogTest(unittest.TestCase):
                 capacitor = next(x for x in words if x[4] == '6-зарядный')
                 magazine = next(x for x in words if x[4] == 'МАГАЗИНА')
                 self.assertGreater(magazine[1] - capacitor[3], 15)
+                pistol = doc[47].get_text()
+                self.assertIn('ПИСТОЛЕТ-ИНЖЕКТОР', pistol)
+                self.assertIn('0\nБлизкая', pistol)
                 grid = doc[85]
                 frames = [d['rect'] for d in grid.get_drawings() if d.get('type') == 's' and abs((d.get('width') or 0)-.7) < .01]
                 word = [x for x in grid.get_text('words') if x[4] == 'КОНДЕНСАТОР'][0]

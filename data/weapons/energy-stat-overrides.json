@@ -29,5 +29,8 @@
       "Проникающий 1"
     ],
     "qualities": []
+  },
+  "weapon_alien_disintegrator": {
+    "fireRate": 2
   }
 }
