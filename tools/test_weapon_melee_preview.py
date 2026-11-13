@@ -13,9 +13,9 @@ class MeleeBookTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             output = Path(tmp) / 'book.pdf'
             info = melee.build(source, output)
-            self.assertEqual(info['pages'], 131)
+            self.assertEqual(info['pages'], 132)
             self.assertEqual(info['references'], [])
-            self.assertEqual(info['weapons'], list(range(101, 132)))
+            self.assertEqual(info['weapons'], list(range(102, 133)))
             with pymupdf.open(output) as doc:
                 sword = doc[info['weapons'][0]-1].get_text()
                 shish = doc[info['weapons'][5]-1].get_text()

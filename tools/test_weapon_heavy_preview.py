@@ -107,11 +107,14 @@ class HeavyPreviewTests(unittest.TestCase):
         ids = json.loads(heavy.ORDER_FILE.read_text(encoding='utf-8'))
         output = self.root / 'book.pdf'
         result = heavy.build('Справочник оружия.pdf', output, ids)
-        self.assertEqual(result['mods_pages'], 1)
+        self.assertEqual(result['mods_pages'], 2)
         with pymupdf.open(output) as doc:
-            common = doc[result['mods_start'] - 1].get_text()
-            self.assertIn('ОБЩИЕ МОДИФИКАЦИИ ТЯЖЁЛОГО ОРУЖИЯ', common)
+            common = '\n'.join(doc[i].get_text() for i in range(result['mods_start'] - 1, result['mods_start'] - 1 + result['mods_pages']))
+            self.assertIn('МОДИФИКАЦИИ ТЯЖЁЛОГО ОРУЖИЯ', common)
             self.assertIn('Перебросить кубик места попадания', common)
+            common_compact = re.sub(r'\s+', ' ', common)
+            self.assertIn('Измельчитель — ракетная установка', common_compact)
+            self.assertIn('Тяжёлый — пулемёт', common_compact)
             for wid in ('weapon_junk_jet', 'weapon_gauss_minigun', 'weapon_eugene'):
                 card_text = doc[result['divider'] + ids.index(wid)].get_text()
                 self.assertIn('Прицел стрелка', card_text)

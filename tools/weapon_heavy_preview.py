@@ -233,10 +233,10 @@ def heavy_reference_data(comp, weapons, prefixes):
 
 
 def confirmed_common_mod_data(comp):
-    """Load curated, book-verified heavy mods shared with identical values."""
+    """Load source-checked repeated heavy mods; preserve weapon-specific variants."""
     path = Path(__file__).resolve().parent.parent / 'data/weapons/heavy-common-mods.ru.json'
     raw = json.loads(path.read_text(encoding='utf-8'))
-    rows = []
+    by_slot = {}
     masks = []
     for entry in raw['mods']:
         mid, slot = entry['id'], entry['slot']
@@ -245,24 +245,47 @@ def confirmed_common_mod_data(comp):
             raise ValueError(f'{mid}: common heavy mod missing in Companion')
         for wid in entry['weapons']:
             if wid not in (mod.get('applies_to_ids') or []) or mid not in (comp.slots.get(wid) or {}).get(slot, []):
-                raise ValueError(f'{mid}: unverified slot/applicability for {wid}')
-        if mod.get('weight') != 1 or mod.get('cost') != 5 or mod.get('perk1') or mod.get('perk2'):
-            raise ValueError(f'{mid}: shared values changed; re-check source pages')
-        rows.append([entry['name'], entry['prefix'], entry['effects'], entry['weight'], entry['cost'], entry['perks']])
-        masks.extend(entry['mask_boxes'])
-    data = {'title': 'ОБЩИЕ МОДИФИКАЦИИ ТЯЖЁЛОГО ОРУЖИЯ',
-            'sections': [{'category': 'МОДИФИКАЦИИ ПРИЦЕЛА', 'rows': rows}]}
+                raise ValueError(f'{mid}: applicability/slot requires re-check for {wid}')
+        for mask in entry['mask_rows']:
+            if int(mask['page']) != SOURCE_PAGES.get(entry['weapons'][entry['mask_rows'].index(mask)] if len(entry['weapons']) == len(entry['mask_rows']) else entry['weapons'][0]):
+                raise ValueError(f'{mid}: wrong source-page mapping in common heavy table')
+            masks.append(mask)
+        by_slot.setdefault(slot, []).append([entry['name'], entry['prefix'], entry['effects'],
+                                             entry['weight'], entry['cost'], entry['perks']])
+    order = [slot for slot in small.SLOT_ORDER if slot in by_slot]
+    order += sorted(set(by_slot) - set(order))
+    sections = [{'category': f'МОДИФИКАЦИИ {small.SLOT_TITLES.get(slot, slot.upper())}',
+                 'rows': by_slot[slot]} for slot in order]
+    data = {'title': 'МОДИФИКАЦИИ ТЯЖЁЛОГО ОРУЖИЯ', 'sections': sections}
     return data, masks
 
 
-def mask_common_mod_details(source_doc, mask_boxes):
-    """Leave just the common mod name in each original weapon table."""
+def mask_common_mod_details(source_doc, mask_rows):
+    """Leave each source mod's name on its weapon card; move details to table."""
     pages = set()
-    for box in mask_boxes:
-        page = source_doc[int(box['page']) - 1]
-        rect = pymupdf.Rect(box['x0'], box['y0'], box['x1'], box['y1'])
+    for row in mask_rows:
+        page_index = int(row['page']) - 1
+        page = source_doc[page_index]
+        y0, y1 = float(row['y0']), float(row['y1'])
+        cells = []
+        for drawing in page.get_drawings():
+            rect, fill = drawing['rect'], drawing.get('fill')
+            if (fill and abs(rect.y0-y0) < .4 and abs(rect.y1-y1) < .4
+                    and rect.x0 >= 80 and rect.x1 < 570 and 15 <= rect.width < 300):
+                cells.append(pymupdf.Rect(rect))
+        cells.sort(key=lambda r: r.x0)
+        if len(cells) < 6:
+            raise ValueError(f"{row['page']}: не нашёл шесть ячеек в строке {row['source_name']}")
+        name_cell = cells[0]
+        row_words = [word[4] for word in page.get_text('words')
+                     if name_cell.x0 <= (word[0]+word[2])/2 <= name_cell.x1
+                     and y0 <= (word[1]+word[3])/2 <= y1]
+        if not row_words:
+            raise ValueError(f"{row['page']}: пустое имя в строке {row['source_name']}")
+        # Keep the first cell (mod name); redact prefix/effects/weight/cost/perk only.
+        rect = pymupdf.Rect(cells[1].x0 + .5, y0 + .4, max(c.x1 for c in cells) - .5, y1 - .4)
         page.add_redact_annot(rect, fill=False, cross_out=False)
-        pages.add(int(box['page']) - 1)
+        pages.add(page_index)
     for index in pages:
         source_doc[index].apply_redactions(images=0, graphics=0, text=0)
 
@@ -288,7 +311,7 @@ def build(source, output, weapons=WEAPONS, report=None):
         # The small-guns reference contains only SMALL_GUNS modifications.
         small.build(source, base)
         mod_data, mask_boxes = confirmed_common_mod_data(comp)
-        diagnostics.append('Общая таблица включает только подтверждённые совпадающие строки; прочие моды остаются в источниках оружия.')
+        diagnostics.append('В общей таблице приведены моды, повторяющиеся в исходных тяжёлых карточках; одинаковые названия с разными параметрами записаны отдельными вариантами.')
         diagnostics.append('weapon_gatling_plasma: применены пять модов сайта; 17 конфликтующих слотов Companion не использованы.')
         with pymupdf.open(base) as base_pdf, pymupdf.open(source) as original, pymupdf.open() as result:
             if original.page_count < 57:
