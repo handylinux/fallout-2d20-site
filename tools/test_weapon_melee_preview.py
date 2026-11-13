@@ -23,7 +23,8 @@ class MeleeBookTest(unittest.TestCase):
                 self.assertIn('Электризованное', sword)
                 self.assertIn('УНИКАЛЬНЫЙ', sword)
                 self.assertIn('УНИКАЛЬНЫЙ', shish)
-                self.assertIn('widespread', sword)
+                self.assertIn('Мечи использовались', sword)
+                self.assertNotIn('widespread', sword)
                 self.assertNotIn('wideРазброс', sword)
 
 if __name__ == '__main__':
