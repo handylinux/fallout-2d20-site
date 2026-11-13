@@ -12,6 +12,7 @@ import companion_mods_receiver as conv
 import weapon_heavy_preview as heavy
 import weapon2pdf as w
 import weapon_mod_policy as policy
+import weapon_table_borders as borders
 from weapons2cards import Companion, build_card
 
 ORDER = Path(__file__).resolve().parent.parent / 'data/weapons/energy-guns-order.json'
@@ -94,7 +95,7 @@ def render_energy(comp, wid, source, source_page, page_num, out):
             w.draw_page_number(c, page_num); c.showPage(); c.save()
             with pymupdf.open(base) as result:
                 clip = pymupdf.Rect(0, grid_top, page.rect.width, 807)
-                result[0].show_pdf_page(clip, original, source_page-1, clip=clip)
+                borders.place_source_block(result[0], original, source_page-1, clip, grid_top)
                 result.save(str(out), garbage=4, deflate=True)
 
 
@@ -119,8 +120,7 @@ def build(source, output, report=None, full=False):
                 raise ValueError('В исходном PDF отсутствуют требуемые страницы')
             references = []
             for source_number in (78, 79):
-                result.insert_pdf(original, from_page=source_number-1, to_page=source_number-1)
-                small.renumber_divider(result[-1], len(result), source_number=source_number)
+                borders.append_reference_page(result, original, source_number, len(result) + 1)
                 references.append(len(result))
             # Continuation of the common reference, not a second weapon-page table.
             prefixes = conv.load(conv.PREFIXES)

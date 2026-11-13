@@ -102,7 +102,15 @@ def render(data, output, page_start=10):
             text(page, x, baseline, line, name, size, color)
             baseline += leading
 
+    def finish_page():
+        if page is not None:
+            # Inset the stroke so it never falls outside the content column.
+            page.draw_rect(pymupdf.Rect(w.MARGIN_L + .35, TABLE_TOP + .35,
+                                       w.CONTENT_R - .35, y - .35),
+                           color=BLACK, fill=None, width=.7, overlay=True)
+
     def new_page(category_name):
+        finish_page()
         page = doc.new_page(width=w.PAGE_W, height=w.PAGE_H)
         page.insert_font(fontname='body', fontfile=REGULAR)
         page.insert_font(fontname='bold', fontfile=BOLD)
@@ -164,6 +172,7 @@ def render(data, output, page_start=10):
                         baseline += LEADING
                 x += width
             y += height
+    finish_page()
     output = Path(output)
     output.parent.mkdir(parents=True, exist_ok=True)
     try:

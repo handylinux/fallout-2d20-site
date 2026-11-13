@@ -19,6 +19,7 @@ import build_small_guns_book as small
 import companion_mods_receiver as conv
 import weapon2pdf as w
 import weapon_mod_policy as policy
+import weapon_table_borders as borders
 from weapons2cards import Companion, build_card
 
 WEAPONS = ('weapon_fat_man', 'weapon_flamer', 'weapon_gatling_laser')
@@ -81,8 +82,7 @@ def render_source_heavy(comp, wid, page_num, source, source_page, out, extra_des
             c.save()
             with pymupdf.open(base) as result:
                 clip = pymupdf.Rect(0, top, page.rect.width, 807)
-                target = pymupdf.Rect(0, target_top, page.rect.width, 807)
-                result[0].show_pdf_page(target, original, source_page - 1, clip=clip, keep_proportion=True)
+                borders.place_source_block(result[0], original, source_page - 1, clip, target_top)
                 result.save(str(out), garbage=4, deflate=True)
     return {'mode': 'source', 'font_size': None, 'mod_count': None}
 
@@ -195,6 +195,8 @@ def render_heavy(comp, wid, page_num, prefixes, out, extra_description='', card_
         w.draw_description(c, card, max_bottom=available)
         w.draw_center_line(c, top - w.MODS_HEADING_GAP, w.MODS_HEADING, 'Carlito-Bold', w.MODS_HEADING_SIZE)
         table.drawOn(c, w.MARGIN_L, w.y_from_top(w.MODS_BOTTOM))
+        c.setStrokeColor(w.BLACK); c.setLineWidth(.7)
+        c.rect(w.MARGIN_L + .35, w.y_from_top(w.MODS_BOTTOM) + .35, w.CONTENT_W - .7, height - .7, stroke=1, fill=0)
         w.draw_page_number(c, page_num)
         c.showPage()
         c.save()
