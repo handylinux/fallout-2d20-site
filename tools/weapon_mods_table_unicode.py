@@ -113,8 +113,10 @@ def render(data, output, page_start=10):
         size = w.TITLE_SIZE
         while size > 12 and bold.text_length(data['title'], fontsize=size) > w.CONTENT_W:
             size -= .5
-        centered(page, pymupdf.Rect(w.MARGIN_L, w.TITLE_TOP, w.CONTENT_R, w.TITLE_TOP + size),
-                 [data['title']], bold, 'bold', size, size, BLACK)
+        title_width = bold.text_length(data['title'], fontsize=size)
+        title_x = (w.PAGE_W - title_width) / 2
+        title_baseline = w.TITLE_TOP + w.TITLE_SIZE * .85
+        text(page, title_x, title_baseline, data['title'], 'bold', size, BLACK)
         page.draw_rect(pymupdf.Rect(w.PAGE_W_WORK_CENTER - w.RULE_W / 2, w.RULE_TOP,
                                    w.PAGE_W_WORK_CENTER + w.RULE_W / 2, w.RULE_TOP + w.RULE_H),
                        color=None, fill=BLACK)

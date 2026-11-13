@@ -69,22 +69,9 @@ class HeavyPreviewTests(unittest.TestCase):
         self.assertEqual(info['mode'], 'detailed')
         self.assertEqual(info['mod_count'], 6)
 
-    def test_name_only_mods_are_in_heavy_reference(self):
-        ids = json.loads(heavy.ORDER_FILE.read_text(encoding='utf-8'))
-        selected = [wid for wid in ids if len(heavy.build_rows(self.comp, wid, {})) > heavy.MAX_DETAILED_MODS]
-        data, _ = heavy.heavy_reference_data(self.comp, ids, {})
-        self.assertEqual(data['title'], 'МОДИФИКАЦИИ ТЯЖЁЛОГО ОРУЖИЯ')
-        names = {(section['category'], row[0]) for section in data['sections'] for row in section['rows']}
-        for wid in selected:
-            for slot, values in heavy.build_rows(self.comp, wid, {}):
-                category = 'МОДИФИКАЦИИ ' + heavy.small.SLOT_TITLES[slot]
-                self.assertIn((category, values[0]), names, (wid, slot, values[0]))
-
-    def test_specific_single_weapon_mods_stay_on_weapon_page(self):
-        data, _ = heavy.heavy_reference_data(self.comp, ['weapon_flamer'], {})
-        names = {row[0] for section in data['sections'] for row in section['rows']} if data else set()
-        self.assertNotIn('Напалм', names)
-        self.assertTrue(any(row[0] == 'Напалм' for _, row in heavy.build_rows(self.comp, 'weapon_flamer', {})))
+    def test_heavy_mods_are_not_extracted_to_a_shared_table(self):
+        self.assertFalse(hasattr(heavy, 'heavy_reference_data'))
+        self.assertFalse(hasattr(heavy, 'confirmed_common_mod_data'))
 
     def test_full_order_renders_every_card_without_losing_description(self):
         ids = json.loads(heavy.ORDER_FILE.read_text(encoding='utf-8'))
@@ -107,18 +94,24 @@ class HeavyPreviewTests(unittest.TestCase):
         ids = json.loads(heavy.ORDER_FILE.read_text(encoding='utf-8'))
         output = self.root / 'book.pdf'
         result = heavy.build('Справочник оружия.pdf', output, ids)
-        self.assertEqual(result['mods_pages'], 2)
+        self.assertNotIn('mods_pages', result)
         with pymupdf.open(output) as doc:
-            common = '\n'.join(doc[i].get_text() for i in range(result['mods_start'] - 1, result['mods_start'] - 1 + result['mods_pages']))
-            self.assertIn('МОДИФИКАЦИИ ТЯЖЁЛОГО ОРУЖИЯ', common)
-            self.assertIn('Перебросить кубик места попадания', common)
-            common_compact = re.sub(r'\s+', ' ', common)
-            self.assertIn('Измельчитель — ракетная установка', common_compact)
-            self.assertIn('Тяжёлый — пулемёт', common_compact)
+            entire_book = '\n'.join(page.get_text() for page in doc)
+            self.assertNotIn('МОДИФИКАЦИИ ТЯЖЁЛОГО ОРУЖИЯ', entire_book)
+            self.assertNotIn('Измельчитель — ракетная установка', entire_book)
+            self.assertNotIn('Тяжёлый — пулемёт', entire_book)
             for wid in ('weapon_junk_jet', 'weapon_gauss_minigun', 'weapon_eugene'):
                 card_text = doc[result['divider'] + ids.index(wid)].get_text()
                 self.assertIn('Прицел стрелка', card_text)
-                self.assertNotIn('Перебросить кубик места попадания', card_text)
+                self.assertIn('перебросить кубик места', card_text.lower())
+            minigun = doc[result['divider'] + ids.index('weapon_minigun')].get_text()
+            self.assertIn('Ускоренный', minigun)
+            minigun_compact = re.sub(r'-\s*\n\s*', '', minigun)
+            minigun_compact = re.sub(r'\s+', ' ', minigun_compact)
+            self.assertIn('Уменьшите дистанцию на 1 зону', minigun_compact)
+            launcher = doc[result['divider'] + ids.index('weapon_missile_launcher')].get_text()
+            self.assertIn('Четырехствольный', launcher)
+            self.assertIn('+2 Скорость стрельбы', launcher)
             for i, wid in enumerate(ids):
                 text = re.sub(r'\s+', '', doc[result['divider'] + i].get_text())
                 desc = re.sub(r'\s+', '', self.comp.description(wid))

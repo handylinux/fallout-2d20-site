@@ -64,6 +64,21 @@ class CompanionTests(unittest.TestCase):
                                         "Автоматический бронебойный",
                                         "Для автоогня"])
 
+    def test_mod_names_do_not_repeat_the_weapon_name(self):
+        ripper = cards.build_card(self.comp, 'weapon_ripper')
+        self.assertEqual(ripper['mods'][0]['items'][:2],
+                         ['Изогнутое лезвие', 'Удлиненное лезвие'])
+        for mod_id in ('mod_curved_blade', 'mod_electrified', 'mod_extended_blade',
+                       'mod_extra_claw', 'mod_extra_heavy', 'mod_heavy',
+                       'mod_hooked', 'mod_lead_lining'):
+            self.assertNotIn(':', self.comp.mods_ru[mod_id]['name'])
+        with open(os.path.join(cards.ROOT, 'data/weapon-book/mod-prefixes.ru.json'), encoding='utf-8') as source:
+            prefixes = json.load(source)
+        for mod_id in ('mod_curved_blade', 'mod_electrified', 'mod_extended_blade',
+                       'mod_extra_claw', 'mod_extra_heavy', 'mod_heavy',
+                       'mod_hooked', 'mod_lead_lining'):
+            self.assertNotIn(':', prefixes[mod_id])
+
     def test_energy_weapon(self):
         card = cards.build_card(self.comp, "weapon_cryolator")
         self.assertEqual(card["damageType"], "Энергетический")
@@ -84,6 +99,14 @@ class CompanionTests(unittest.TestCase):
     def test_effects_are_mapped_and_joined(self):
         card = cards.build_card(self.comp, "weapon_tesla_cannon")
         self.assertEqual(card["effects"], ["Дуга", "Проникающий 2"])
+
+    def test_canonical_quality_and_effect_terms(self):
+        self.assertEqual(self.comp.qualities['quality_debilitating']['name'], 'Изнуряющий')
+        self.assertEqual(self.comp.qualities['quality_concealed']['name'], 'Скрытное')
+        self.assertEqual(self.comp.qualities['quality_placed']['name'], 'Установка')
+        self.assertEqual(self.comp.qualities['quality_parry']['name'], 'Парирование')
+        self.assertEqual(self.comp.effects['effect_freeze']['name'], 'Заморозка')
+        self.assertEqual(self.comp.effects['effect_stun']['name'], 'Оглушение')
 
     def test_three_effect_weapon(self):
         card = cards.build_card(self.comp, "weapon_fat_man")

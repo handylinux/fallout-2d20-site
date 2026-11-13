@@ -12,6 +12,27 @@ class UnicodeTableTests(unittest.TestCase):
         self.addCleanup(self.tmp.cleanup)
         self.out = Path(self.tmp.name) / 'table.pdf'
 
+    def test_long_titles_share_the_same_baseline(self):
+        short = {'title': 'МОДИФИКАЦИИ СТРЕЛКОВОГО ОРУЖИЯ',
+                 'category': 'РЕСИВЕР',
+                 'rows': [['Базовый', '', '', '', '', '']]}
+        long = {'title': 'ДОПОЛНИТЕЛЬНЫЕ ЭНЕРГЕТИЧЕСКИЕ МОДИФИКАЦИИ',
+                'category': 'КОНДЕНСАТОР',
+                'rows': [['Базовый', '', '', '', '', '']]}
+        short_path = self.out.parent / 'short.pdf'
+        long_path = self.out.parent / 'long.pdf'
+        table.render(short, short_path)
+        table.render(long, long_path)
+        baselines = []
+        for path, title in ((short_path, short['title']), (long_path, long['title'])):
+            with pymupdf.open(path) as doc:
+                spans = [span for block in doc[0].get_text('dict')['blocks']
+                         for line in block.get('lines', []) for span in line['spans']
+                         if span['text'] == title]
+                self.assertEqual(len(spans), 1)
+                baselines.append(spans[0]['origin'][1])
+        self.assertEqual(baselines[0], baselines[1])
+
     def test_unicode_fonts_and_editable_cyrillic(self):
         data = {'title': 'МОДИФИКАЦИИ', 'category': 'РЕСИВЕР',
                 'rows': [['Укреплённый', 'Префикс', 'Урон +1', '–', '+20', 'Фанатик оружия']]}

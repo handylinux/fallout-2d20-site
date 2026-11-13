@@ -71,11 +71,41 @@ class Companion:
             RU, "equipment", "weapons", "weapons.json")))
         self.mods_ru = index_by_id(load(os.path.join(
             RU, "equipment", "weapon_mods.json")))
+        # Vendor labels sometimes include the weapon name; cards and mod tables
+        # should display the modification name only.
+        for mod_id, name in {
+            "mod_curved_blade": "Изогнутое лезвие",
+            "mod_electrified": "Электризованная",
+            "mod_extended_blade": "Удлиненное лезвие",
+            "mod_extra_claw": "Дополнительный коготь",
+            "mod_extra_heavy": "Сверхтяжелый",
+            "mod_heavy": "Утяжелённая",
+            "mod_hooked": "Крюк",
+            "mod_lead_lining": "Свинцовая подкладка",
+        }.items():
+            if mod_id in self.mods_ru:
+                self.mods_ru[mod_id]["name"] = name
         self.ammo = index_by_id(load(os.path.join(
             RU, "equipment", "ammo", "ammo_types.json")))
         self.qualities = index_by_id(load(os.path.join(RU, "system", "qualities.json")))
         self.effects = index_by_id(load(os.path.join(
             RU, "system", "damageEffects.json")))
+        # Canonical Russian terminology accepted for this catalogue. Keep these
+        # overrides local to the build; the vendored Companion reference stays intact.
+        for quality_id, name in {
+            "quality_debilitating": "Изнуряющий",
+            "quality_concealed": "Скрытное",
+            "quality_placed": "Установка",
+            "quality_parry": "Парирование",
+        }.items():
+            if quality_id in self.qualities:
+                self.qualities[quality_id]["name"] = name
+        for effect_id, name in {
+            "effect_freeze": "Заморозка",
+            "effect_stun": "Оглушение",
+        }.items():
+            if effect_id in self.effects:
+                self.effects[effect_id]["name"] = name
         self.damage_types = load(os.path.join(
             COMP, "i18n", "ru-RU", "screens",
             "addItemModal.json"))["filter"]["damageTypes"]

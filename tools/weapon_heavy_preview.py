@@ -210,85 +210,6 @@ def render_heavy(comp, wid, page_num, prefixes, out, extra_description='', card_
         return {'mode': 'detailed', 'font_size': font_size, 'mod_count': len(rows)}
 
 
-def heavy_reference_data(comp, weapons, prefixes):
-    # The table contains shared mods usable by the heavy section (including
-    # BIG_GUNS items placed elsewhere by the original book). A name-only card
-    # also contributes any otherwise unique mods, so its details are never lost.
-    small_ids = json.loads(small.ORDER.read_text(encoding='utf-8'))
-    refs = list(dict.fromkeys(list(weapons) + [wid for wid in small_ids
-                            if wid in comp.weapons and comp.weapons[wid].get('mainSkill') == 'BIG_GUNS']))
-    allowed = set()
-    for wid in refs:
-        slot_map = comp.slots.get(wid) or {}
-        many = sum(len(ids) for ids in slot_map.values()) > MAX_DETAILED_MODS
-        for slot, ids in slot_map.items():
-            for mid in ids:
-                mod = comp.mods.get(mid)
-                if many or mod is None or len(set(mod.get('applies_to_ids') or [])) > 1:
-                    allowed.add((slot, mid))
-    if not allowed:
-        return None, []
-    return small.make_mod_data(comp, refs, prefixes, allowed=allowed,
-                               title='МОДИФИКАЦИИ ТЯЖЁЛОГО ОРУЖИЯ')
-
-
-def confirmed_common_mod_data(comp):
-    """Load source-checked repeated heavy mods; preserve weapon-specific variants."""
-    path = Path(__file__).resolve().parent.parent / 'data/weapons/heavy-common-mods.ru.json'
-    raw = json.loads(path.read_text(encoding='utf-8'))
-    by_slot = {}
-    masks = []
-    for entry in raw['mods']:
-        mid, slot = entry['id'], entry['slot']
-        mod = comp.mods.get(mid)
-        if not mod or not entry['weapons']:
-            raise ValueError(f'{mid}: common heavy mod missing in Companion')
-        for wid in entry['weapons']:
-            if wid not in (mod.get('applies_to_ids') or []) or mid not in (comp.slots.get(wid) or {}).get(slot, []):
-                raise ValueError(f'{mid}: applicability/slot requires re-check for {wid}')
-        for mask in entry['mask_rows']:
-            if int(mask['page']) != SOURCE_PAGES.get(entry['weapons'][entry['mask_rows'].index(mask)] if len(entry['weapons']) == len(entry['mask_rows']) else entry['weapons'][0]):
-                raise ValueError(f'{mid}: wrong source-page mapping in common heavy table')
-            masks.append(mask)
-        by_slot.setdefault(slot, []).append([entry['name'], entry['prefix'], entry['effects'],
-                                             entry['weight'], entry['cost'], entry['perks']])
-    order = [slot for slot in small.SLOT_ORDER if slot in by_slot]
-    order += sorted(set(by_slot) - set(order))
-    sections = [{'category': f'МОДИФИКАЦИИ {small.SLOT_TITLES.get(slot, slot.upper())}',
-                 'rows': by_slot[slot]} for slot in order]
-    data = {'title': 'МОДИФИКАЦИИ ТЯЖЁЛОГО ОРУЖИЯ', 'sections': sections}
-    return data, masks
-
-
-def mask_common_mod_details(source_doc, mask_rows):
-    """Leave each source mod's name on its weapon card; move details to table."""
-    pages = set()
-    for row in mask_rows:
-        page_index = int(row['page']) - 1
-        page = source_doc[page_index]
-        y0, y1 = float(row['y0']), float(row['y1'])
-        cells = []
-        for drawing in page.get_drawings():
-            rect, fill = drawing['rect'], drawing.get('fill')
-            if (fill and abs(rect.y0-y0) < .4 and abs(rect.y1-y1) < .4
-                    and rect.x0 >= 80 and rect.x1 < 570 and 15 <= rect.width < 300):
-                cells.append(pymupdf.Rect(rect))
-        cells.sort(key=lambda r: r.x0)
-        if len(cells) < 6:
-            raise ValueError(f"{row['page']}: не нашёл шесть ячеек в строке {row['source_name']}")
-        name_cell = cells[0]
-        row_words = [word[4] for word in page.get_text('words')
-                     if name_cell.x0 <= (word[0]+word[2])/2 <= name_cell.x1
-                     and y0 <= (word[1]+word[3])/2 <= y1]
-        if not row_words:
-            raise ValueError(f"{row['page']}: пустое имя в строке {row['source_name']}")
-        # Keep the first cell (mod name); redact prefix/effects/weight/cost/perk only.
-        rect = pymupdf.Rect(cells[1].x0 + .5, y0 + .4, max(c.x1 for c in cells) - .5, y1 - .4)
-        page.add_redact_annot(rect, fill=False, cross_out=False)
-        pages.add(page_index)
-    for index in pages:
-        source_doc[index].apply_redactions(images=0, graphics=0, text=0)
-
 
 def build(source, output, weapons=WEAPONS, report=None):
     source, output = Path(source), Path(output)
@@ -310,36 +231,27 @@ def build(source, output, weapons=WEAPONS, report=None):
         base = Path(tmp) / 'small-guns.pdf'
         # The small-guns reference contains only SMALL_GUNS modifications.
         small.build(source, base)
-        mod_data, mask_boxes = confirmed_common_mod_data(comp)
-        diagnostics.append('В общей таблице приведены моды, повторяющиеся в исходных тяжёлых карточках; одинаковые названия с разными параметрами записаны отдельными вариантами.')
         diagnostics.append('weapon_gatling_plasma: применены пять модов сайта; 17 конфликтующих слотов Companion не использованы.')
         with pymupdf.open(base) as base_pdf, pymupdf.open(source) as original, pymupdf.open() as result:
             if original.page_count < 57:
                 raise ValueError('В исходном PDF нужно минимум 57 страниц')
             result.insert_pdf(base_pdf)
-            mods_start = len(result) + 1
-            mod_file = Path(tmp) / 'heavy-mods.pdf'
-            small.tables.render(mod_data, mod_file, page_start=mods_start)
-            with pymupdf.open(mod_file) as mod_pdf:
-                mods_pages = len(mod_pdf)
-                result.insert_pdf(mod_pdf)
-            mask_common_mod_details(original, mask_boxes)
-            source_for_cards = Path(tmp) / 'heavy-source-with-common-mods-extracted.pdf'
-            original.save(source_for_cards, garbage=4, deflate=True)
+            # Keep every heavy-weapon modification block on its own weapon page;
+            # do not extract details into a shared heavy-modifications table.
             result.insert_pdf(original, from_page=56, to_page=56)
             divider = len(result)
             small.renumber_divider(result[-1], divider, source_number=57)
             for index, wid in enumerate(weapons):
                 path = Path(tmp) / f'heavy-{index}.pdf'
                 if wid in SOURCE_PAGES:
-                    info = render_source_heavy(comp, wid, len(result) + 1, source_for_cards, SOURCE_PAGES[wid], path,
+                    info = render_source_heavy(comp, wid, len(result) + 1, source, SOURCE_PAGES[wid], path,
                                                card_overrides=card_overrides.get(wid))
                 else:
                     info = render_heavy(comp, wid, len(result) + 1, prefixes, path,
                                         card_overrides=card_overrides.get(wid),
                                         site_mod_rows=site_specific.get(wid, {}).get('mods'))
                 if info['mode'] == 'names':
-                    diagnostics.append(f"{wid}: {info['mod_count']} модов, показаны только названия; характеристики в таблице модов тяжёлого оружия")
+                    diagnostics.append(f"{wid}: {info['mod_count']} модов, показаны только названия в карточке оружия")
                 elif info['font_size'] is not None and info['font_size'] < 8.4:
                     diagnostics.append(f"{wid}: компактная таблица, шрифт {info['font_size']} pt")
                 with pymupdf.open(path) as doc:
@@ -351,11 +263,11 @@ def build(source, output, weapons=WEAPONS, report=None):
             report = Path(report)
             report.parent.mkdir(parents=True, exist_ok=True)
             text = '# Тяжёлое оружие: проверка сборки\n\n'
-            text += f'Общая таблица тяжёлых модов: {mods_pages} стр. (только моды с одинаковыми подтверждёнными параметрами); разделитель: {divider}; оружие: {len(weapons)}; всего страниц: {total}.\n\n'
-            text += 'Блоки модификаций для оружия взяты из исходного PDF. Подтверждённый общий «Прицел стрелка» перенесён в таблицу; на страницах оружия сохранено только название. Для гатлинг-плазмы пять модификаций взяты с сайта; их сверка с книгами не завершена. Подробная сверка исходника с Companion приведена в docs/weapon-heavy-mods-comparison.md.\n\n'
+            text += f'Таблицы тяжёлых модов не объединяются: каждый блок остаётся при своём оружии; разделитель: {divider}; оружие: {len(weapons)}; всего страниц: {total}.\n\n'
+            text += 'Описания и параметры модификаций сохранены в исходных таблицах на страницах соответствующего оружия; общая таблица тяжёлых модификаций удалена. Для гатлинг-плазмы пять модификаций взяты с сайта; их сверка с книгами не завершена. Подробная сверка исходника с Companion приведена в docs/weapon-heavy-mods-comparison.md.\n\n'
             text += '## Требует внимания\n\n' + ('\n'.join('- ' + x for x in diagnostics) if diagnostics else 'Не обнаружено.') + '\n'
             report.write_text(text, encoding='utf-8')
-        return {'mods_start': mods_start, 'mods_pages': mods_pages, 'divider': divider, 'pages': total, 'weapons': len(weapons), 'issues': len(diagnostics)}
+        return {'divider': divider, 'pages': total, 'weapons': len(weapons), 'issues': len(diagnostics)}
 
 
 def main(argv=None):

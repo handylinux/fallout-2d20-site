@@ -10,7 +10,7 @@
     "damage": 6,
     "cost": 100,
     "effects": [
-      "Оглушающий"
+      "Оглушение"
     ]
   },
   "unarmed_human": {
