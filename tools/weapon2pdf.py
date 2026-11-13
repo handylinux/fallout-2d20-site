@@ -567,7 +567,7 @@ def draw_mods(c, card, block=None) -> None:
     if block is None:
         block = mods_block(card)
     if block is None:
-        draw_center_line(c, MODS_HEADING_TOP, "НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ",
+        draw_center_line(c, MODS_HEADING_TOP, card.get("no_mods_label", "НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ"),
                          "Carlito-Bold", MODS_HEADING_SIZE)
         return
 

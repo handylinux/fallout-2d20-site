@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Append the original six melee weapons to the evolving book."""
+"""Append available melee weapons to the evolving book."""
 import argparse
 import json
 import tempfile
@@ -54,9 +54,12 @@ def build(source, output, report=None):
             pages = []
             for wid in ids:
                 pagefile = tmp / f'{wid}.pdf'
+                card_override = dict(overrides.get(wid, {}))
+                if not comp.slots.get(wid) and not comp.weapons[wid].get("withoutMods"):
+                    card_override["no_mods_label"] = "МОДИФИКАЦИИ ТРЕБУЮТ ПРОВЕРКИ"
                 heavy.render_heavy(comp, wid, len(result)+1, prefixes, pagefile,
-                                   unique_mods=specifics[wid], card_overrides=overrides.get(wid),
-                                   slot_labels={'Unique': 'ЛЕЗВИЕ'})
+                                   unique_mods=specifics[wid], card_overrides=card_override,
+                                   slot_labels={"Unique": "МОД"})
                 with pymupdf.open(pagefile) as page:
                     result.insert_pdf(page)
                 pages.append(len(result))
@@ -64,9 +67,9 @@ def build(source, output, report=None):
             result.save(output, garbage=4, deflate=True)
             total = len(result)
     if report:
-        lines = ['# Первые страницы ближнего боя', '',
+        lines = ['# Оружие ближнего боя', '',
                  f'Общая таблица: {references}; разделитель: {divider}; оружие: {pages}; всего: {total}.', '',
-                 'Шесть оружий исходника, в порядке data/weapons/melee-original-order.json. Характеристики, описания и модификации — рабочие данные Companion; расхождения с оригиналом требуют сверки. Изображения оружия не вставлены.', '',
+                 f'{len(ids)} оружий из рабочих данных Companion: первые шесть по оригиналу, остальные добавлены по алфавиту. Порядок редактируется в data/weapons/melee-original-order.json. Характеристики, описания и модификации требуют сверки. Изображения оружия не вставлены.', '',
                  'Моды, общие для нескольких оружий, собраны в справочной таблице. Немногочисленные подтверждённые специфические моды подробно указаны на странице оружия и исключены из общей таблицы. Техническое название слота Unique в Companion не означает, что все его моды уникальны.', '',
                  '## Известные расхождения', '',
                  '- Боевой нож: исходник указывает урон 4, Companion 3; пока указан Companion.',
@@ -74,7 +77,7 @@ def build(source, output, report=None):
                  '- Шиш-кебаб: исходник указывает вес 1, цену 20 и редкость 0; Companion — 3, 200 и 3. Пока указан Companion, значения требуют проверки.',
                  '- У ряда оружий оригинал указывает «Проникающий 1», в Companion уровень не указан; пока указан Companion.',
                  '- Меч: в Companion есть электрошокер, которого нет в списке оригинала. Возможное дополнение требует проверки. В описании исправлено повреждённое слово wideРазброс → widespread в отдельном файле поправок.',
-                 '- Таблица охватывает только шесть текущих оружий; другие оружия ближнего боя и их моды ещё не добавлены.', '', '## Автоматическая диагностика', '']
+                 '- Оружие без списка слотов и без явного withoutMods отмечено «модификации требуют проверки», а не как гарантированно лишённое модов.', '', '## Автоматическая диагностика', '']
         lines += ['- ' + p for p in problems] or ['- Замечаний нет.']
         Path(report).write_text('\n'.join(lines)+'\n', encoding='utf-8')
     return {'pages': total, 'references': references, 'divider': divider, 'weapons': pages}

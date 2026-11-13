@@ -6,15 +6,15 @@ import weapon_melee_preview as melee
 
 
 class MeleeBookTest(unittest.TestCase):
-    def test_six_pages_and_specific_mods_not_in_reference(self):
+    def test_melee_pages_and_specific_mods_not_in_reference(self):
         source = Path('Справочник оружия.pdf')
         if not source.exists():
             self.skipTest('Source PDF not present')
         with tempfile.TemporaryDirectory() as tmp:
             output = Path(tmp) / 'book.pdf'
             info = melee.build(source, output)
-            self.assertEqual(info['pages'], 106)
-            self.assertEqual(info['weapons'], list(range(101, 107)))
+            self.assertEqual(info['pages'], 131)
+            self.assertEqual(info['weapons'], list(range(101, 132)))
             with pymupdf.open(output) as doc:
                 reference = doc[98].get_text()
                 sword = doc[100].get_text()
