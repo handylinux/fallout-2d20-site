@@ -191,6 +191,11 @@ def draw_justified(c, x, width, y_top, lines, font, size, leading,
             c.drawString(x, baseline, line)
             continue
         gap = (width - sum(sw(w, font, size) for w in words)) / (len(words) - 1)
+        # Avoid rivers of whitespace when a long next word forces an unusually
+        # short line; left-align that line instead of stretching it across A4.
+        if gap > 2.5 * sw(" ", font, size):
+            c.drawString(x, baseline, line)
+            continue
         cursor = x
         for word in words:
             c.drawString(cursor, baseline, word)

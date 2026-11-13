@@ -4,7 +4,7 @@ import json
 import os
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 
 from PIL import Image
 
@@ -62,6 +62,15 @@ class WrapTextTests(unittest.TestCase):
     def test_long_word_is_not_dropped(self):
         lines = w.wrap_text("сверхдлинноеслово", "Carlito", 9, 10)
         self.assertEqual(lines, ["сверхдлинноеслово"])
+
+
+class JustificationTests(unittest.TestCase):
+    def test_short_nonfinal_line_is_not_stretched(self):
+        canvas = MagicMock()
+        w.draw_justified(canvas, 10, 500, 20, ['несколько коротких слов', 'последняя строка'],
+                         'Carlito', 12, 17)
+        drawn = [call.args[2] for call in canvas.drawString.call_args_list]
+        self.assertEqual(drawn, ['несколько коротких слов', 'последняя строка'])
 
 
 class ModsLayoutTests(unittest.TestCase):
