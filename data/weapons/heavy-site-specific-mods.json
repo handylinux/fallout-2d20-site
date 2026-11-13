@@ -2,11 +2,59 @@
   "weapon_gatling_plasma": {
     "source": "jos_sppagebuilder.zip, страница 351: Гатлинг-плазма",
     "mods": [
-      {"id":"gatplasma_ported","slot":"Barrel","name":"Портированный ствол","prefix":"Портированный","effects":"Убирает качество «Неточное»","weight":"+6","cost":"+81","perks":"Наука! 4"},
-      {"id":"gatplasma_comfort","slot":"Stock","name":"Удобная ложа","prefix":"Удобная ложа","effects":"Убирает качество «Отдача» (6)","weight":"+3","cost":"+90","perks":"Наука! 4"},
-      {"id":"gatplasma_reflex","slot":"Sight","name":"Коллиматорный","prefix":"Тактический","effects":"Можно перебросить кубик места попадания","weight":"+2","cost":"+50","perks":"Фанатик оружия 2"},
-      {"id":"gatplasma_focuser","slot":"Muzzle","name":"Фокусировщик луча","prefix":"Фокусированный","effects":"Увеличивает дистанцию на 1 зону","weight":"+4","cost":"+41","perks":"Наука! 4"},
-      {"id":"gatplasma_splitter","slot":"Muzzle","name":"Разделитель луча","prefix":"Рассеянный","effects":"Добавляет эффект «Разброс»","weight":"+3","cost":"+20","perks":"Наука! 4"}
+      {
+        "id": "gatplasma_ported",
+        "slot": "Barrel",
+        "name": "Портированный ствол",
+        "prefix": "Портированный",
+        "effects": "Убирает качество «Неточное»",
+        "weight": "+6",
+        "cost": "+81",
+        "perks": "Наука! 4"
+      },
+      {
+        "id": "gatplasma_comfort",
+        "slot": "Stock",
+        "name": "Удобная ложа",
+        "prefix": "Удобная ложа",
+        "effects": "Убирает качество «Отдача» (6)",
+        "weight": "+3",
+        "cost": "+90",
+        "perks": "Наука! 4"
+      },
+      {
+        "id": "gatplasma_reflex",
+        "slot": "Sight",
+        "name": "Коллиматорный",
+        "prefix": "Тактический",
+        "effects": "Можно перебросить кубик места попадания",
+        "weight": "+2",
+        "cost": "+50",
+        "perks": "Фанатик оружия 2"
+      },
+      {
+        "id": "gatplasma_focuser",
+        "slot": "Muzzle",
+        "name": "Фокусировщик луча",
+        "prefix": "Фокусированный",
+        "effects": "Увеличивает дистанцию на 1 зону",
+        "weight": "+4",
+        "cost": "+41",
+        "perks": "Наука! 4"
+      },
+      {
+        "id": "gatplasma_splitter",
+        "slot": "Muzzle",
+        "name": "Разделитель луча",
+        "prefix": "Рассеянный",
+        "effects": "Добавляет эффект «Разброс»",
+        "weight": "+3",
+        "cost": "+20",
+        "perks": "Наука! 4"
+      }
+    ],
+    "notes": [
+      "Базовая таблица качеств на той же странице 351 не содержит «Отдача (6)», хотя эффект «Удобной ложи» заявляет её устранение; не добавлять качество в базовую карточку без подтверждения."
     ]
   }
 }
