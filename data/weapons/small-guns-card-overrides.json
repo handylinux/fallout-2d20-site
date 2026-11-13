@@ -9,7 +9,17 @@
   },
   "weapon_pistol_injector": {
     "fireRate": 0,
-    "damage": 4
+    "damage": 4,
+    "damageType": "Яд",
+    "effects": [
+      "Усмирение 3",
+      "Устойчивый"
+    ],
+    "qualities": [
+      "Вплотную",
+      "Надежное"
+    ],
+    "title": "Пистолет-инъектор"
   },
   "weapon_gauss_rifle": {
     "rarity": 4

@@ -28,7 +28,9 @@ APPLIED = {('weapon_tesla_rifle', 'damage'): '5',
            ('weapon_crossbow', 'fireRate'): '0',
            ('weapon_pulse_mine', 'damage'): '6',
            ('weapon_pulse_mine', 'cost'): '100',
-           ('weapon_gamma_gun', 'cost'): '156'}
+           ('weapon_gamma_gun', 'cost'): '156',
+           ('weapon_sten_injector', 'damage'): '4',
+           ('weapon_sten_injector', 'fireRate'): '3'}
 FILES = {'pipboy': 'weapons.json', 'lonestar': 'lonestar_weapons.json',
          'focharactersheet': 'focharactersheet_weapons.json', 'pipboy3000': 'pipboy3000_weapons.json'}
 KEYS = {'pipboy': {'damage': 'damageRating', 'fireRate': 'fireRate', 'weight': 'weight', 'cost': 'cost', 'rarity': 'rarity'},

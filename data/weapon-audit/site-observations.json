@@ -168,5 +168,28 @@
     "effects": [
       "Оглушающий"
     ]
+  },
+  "weapon_sten_injector": {
+    "url": null,
+    "source": "jos_sppagebuilder.zip, page ID 359, first stats block",
+    "damage": 4,
+    "fireRate": 3,
+    "weight": 9,
+    "cost": 445,
+    "rarity": 5,
+    "damageType": "Яд",
+    "effects": [
+      "Усыпление 3",
+      "Стойкий",
+      "Очередь"
+    ]
+  },
+  "weapon_tomahawk": {
+    "url": null,
+    "source": "jos_sppagebuilder.zip, page ID 135, first stats block",
+    "damage": 4,
+    "weight": "<1",
+    "cost": 15,
+    "rarity": 2
   }
 }

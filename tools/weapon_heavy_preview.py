@@ -24,6 +24,7 @@ from weapons2cards import Companion, build_card
 
 WEAPONS = ('weapon_fat_man', 'weapon_flamer', 'weapon_gatling_laser')
 ORDER_FILE = Path(__file__).resolve().parent.parent / 'data/weapons/heavy-guns-order.json'
+CARD_OVERRIDES = Path(__file__).resolve().parent.parent / 'data/weapons/heavy-card-overrides.json'
 MAX_DETAILED_MODS = policy.MAX_DETAILED_MODS
 # Physical source pages; independent of editable output ordering.
 SOURCE_PAGES = {'weapon_fat_man': 58, 'weapon_flamer': 59, 'weapon_gatling_laser': 60, 'weapon_heavy_incinerator': 61, 'weapon_junk_jet': 62, 'weapon_minigun': 63, 'weapon_missile_launcher': 64, 'weapon_50_cal_machine_gun': 65, 'weapon_auto_grenade_launcher': 66, 'weapon_broadsider': 67, 'weapon_gatling_gun': 68, 'weapon_gauss_minigun': 69, 'weapon_cryolator': 70, 'weapon_tesla_cannon': 71, 'weapon_drone_cannon': 72, 'weapon_harpoon_gun': 73, 'weapon_tear_gas_launcher': 74, 'weapon_eugene': 75, 'weapon_plasma_caster': 76, 'weapon_sten_injector': 77}
@@ -239,6 +240,7 @@ def build(source, output, weapons=WEAPONS, report=None):
     prefixes = conv.load(conv.PREFIXES)
     w.register_fonts()
     diagnostics = []
+    card_overrides = json.loads(CARD_OVERRIDES.read_text(encoding='utf-8'))
     with tempfile.TemporaryDirectory() as tmp:
         base = Path(tmp) / 'small-guns.pdf'
         # The small-guns reference contains only SMALL_GUNS modifications.
@@ -266,9 +268,11 @@ def build(source, output, weapons=WEAPONS, report=None):
             for index, wid in enumerate(weapons):
                 path = Path(tmp) / f'heavy-{index}.pdf'
                 if wid in SOURCE_PAGES:
-                    info = render_source_heavy(comp, wid, len(result) + 1, source, SOURCE_PAGES[wid], path)
+                    info = render_source_heavy(comp, wid, len(result) + 1, source, SOURCE_PAGES[wid], path,
+                                               card_overrides=card_overrides.get(wid))
                 else:
-                    info = render_heavy(comp, wid, len(result) + 1, prefixes, path)
+                    info = render_heavy(comp, wid, len(result) + 1, prefixes, path,
+                                        card_overrides=card_overrides.get(wid))
                 if info['mode'] == 'names':
                     diagnostics.append(f"{wid}: {info['mod_count']} модов, показаны только названия; характеристики в таблице модов тяжёлого оружия")
                 elif info['font_size'] is not None and info['font_size'] < 8.4:

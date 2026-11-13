@@ -15,7 +15,7 @@ def report():
     comp = Companion()
     groups = [(name, load(name + '-order.json'), overrides) for name, overrides in (
         ('small-guns', load('small-guns-card-overrides.json')),
-        ('heavy-guns', {}), ('energy-guns', load('energy-stat-overrides.json')),
+        ('heavy-guns', load('heavy-card-overrides.json')), ('energy-guns', load('energy-stat-overrides.json')),
         ('melee-original', load('melee-card-overrides.json')))]
     remaining = load('remaining-card-overrides.json')
     groups.extend((name, ids, remaining) for name, ids in load('remaining-order.json').items())
