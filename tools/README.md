@@ -585,3 +585,9 @@ Companion. Ручная сверка и ссылки — в `docs/weapon-site-co
 `python3 tools/weapon_melee_preview.py 'Справочник оружия.pdf' --out docs/render/samples/book-melee-original.pdf --report docs/weapon-melee-report.md`.
 Порядок и поправки карточек находятся в `data/weapons/melee-original-order.json`
 и `data/weapons/melee-card-overrides.json`; первые шесть соответствуют исходнику.
+
+Полный рабочий каталог (143 из 146 ID Companion, три осознанных исключения):
+`python3 tools/build_weapon_catalog.py 'Справочник оружия.pdf' --out docs/render/samples/book-weapon-catalog.pdf --report docs/weapon-catalog-report.md`.
+Порядок добавленных разделов и поправки — `data/weapons/remaining-order.json` и
+`data/weapons/remaining-card-overrides.json`. Приложение с пистолетом института
+пока следует за ближним боем; категории и непроверенные правила перечислены в отчёте.

@@ -1,0 +1,5 @@
+{
+  "weapon_rock": {"title": "Камень", "range": "Близкая"},
+  "weapon_pulse_mine": {"title": "Импульсная мина"},
+  "unarmed_human": {"fireRate": 0, "description": "Иногда кулаки — единственное доступное оружие."}
+}
