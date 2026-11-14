@@ -5,16 +5,18 @@ armor_book_pdf — тестовая страница брони в PDF по ст
 
 Фон (бумажная текстура), гамма (бежевый #FFEBCD, оранжевый #FFC674,
 чёрные шапки, белый текст) и шрифты (Carlito) — как в PDF-справочнике
-оружия.  Расположение элементов — как на тестовой странице брони:
-заголовок с линейкой, подзаголовок (Вес/Цена/Редкость), картинка,
-таблица базового комплекта, таблицы дельт по уровням, таблица
-доступных модификаций (столбец метки + колонки модов, чередование
-бежевого и оранжевого — как в книге оружия).
+оружия.  Расположение — как на странице брони, в two-column-блоке.
+
+Структура — две страницы на броню:
+  страница 1 — заголовок, два столбца (слева броня, справа характеристики
+    её элементов: грудь/ноги/руки), затем краткое описание;
+  страница 2 — матрицы тиров (строки = элементы, столбцы = дельты статов,
+    заголовок = тип тира) и ниже таблица модификаций в книжном стиле.
 
 Пример:
-    python3 tools/armor_book_pdf.py \\
-        --data data/companion \\
-        --pages data/armor-pages \\
+    python3 tools/armor_book_pdf.py \
+        --data data/companion \
+        --pages data/armor-pages \
         --out docs/render/samples/armor-leather-book.pdf
 """
 
@@ -29,21 +31,54 @@ from reportlab.pdfgen import canvas
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import weapon2pdf as w  # noqa: E402
-from armor2page import AREA_TITLES, Companion, fmt_delta, fmt_number, stat_fields  # noqa: E402
+from armor2page import (  # noqa: E402
+    AREA_TITLES,
+    Companion,
+    area_key,
+    fmt_delta,
+    fmt_number,
+    stat_fields,
+)
 
-# геометрия страницы брони (точки, как в книге оружия)
+# --- геометрия (как в книге оружия) ----------------------------------------
 TITLE_TOP = w.TITLE_TOP          # 47.59
+TITLE_SIZE = w.TITLE_SIZE
 RULE_TOP = w.RULE_TOP            # 78.37
+RULE_H = w.RULE_H
+RULE_W = w.RULE_W
 SUBTITLE_TOP = w.SUBTITLE_TOP    # 87.53
-IMAGE_BOX = w.IMAGE_BOX          # below subtitle, above content
+SUBTITLE_SIZE = w.SUBTITLE_SIZE
 
-# контент начинается сразу после картинки (как статы в книге оружия)
-BASE_TOP = 307.0
+# two-column-блок (слева броня, справа статы элементов)
+HERO_TOP = 126.0
+HERO_GAP = 18.0
+LEFT_W = 288.0                   # колонка с картинкой
+LEFT_X = w.MARGIN_L
+RIGHT_X = LEFT_X + LEFT_W + HERO_GAP
+RIGHT_W = w.CONTENT_R - RIGHT_X
 
-# стили таблиц (книжные)
-HEADER_H = 24.0
-ROW_H = 13.5
-STAT_LABEL_W = 90.0
+# карточка элемента (вертикальная таблица статов)
+CARD_HEADER_H = 17.0
+CARD_ROW_H = 13.0
+CARD_GAP = 7.0
+CARD_TITLE_SIZE = 10.5
+CARD_FONT = 9.0
+
+# матрица тиров
+TM_TITLE_SIZE = 13.0
+TM_TITLE_GAP = 13.0
+TM_HEADER_H = 18.0
+TM_ROW_H = 14.0
+TM_LABEL_W = 70.0
+TM_FONT = 9.0
+TM_BLOCK_GAP = 18.0
+
+# описание
+DESC_LEFT = w.DESC_LEFT
+DESC_RIGHT = w.DESC_RIGHT
+DESC_SIZE = 10.5
+DESC_LEADING = 15.0
+DESC_GAP = 8.0
 
 BEIGE = w.BEIGE
 ORANGE = w.ORANGE
@@ -51,6 +86,7 @@ BLACK = w.BLACK
 WHITE = w.WHITE
 
 
+# --- данные ---------------------------------------------------------------
 def base_pieces(set_data: dict, tier_key: str = "standard") -> list[dict]:
     return list((set_data.get("tiers") or {}).get(tier_key, {}).get("pieces", []))
 
@@ -64,100 +100,6 @@ def set_totals(pieces: list[dict]) -> dict:
         "cost": int(cost) if float(cost).is_integer() else cost,
         "rarity": int(rarity) if float(rarity).is_integer() else rarity,
     }
-
-
-def area_titles(pieces: list[dict]) -> list[str]:
-    titles = []
-    for piece in pieces:
-        for area in piece.get("protectedAreas", []):
-            title = AREA_TITLES.get(area, area.upper())
-            if title not in titles:
-                titles.append(title)
-    return titles
-
-
-def draw_table_header(c, x, y_top, w_total, labels: list[str]) -> float:
-    """Чёрная шапка таблицы с белым текстом. y_top — верх."""
-    n = len(labels) - 1
-    label_w = STAT_LABEL_W
-    val_w = (w_total - label_w) / n
-    c.setFillColor(BLACK)
-    c.rect(x, w.y_from_top(y_top + HEADER_H), w_total, -HEADER_H, 0, 1)
-    w.draw_cell_text(c, x, y_top, label_w, HEADER_H, labels[0],
-                     "Carlito-Bold", 9.0, color=WHITE)
-    for i, label in enumerate(labels[1:]):
-        cx = x + label_w + val_w * i
-        w.draw_cell_text(c, cx, y_top, val_w, HEADER_H, label,
-                         "Carlito-Bold", 9.0, color=WHITE)
-    return y_top + HEADER_H
-
-
-def draw_stat_row(c, x, y_top, w_total, label: str, values: list[str]) -> float:
-    """Строка статов: метка слева, значения по колонкам."""
-    n = len(values)
-    label_w = STAT_LABEL_W
-    val_w = (w_total - label_w) / n
-    c.setFillColor(BEIGE)
-    c.rect(x, w.y_from_top(y_top + ROW_H), w_total, -ROW_H, 0, 1)
-    c.setFillColor(BLACK)
-    c.setFont("Carlito-Bold", 8.5)
-    c.drawString(x + 5, w.y_from_top(y_top + ROW_H / 2.0 + 0.25 * 8.5 + 1), label)
-    for i, value in enumerate(values):
-        cx = x + label_w + val_w * i
-        w.draw_cell_text(c, cx, y_top, val_w, ROW_H, value, "Carlito", 9.0)
-    return y_top + ROW_H
-
-
-def draw_grid(c, x, y_top, w_total, y_bottom, ncols: int, label_w: float = STAT_LABEL_W):
-    """Сетка таблицы (вертикали + горизонтали), 0.6 pt."""
-    c.setStrokeColor(BLACK)
-    c.setLineWidth(w.RULE_W_PT)
-    val_w = (w_total - label_w) / ncols
-    c.line(x, w.y_from_top(y_top), x, w.y_from_top(y_bottom))
-    c.line(x + w_total, w.y_from_top(y_top), x + w_total, w.y_from_top(y_bottom))
-    c.line(x + label_w, w.y_from_top(y_top), x + label_w, w.y_from_top(y_bottom))
-    for i in range(1, ncols):
-        cx = x + label_w + val_w * i
-        c.line(cx, w.y_from_top(y_top), cx, w.y_from_top(y_bottom))
-    for y in (y_top, y_bottom):
-        c.line(x, w.y_from_top(y), x + w_total, w.y_from_top(y))
-
-
-def draw_base_table(c, pieces: list[dict], y_top: float) -> float:
-    """Таблица базового комплекта: колонки (детали) × строки статов."""
-    titles = area_titles(pieces)
-    fields = stat_fields(pieces[0])
-    left = w.MARGIN_L
-    width = w.CONTENT_R - w.MARGIN_L
-    y = draw_table_header(c, left, y_top, width, ["Характеристика"] + titles)
-    for label, key in fields:
-        values = [fmt_number(piece.get(key, 0)) for piece in pieces]
-        y = draw_stat_row(c, left, y, width, label, values)
-    draw_grid(c, left, y_top, width, y, len(pieces))
-    return y
-
-
-def draw_delta_table(c, base_pieces: list[dict], pieces: list[dict], y_top: float) -> float:
-    """Таблица дельты уровня: значения (+N) от базового уровня."""
-    titles = area_titles(pieces)
-    base_by_area = {
-        tuple(sorted(p.get("protectedAreas", []))): p for p in base_pieces
-    }
-    fields = stat_fields(base_pieces[0] if base_pieces else {})
-    left = w.MARGIN_L
-    width = w.CONTENT_R - w.MARGIN_L
-    y = draw_table_header(c, left, y_top, width, ["Характеристика"] + titles)
-    for label, key in fields:
-        values = []
-        for piece in pieces:
-            base = base_by_area.get(tuple(sorted(piece.get("protectedAreas", []))))
-            if base is None or key not in piece or key not in base:
-                values.append("—")
-            else:
-                values.append(fmt_delta(piece[key] - base[key]))
-        y = draw_stat_row(c, left, y, width, label, values)
-    draw_grid(c, left, y_top, width, y, len(pieces))
-    return y
 
 
 def area_mods(comp: Companion, area: str, allowed: list[str]) -> list[str]:
@@ -187,13 +129,219 @@ def build_mods_card(comp: Companion, set_data: dict) -> dict:
         for area in piece.get("protectedAreas", []):
             names = area_mods(comp, area, allowed_std)
             if names:
-                mods.append({"slot": AREA_TITLES.get(area, area.upper()), "items": names})
+                mods.append({"slot": AREA_TITLES.get(area, area.upper()),
+                            "items": names})
     uniq = unique_mod_names(comp, allowed_uniq)
     if uniq:
         mods.append({"slot": "УНИКАЛЬНЫЙ", "items": uniq})
     return {"id": "armor", "title": "armor", "mods": mods}
 
 
+# --- общие хелперы рисования ----------------------------------------------
+def draw_header(c, title: str, totals: dict) -> None:
+    """Заголовок + чёрная линейка + подзаголовок (как в книге оружия)."""
+    w.draw_center_line(c, TITLE_TOP, title.upper(), "Carlito-Bold", TITLE_SIZE)
+    c.setFillColor(BLACK)
+    c.rect(w.PAGE_W_WORK_CENTER - RULE_W / 2.0,
+           w.y_from_top(RULE_TOP), RULE_W, -RULE_H, stroke=0, fill=1)
+    subtitle = "Вес: {w}, Цена: {c}, Редкость: {r}".format(
+        w=fmt_number(totals["weight"]), c=fmt_number(totals["cost"]),
+        r=fmt_number(totals["rarity"]),
+    )
+    w.draw_center_line(c, SUBTITLE_TOP, subtitle, "Carlito", SUBTITLE_SIZE)
+
+
+def _text_left(c, x, y_top, w_box, h, text, font, size, color=BLACK, pad=4.0):
+    """Текст слева, по вертикали по центру ячейки."""
+    c.setFillColor(color)
+    c.setFont(font, size)
+    block = w.ASCENT * size
+    baseline = w.y_from_top(y_top + (h - block) / 2.0 + w.ASCENT * size)
+    c.drawString(x + pad, baseline, text)
+
+
+def _cell_center(c, x, y_top, w_box, h, text, font, size, color=BLACK):
+    w.draw_cell_text(c, x, y_top, w_box, h, text, font, size, color=color)
+
+
+def _grid_lines(c, x, y_top, width, y_bottom, edges):
+    c.setStrokeColor(BLACK)
+    c.setLineWidth(w.RULE_W_PT)
+    c.line(x, w.y_from_top(y_top), x + width, w.y_from_top(y_top))
+    c.line(x, w.y_from_top(y_bottom), x + width, w.y_from_top(y_bottom))
+    for e in edges:
+        c.line(e, w.y_from_top(y_top), e, w.y_from_top(y_bottom))
+
+
+# --- страница 1: броня + характеристики + описание ----------------------
+def stat_card_height(piece: dict) -> float:
+    return CARD_HEADER_H + len(stat_fields(piece)) * CARD_ROW_H
+
+
+def draw_stat_card(c, piece: dict, x, y_top, width) -> float:
+    """Вертикальная карточка элемента: чёрная шапка + строки статов."""
+    areas = piece.get("protectedAreas") or [""]
+    title = " / ".join(AREA_TITLES.get(a, a.upper()) for a in areas) or "ДЕТАЛЬ"
+
+    # шапка
+    c.setFillColor(BLACK)
+    c.rect(x, w.y_from_top(y_top + CARD_HEADER_H), width, -CARD_HEADER_H, 0, 1)
+    _cell_center(c, x, y_top, width, CARD_HEADER_H, title,
+                 "Carlito-Bold", CARD_TITLE_SIZE, color=WHITE)
+
+    # строки
+    label_w = width * 0.56
+    y = y_top + CARD_HEADER_H
+    edges = [x, x + label_w, x + width]
+    for label, key in stat_fields(piece):
+        c.setFillColor(BEIGE)
+        c.rect(x, w.y_from_top(y + CARD_ROW_H), width, -CARD_ROW_H, 0, 1)
+        _text_left(c, x, y, label_w, CARD_ROW_H, label, "Carlito", CARD_FONT)
+        _cell_center(c, x + label_w, y, width - label_w, CARD_ROW_H,
+                     fmt_number(piece.get(key, 0)), "Carlito-Bold", CARD_FONT)
+        y += CARD_ROW_H
+    _grid_lines(c, x, y_top, width, y, edges)
+    return y
+
+
+def draw_stats_column(c, pieces: list[dict], x, y_top, width) -> float:
+    """Столбец карточек элементов; возвращает низ колонки."""
+    y = y_top
+    for piece in pieces:
+        y = draw_stat_card(c, piece, x, y, width) + CARD_GAP
+    return y - CARD_GAP
+
+
+def draw_hero(c, spec: dict, comp: Companion, set_data: dict,
+              pages_dir: Path, y_top: float) -> float:
+    """Two-column-блок: слева броня, справа характеристики элементов."""
+    pieces = base_pieces(set_data)
+    col_h = sum(stat_card_height(p) for p in pieces) + CARD_GAP * max(0, len(pieces) - 1)
+
+    # картинка (путь разрешается относительно каталога страниц,
+    # как в HTML: ../../assets/... от pages/armor/)
+    image_box = (LEFT_X, y_top, LEFT_X + LEFT_W, y_top + col_h)
+    image = spec.get("image") or {}
+    if image.get("src"):
+        src = image["src"]
+        if not Path(src).is_absolute():
+            src = str((pages_dir / src).resolve())
+        w.place_image(c, src, image_box, fit="contain")
+
+    # справа — характеристики элементов
+    draw_stats_column(c, pieces, RIGHT_X, y_top, RIGHT_W)
+    return y_top + col_h
+
+
+def draw_intro(c, spec: dict, y_top: float, bottom: float) -> float:
+    intro = spec.get("intro") or []
+    if not intro:
+        return y_top
+    width = DESC_RIGHT - DESC_LEFT
+    y = y_top
+    for para in intro:
+        lines = w.wrap_text(para, "Carlito", DESC_SIZE, width)
+        if y + len(lines) * DESC_LEADING > bottom:
+            break
+        w.draw_justified(c, DESC_LEFT, width, y, lines,
+                         "Carlito", DESC_SIZE, DESC_LEADING)
+        y += len(lines) * DESC_LEADING + DESC_GAP
+    return y
+
+
+# --- страница 2: матрицы тиров + таблица модов ----------------------------
+def tier_edges(x, width, label_w, n_stats) -> list[float]:
+    step = (width - label_w) / n_stats
+    edges = [x, x + label_w]
+    for i in range(1, n_stats + 1):
+        edges.append(x + label_w + step * i)
+    return edges
+
+
+def draw_tier_matrix(c, base_pieces_list: list[dict], tier_pieces: list[dict],
+                     tier_title: str, y_top: float) -> float:
+    """Матрица тира: строки = элементы, столбцы = дельты статов."""
+    x = w.MARGIN_L
+    width = w.CONTENT_W
+    base_by_area = {area_key(p): p for p in base_pieces_list}
+    fields = stat_fields(base_pieces_list[0] if base_pieces_list else {})
+    edges = tier_edges(x, width, TM_LABEL_W, len(fields))
+
+    # заголовок тира
+    w.draw_center_line(c, y_top, tier_title.upper(), "Carlito-Bold", TM_TITLE_SIZE)
+    y = y_top + TM_TITLE_SIZE + TM_TITLE_GAP
+
+    # шапка
+    c.setFillColor(BLACK)
+    c.rect(x, w.y_from_top(y + TM_HEADER_H), width, -TM_HEADER_H, 0, 1)
+    for i, (label, _) in enumerate(fields):
+        _cell_center(c, edges[i + 1], y, edges[i + 2] - edges[i + 1],
+                     TM_HEADER_H, label, "Carlito-Bold", TM_FONT, color=WHITE)
+    y += TM_HEADER_H
+
+    # строки
+    for piece in tier_pieces:
+        areas = piece.get("protectedAreas") or [""]
+        name = " / ".join(AREA_TITLES.get(a, a.upper()) for a in areas)
+        c.setFillColor(BEIGE)
+        c.rect(x, w.y_from_top(y + TM_ROW_H), width, -TM_ROW_H, 0, 1)
+        _text_left(c, x, y, TM_LABEL_W, TM_ROW_H, name, "Carlito-Bold", TM_FONT)
+        base = base_by_area.get(area_key(piece))
+        for i, (_, key) in enumerate(fields):
+            if base is None or key not in piece or key not in base:
+                value = "—"
+                color = BLACK
+            else:
+                value = fmt_delta(piece[key] - base[key])
+                color = BLACK if value != "0" else w.Color(0.54, 0.54, 0.54)
+            _cell_center(c, edges[i + 1], y, edges[i + 2] - edges[i + 1],
+                         TM_ROW_H, value, "Carlito-Bold", TM_FONT, color=color)
+        y += TM_ROW_H
+
+    _grid_lines(c, x, y_top + TM_TITLE_SIZE + TM_TITLE_GAP, width, y, edges)
+    return y
+
+
+def draw_tiers_block(c, set_data: dict, tier_titles: dict,
+                     y_top: float) -> float:
+    """Все матрицы тиров; возвращает низ блока."""
+    base_list = base_pieces(set_data)
+    y = y_top
+    first = True
+    for key, tier in (set_data.get("tiers") or {}).items():
+        if key == "standard":
+            continue
+        pieces = list(tier.get("pieces", []))
+        if not pieces:
+            continue
+        if not first:
+            y += TM_BLOCK_GAP
+        y = draw_tier_matrix(c, base_list, pieces,
+                             tier_titles.get(key, key), y)
+        first = False
+    return y
+
+
+def draw_mods_section(c, comp: Companion, set_data: dict, y_top: float) -> None:
+    """Таблица модов в книжном стиле, сразу под матрицами тиров.
+
+    y_top — желаемый верх таблицы; шапка идёт выше него на MODS_HEADING_GAP.
+    Нижняя граница считается по высоте блока.
+    """
+    card = build_mods_card(comp, set_data)
+    block = w.mods_block(card)
+    if block is None:
+        w.draw_center_line(c, y_top, "НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ",
+                           "Carlito-Bold", w.MODS_HEADING_SIZE)
+        return
+    # подгоняем позицию: верх — как задано, низ — по высоте блока
+    rows, _top, ncols = block
+    bottom = y_top + sum(r["h"] for r in rows)
+    adjusted = (rows, y_top, ncols)
+    w.draw_mods(c, card, adjusted, bottom=bottom)
+
+
+# --- рендер страницы ------------------------------------------------------
 def render_page(spec: dict, comp: Companion, out_path: str, pages_dir: Path,
                 page_num: int = 1) -> None:
     collection = spec.get("collection", "armor")
@@ -208,75 +356,30 @@ def render_page(spec: dict, comp: Companion, out_path: str, pages_dir: Path,
     c.setTitle(f"{title} — тестовая страница брони")
     c.setAuthor("fallout-2d20.ru")
 
-    # === страница 1: заголовок, картинка, таблицы характеристик ===
-    w.draw_paper(c)
-
-    # заголовок + линейка + подзаголовок (как в книге оружия)
-    w.draw_center_line(c, TITLE_TOP, title.upper(), "Carlito-Bold", w.TITLE_SIZE)
-    c.setFillColor(BLACK)
-    c.rect(w.PAGE_W_WORK_CENTER - w.RULE_W / 2.0,
-           w.y_from_top(RULE_TOP), w.RULE_W, -w.RULE_H, stroke=0, fill=1)
-    subtitle = "Вес: {w}, Цена: {c}, Редкость: {r}".format(
-        w=fmt_number(totals["weight"]), c=fmt_number(totals["cost"]),
-        r=fmt_number(totals["rarity"]),
-    )
-    w.draw_center_line(c, SUBTITLE_TOP, subtitle, "Carlito", w.SUBTITLE_SIZE)
-
-    # картинка (путь разрешается относительно каталога страниц,
-    # как в HTML: ../../assets/... от pages/armor/)
-    image = spec.get("image") or {}
-    if image.get("src"):
-        src = image["src"]
-        if not Path(src).is_absolute():
-            src = str((pages_dir / src).resolve())
-        w.place_image(c, src, IMAGE_BOX, fit="contain")
-
-    # базовый комплект
-    y = draw_base_table(c, pieces, BASE_TOP)
-
-    # уровни (дельты)
     tier_titles = spec.get("tier_titles") or {}
-    y += 14
-    for key, tier in (set_data.get("tiers") or {}).items():
-        if key == "standard":
-            continue
-        tier_pieces = list(tier.get("pieces", []))
-        if not tier_pieces:
-            continue
-        tier_y = y + 4
-        w.draw_center_line(c, tier_y, tier_titles.get(key, key).upper(),
-                           "Carlito-Bold", 12.0)
-        y = draw_delta_table(c, pieces, tier_pieces, tier_y + 12)
-        y += 20
 
+    # === страница 1: броня + характеристики + описание ===
+    w.draw_paper(c)
+    draw_header(c, title, totals)
+    hero_bottom = draw_hero(c, spec, comp, set_data, pages_dir, HERO_TOP)
+    draw_intro(c, spec, hero_bottom + 16, 640.0)
     w.draw_page_number(c, page_num)
     c.showPage()
 
-    # === страница 2: таблица модов в стиле книги оружия ===
+    # === страница 2: матрицы тиров + таблица модов ===
     w.draw_paper(c)
-
-    # заголовок страницы (повтор, чтобы страница модов самодостаточна)
-    w.draw_center_line(c, TITLE_TOP, title.upper(), "Carlito-Bold", w.TITLE_SIZE)
-    c.setFillColor(BLACK)
-    c.rect(w.PAGE_W_WORK_CENTER - w.RULE_W / 2.0,
-           w.y_from_top(RULE_TOP), w.RULE_W, -w.RULE_H, stroke=0, fill=1)
-    w.draw_center_line(c, SUBTITLE_TOP, "МОДИФИКАЦИИ",
-                       "Carlito", w.SUBTITLE_SIZE)
-
-    # модификации — таблица книги оружия (нижнепривязанная)
-    card = build_mods_card(comp, set_data)
-    block = w.mods_block(card)
-    if block is None:
-        w.draw_center_line(c, w.MODS_HEADING_TOP, "НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ",
-                           "Carlito-Bold", w.MODS_HEADING_SIZE)
-    else:
-        w.draw_mods(c, card, block)
-
+    draw_header(c, title, totals)
+    tiers_top = 126.0
+    tiers_bottom = draw_tiers_block(c, set_data, tier_titles, tiers_top)
+    # таблица модов сразу под матрицами: шапка идёт выше верха на MODS_HEADING_GAP
+    mods_top = tiers_bottom + w.MODS_HEADING_GAP + 6.0
+    draw_mods_section(c, comp, set_data, mods_top)
     w.draw_page_number(c, page_num + 1)
     c.showPage()
     c.save()
 
 
+# --- CLI -----------------------------------------------------------------
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Тестовая страница брони в PDF (стиль книги оружия)")
     parser.add_argument("--data", default="data/companion", help="каталог с equipment/ и i18n/")
