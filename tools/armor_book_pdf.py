@@ -229,9 +229,9 @@ def build_header_html(title: str) -> str:
 
 def build_element_card_html(piece: dict, card_w: float, comp: Companion) -> str:
     name = comp.item_name(piece)
-    # значение — узкий столбец, метка занимает остаток карточки
-    value_w = 28.0
-    label_w = card_w - value_w
+    # чистая сбалансированная карточка: метка 60% / значение 40%, заполняет ячейку
+    label_w = card_w * 0.60
+    value_w = card_w * 0.40
     rows = []
     for label, key in stat_fields(piece):
         rows.append(

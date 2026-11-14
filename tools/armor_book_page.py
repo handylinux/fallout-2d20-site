@@ -125,7 +125,7 @@ BOOK_CSS = r"""
   width:100%;border-collapse:collapse;table-layout:fixed;background:#ffebcd;
 }
 .ab-stat-table th{
-  padding:5px 7px;background:#000;color:#fff;
+  width:60%;padding:5px 7px;background:#000;color:#fff;
   border:1px solid #fff;text-align:left;font-weight:700;
   font-size:.72rem;line-height:1.25;text-transform:uppercase;letter-spacing:.01em;
 }
@@ -293,9 +293,7 @@ def render_card(piece: dict, comp: Companion) -> str:
     return (
         '<article class="ab-card">'
         + '<h3 class="ab-card-name">' + esc(name) + "</h3>"
-        + '<table class="ab-stat-table"><colgroup>'
-        '<col><col style="width:28px">'
-        "</colgroup><tbody>"
+        + '<table class="ab-stat-table"><tbody>'
         + rows
         + "</tbody></table>"
         "</article>"
