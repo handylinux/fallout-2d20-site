@@ -5,16 +5,17 @@ armor_book_pdf — тестовая страница брони в PDF по ст
 
 Фон (бумажная текстура), гамма (бежевый #FFEBCD, оранжевый #FFC674,
 чёрные шапки, белый текст) и шрифты (Carlito) — как в PDF-справочнике
-оружия.  Схема страницы — по референсу «Броня», но в наших шрифтах,
-цветах, форматах и размерах, со фоном и картинкой брони (их в референсе
-не было).
+оружия.  Схема — по референсу «Броня», но в наших шрифтах, цветах,
+форматах и размерах, со фоном и картинкой брони (их в референсе не было).
 
 Структура — две страницы на броню:
-  страница 1 — заголовок, картинка брони, характеристики элементов в
-    сетке 2×2 (каждый элемент — вертикальная таблица статов), описание,
-    таблица модификаций;
-  страница 2 — матрицы тиров: заголовок = тип тира, строки = элементы,
-    столбцы = дельты статов (Физ.СУ, Энрг.СУ, Рад.СУ, Вес, Цена, Редкость).
+  страница 1 — заголовок; two-column-блок: слева картинка брони
+    (квадратная), справа таблицы характеристик элементов (метки — белый
+    на чёрном, значения — кремовый); описание; таблица модов привязана
+    к нижнему краю контента;
+  страница 2 — матрицы тиров: заголовок = тип тира, строки = элементы
+    (с чередованием цветов), столбцы = дельты статов, заголовки — белый
+    на чёрном.
 
 Пример:
     python3 tools/armor_book_pdf.py \
@@ -27,7 +28,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
+import tempfile
 from pathlib import Path
 
 from reportlab.pdfgen import canvas
@@ -49,19 +52,18 @@ TITLE_SIZE = w.TITLE_SIZE
 RULE_TOP = w.RULE_TOP            # 78.37
 RULE_H = w.RULE_H
 RULE_W = w.RULE_W
-SUBTITLE_TOP = w.SUBTITLE_TOP    # 87.53
-SUBTITLE_SIZE = w.SUBTITLE_SIZE
 
-# картинка брони (hero)
-IMG_TOP_GAP = 14.0
-IMG_H = 150.0
+# two-column-блок: слева картинка (квадратная), справа таблицы элементов
+IMG_SIDE = 270.0                 # квадратная картинка брони
+TWO_COL_GAP = 18.0
+LEFT_W = IMG_SIDE
+RIGHT_X = w.MARGIN_L + LEFT_W + TWO_COL_GAP
+RIGHT_W = w.CONTENT_R - RIGHT_X
 
-# сетка характеристик элементов (2×2, как в референсе)
-GRID_COLS = 2
-GRID_GAP = 16.0
-GRID_ROW_GAP = 14.0
+# карточка элемента (таблица статов)
 CARD_HEADER_H = 17.0
 CARD_ROW_H = 13.0
+CARD_GAP = 7.0
 CARD_TITLE_SIZE = 10.5
 CARD_FONT = 9.0
 
@@ -80,6 +82,7 @@ TM_ROW_H = 14.0
 TM_LABEL_W = 70.0
 TM_FONT = 9.0
 TM_BLOCK_GAP = 18.0
+TIER_FILLS = None  # заполняется в draw_tier_matrix: [BEIGE, ORANGE]
 
 BEIGE = w.BEIGE
 ORANGE = w.ORANGE
@@ -90,17 +93,6 @@ WHITE = w.WHITE
 # --- данные ---------------------------------------------------------------
 def base_pieces(set_data: dict, tier_key: str = "standard") -> list[dict]:
     return list((set_data.get("tiers") or {}).get(tier_key, {}).get("pieces", []))
-
-
-def set_totals(pieces: list[dict]) -> dict:
-    weight = sum(float(p.get("weight", 0) or 0) for p in pieces)
-    cost = sum(float(p.get("cost", 0) or 0) for p in pieces)
-    rarity = max((float(p.get("rarity", 0) or 0) for p in pieces), default=0)
-    return {
-        "weight": int(weight) if float(weight).is_integer() else weight,
-        "cost": int(cost) if float(cost).is_integer() else cost,
-        "rarity": int(rarity) if float(rarity).is_integer() else rarity,
-    }
 
 
 def area_mods(comp: Companion, area: str, allowed: list[str]) -> list[str]:
@@ -139,26 +131,13 @@ def build_mods_card(comp: Companion, set_data: dict) -> dict:
 
 
 # --- общие хелперы рисования ----------------------------------------------
-def draw_header(c, title: str, totals: dict) -> None:
-    """Заголовок + чёрная линейка + подзаголовок (как в книге оружия)."""
+def draw_header(c, title: str) -> None:
+    """Заголовок + чёрная линейка (без подзаголовка: у сета нет единых
+    Веса/Цены/Редкости — они только у деталей, в таблицах элементов)."""
     w.draw_center_line(c, TITLE_TOP, title.upper(), "Carlito-Bold", TITLE_SIZE)
     c.setFillColor(BLACK)
     c.rect(w.PAGE_W_WORK_CENTER - RULE_W / 2.0,
            w.y_from_top(RULE_TOP), RULE_W, -RULE_H, stroke=0, fill=1)
-    subtitle = "Вес: {w}, Цена: {c}, Редкость: {r}".format(
-        w=fmt_number(totals["weight"]), c=fmt_number(totals["cost"]),
-        r=fmt_number(totals["rarity"]),
-    )
-    w.draw_center_line(c, SUBTITLE_TOP, subtitle, "Carlito", SUBTITLE_SIZE)
-
-
-def _text_left(c, x, y_top, w_box, h, text, font, size, color=BLACK, pad=4.0):
-    """Текст слева, по вертикали по центру ячейки."""
-    c.setFillColor(color)
-    c.setFont(font, size)
-    block = w.ASCENT * size
-    baseline = w.y_from_top(y_top + (h - block) / 2.0 + w.ASCENT * size)
-    c.drawString(x + pad, baseline, text)
 
 
 def _cell_center(c, x, y_top, w_box, h, text, font, size, color=BLACK):
@@ -174,42 +153,68 @@ def _grid_lines(c, x, y_top, width, y_bottom, edges):
         c.line(e, w.y_from_top(y_top), e, w.y_from_top(y_bottom))
 
 
-# --- страница 1: картинка + сетка элементов + описание + моды ----------
+# --- страница 1: картинка + таблицы элементов + описание + моды --------
 def card_height(piece: dict) -> float:
     return CARD_HEADER_H + len(stat_fields(piece)) * CARD_ROW_H
 
 
+def _crop_square(path: str):
+    """Центральный кроп картинки до квадрата."""
+    from PIL import Image
+    im = Image.open(path).convert("RGBA")
+    iw, ih = im.size
+    side = min(iw, ih)
+    left = (iw - side) // 2
+    top = (ih - side) // 2
+    return im.crop((left, top, left + side, top + side))
+
+
 def draw_hero_image(c, spec: dict, pages_dir: Path, y_top: float) -> float:
-    """Картинка брони на всю ширину контента (как hero)."""
+    """Квадратная картинка брони слева (кроп до квадрата, если горизонтальная)."""
     image = spec.get("image") or {}
-    if image.get("src"):
-        src = image["src"]
-        if not Path(src).is_absolute():
-            src = str((pages_dir / src).resolve())
-        box = (w.MARGIN_L, y_top, w.CONTENT_R, y_top + IMG_H)
-        w.place_image(c, src, box, fit="contain")
-    return y_top + IMG_H
+    if not image.get("src"):
+        return y_top + IMG_SIDE
+    src = image["src"]
+    if not Path(src).is_absolute():
+        src = str((pages_dir / src).resolve())
+    if not os.path.exists(src):
+        return y_top + IMG_SIDE
+    im = _crop_square(src)
+    fd, tmp = tempfile.mkstemp(suffix=".png")
+    os.close(fd)
+    im.save(tmp)
+    try:
+        box = (w.MARGIN_L, y_top, w.MARGIN_L + IMG_SIDE, y_top + IMG_SIDE)
+        w.place_image(c, tmp, box, fit="contain")
+    finally:
+        os.unlink(tmp)
+    return y_top + IMG_SIDE
 
 
 def draw_element_card(c, piece: dict, x, y_top, width) -> float:
-    """Вертикальная карточка элемента: чёрная шапка + строки статов."""
+    """Таблица элемента: шапка чёрная, метки — белый на чёрном,
+    значения — кремовый фон."""
     areas = piece.get("protectedAreas") or [""]
     title = " / ".join(AREA_TITLES.get(a, a.upper()) for a in areas) or "ДЕТАЛЬ"
 
-    # шапка
+    # шапка (название элемента)
     c.setFillColor(BLACK)
     c.rect(x, w.y_from_top(y_top + CARD_HEADER_H), width, -CARD_HEADER_H, 0, 1)
     _cell_center(c, x, y_top, width, CARD_HEADER_H, title,
                  "Carlito-Bold", CARD_TITLE_SIZE, color=WHITE)
 
-    # строки
+    # строки: метки — белый на чёрном, значения — на кремовом
     label_w = width * 0.56
     y = y_top + CARD_HEADER_H
     edges = [x, x + label_w, x + width]
     for label, key in stat_fields(piece):
+        c.setFillColor(BLACK)
+        c.rect(x, w.y_from_top(y + CARD_ROW_H), label_w, -CARD_ROW_H, 0, 1)
+        _cell_center(c, x, y, label_w, CARD_ROW_H, label,
+                     "Carlito", CARD_FONT, color=WHITE)
         c.setFillColor(BEIGE)
-        c.rect(x, w.y_from_top(y + CARD_ROW_H), width, -CARD_ROW_H, 0, 1)
-        _text_left(c, x, y, label_w, CARD_ROW_H, label, "Carlito", CARD_FONT)
+        c.rect(x + label_w, w.y_from_top(y + CARD_ROW_H),
+               width - label_w, -CARD_ROW_H, 0, 1)
         _cell_center(c, x + label_w, y, width - label_w, CARD_ROW_H,
                      fmt_number(piece.get(key, 0)), "Carlito-Bold", CARD_FONT)
         y += CARD_ROW_H
@@ -217,22 +222,21 @@ def draw_element_card(c, piece: dict, x, y_top, width) -> float:
     return y
 
 
-def draw_element_grid(c, pieces: list[dict], y_top: float) -> float:
-    """Сетка карточек элементов (2×2, как в референсе); низ сетки."""
-    ncols = GRID_COLS
-    gap = GRID_GAP
-    col_w = (w.CONTENT_W - gap * (ncols - 1)) / ncols
-    x0 = w.MARGIN_L
+def draw_stats_column(c, pieces: list[dict], x, y_top, width) -> float:
+    """Столбец таблиц элементов; низ колонки."""
     y = y_top
-    rows = (len(pieces) + ncols - 1) // ncols
-    for row in range(rows):
-        row_pieces = pieces[row * ncols:(row + 1) * ncols]
-        row_h = max(card_height(p) for p in row_pieces)
-        for col, piece in enumerate(row_pieces):
-            x = x0 + col * (col_w + gap)
-            draw_element_card(c, piece, x, y, col_w)
-        y += row_h + GRID_ROW_GAP
-    return y - GRID_ROW_GAP
+    for piece in pieces:
+        y = draw_element_card(c, piece, x, y, width) + CARD_GAP
+    return y - CARD_GAP
+
+
+def draw_two_column(c, spec: dict, comp: Companion, set_data: dict,
+                    pages_dir: Path, y_top: float) -> float:
+    """Слева картинка брони (квадрат), справа таблицы элементов."""
+    pieces = base_pieces(set_data)
+    img_bottom = draw_hero_image(c, spec, pages_dir, y_top)
+    col_bottom = draw_stats_column(c, pieces, RIGHT_X, y_top, RIGHT_W)
+    return max(img_bottom, col_bottom)
 
 
 def draw_intro(c, spec: dict, y_top: float, bottom: float) -> float:
@@ -251,21 +255,14 @@ def draw_intro(c, spec: dict, y_top: float, bottom: float) -> float:
     return y
 
 
-def draw_mods_section(c, comp: Companion, set_data: dict, y_top: float) -> None:
-    """Таблица модов в книжном стиле: шапка выше верха, низ — по высоте."""
+def draw_mods_section(c, comp: Companion, set_data: dict) -> None:
+    """Таблица модов привязана к нижнему краю контента (как в книге оружия)."""
     card = build_mods_card(comp, set_data)
     block = w.mods_block(card)
-    if block is None:
-        w.draw_center_line(c, y_top, "НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ",
-                           "Carlito-Bold", w.MODS_HEADING_SIZE)
-        return
-    rows, _top, ncols = block
-    bottom = y_top + sum(r["h"] for r in rows)
-    adjusted = (rows, y_top, ncols)
-    w.draw_mods(c, card, adjusted, bottom=bottom)
+    w.draw_mods(c, card, block)
 
 
-# --- страница 2: матрицы тиров --------------------------------------------
+# --- страница 2: матрицы тиров (чередование цветов) ----------------------
 def tier_edges(x, width, label_w, n_stats) -> list[float]:
     step = (width - label_w) / n_stats
     edges = [x, x + label_w]
@@ -276,17 +273,19 @@ def tier_edges(x, width, label_w, n_stats) -> list[float]:
 
 def draw_tier_matrix(c, base_pieces_list: list[dict], tier_pieces: list[dict],
                      tier_title: str, y_top: float) -> float:
-    """Матрица тира: заголовок сверху, строки = элементы, столбцы = дельты."""
+    """Матрица тира: заголовок сверху, строки = элементы (чередование
+    цветов), столбцы = дельты; заголовки — белый на чёрном."""
     x = w.MARGIN_L
     width = w.CONTENT_W
     base_by_area = {area_key(p): p for p in base_pieces_list}
     fields = stat_fields(base_pieces_list[0] if base_pieces_list else {})
     edges = tier_edges(x, width, TM_LABEL_W, len(fields))
+    fills = [BEIGE, ORANGE]
 
     w.draw_center_line(c, y_top, tier_title.upper(), "Carlito-Bold", TM_TITLE_SIZE)
     y = y_top + TM_TITLE_SIZE + TM_TITLE_GAP
 
-    # шапка (статысты)
+    # шапка (статысты) — белый на чёрном
     c.setFillColor(BLACK)
     c.rect(x, w.y_from_top(y + TM_HEADER_H), width, -TM_HEADER_H, 0, 1)
     for i, (label, _) in enumerate(fields):
@@ -294,13 +293,14 @@ def draw_tier_matrix(c, base_pieces_list: list[dict], tier_pieces: list[dict],
                      TM_HEADER_H, label, "Carlito-Bold", TM_FONT, color=WHITE)
     y += TM_HEADER_H
 
-    # строки (элементы)
-    for piece in tier_pieces:
+    # строки (элементы) — чередование цветов
+    for idx, piece in enumerate(tier_pieces):
         areas = piece.get("protectedAreas") or [""]
         name = " / ".join(AREA_TITLES.get(a, a.upper()) for a in areas)
-        c.setFillColor(BEIGE)
+        c.setFillColor(fills[idx % 2])
         c.rect(x, w.y_from_top(y + TM_ROW_H), width, -TM_ROW_H, 0, 1)
-        _text_left(c, x, y, TM_LABEL_W, TM_ROW_H, name, "Carlito-Bold", TM_FONT)
+        _cell_center(c, x, y, TM_LABEL_W, TM_ROW_H, name,
+                     "Carlito-Bold", TM_FONT)
         base = base_by_area.get(area_key(piece))
         for i, (_, key) in enumerate(fields):
             if base is None or key not in piece or key not in base:
@@ -345,29 +345,28 @@ def render_page(spec: dict, comp: Companion, out_path: str, pages_dir: Path,
     set_data = comp.power_armor[set_key] if collection == "powerArmor" else comp.armor[set_key]
     title = spec.get("title") or comp.set_names.get(set_key, set_key)
 
-    pieces = base_pieces(set_data)
-    totals = set_totals(pieces)
-    tier_titles = spec.get("tier_titles") or {}
-
     c = canvas.Canvas(out_path, pagesize=(w.PAGE_W, w.PAGE_H), pageCompression=1)
     c.setTitle(f"{title} — тестовая страница брони")
     c.setAuthor("fallout-2d20.ru")
 
-    # === страница 1: картинка + характеристики + описание + моды ===
+    # === страница 1: картинка + таблицы элементов + описание + моды ===
     w.draw_paper(c)
-    draw_header(c, title, totals)
-    y = SUBTITLE_TOP + SUBTITLE_SIZE + IMG_TOP_GAP
-    y = draw_hero_image(c, spec, pages_dir, y) + 16
-    y = draw_element_grid(c, pieces, y) + 18
-    y = draw_intro(c, spec, y, 690.0) + 18
-    draw_mods_section(c, comp, set_data, y)
+    draw_header(c, title)
+    y = RULE_TOP + RULE_H + 22
+    y = draw_two_column(c, spec, comp, set_data, pages_dir, y) + 18
+    # описание идёт до шапки модов (таблица модов — от нижнего края)
+    mods_heading_top = w.MODS_BOTTOM - w.MODS_HEADING_GAP - w.MODS_HEADING_SIZE
+    draw_intro(c, spec, y, mods_heading_top - 12)
+    # таблица модов привязана к нижнему краю контента
+    draw_mods_section(c, comp, set_data)
     w.draw_page_number(c, page_num)
     c.showPage()
 
     # === страница 2: матрицы тиров ===
     w.draw_paper(c)
-    draw_header(c, title, totals)
-    draw_tiers_block(c, set_data, tier_titles, SUBTITLE_TOP + SUBTITLE_SIZE + 24)
+    draw_header(c, title)
+    draw_tiers_block(c, set_data, spec.get("tier_titles") or {},
+                     RULE_TOP + RULE_H + 24)
     w.draw_page_number(c, page_num + 1)
     c.showPage()
     c.save()
