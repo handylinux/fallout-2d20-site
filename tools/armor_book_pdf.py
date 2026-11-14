@@ -73,7 +73,7 @@ ELEM_COL_GAP = 10.0
 CARD_HEADER_H = 17.0
 CARD_ROW_H = 13.0
 CARD_GAP = 7.0
-CARD_TITLE_SIZE = 10.0
+CARD_TITLE_SIZE = 11.5
 CARD_FONT = 8.5
 
 # описание
@@ -224,9 +224,8 @@ def build_header_html(title: str) -> str:
     )
 
 
-def build_element_card_html(piece: dict, card_w: float) -> str:
-    areas = piece.get("protectedAreas") or [""]
-    title = " / ".join(AREA_TITLES.get(a, a.upper()) for a in areas) or "ДЕТАЛЬ"
+def build_element_card_html(piece: dict, card_w: float, comp: Companion) -> str:
+    name = comp.item_name(piece)
     label_w = card_w * 0.56
     value_w = card_w - label_w
     rows = []
@@ -249,13 +248,14 @@ def build_element_card_html(piece: dict, card_w: float) -> str:
         f'<tr><td colspan="2" style="background:#000;color:#fff;'
         f'font-family:CarlitoBold;font-size:{CARD_TITLE_SIZE}pt;text-align:center;'
         f'height:{CARD_HEADER_H}pt;line-height:{CARD_HEADER_H}pt;'
-        f'border:0.6pt solid #000">{esc(title)}</td></tr>'
+        f'border:0.6pt solid #000">{esc(name)}</td></tr>'
         + "".join(rows) +
         '</table>'
     )
 
 
-def build_element_panel_html(pieces: list[dict], panel_w: float) -> str:
+def build_element_panel_html(pieces: list[dict], panel_w: float,
+                             comp: Companion) -> str:
     """Панель элементов брони в ДВУХ столбцах (3 детали + отступы)."""
     col_w = (panel_w - ELEM_COL_GAP) / 2.0
     first_col = pieces[:2] if len(pieces) >= 2 else list(pieces)
@@ -266,7 +266,7 @@ def build_element_panel_html(pieces: list[dict], panel_w: float) -> str:
         for i, piece in enumerate(col_pieces):
             if i:
                 out.append(f'<div style="height:{CARD_GAP}pt"></div>')
-            out.append(build_element_card_html(piece, col_w))
+            out.append(build_element_card_html(piece, col_w, comp))
         return "".join(out)
 
     return (
@@ -281,14 +281,15 @@ def build_element_panel_html(pieces: list[dict], panel_w: float) -> str:
     )
 
 
-def build_two_column_html(spec: dict, set_data: dict, resources: dict) -> str:
+def build_two_column_html(spec: dict, set_data: dict, resources: dict,
+                          comp: Companion) -> str:
     """Слева картинка брони (квадрат), справа панель элементов в 2 столбца."""
     pieces = base_pieces(set_data)
     img = ""
     if resources.get("image"):
         img = (f'<img src="file://{resources["image"]}" '
                f'style="width:{IMG_SIDE}pt;height:{IMG_SIDE}pt">')
-    panel = build_element_panel_html(pieces, RIGHT_W)
+    panel = build_element_panel_html(pieces, RIGHT_W, comp)
     return (
         f'<table style="border:none">'
         f'<tr>'
@@ -385,22 +386,44 @@ def build_page_number_html(page: int) -> str:
 
 
 # --- матрицы тиров ----------------------------------------------------------
-def tier_stat_cols(n_fields: int) -> list[float]:
-    return [TM_LABEL_W] + [
-        (w.CONTENT_W - TM_LABEL_W) / n_fields] * n_fields
-
-
 def build_tier_matrix_html(base_pieces_list: list[dict], tier_pieces: list[dict],
                            tier_title: str, absolute: bool = False) -> str:
     """Матрица тира: заголовок сверху, строки = элементы (чередование
-    цветов), столбцы = статысты.  Заголовки — белый на чёрном."""
+    цветов), столбцы = статысты.  Заголовки (названия статов: ФИЗ. СУ,
+    ВЕС, РЕДКОСТЬ) — белый текст на чёрном.  Ширина столбцов считается по
+    содержимому (через ширину текста): ячейка sized по контенту, таблица
+    не выходит за область контента."""
     base_by_area = {area_key(p): p for p in base_pieces_list}
     fields = stat_fields(base_pieces_list[0] if base_pieces_list else {})
-    cols = tier_stat_cols(len(fields))
     fills = [BEIGE, ORANGE]
+    pad = 8.0  # отступы + рамка на ячейку
+
+    # содержимое значений: нужено для расчёта ширины столбцов
+    def value_of(piece: dict, key: str) -> str:
+        base = base_by_area.get(area_key(piece))
+        if absolute:
+            return fmt_number(piece.get(key, 0))
+        if base is None or key not in piece or key not in base:
+            return "—"
+        return fmt_delta(piece[key] - base[key])
+
+    # ширина столбцов по содержимому
+    names = []
+    for piece in tier_pieces:
+        areas = piece.get("protectedAreas") or [""]
+        names.append(" / ".join(AREA_TITLES.get(a, a.upper()) for a in areas))
+    label_w = (max((w.sw(n, "Carlito-Bold", TM_FONT) for n in names), default=0.0)
+               + pad)
+    col_ws: list[float] = []
+    for label, key in fields:
+        wi = w.sw(label, "Carlito-Bold", TM_FONT)
+        for piece in tier_pieces:
+            wi = max(wi, w.sw(value_of(piece, key), "Carlito-Bold", TM_FONT))
+        col_ws.append(wi + pad)
+    table_w = label_w + sum(col_ws)
 
     head_cells = "".join(
-        f'<td style="width:{cols[i + 1]:.1f}pt;background:#000;color:#fff;'
+        f'<td style="width:{col_ws[i]:.1f}pt;background:#000;color:#fff;'
         f'font-family:CarlitoBold;font-size:{TM_FONT}pt;text-align:center;'
         f'height:{TM_HEADER_H}pt;line-height:{TM_HEADER_H}pt;'
         f'border:0.6pt solid #000">{esc(label)}</td>'
@@ -412,24 +435,17 @@ def build_tier_matrix_html(base_pieces_list: list[dict], tier_pieces: list[dict]
         name = " / ".join(AREA_TITLES.get(a, a.upper()) for a in areas)
         fill = fills[idx % 2]
         cells = []
-        base = base_by_area.get(area_key(piece))
         for i, (_, key) in enumerate(fields):
-            if absolute:
-                value = esc(fmt_number(piece.get(key, 0)))
-            else:
-                if base is None or key not in piece or key not in base:
-                    value = "—"
-                else:
-                    value = esc(fmt_delta(piece[key] - base[key]))
+            value = esc(value_of(piece, key))
             cells.append(
-                f'<td style="width:{cols[i + 1]:.1f}pt;background:{fill};'
+                f'<td style="width:{col_ws[i]:.1f}pt;background:{fill};'
                 f'font-family:CarlitoBold;font-size:{TM_FONT}pt;text-align:center;'
                 f'height:{TM_ROW_H}pt;line-height:{TM_ROW_H}pt;'
                 f'border:0.6pt solid #000">{value}</td>'
             )
         rows.append(
             f'<tr>'
-            f'<td style="width:{cols[0]:.1f}pt;background:{fill};'
+            f'<td style="width:{label_w:.1f}pt;background:{fill};'
             f'font-family:CarlitoBold;font-size:{TM_FONT}pt;text-align:center;'
             f'height:{TM_ROW_H}pt;line-height:{TM_ROW_H}pt;'
             f'border:0.6pt solid #000">{esc(name)}</td>'
@@ -438,17 +454,21 @@ def build_tier_matrix_html(base_pieces_list: list[dict], tier_pieces: list[dict]
         )
 
     return (
-        f'<div style="text-align:center;font-size:{TM_TITLE_SIZE}pt;'
+        f'<div style="margin-left:{w.MARGIN_L}pt;width:{w.CONTENT_W}pt;'
+        f'text-align:center;font-size:{TM_TITLE_SIZE}pt;'
         f'font-family:CarlitoBold;line-height:{TM_TITLE_SIZE}pt">'
         f'{esc(tier_title.upper())}</div>'
+        f'<div style="margin-left:{w.MARGIN_L}pt;width:{w.CONTENT_W}pt;'
+        f'margin-top:{TM_TITLE_GAP}pt">'
         f'<table style="border-collapse:collapse;border:0.6pt solid #000;'
-        f'width:{w.CONTENT_W}pt;margin-top:{TM_TITLE_GAP}pt">'
-        f'<tr><td style="width:{cols[0]:.1f}pt;background:#000;color:#fff;'
+        f'width:{table_w:.1f}pt">'
+        f'<tr><td style="width:{label_w:.1f}pt;background:#000;color:#fff;'
         f'font-family:CarlitoBold;font-size:{TM_FONT}pt;text-align:center;'
         f'height:{TM_HEADER_H}pt;line-height:{TM_HEADER_H}pt;'
         f'border:0.6pt solid #000"></td>{head_cells}</tr>'
         + "".join(rows) +
         f'</table>'
+        f'</div>'
     )
 
 
@@ -479,7 +499,7 @@ def build_page_1_html(spec: dict, comp: Companion, set_data: dict,
     content = (
         build_header_html(title)
         + f'<div style="margin-top:22pt">'
-        + build_two_column_html(spec, set_data, resources)
+        + build_two_column_html(spec, set_data, resources, comp)
         + '</div>'
         + build_intro_html(spec)
     )

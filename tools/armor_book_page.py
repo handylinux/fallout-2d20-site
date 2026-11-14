@@ -100,6 +100,8 @@ BOOK_CSS = r"""
 
 /* разделы */
 .ab-section{margin:0 0 38px}
+/* уровни брони — на втором листе */
+.ab-tiers-page{page-break-before:always;margin-top:0}
 .ab-section-title{
   margin:0 0 14px;text-align:center;text-transform:uppercase;
   font-weight:700;font-size:1.05rem;letter-spacing:.04em;
@@ -116,7 +118,8 @@ BOOK_CSS = r"""
 .ab-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 .ab-card{min-width:0}
 .ab-card-name{
-  margin:0 0 8px;text-align:center;font-size:.78rem;line-height:1.2;color:#333;
+  margin:0 0 8px;text-align:center;font-size:1.05rem;font-weight:700;
+  line-height:1.2;color:#000;
 }
 .ab-stat-table{
   width:100%;border-collapse:collapse;table-layout:fixed;background:#ffebcd;
@@ -131,10 +134,12 @@ BOOK_CSS = r"""
   text-align:center;font-weight:700;font-size:.8rem;line-height:1.25;
 }
 
-/* таблицы дельт по уровням (книжная таблица, матрица) */
+/* таблицы дельт по уровням (книжная таблица, матрица).
+   Столбцы sized по содержимому — пустых ячеек нет, ширина совпадает с
+   контентом, таблица не выходит за область контента. */
 .ab-delta-table{
-  width:100%;border-collapse:collapse;table-layout:fixed;background:#ffebcd;
-  font-size:.82rem;line-height:1.3;
+  width:auto;border-collapse:collapse;table-layout:auto;background:#ffebcd;
+  font-size:.82rem;line-height:1.3;margin:0 auto;
 }
 .ab-delta-table th,.ab-delta-table td{
   padding:6px 8px;border:1px solid #000;vertical-align:middle;
@@ -144,7 +149,7 @@ BOOK_CSS = r"""
   font-size:.72rem;text-transform:uppercase;letter-spacing:.02em;
 }
 .ab-delta-table tbody th{
-  background:#ffebcd;text-align:left;font-weight:700;
+  background:#000;color:#fff;text-align:left;font-weight:700;
   font-size:.72rem;text-transform:uppercase;
 }
 .ab-delta-table td{
@@ -282,13 +287,11 @@ def render_card(piece: dict, comp: Companion) -> str:
         + esc(fmt_number(piece.get(key, 0))) + "</td></tr>"
         for label, key in stat_fields(piece)
     )
-    title = AREA_TITLES.get(piece.get("protectedAreas", [""])[0], "ДЕТАЛЬ")
     name = comp.item_name(piece)
     return (
         '<article class="ab-card">'
-        + '<p class="ab-card-name">' + esc(name) + "</p>"
+        + '<h3 class="ab-card-name">' + esc(name) + "</h3>"
         + '<table class="ab-stat-table"><tbody>'
-        + '<tr><th scope="row">' + esc(title) + "</th><td></td></tr>"
         + rows
         + "</tbody></table>"
         "</article>"
@@ -344,8 +347,9 @@ def render_tiers_section(spec: dict, comp: Companion, set_data: dict) -> str:
         )
     if not blocks:
         return ""
+    # уровни уходят на второй лист — отдельный разрыв страницы
     return (
-        '<section class="ab-section">'
+        '<section class="ab-section ab-tiers-page">'
         '<div class="ab-container">'
         '<h2 class="ab-section-title">Уровни</h2>'
         + "".join(blocks)
@@ -460,8 +464,8 @@ def render_page(spec: dict, comp: Companion) -> str:
         + render_header(spec, totals)
         + render_hero_row(spec, comp, set_data)
         + render_description(spec)
-        + render_tiers_section(spec, comp, set_data)
         + render_mods_section(spec, comp, set_data)
+        + render_tiers_section(spec, comp, set_data)
         + '<div class="ab-container ab-footer">Страница собрана из данных '
         "Fallout 2d20 Companion</div>\n"
         "</div>\n</body>\n</html>\n"
