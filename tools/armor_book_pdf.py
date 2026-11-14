@@ -5,13 +5,16 @@ armor_book_pdf — тестовая страница брони в PDF по ст
 
 Фон (бумажная текстура), гамма (бежевый #FFEBCD, оранжевый #FFC674,
 чёрные шапки, белый текст) и шрифты (Carlito) — как в PDF-справочнике
-оружия.  Расположение — как на странице брони, в two-column-блоке.
+оружия.  Схема страницы — по референсу «Броня», но в наших шрифтах,
+цветах, форматах и размерах, со фоном и картинкой брони (их в референсе
+не было).
 
 Структура — две страницы на броню:
-  страница 1 — заголовок, два столбца (слева броня, справа характеристики
-    её элементов: грудь/ноги/руки), затем краткое описание;
-  страница 2 — матрицы тиров (строки = элементы, столбцы = дельты статов,
-    заголовок = тип тира) и ниже таблица модификаций в книжном стиле.
+  страница 1 — заголовок, картинка брони, характеристики элементов в
+    сетке 2×2 (каждый элемент — вертикальная таблица статов), описание,
+    таблица модификаций;
+  страница 2 — матрицы тиров: заголовок = тип тира, строки = элементы,
+    столбцы = дельты статов (Физ.СУ, Энрг.СУ, Рад.СУ, Вес, Цена, Редкость).
 
 Пример:
     python3 tools/armor_book_pdf.py \
@@ -49,20 +52,25 @@ RULE_W = w.RULE_W
 SUBTITLE_TOP = w.SUBTITLE_TOP    # 87.53
 SUBTITLE_SIZE = w.SUBTITLE_SIZE
 
-# two-column-блок (слева броня, справа статы элементов)
-HERO_TOP = 126.0
-HERO_GAP = 18.0
-LEFT_W = 288.0                   # колонка с картинкой
-LEFT_X = w.MARGIN_L
-RIGHT_X = LEFT_X + LEFT_W + HERO_GAP
-RIGHT_W = w.CONTENT_R - RIGHT_X
+# картинка брони (hero)
+IMG_TOP_GAP = 14.0
+IMG_H = 150.0
 
-# карточка элемента (вертикальная таблица статов)
+# сетка характеристик элементов (2×2, как в референсе)
+GRID_COLS = 2
+GRID_GAP = 16.0
+GRID_ROW_GAP = 14.0
 CARD_HEADER_H = 17.0
 CARD_ROW_H = 13.0
-CARD_GAP = 7.0
 CARD_TITLE_SIZE = 10.5
 CARD_FONT = 9.0
+
+# описание
+DESC_LEFT = w.DESC_LEFT
+DESC_RIGHT = w.DESC_RIGHT
+DESC_SIZE = 10.5
+DESC_LEADING = 15.0
+DESC_GAP = 8.0
 
 # матрица тиров
 TM_TITLE_SIZE = 13.0
@@ -72,13 +80,6 @@ TM_ROW_H = 14.0
 TM_LABEL_W = 70.0
 TM_FONT = 9.0
 TM_BLOCK_GAP = 18.0
-
-# описание
-DESC_LEFT = w.DESC_LEFT
-DESC_RIGHT = w.DESC_RIGHT
-DESC_SIZE = 10.5
-DESC_LEADING = 15.0
-DESC_GAP = 8.0
 
 BEIGE = w.BEIGE
 ORANGE = w.ORANGE
@@ -173,12 +174,24 @@ def _grid_lines(c, x, y_top, width, y_bottom, edges):
         c.line(e, w.y_from_top(y_top), e, w.y_from_top(y_bottom))
 
 
-# --- страница 1: броня + характеристики + описание ----------------------
-def stat_card_height(piece: dict) -> float:
+# --- страница 1: картинка + сетка элементов + описание + моды ----------
+def card_height(piece: dict) -> float:
     return CARD_HEADER_H + len(stat_fields(piece)) * CARD_ROW_H
 
 
-def draw_stat_card(c, piece: dict, x, y_top, width) -> float:
+def draw_hero_image(c, spec: dict, pages_dir: Path, y_top: float) -> float:
+    """Картинка брони на всю ширину контента (как hero)."""
+    image = spec.get("image") or {}
+    if image.get("src"):
+        src = image["src"]
+        if not Path(src).is_absolute():
+            src = str((pages_dir / src).resolve())
+        box = (w.MARGIN_L, y_top, w.CONTENT_R, y_top + IMG_H)
+        w.place_image(c, src, box, fit="contain")
+    return y_top + IMG_H
+
+
+def draw_element_card(c, piece: dict, x, y_top, width) -> float:
     """Вертикальная карточка элемента: чёрная шапка + строки статов."""
     areas = piece.get("protectedAreas") or [""]
     title = " / ".join(AREA_TITLES.get(a, a.upper()) for a in areas) or "ДЕТАЛЬ"
@@ -204,33 +217,22 @@ def draw_stat_card(c, piece: dict, x, y_top, width) -> float:
     return y
 
 
-def draw_stats_column(c, pieces: list[dict], x, y_top, width) -> float:
-    """Столбец карточек элементов; возвращает низ колонки."""
+def draw_element_grid(c, pieces: list[dict], y_top: float) -> float:
+    """Сетка карточек элементов (2×2, как в референсе); низ сетки."""
+    ncols = GRID_COLS
+    gap = GRID_GAP
+    col_w = (w.CONTENT_W - gap * (ncols - 1)) / ncols
+    x0 = w.MARGIN_L
     y = y_top
-    for piece in pieces:
-        y = draw_stat_card(c, piece, x, y, width) + CARD_GAP
-    return y - CARD_GAP
-
-
-def draw_hero(c, spec: dict, comp: Companion, set_data: dict,
-              pages_dir: Path, y_top: float) -> float:
-    """Two-column-блок: слева броня, справа характеристики элементов."""
-    pieces = base_pieces(set_data)
-    col_h = sum(stat_card_height(p) for p in pieces) + CARD_GAP * max(0, len(pieces) - 1)
-
-    # картинка (путь разрешается относительно каталога страниц,
-    # как в HTML: ../../assets/... от pages/armor/)
-    image_box = (LEFT_X, y_top, LEFT_X + LEFT_W, y_top + col_h)
-    image = spec.get("image") or {}
-    if image.get("src"):
-        src = image["src"]
-        if not Path(src).is_absolute():
-            src = str((pages_dir / src).resolve())
-        w.place_image(c, src, image_box, fit="contain")
-
-    # справа — характеристики элементов
-    draw_stats_column(c, pieces, RIGHT_X, y_top, RIGHT_W)
-    return y_top + col_h
+    rows = (len(pieces) + ncols - 1) // ncols
+    for row in range(rows):
+        row_pieces = pieces[row * ncols:(row + 1) * ncols]
+        row_h = max(card_height(p) for p in row_pieces)
+        for col, piece in enumerate(row_pieces):
+            x = x0 + col * (col_w + gap)
+            draw_element_card(c, piece, x, y, col_w)
+        y += row_h + GRID_ROW_GAP
+    return y - GRID_ROW_GAP
 
 
 def draw_intro(c, spec: dict, y_top: float, bottom: float) -> float:
@@ -249,7 +251,21 @@ def draw_intro(c, spec: dict, y_top: float, bottom: float) -> float:
     return y
 
 
-# --- страница 2: матрицы тиров + таблица модов ----------------------------
+def draw_mods_section(c, comp: Companion, set_data: dict, y_top: float) -> None:
+    """Таблица модов в книжном стиле: шапка выше верха, низ — по высоте."""
+    card = build_mods_card(comp, set_data)
+    block = w.mods_block(card)
+    if block is None:
+        w.draw_center_line(c, y_top, "НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ",
+                           "Carlito-Bold", w.MODS_HEADING_SIZE)
+        return
+    rows, _top, ncols = block
+    bottom = y_top + sum(r["h"] for r in rows)
+    adjusted = (rows, y_top, ncols)
+    w.draw_mods(c, card, adjusted, bottom=bottom)
+
+
+# --- страница 2: матрицы тиров --------------------------------------------
 def tier_edges(x, width, label_w, n_stats) -> list[float]:
     step = (width - label_w) / n_stats
     edges = [x, x + label_w]
@@ -260,18 +276,17 @@ def tier_edges(x, width, label_w, n_stats) -> list[float]:
 
 def draw_tier_matrix(c, base_pieces_list: list[dict], tier_pieces: list[dict],
                      tier_title: str, y_top: float) -> float:
-    """Матрица тира: строки = элементы, столбцы = дельты статов."""
+    """Матрица тира: заголовок сверху, строки = элементы, столбцы = дельты."""
     x = w.MARGIN_L
     width = w.CONTENT_W
     base_by_area = {area_key(p): p for p in base_pieces_list}
     fields = stat_fields(base_pieces_list[0] if base_pieces_list else {})
     edges = tier_edges(x, width, TM_LABEL_W, len(fields))
 
-    # заголовок тира
     w.draw_center_line(c, y_top, tier_title.upper(), "Carlito-Bold", TM_TITLE_SIZE)
     y = y_top + TM_TITLE_SIZE + TM_TITLE_GAP
 
-    # шапка
+    # шапка (статысты)
     c.setFillColor(BLACK)
     c.rect(x, w.y_from_top(y + TM_HEADER_H), width, -TM_HEADER_H, 0, 1)
     for i, (label, _) in enumerate(fields):
@@ -279,7 +294,7 @@ def draw_tier_matrix(c, base_pieces_list: list[dict], tier_pieces: list[dict],
                      TM_HEADER_H, label, "Carlito-Bold", TM_FONT, color=WHITE)
     y += TM_HEADER_H
 
-    # строки
+    # строки (элементы)
     for piece in tier_pieces:
         areas = piece.get("protectedAreas") or [""]
         name = " / ".join(AREA_TITLES.get(a, a.upper()) for a in areas)
@@ -304,7 +319,7 @@ def draw_tier_matrix(c, base_pieces_list: list[dict], tier_pieces: list[dict],
 
 def draw_tiers_block(c, set_data: dict, tier_titles: dict,
                      y_top: float) -> float:
-    """Все матрицы тиров; возвращает низ блока."""
+    """Все матрицы тиров; низ блока."""
     base_list = base_pieces(set_data)
     y = y_top
     first = True
@@ -322,25 +337,6 @@ def draw_tiers_block(c, set_data: dict, tier_titles: dict,
     return y
 
 
-def draw_mods_section(c, comp: Companion, set_data: dict, y_top: float) -> None:
-    """Таблица модов в книжном стиле, сразу под матрицами тиров.
-
-    y_top — желаемый верх таблицы; шапка идёт выше него на MODS_HEADING_GAP.
-    Нижняя граница считается по высоте блока.
-    """
-    card = build_mods_card(comp, set_data)
-    block = w.mods_block(card)
-    if block is None:
-        w.draw_center_line(c, y_top, "НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ",
-                           "Carlito-Bold", w.MODS_HEADING_SIZE)
-        return
-    # подгоняем позицию: верх — как задано, низ — по высоте блока
-    rows, _top, ncols = block
-    bottom = y_top + sum(r["h"] for r in rows)
-    adjusted = (rows, y_top, ncols)
-    w.draw_mods(c, card, adjusted, bottom=bottom)
-
-
 # --- рендер страницы ------------------------------------------------------
 def render_page(spec: dict, comp: Companion, out_path: str, pages_dir: Path,
                 page_num: int = 1) -> None:
@@ -351,29 +347,27 @@ def render_page(spec: dict, comp: Companion, out_path: str, pages_dir: Path,
 
     pieces = base_pieces(set_data)
     totals = set_totals(pieces)
+    tier_titles = spec.get("tier_titles") or {}
 
     c = canvas.Canvas(out_path, pagesize=(w.PAGE_W, w.PAGE_H), pageCompression=1)
     c.setTitle(f"{title} — тестовая страница брони")
     c.setAuthor("fallout-2d20.ru")
 
-    tier_titles = spec.get("tier_titles") or {}
-
-    # === страница 1: броня + характеристики + описание ===
+    # === страница 1: картинка + характеристики + описание + моды ===
     w.draw_paper(c)
     draw_header(c, title, totals)
-    hero_bottom = draw_hero(c, spec, comp, set_data, pages_dir, HERO_TOP)
-    draw_intro(c, spec, hero_bottom + 16, 640.0)
+    y = SUBTITLE_TOP + SUBTITLE_SIZE + IMG_TOP_GAP
+    y = draw_hero_image(c, spec, pages_dir, y) + 16
+    y = draw_element_grid(c, pieces, y) + 18
+    y = draw_intro(c, spec, y, 690.0) + 18
+    draw_mods_section(c, comp, set_data, y)
     w.draw_page_number(c, page_num)
     c.showPage()
 
-    # === страница 2: матрицы тиров + таблица модов ===
+    # === страница 2: матрицы тиров ===
     w.draw_paper(c)
     draw_header(c, title, totals)
-    tiers_top = 126.0
-    tiers_bottom = draw_tiers_block(c, set_data, tier_titles, tiers_top)
-    # таблица модов сразу под матрицами: шапка идёт выше верха на MODS_HEADING_GAP
-    mods_top = tiers_bottom + w.MODS_HEADING_GAP + 6.0
-    draw_mods_section(c, comp, set_data, mods_top)
+    draw_tiers_block(c, set_data, tier_titles, SUBTITLE_TOP + SUBTITLE_SIZE + 24)
     w.draw_page_number(c, page_num + 1)
     c.showPage()
     c.save()
@@ -411,7 +405,7 @@ def main(argv: list[str] | None = None) -> int:
     total_pages = 0
     for page, spec in enumerate(specs, 1):
         render_page(spec, comp, str(out), pages_dir, page_num=page)
-        total_pages += 2  # каждая страница брони: характеристики + модификации
+        total_pages += 2  # каждая страница брони: характеристики + тиры
     print(f"{out}  ({total_pages} страниц)")
     return 0
 
