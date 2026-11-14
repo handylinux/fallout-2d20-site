@@ -1,0 +1,60 @@
+{
+  "id": "weapon_harpoon_gun",
+  "title": "Harpoon Gun",
+  "category": "Heavy Weapons",
+  "weight": "16",
+  "cost": 120,
+  "rarity": 5,
+  "ammo": "Harpoon",
+  "damageType": "Physical",
+  "damage": 12,
+  "fireRate": 0,
+  "range": "Medium",
+  "effects": [
+    "Piercing"
+  ],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "The harpoon gun is a handheld version of the harpoon cannon, sacrificing power for mobility. A special designed chassis allows for the weapon to be portable and is adapted with a firing mechanism for convenient firing.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "STOCK",
+      "items": [
+        "Recoil Compensating Stock"
+      ]
+    },
+    {
+      "slot": "MAGAZINE",
+      "items": [
+        "Barbed Harpoon",
+        "Flechette Darts"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Reflex Sight",
+        "Short Scope"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 50
+}

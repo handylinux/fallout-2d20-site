@@ -1,0 +1,57 @@
+{
+  "weapon_gatling_plasma": {
+    "source": "jos_sppagebuilder.zip, page 351: Gatling Plasma",
+    "mods": [
+      {
+        "id": "gatplasma_ported",
+        "slot": "Barrel",
+        "name": "Ported Barrel",
+        "prefix": "Ported",
+        "effects": "Lose \"Inaccurate\" quality",
+        "weight": "+6",
+        "cost": "+81",
+        "perks": "Science! 4"
+      },
+      {
+        "id": "gatplasma_comfort",
+        "slot": "Stock",
+        "name": "Comfort Grip",
+        "prefix": "Comfort",
+        "effects": "Lose \"Recoil (6)\" quality",
+        "weight": "+3",
+        "cost": "+90",
+        "perks": "Science! 4"
+      },
+      {
+        "id": "gatplasma_reflex",
+        "slot": "Sight",
+        "name": "Reflex Sight",
+        "prefix": "Tactical",
+        "effects": "May re-roll the Hit Location die",
+        "weight": "+2",
+        "cost": "+50",
+        "perks": "Gun Nut 2"
+      },
+      {
+        "id": "gatplasma_focuser",
+        "slot": "Muzzle",
+        "name": "Beam Focuser",
+        "prefix": "Focused",
+        "effects": "Range: increase by 1 zone",
+        "weight": "+4",
+        "cost": "+41",
+        "perks": "Science! 4"
+      },
+      {
+        "id": "gatplasma_splitter",
+        "slot": "Muzzle",
+        "name": "Beam Splitter",
+        "prefix": "Scattered",
+        "effects": "Gain \"Spread\" effect",
+        "weight": "+3",
+        "cost": "+20",
+        "perks": "Science! 4"
+      }
+    ]
+  }
+}

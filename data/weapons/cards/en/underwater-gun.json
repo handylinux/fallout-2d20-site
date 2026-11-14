@@ -1,0 +1,41 @@
+{
+  "id": "weapon_underwater_gun",
+  "title": "Underwater Gun",
+  "category": "Heavy Weapons",
+  "weight": "8",
+  "cost": 90,
+  "rarity": 3,
+  "ammo": "Harpoon",
+  "damageType": "Physical",
+  "damage": 8,
+  "fireRate": 0,
+  "range": "Medium",
+  "effects": [
+    "Piercing"
+  ],
+  "qualities": [
+    "Suppressed",
+    "Two-Handed",
+    "Underwater"
+  ],
+  "description": "A pneumatic weapon developed for the US Navy. Its corrosion-resistant construction allows effective use underwater, firing specialized harpoons.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 54
+}

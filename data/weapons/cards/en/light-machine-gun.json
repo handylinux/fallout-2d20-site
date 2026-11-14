@@ -1,0 +1,88 @@
+{
+  "id": "weapon_light_machine_gun",
+  "title": "Light Machine Gun",
+  "category": "Light Weapons",
+  "weight": "15",
+  "cost": 150,
+  "rarity": 3,
+  "ammo": "5.56mm Round",
+  "damageType": "Physical",
+  "damage": 5,
+  "fireRate": 4,
+  "range": "Medium",
+  "effects": [
+    "Burst"
+  ],
+  "qualities": [
+    "Two-Handed",
+    "Inaccurate"
+  ],
+  "description": "The light machine gun is built to provide heavy firepower in a package not much larger than a typical rifle. While certainly heavier and more cumbersome than an assault rifle, it maintains a high rate of fire and can be easily modified with parts used by a variety of similar weapons, allowing the user to customize their fire support.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        ".308 Receiver",
+        "Calibrated",
+        "Calibrated Powerful",
+        "Hardened",
+        "Powerful"
+      ]
+    },
+    {
+      "slot": "BARREL",
+      "items": [
+        "Long",
+        "Ported",
+        "Vented"
+      ]
+    },
+    {
+      "slot": "STOCK",
+      "items": [
+        "Full Stock",
+        "Recoil Compensating",
+        "Recoil Compensating Stock"
+      ]
+    },
+    {
+      "slot": "MAGAZINE",
+      "items": [
+        "Large Magazine",
+        "Large Quick-Eject Mag",
+        "Quick-Eject Mag"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Reflex Sight"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Compensator",
+        "Muzzle Break"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 27
+}

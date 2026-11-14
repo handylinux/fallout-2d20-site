@@ -1,0 +1,49 @@
+{
+  "id": "weapon_chainsaw",
+  "title": "Chainsaw",
+  "category": "Melee Weapons",
+  "weight": "12",
+  "cost": 140,
+  "rarity": 3,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 6,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [
+    "Vicious"
+  ],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "A two-handed motorized saw that chews through flesh and armour, ignoring the wielder's normal melee damage bonus.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "UNIQUE",
+      "items": [
+        "Curved Chain",
+        "Double Chain",
+        "Extended Curved Chain",
+        "Flamer"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 112
+}

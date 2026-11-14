@@ -9,7 +9,7 @@ docs/render/Справочник оружия-pinkibook-018.pdf:
     title ........... Carlito Bold 21.98 pt, uppercase, centred
     rule ............ 385.94 x 2.28 pt
     subtitle ........ 14.04 pt
-    image ........... fit into 21.43 .. 573.93 / 104 .. 304
+    image ........... proportionally inside content column, below subtitle
     stats table ..... 7 cols, header 34.97 pt, body 33.24 pt
     description ..... 12 pt / 17.4 pt, justified
     mods table ...... 50.1 pt label + 6 columns, fills to y 803.35
@@ -30,6 +30,7 @@ import io
 import json
 import math
 import os
+import re
 import sys
 
 from reportlab.lib.colors import Color
@@ -57,7 +58,8 @@ RULE_W = 385.94
 SUBTITLE_TOP = 87.53
 SUBTITLE_SIZE = 14.04
 
-IMAGE_BOX = (21.43, 78.98, 573.93, 331.64)  # x0, y0(top), x1, y1(bottom)
+IMAGE_BOX = (MARGIN_L, SUBTITLE_TOP + SUBTITLE_SIZE + 6,
+             CONTENT_R, 303.39)  # inside content, below subtitle and above stats
 
 STATS_TOP = 307.39
 STATS_HEADER_H = 34.97
@@ -73,6 +75,11 @@ DESC_TOP = 404.57
 DESC_SIZE = 12.0
 DESC_LEADING = 17.4
 
+DEFAULT_LABELS = {
+    "weight": "Вес", "cost": "Цена", "rarity": "Редкость",
+    "mods_heading": "ПОДДЕРЖИВАЕМЫЕ МОДИФИКАЦИИ",
+    "no_mods": "НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ",
+}
 MODS_HEADING = "ПОДДЕРЖИВАЕМЫЕ МОДИФИКАЦИИ"
 MODS_HEADING_TOP = 488.29
 MODS_HEADING_GAP = 45.36  # heading top -> table top on the Publisher pages
@@ -80,9 +87,9 @@ MODS_HEADING_SIZE = 18.0
 
 MODS_TOP = 533.65
 MODS_BOTTOM = 803.35
-MODS_LEFT = 36.44
+MODS_LEFT = MARGIN_L + 0.3
 MODS_LABEL_RIGHT = 86.54
-MODS_RIGHT = 559.71
+MODS_RIGHT = CONTENT_R - 0.3
 MODS_MAX_COLS = 6
 # six-column grid from the Publisher pages (kept for reference/tests)
 MODS_EDGES = [36.44, 86.54, 167.80, 244.00, 326.04, 404.58, 481.17, 559.71]
@@ -190,6 +197,11 @@ def draw_justified(c, x, width, y_top, lines, font, size, leading,
             c.drawString(x, baseline, line)
             continue
         gap = (width - sum(sw(w, font, size) for w in words)) / (len(words) - 1)
+        # Avoid rivers of whitespace when a long next word forces an unusually
+        # short line; left-align that line instead of stretching it across A4.
+        if gap > 2.5 * sw(" ", font, size):
+            c.drawString(x, baseline, line)
+            continue
         cursor = x
         for word in words:
             c.drawString(cursor, baseline, word)
@@ -299,7 +311,7 @@ def place_image(c, path, box, fit="contain") -> None:
 
 
 def draw_image(c, card) -> None:
-    place_image(c, card.get("image") or "", IMAGE_BOX, fit="stretch")
+    place_image(c, card.get("image") or "", IMAGE_BOX, fit="contain")
 
 
 def draw_title(c, card) -> None:
@@ -316,7 +328,12 @@ def draw_title(c, card) -> None:
         RULE_W, -RULE_H, stroke=0, fill=1,
     )
 
-    subtitle = "Вес: {weight}, Цена: {cost}, Редкость: {rarity}".format(**card)
+    labels = {**DEFAULT_LABELS, **(card.get("labels") or {})}
+    subtitle = "{weight}: {weight_value}, {cost}: {cost_value}, {rarity}: {rarity_value}".format(
+        weight=labels["weight"], weight_value=card.get("weight", ""),
+        cost=labels["cost"], cost_value=card.get("cost", ""),
+        rarity=labels["rarity"], rarity_value=card.get("rarity", ""),
+    )
     draw_center_line(c, SUBTITLE_TOP, subtitle, "Carlito", SUBTITLE_SIZE)
 
 
@@ -386,12 +403,14 @@ def draw_stats(c, card) -> None:
     ]
 
     # header labels
-    for i, label in enumerate(HEADERS):
+    labels = card.get("labels") or {}
+    headers = labels.get("headers", HEADERS)
+    for i, label in enumerate(headers):
         x0, x1 = STATS_COLS[i], STATS_COLS[i + 1]
         size = STATS_HEADER_SIZE
         if i == 3:
             size = STATS_HEADER_TIGHT_SIZE
-            lines = ["СКОРОСТЬ", "СТРЕЛЬБЫ"]
+            lines = label.split("\n") if "\n" in label else ["СКОРОСТЬ", "СТРЕЛЬБЫ"]
             leading = 15.48
             block_h = size + (len(lines) - 1) * leading
             start = top + (STATS_HEADER_H - block_h) / 2.0 + 1.5
@@ -560,13 +579,17 @@ def mods_layout(card) -> tuple[list[dict], float, int]:
     return rows, sum(r["h"] for r in rows), ncols
 
 
-def draw_mods(c, card, block=None) -> None:
+def draw_mods(c, card, block=None, no_mods_heading_top=None) -> None:
     mods = card.get("mods") or []
 
     if block is None:
         block = mods_block(card)
+    labels = {**DEFAULT_LABELS, **(card.get("labels") or {})}
     if block is None:
-        draw_center_line(c, MODS_HEADING_TOP, "НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ",
+        no_mods_top = (no_mods_heading_top if no_mods_heading_top is not None
+                       else MODS_HEADING_TOP)
+        draw_center_line(c, no_mods_top,
+                         card.get("no_mods_label", labels["no_mods"]),
                          "Carlito-Bold", MODS_HEADING_SIZE)
         return
 
@@ -574,8 +597,8 @@ def draw_mods(c, card, block=None) -> None:
     edges = mods_edges(ncols)
     bottom = MODS_BOTTOM
     # the heading follows the table, so short tables do not leave a hole
-    draw_center_line(c, top - MODS_HEADING_GAP, MODS_HEADING, "Carlito-Bold",
-                     MODS_HEADING_SIZE)
+    draw_center_line(c, top - MODS_HEADING_GAP, labels["mods_heading"],
+                     "Carlito-Bold", MODS_HEADING_SIZE)
 
     # category fills
     y = top
@@ -662,19 +685,59 @@ def draw_page_number(c, page: int, total_pages: int | None = None) -> None:
                  PAGE_NUMBER_SIZE, align="right")
 
 
-def render_card(card, out_path: str) -> None:
-    c = canvas.Canvas(out_path, pagesize=(PAGE_W, PAGE_H))
-    c.setTitle(f"{card.get('title', '')} — справочник оружия")
-    c.setAuthor("fallout-2d20.ru")
+def draw_card_page(c, card) -> None:
     draw_paper(c)
     draw_image(c, card)   # opaque paper copy: must stay behind the text
     draw_title(c, card)
     draw_stats(c, card)
     block = mods_block(card)
-    draw_description(c, card, max_bottom=description_bottom_from(block))
-    draw_mods(c, card, block)
+    heading_top = None
+    if block is None:
+        # Without a table, move the label down only as far as the description
+        # needs, rather than truncating text against a fixed early heading.
+        text = (card.get("description") or "").strip()
+        lines = wrap_text(text, "Carlito", 10, DESC_RIGHT - DESC_LEFT) if text else []
+        min_leading = DESC_LEADING - 4 * 0.6
+        heading_top = max(MODS_HEADING_TOP, DESC_TOP + len(lines) * min_leading + 11)
+        if heading_top + MODS_HEADING_SIZE > MODS_BOTTOM:
+            raise ValueError(f"{card.get('id')}: описание не помещается на странице")
+    bottom = heading_top - 10 if heading_top is not None else description_bottom_from(block)
+    draw_description(c, card, max_bottom=bottom)
+    draw_mods(c, card, block, no_mods_heading_top=heading_top)
     draw_page_number(c, int(card.get("page") or 0))
+
+
+def render_card(card, out_path: str) -> None:
+    c = canvas.Canvas(out_path, pagesize=(PAGE_W, PAGE_H))
+    c.setTitle(f"{card.get('title', '')} — справочник оружия")
+    c.setAuthor("fallout-2d20.ru")
+    draw_card_page(c, card)
     c.showPage()
+    c.save()
+
+
+def render_catalog(cards: list[dict], out_path: str) -> None:
+    """Render a multi-page catalog with PDF outline sections and weapon entries."""
+    c = canvas.Canvas(out_path, pagesize=(PAGE_W, PAGE_H), pageCompression=1)
+    c.setTitle("Fallout 2d20 Weapon Catalog")
+    c.setAuthor("Fallout 2d20 Companion data")
+    c.setSubject("English weapon reference catalog")
+    seen_categories = set()
+    for page, card in enumerate(cards, 1):
+        category = card.get("category") or "Other"
+        weapon_bookmark = "weapon-" + str(card.get("id", page)).replace("/", "-")
+        c.bookmarkPage(weapon_bookmark)
+        if category not in seen_categories:
+            category_bookmark = "category-" + re.sub(r"[^A-Za-z0-9_-]", "-", category)
+            c.bookmarkPage(category_bookmark)
+            c.addOutlineEntry(category, category_bookmark, level=0)
+            seen_categories.add(category)
+        c.addOutlineEntry(card.get("title", card.get("id", "Weapon")),
+                          weapon_bookmark, level=1)
+        card["page"] = page
+        draw_card_page(c, card)
+        if page < len(cards):
+            c.showPage()
     c.save()
 
 

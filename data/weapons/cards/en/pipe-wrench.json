@@ -1,0 +1,45 @@
+{
+  "id": "weapon_pipe_wrench",
+  "title": "Pipe Wrench",
+  "category": "Melee Weapons",
+  "weight": "2",
+  "cost": 30,
+  "rarity": 1,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 3,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [],
+  "qualities": [],
+  "description": "A heavy, metal, adjustable wrench.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "UNIQUE",
+      "items": [
+        "Extra Heavy",
+        "Heavy",
+        "Hooked",
+        "Puncturing"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 121
+}

@@ -1,0 +1,79 @@
+{
+  "id": "weapon_ghoul_rifle",
+  "title": "Ghoul Rifle",
+  "category": "Light Weapons",
+  "weight": "9",
+  "cost": 265,
+  "rarity": 4,
+  "ammo": ".308 Round",
+  "damageType": "Physical",
+  "damage": 7,
+  "fireRate": 0,
+  "range": "Medium",
+  "effects": [
+    "Piercing"
+  ],
+  "qualities": [],
+  "description": "Taken from an unlucky trio of bounty hunters and subsequently upgraded by a Ghoul to unlock its full potential, this carbine combines range and rate of fire. Even so, it cannot match the Ghoul pistol and serves more as a backup should the pistol run out of ammunition.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        ".357 Receiver",
+        "Advanced",
+        "Automatic",
+        "Calibrated",
+        "Hardened",
+        "Powerful"
+      ]
+    },
+    {
+      "slot": "BARREL",
+      "items": [
+        "Long",
+        "Ported"
+      ]
+    },
+    {
+      "slot": "STOCK",
+      "items": [
+        "Full Stock",
+        "Marksman's Stock"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Long Night Vision Scope",
+        "Long Scope",
+        "Reflex Sight",
+        "Short Night Vision Scope",
+        "Short Scope"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Suppressor"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 24
+}

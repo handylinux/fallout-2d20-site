@@ -1,0 +1,43 @@
+{
+  "energy": [
+    "weapon_institute_laser"
+  ],
+  "unarmed": [
+    "unarmed_human",
+    "weapon_ballistic_fist",
+    "weapon_boxing_glove",
+    "weapon_knuckles",
+    "weapon_deathclaw_gauntlet",
+    "weapon_displacer_glove",
+    "weapon_power_fist"
+  ],
+  "thrown": [
+    "weapon_rock",
+    "weapon_javelin",
+    "weapon_throwing_knife",
+    "weapon_tomahawk"
+  ],
+  "explosives": [
+    "weapon_pulse_mine",
+    "weapon_baseball_grenade",
+    "weapon_detonator",
+    "weapon_dynamite",
+    "weapon_smoke_grenade",
+    "weapon_pulse_grenade",
+    "weapon_molotov",
+    "weapon_cryo_mine",
+    "weapon_cryogenic_grenade",
+    "weapon_bottlecap_mine",
+    "weapon_frag_grenade",
+    "weapon_frag_grenade_mirv",
+    "weapon_frag_mine",
+    "weapon_plasma_grenade",
+    "weapon_plasma_mine",
+    "weapon_plastic_explosives",
+    "weapon_powder_charge",
+    "weapon_flash_bang",
+    "weapon_dynamite_bundle",
+    "weapon_nuka_grenade",
+    "weapon_nuke_mine"
+  ]
+}

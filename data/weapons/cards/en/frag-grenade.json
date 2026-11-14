@@ -1,0 +1,38 @@
+{
+  "id": "weapon_frag_grenade",
+  "title": "Frag Grenade",
+  "category": "Explosive Weapons",
+  "weight": "<1",
+  "cost": 50,
+  "rarity": 2,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 6,
+  "fireRate": 0,
+  "range": "Medium",
+  "effects": [],
+  "qualities": [
+    "Thrown",
+    "Blast"
+  ],
+  "description": "A basic fragmentation grenade.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 90
+}

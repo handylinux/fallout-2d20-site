@@ -1,0 +1,69 @@
+{
+  "id": "weapon_magnum_monicon",
+  "title": "Magnum Monicon",
+  "category": "Light Weapons",
+  "weight": "6",
+  "cost": 0,
+  "rarity": 5,
+  "ammo": ".44 Magnum Round",
+  "damageType": "Special",
+  "damage": 8,
+  "fireRate": 1,
+  "range": "Medium",
+  "effects": [
+    "Piercing"
+  ],
+  "qualities": [
+    "Close Quarters"
+  ],
+  "description": "The Magnum Monicon deals all types of damage. Apply damage as usual, then reduce it by the target's lowest damage resistance (Physical, Energy, Radiation, or Poison) at the point of impact.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        "Advanced",
+        "Hardened",
+        "Powerful"
+      ]
+    },
+    {
+      "slot": "BARREL",
+      "items": [
+        "Bull Barrel",
+        "Snubnose"
+      ]
+    },
+    {
+      "slot": "GRIP",
+      "items": [
+        "Comfort Grip"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Recon Scope",
+        "Reflex Sight",
+        "Short Scope"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 29
+}

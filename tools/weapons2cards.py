@@ -26,7 +26,7 @@ import re
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-COMP = os.path.join(ROOT, "data", "companion")
+COMP = os.path.join(ROOT, "data", "weapon-book", "companion")
 RU = os.path.join(COMP, "i18n", "ru-RU", "data")
 
 # Book order for the pages we have seen; the remaining slots (energy weapons,
@@ -71,11 +71,41 @@ class Companion:
             RU, "equipment", "weapons", "weapons.json")))
         self.mods_ru = index_by_id(load(os.path.join(
             RU, "equipment", "weapon_mods.json")))
+        # Vendor labels sometimes include the weapon name; cards and mod tables
+        # should display the modification name only.
+        for mod_id, name in {
+            "mod_curved_blade": "Изогнутое лезвие",
+            "mod_electrified": "Электризованная",
+            "mod_extended_blade": "Удлиненное лезвие",
+            "mod_extra_claw": "Дополнительный коготь",
+            "mod_extra_heavy": "Сверхтяжелый",
+            "mod_heavy": "Утяжелённая",
+            "mod_hooked": "Крюк",
+            "mod_lead_lining": "Свинцовая подкладка",
+        }.items():
+            if mod_id in self.mods_ru:
+                self.mods_ru[mod_id]["name"] = name
         self.ammo = index_by_id(load(os.path.join(
             RU, "equipment", "ammo", "ammo_types.json")))
         self.qualities = index_by_id(load(os.path.join(RU, "system", "qualities.json")))
         self.effects = index_by_id(load(os.path.join(
             RU, "system", "damageEffects.json")))
+        # Canonical Russian terminology accepted for this catalogue. Keep these
+        # overrides local to the build; the vendored Companion reference stays intact.
+        for quality_id, name in {
+            "quality_debilitating": "Изнуряющий",
+            "quality_concealed": "Скрытное",
+            "quality_placed": "Установка",
+            "quality_parry": "Парирование",
+        }.items():
+            if quality_id in self.qualities:
+                self.qualities[quality_id]["name"] = name
+        for effect_id, name in {
+            "effect_freeze": "Заморозка",
+            "effect_stun": "Оглушение",
+        }.items():
+            if effect_id in self.effects:
+                self.effects[effect_id]["name"] = name
         self.damage_types = load(os.path.join(
             COMP, "i18n", "ru-RU", "screens",
             "addItemModal.json"))["filter"]["damageTypes"]
@@ -92,9 +122,16 @@ class Companion:
         return (self.weapons_ru.get(wid) or {}).get("name") or wid
 
     def ammo_name(self, w):
-        ammo = self.ammo.get(w.get("ammoId") or "") or {}
-        name = ammo.get("name") or ""
-        return re.sub(r"^Патрон\s+", "", name)
+        raw = w.get("ammoId") or ""
+        names = []
+        for ammo_id in raw.split(","):
+            ammo_id = ammo_id.strip()
+            if not ammo_id:
+                continue
+            ammo = self.ammo.get(ammo_id) or {}
+            name = ammo.get("name") or f"[{ammo_id}]"
+            names.append(re.sub(r"^Патрон\s+", "", name))
+        return " / ".join(names)
 
     def damage_type(self, value):
         if isinstance(value, list):

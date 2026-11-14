@@ -1,0 +1,55 @@
+{
+  "id": "weapon_boarding_pistol",
+  "title": "Boarding Pistol",
+  "category": "Light Weapons",
+  "weight": "9",
+  "cost": 55,
+  "rarity": 2,
+  "ammo": "Grappling Hook",
+  "damageType": "Physical",
+  "damage": 5,
+  "fireRate": 3,
+  "range": "Medium",
+  "effects": [
+    "Piercing"
+  ],
+  "qualities": [
+    "Inaccurate",
+    "Unreliable"
+  ],
+  "description": "A boarding weapon firing a grappling hook. On a hit, the target must pass a test or be pulled closer; it can also be used to move the wielder across short distances.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "BARREL",
+      "items": [
+        "Aerodynamic Barrel",
+        "Long"
+      ]
+    },
+    {
+      "slot": "WINCH",
+      "items": [
+        "Protected Winch",
+        "Reinforced Winch"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 15
+}

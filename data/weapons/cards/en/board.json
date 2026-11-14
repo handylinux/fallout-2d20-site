@@ -1,0 +1,46 @@
+{
+  "id": "weapon_board",
+  "title": "Board",
+  "category": "Melee Weapons",
+  "weight": "3",
+  "cost": 20,
+  "rarity": 0,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 4,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "Little more than a long plank of wood with a handle wrapped in duct tape.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "UNIQUE",
+      "items": [
+        "Bladed",
+        "Puncturing",
+        "Spiked"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 109
+}

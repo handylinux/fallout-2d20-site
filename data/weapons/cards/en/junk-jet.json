@@ -1,0 +1,63 @@
+{
+  "id": "weapon_junk_jet",
+  "title": "Junk Jet",
+  "category": "Heavy Weapons",
+  "weight": "30",
+  "cost": 285,
+  "rarity": 3,
+  "ammo": "Anything",
+  "damageType": "Physical",
+  "damage": 6,
+  "fireRate": 1,
+  "range": "Medium",
+  "effects": [],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "The Junk Jet is a makeshift heavy weapon which fires anything.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "BARREL",
+      "items": [
+        "Long"
+      ]
+    },
+    {
+      "slot": "STOCK",
+      "items": [
+        "Recoil Compensating Stock"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Gunner Sight"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Electrification Module",
+        "Ignition Module"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 51
+}

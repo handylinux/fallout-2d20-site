@@ -1,0 +1,38 @@
+{
+  "id": "weapon_wattz_2000",
+  "title": "Wattz 2000 Laser Rifle",
+  "category": "Energy Weapons",
+  "weight": "8",
+  "cost": 420,
+  "rarity": 5,
+  "ammo": "Energy Cell",
+  "damageType": "Energy",
+  "damage": 6,
+  "fireRate": 0,
+  "range": "Long",
+  "effects": [],
+  "qualities": [
+    "Accurate",
+    "Two-Handed"
+  ],
+  "description": "Created to eliminate enemies from a distance, the Wattz 2000 laser rifle combines accuracy and range in a purpose-built long-range energy weapon.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 81
+}

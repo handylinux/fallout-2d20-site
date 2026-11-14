@@ -1,0 +1,679 @@
+{
+  "card_overrides": {
+    "weapon_10mm_smg": {
+      "range": "Close"
+    },
+    "weapon_boarding_pistol": {
+      "fireRate": 0,
+      "effects": [
+        "Piercing 1",
+        "Special*"
+      ]
+    },
+    "weapon_pistol_injector": {
+      "fireRate": 0,
+      "damage": 4,
+      "damageType": "Poison",
+      "effects": [
+        "Tranquilizer 3",
+        "Persistent"
+      ],
+      "qualities": [
+        "Close Quarters",
+        "Reliable"
+      ]
+    },
+    "weapon_gauss_rifle": {
+      "rarity": 4
+    },
+    "weapon_crossbow": {
+      "fireRate": 0
+    },
+    "weapon_underwater_gun": {
+      "ammo": "Harpoon*",
+      "effects": [
+        "Piercing 2"
+      ]
+    },
+    "weapon_magnum_monicon": {
+      "damageType": "Special"
+    },
+    "weapon_sten_injector": {
+      "damage": 4,
+      "fireRate": 3,
+      "damageType": "Poison",
+      "effects": [
+        "Tranquilizer 3",
+        "Persistent",
+        "Burst"
+      ],
+      "qualities": [
+        "Inaccurate",
+        "Two-Handed"
+      ]
+    },
+    "weapon_plasma_caster": {
+      "ammo": "Plasma Cartridge",
+      "damageType": "Physical and Energy",
+      "effects": [
+        "Burst"
+      ],
+      "qualities": [
+        "Inaccurate",
+        "Recoil 8",
+        "Two-Handed"
+      ]
+    },
+    "weapon_laser_musket": {
+      "ammo": "Fusion Cell",
+      "effects": [
+        "Piercing 1"
+      ]
+    },
+    "weapon_laser_gun": {
+      "effects": [
+        "Piercing 1"
+      ]
+    },
+    "weapon_tesla_rifle": {
+      "damage": 5
+    },
+    "weapon_alien_blaster": {
+      "damageType": "Energy and Radiation",
+      "effects": [
+        "Vicious"
+      ],
+      "qualities": [
+        "Close Quarters",
+        "Inaccurate"
+      ]
+    },
+    "weapon_assaultron_head_laser": {
+      "ammo": "Fusion Cell",
+      "effects": [
+        "Piercing 1"
+      ],
+      "qualities": []
+    },
+    "weapon_alien_disintegrator": {
+      "fireRate": 2
+    },
+    "weapon_gamma_gun": {
+      "cost": 156
+    },
+    "weapon_rock": {
+      "range": "Close"
+    },
+    "weapon_pulse_mine": {
+      "range": "-",
+      "damage": 6,
+      "cost": 100,
+      "effects": [
+        "Stun"
+      ]
+    },
+    "unarmed_human": {
+      "fireRate": 0,
+      "range": "-"
+    },
+    "weapon_plastic_explosives": {
+      "effects": [
+        "Breaking",
+        "Piercing 1"
+      ],
+      "qualities": [
+        "Blast",
+        "Delay (X)",
+        "Placed"
+      ],
+      "range": "-"
+    },
+    "weapon_dynamite_bundle": {
+      "qualities": [
+        "Blast",
+        "Delay (X)",
+        "Placed"
+      ],
+      "range": "-"
+    }
+  },
+  "mod_global_overrides": {
+    "mod_10mm_receiver": {
+      "effects": "Damage: set 4 DC; Ammo: 10mm Round; Lose \"Two-Handed\" quality"
+    },
+    "mod_bracketed_short_barrel": {
+      "effects": "Allows muzzle modifications to be fitted"
+    },
+    "mod_folding_stock": {
+      "effects": "Fire Rate: +1"
+    },
+    "mod_beam_splitter": {
+      "effects": "Damage: -1 DC; Fire Rate: -1; Range: decrease by 1 zone; Gain \"Spread\" effect; Gain \"Inaccurate\" quality"
+    },
+    "mod_3_charge_camera": {
+      "name": "3-Shot Chamber",
+      "effects": "Gain \"Crank 3\" quality",
+      "weight": "—"
+    },
+    "mod_6_charge_camera": {
+      "name": "6-Shot Chamber",
+      "effects": "Gain \"Crank 6\" quality",
+      "weight": "—"
+    },
+    "mod_muzzle_break": {
+      "name": "Muzzle Brake"
+    }
+  },
+  "mod_weapon_overrides": {
+    "weapon_boarding_pistol": {
+      "mod_protected_winch": {
+        "effects": "Lose \"Unreliable\" quality",
+        "weight": "—",
+        "cost": "—",
+        "perks": "Science! 1"
+      },
+      "mod_reinforced_winch": {
+        "effects": "Damage: +2 DC; adds Energy to Physical damage",
+        "weight": "—",
+        "cost": "—",
+        "perks": "Science! 2"
+      },
+      "mod_long": {
+        "effects": "Lose \"Inaccurate\" quality",
+        "weight": "—",
+        "cost": "—",
+        "perks": "Science! 1"
+      },
+      "mod_aerodynamic_barrel": {
+        "effects": "Damage: +1 DC; Gain \"Piercing 2\" effect",
+        "weight": "—",
+        "cost": "—",
+        "perks": "Science! 2"
+      }
+    },
+    "weapon_laser_musket": {
+      "mod_three_crank_capacitor": {
+        "effects": "Damage: +1 DC; consumes 3 shots per attack",
+        "weight": "—"
+      },
+      "mod_four_crank_capacitor": {
+        "effects": "Damage: +2 DC; consumes 4 shots per attack"
+      },
+      "mod_five_crank_capacitor": {
+        "effects": "Damage: +3 DC; consumes 5 shots per attack"
+      },
+      "mod_six_crank_capacitor": {
+        "effects": "Damage: +4 DC; consumes 6 shots per attack"
+      }
+    },
+    "weapon_assaultron_head_laser": {
+      "mod_capacitor_mk_iii": {
+        "effects": "Damage: +1 DC; consumes 3 charges per attack",
+        "perks": "Robotics Expert",
+        "weight": "—"
+      },
+      "mod_capacitor_mk_iv": {
+        "effects": "Damage: +2 DC; consumes 4 charges per attack",
+        "perks": "Robotics Expert, Science! 1"
+      },
+      "mod_capacitor_mk_v": {
+        "effects": "Damage: +3 DC; consumes 5 charges per attack",
+        "perks": "Robotics Expert, Science! 2"
+      },
+      "mod_capacitor_mk_vi": {
+        "effects": "Damage: +4 DC; consumes 6 charges per attack",
+        "perks": "Robotics Expert, Science! 3"
+      }
+    },
+    "weapon_sledgehammer": {
+      "mod_heavy": {
+        "name": "Heavy",
+        "prefix": "Heavy",
+        "effects": "Damage: +2 DC",
+        "weight": "+9",
+        "cost": "+30",
+        "perks": "Blacksmith 2"
+      },
+      "mod_puncturing": {
+        "name": "Puncturing",
+        "prefix": "Puncturing",
+        "effects": "Damage: +1 DC; Gain \"Piercing 1\" effect",
+        "weight": "+5",
+        "cost": "+18",
+        "perks": "Blacksmith 2"
+      }
+    },
+    "weapon_boxing_glove": {
+      "mod_lead_lining": {
+        "name": "Lead Lining",
+        "prefix": "Lead-Lined",
+        "effects": "Damage: +2 DC",
+        "weight": "+1",
+        "cost": "+7",
+        "perks": "Blacksmith 1"
+      },
+      "mod_spiked": {
+        "name": "Spiked",
+        "prefix": "Spiked",
+        "effects": "Gain \"Piercing 1\" effect",
+        "weight": "—",
+        "cost": "+3",
+        "perks": "—"
+      },
+      "mod_puncturing": {
+        "name": "Puncturing",
+        "prefix": "Puncturing",
+        "effects": "Damage: +1 DC; Gain \"Piercing 1\" effect",
+        "weight": "—",
+        "cost": "+4",
+        "perks": "Blacksmith 1"
+      }
+    },
+    "weapon_knuckles": {
+      "mod_sharp": {
+        "name": "Sharp",
+        "prefix": "Sharp",
+        "effects": "Gain \"Persistent\" effect",
+        "weight": "—",
+        "cost": "+3",
+        "perks": "—"
+      },
+      "mod_spiked": {
+        "name": "Spiked",
+        "prefix": "Spiked",
+        "effects": "Gain \"Piercing 1\" effect",
+        "weight": "—",
+        "cost": "+3",
+        "perks": "—"
+      },
+      "mod_puncturing": {
+        "name": "Puncturing",
+        "prefix": "Puncturing",
+        "effects": "Damage: +1 DC; Gain \"Piercing 1\" effect",
+        "weight": "—",
+        "cost": "+4",
+        "perks": "Blacksmith 1"
+      },
+      "mod_bladed": {
+        "name": "Bladed",
+        "prefix": "Bladed",
+        "effects": "Damage: +1 DC; Gain \"Persistent\" effect",
+        "weight": "—",
+        "cost": "+5",
+        "perks": "Blacksmith 1"
+      }
+    },
+    "weapon_power_fist": {
+      "mod_puncturing": {
+        "name": "Puncturing",
+        "prefix": "Puncturing",
+        "effects": "Damage: +2 DC; Gain \"Piercing 1\" effect",
+        "weight": "+1",
+        "cost": "+45",
+        "perks": "Blacksmith 2"
+      },
+      "mod_heating_coil": {
+        "name": "Heating Coil",
+        "prefix": "Heated",
+        "effects": "Damage: +2 DC; Damage Type: Energy",
+        "weight": "—",
+        "cost": "+100",
+        "perks": "Blacksmith 3"
+      }
+    },
+    "weapon_baseball_bat": {
+      "mod_barbed": {
+        "name": "Barbed",
+        "prefix": "Barbed",
+        "effects": "Gain \"Piercing 1\" effect",
+        "weight": "—",
+        "cost": "+5",
+        "perks": "—"
+      },
+      "mod_spiked": {
+        "name": "Spiked",
+        "prefix": "Spiked",
+        "effects": "Damage: +1 DC; Gain \"Piercing 1\" effect",
+        "weight": "+1",
+        "cost": "+7",
+        "perks": "—"
+      },
+      "mod_sharp": {
+        "name": "Sharp",
+        "prefix": "Sharp",
+        "effects": "Damage: +1 DC; Gain \"Persistent\" effect",
+        "weight": "+1",
+        "cost": "+7",
+        "perks": "—"
+      },
+      "mod_chain_wrapped": {
+        "name": "Chain-Wrapped",
+        "prefix": "Chain-Wrapped",
+        "effects": "Damage: +2 DC",
+        "weight": "+1",
+        "cost": "+10",
+        "perks": "Blacksmith 1"
+      },
+      "mod_bladed": {
+        "name": "Bladed",
+        "prefix": "Bladed",
+        "effects": "Damage: +2 DC; Gain \"Persistent\" effect",
+        "weight": "+2",
+        "cost": "+12",
+        "perks": "Blacksmith 2"
+      }
+    },
+    "weapon_baseball_bat_aluminum": {
+      "mod_barbed": {
+        "name": "Barbed",
+        "prefix": "Barbed",
+        "effects": "Gain \"Piercing 1\" effect",
+        "weight": "—",
+        "cost": "+5",
+        "perks": "Blacksmith 1"
+      },
+      "mod_spiked": {
+        "name": "Spiked",
+        "prefix": "Spiked",
+        "effects": "Damage: +1 DC; Gain \"Piercing 1\" effect",
+        "weight": "+1",
+        "cost": "+7",
+        "perks": "Blacksmith 1"
+      },
+      "mod_sharp": {
+        "name": "Sharp",
+        "prefix": "Sharp",
+        "effects": "Damage: +1 DC; Gain \"Persistent\" effect",
+        "weight": "+1",
+        "cost": "+7",
+        "perks": "Blacksmith 1"
+      },
+      "mod_chain_wrapped": {
+        "name": "Chain-Wrapped",
+        "prefix": "Chain-Wrapped",
+        "effects": "Damage: +2 DC",
+        "weight": "+1",
+        "cost": "+10",
+        "perks": "Blacksmith 1"
+      },
+      "mod_bladed": {
+        "name": "Bladed",
+        "prefix": "Bladed",
+        "effects": "Damage: +2 DC; Gain \"Persistent\" effect",
+        "weight": "+2",
+        "cost": "+12",
+        "perks": "Blacksmith 2"
+      }
+    },
+    "weapon_board": {
+      "mod_spiked": {
+        "name": "Spiked",
+        "prefix": "Spiked",
+        "effects": "Damage: +1 DC; Gain \"Piercing 1\" effect",
+        "weight": "+1",
+        "cost": "+6",
+        "perks": "—"
+      },
+      "mod_puncturing": {
+        "name": "Puncturing",
+        "prefix": "Puncturing",
+        "effects": "Damage: +2 DC",
+        "weight": "+1",
+        "cost": "+10",
+        "perks": "Blacksmith 1"
+      },
+      "mod_bladed": {
+        "name": "Bladed",
+        "prefix": "Bladed",
+        "effects": "Damage: +2 DC; Gain \"Persistent\" effect",
+        "weight": "+2",
+        "cost": "+10",
+        "perks": "Blacksmith 2"
+      }
+    },
+    "weapon_rolling_pin": {
+      "mod_spiked": {
+        "name": "Spiked",
+        "prefix": "Spiked",
+        "effects": "Damage: +1 DC; Gain \"Piercing 1\" effect",
+        "weight": "—",
+        "cost": "+3",
+        "perks": "—"
+      },
+      "mod_sharp": {
+        "name": "Sharp",
+        "prefix": "Sharp",
+        "effects": "Damage: +1 DC; Gain \"Persistent\" effect",
+        "weight": "—",
+        "cost": "+3",
+        "perks": "—"
+      }
+    },
+    "weapon_pool_cue": {
+      "mod_barbed": {
+        "name": "Barbed",
+        "prefix": "Barbed",
+        "effects": "Gain \"Piercing 1\" effect",
+        "weight": "—",
+        "cost": "+2",
+        "perks": "—"
+      },
+      "mod_sharp": {
+        "name": "Sharp",
+        "prefix": "Sharp",
+        "effects": "Damage: +1 DC; Gain \"Persistent\" effect",
+        "weight": "—",
+        "cost": "+3",
+        "perks": "—"
+      }
+    },
+    "weapon_walking_cane": {
+      "mod_barbed": {
+        "name": "Barbed",
+        "prefix": "Barbed",
+        "effects": "Damage: +1 DC; Gain \"Piercing 1\" effect",
+        "weight": "—",
+        "cost": "+3",
+        "perks": "—"
+      },
+      "mod_spiked": {
+        "name": "Spiked",
+        "prefix": "Spiked",
+        "effects": "Damage: +1 DC; Gain \"Piercing 1\" effect",
+        "weight": "—",
+        "cost": "+3",
+        "perks": "—"
+      }
+    },
+    "weapon_tire_iron": {
+      "mod_bladed": {
+        "name": "Bladed",
+        "prefix": "Bladed",
+        "effects": "Damage: +1 DC; Gain \"Persistent\" effect",
+        "weight": "+1",
+        "cost": "+12",
+        "perks": "Blacksmith 2"
+      }
+    },
+    "weapon_baton": {
+      "mod_electrified": {
+        "name": "Electrified",
+        "prefix": "Electrified",
+        "effects": "Damage: +2 DC; Damage Type: Energy",
+        "weight": "—",
+        "cost": "+15",
+        "perks": "Blacksmith 2, Science! 1"
+      },
+      "mod_stun_pack": {
+        "name": "Stun Pack",
+        "prefix": "Stunning",
+        "effects": "Damage: +3 DC; Damage Type: Energy; Gain \"Stun\" effect",
+        "weight": "—",
+        "cost": "+30",
+        "perks": "Blacksmith 2, Science! 1"
+      }
+    },
+    "weapon_super_sledge": {
+      "mod_heating_coil": {
+        "name": "Heating Coil",
+        "prefix": "Heated",
+        "effects": "Damage: +1 DC; Damage Type: Energy",
+        "weight": "—",
+        "cost": "+180",
+        "perks": "Blacksmith 2"
+      },
+      "mod_stun_pack": {
+        "name": "Stun Pack",
+        "prefix": "Stunning",
+        "effects": "Damage: +2 DC; Damage Type: Energy; Gain \"Stun\" effect",
+        "weight": "—",
+        "cost": "+360",
+        "perks": "Blacksmith 3, Science! 1"
+      }
+    },
+    "weapon_pipe_wrench": {
+      "mod_hooked": {
+        "name": "Hooked",
+        "prefix": "Hooked",
+        "effects": "Damage: +1 DC; on a successful attack, spend 2 AP to disarm the opponent",
+        "weight": "—",
+        "cost": "+9",
+        "perks": "—"
+      },
+      "mod_heavy": {
+        "name": "Heavy",
+        "prefix": "Heavy",
+        "effects": "Damage: +2 DC",
+        "weight": "+7",
+        "cost": "+12",
+        "perks": "Blacksmith 1"
+      },
+      "mod_puncturing": {
+        "name": "Puncturing",
+        "prefix": "Puncturing",
+        "effects": "Damage: +2 DC; Gain \"Piercing 1\" effect",
+        "weight": "+1",
+        "cost": "+13",
+        "perks": "Blacksmith 1"
+      },
+      "mod_extra_heavy": {
+        "name": "Extra Heavy",
+        "prefix": "Heavy",
+        "effects": "Damage: +3 DC",
+        "weight": "+2",
+        "cost": "+22",
+        "perks": "Blacksmith 2"
+      }
+    },
+    "weapon_lead_pipe": {
+      "mod_heavy": {
+        "name": "Heavy",
+        "prefix": "Heavy",
+        "effects": "Damage: +2 DC",
+        "weight": "+2",
+        "cost": "+11",
+        "perks": "Blacksmith 2"
+      },
+      "mod_spiked": {
+        "name": "Spiked",
+        "prefix": "Spiked",
+        "effects": "Damage: +1 DC; Gain \"Piercing 1\" effect",
+        "weight": "+1",
+        "cost": "+4",
+        "perks": "—"
+      }
+    },
+    "weapon_deathclaw_gauntlet": {
+      "mod_extra_claw": {
+        "name": "Extra Claw",
+        "prefix": "Large",
+        "effects": "Damage: +1 DC; on a successful attack, spend 2 AP to disarm the opponent",
+        "weight": "+2",
+        "cost": "+22",
+        "perks": "—"
+      }
+    },
+    "weapon_auto_axe": {
+      "mod_burning_blade": {
+        "name": "Burning Blade",
+        "prefix": "Burning",
+        "effects": "Damage Type: Energy; Gain \"Persistent\" effect",
+        "weight": "—",
+        "cost": "+50",
+        "perks": "Blacksmith 2, Science! 1"
+      },
+      "mod_electrified_blade_aa": {
+        "name": "Electrified Blade",
+        "prefix": "Electrified",
+        "effects": "Damage: +1 DC; Damage Type: Energy",
+        "weight": "—",
+        "cost": "+50",
+        "perks": "Blacksmith 2, Science! 1"
+      },
+      "mod_poison_blade": {
+        "name": "Poison Blade",
+        "prefix": "Poisoned",
+        "effects": "Gain \"Persistent\" effect",
+        "weight": "—",
+        "cost": "+50",
+        "perks": "Blacksmith 2, Science! 1"
+      },
+      "mod_turbo": {
+        "name": "Turbo",
+        "prefix": "Turbo",
+        "effects": "Each AP spent for bonus damage grants +2 DC instead of +1 DC",
+        "weight": "+2",
+        "cost": "+50",
+        "perks": "Blacksmith 2, Science! 1"
+      }
+    },
+    "weapon_chainsaw": {
+      "mod_flamer_chain": {
+        "name": "Flamer",
+        "prefix": "Flamer",
+        "effects": "Damage: +1 DC; Damage Type: Energy; may be added alongside any other mod",
+        "weight": "+2",
+        "cost": "+90",
+        "perks": "Blacksmith 3, Gun Nut 1"
+      }
+    },
+    "weapon_atom_staff": {
+      "mod_shocking_coils": {
+        "name": "Shocking Coils",
+        "prefix": "Shocking",
+        "effects": "Damage: +2 DC; Physical and Energy damage",
+        "weight": "—",
+        "cost": "+100",
+        "perks": "Blacksmith 2, Science! 2"
+      }
+    }
+  },
+  "melee_slot_labels": {
+    "weapon_sword": "BLADE",
+    "weapon_combat_knife": "BLADE",
+    "weapon_machete": "BLADE",
+    "weapon_ripper": "BLADE",
+    "weapon_switchblade": "BLADE",
+    "weapon_shishkebab": "BLADE",
+    "weapon_baseball_bat": "BAT",
+    "weapon_baseball_bat_aluminum": "BAT",
+    "weapon_sledgehammer": "HAMMER",
+    "weapon_lead_pipe": "PIPE",
+    "weapon_boxing_glove": "GLOVE",
+    "weapon_knuckles": "KNUCKLES",
+    "weapon_power_fist": "KNUCKLES",
+    "weapon_deathclaw_gauntlet": "CLAWS",
+    "weapon_board": "BOARD",
+    "weapon_pipe_wrench": "WRENCH",
+    "weapon_rolling_pin": "PIN",
+    "weapon_pool_cue": "CUE",
+    "weapon_baton": "BATON",
+    "weapon_tire_iron": "WRENCH",
+    "weapon_walking_cane": "CANE",
+    "weapon_assaultron_blade": "BLADE",
+    "weapon_auto_axe": "BLADE",
+    "weapon_chainsaw": "CHAIN",
+    "weapon_atom_staff": "STAFF",
+    "weapon_super_sledge": "SLEDGE"
+  }
+}

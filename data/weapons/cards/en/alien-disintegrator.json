@@ -1,0 +1,82 @@
+{
+  "id": "weapon_alien_disintegrator",
+  "title": "Alien Disintegrator",
+  "category": "Energy Weapons",
+  "weight": "7",
+  "cost": 921,
+  "rarity": 5,
+  "ammo": "Alien Power Cell",
+  "damageType": "Energy",
+  "damage": 8,
+  "fireRate": 7,
+  "range": "Medium",
+  "effects": [
+    "Piercing"
+  ],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "A form of alien energy rifle, appearing like a space-age blunderbuss, found in use by the extra-terrestrial beings sometimes called \"Zetans\". Like the smaller atomizers, the technology of these weapons is too unknown for anyone to successfully modify one of these weapons.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        "Hardened",
+        "Powerful",
+        "Hair Trigger"
+      ]
+    },
+    {
+      "slot": "BARREL",
+      "items": [
+        "Long",
+        "Ported"
+      ]
+    },
+    {
+      "slot": "STOCK",
+      "items": [
+        "Full Stock",
+        "Recoil Compensating Stock"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Reflex Sight",
+        "Short Scope",
+        "Long Scope",
+        "Short Night Vision Scope",
+        "Long Night Vision Scope",
+        "Recon Scope"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Bayonet",
+        "Compensator",
+        "Muzzle Break",
+        "Suppressor"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 58
+}

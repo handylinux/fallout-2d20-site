@@ -1,0 +1,39 @@
+{
+  "id": "weapon_proton_axe",
+  "title": "Proton Axe",
+  "category": "Melee Weapons",
+  "weight": "8",
+  "cost": 175,
+  "rarity": 5,
+  "ammo": "",
+  "damageType": "Energy",
+  "damage": 5,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [
+    "Piercing"
+  ],
+  "qualities": [
+    "Surge"
+  ],
+  "description": "An energy weapon that releases a surge of ionizing energy on impact, piercing armour.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 123
+}

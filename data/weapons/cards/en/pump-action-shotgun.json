@@ -1,0 +1,81 @@
+{
+  "id": "weapon_pump_action_shotgun",
+  "title": "Pump-Action Shotgun",
+  "category": "Light Weapons",
+  "weight": "11",
+  "cost": 70,
+  "rarity": 1,
+  "ammo": "Shotgun Shell",
+  "damageType": "Physical",
+  "damage": 5,
+  "fireRate": 1,
+  "range": "Close",
+  "effects": [
+    "Spread"
+  ],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "A solid and wide-spread design of shotgun found across the Wastelands. While it has a far larger magazine capacity than double-barreled shotguns, the slow (but distinctive) pump-action design keeps the rate of fire low compared to semi-automatic combat shotguns.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        "Calibrated",
+        "Calibrated Powerful",
+        "Hair Trigger",
+        "Hardened",
+        "Improved Receiver",
+        "Powerful"
+      ]
+    },
+    {
+      "slot": "BARREL",
+      "items": [
+        "Long",
+        "Ported"
+      ]
+    },
+    {
+      "slot": "STOCK",
+      "items": [
+        "Full Stock",
+        "Recoil Compensating",
+        "Recoil Compensating Stock"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Reflex Sight"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Bayonet",
+        "Compensator",
+        "Muzzle Break",
+        "Suppressor"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 34
+}

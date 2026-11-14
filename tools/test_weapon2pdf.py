@@ -4,6 +4,9 @@ import json
 import os
 import tempfile
 import unittest
+from unittest.mock import patch, MagicMock
+
+from PIL import Image
 
 import weapon2pdf as w
 
@@ -16,6 +19,32 @@ w.register_fonts()
 def base_card():
     with open(CARD_PATH, encoding="utf-8") as fh:
         return json.load(fh)
+
+
+class ImageLayoutTests(unittest.TestCase):
+    def test_image_box_respects_content_and_subtitle(self):
+        left, top, right, bottom = w.IMAGE_BOX
+        self.assertGreaterEqual(left, w.MARGIN_L)
+        self.assertLessEqual(right, w.CONTENT_R)
+        self.assertGreater(top, w.SUBTITLE_TOP + w.SUBTITLE_SIZE)
+        self.assertLess(bottom, w.STATS_TOP)
+
+    def test_render_uses_contain(self):
+        with patch.object(w, "place_image") as place:
+            w.draw_image(None, {"image": "weapon.png"})
+        place.assert_called_once_with(None, "weapon.png", w.IMAGE_BOX, fit="contain")
+
+    def test_wide_and_tall_images_keep_aspect_ratio(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            for width, height in [(400, 100), (100, 400)]:
+                path = os.path.join(tmp, f"{width}-{height}.png")
+                Image.new("RGB", (width, height), "red").save(path)
+                with patch.object(w, "_paper_image", return_value=Image.new("RGB", (2600, 1800), "white")):
+                    img = w.flatten_on_paper(path, w.IMAGE_BOX, dpi=72, fit="contain")
+                mask = img.point(lambda v: 255 if v < 128 else 0).getchannel("G")
+                bounds = mask.getbbox()
+                actual = (bounds[2] - bounds[0]) / (bounds[3] - bounds[1])
+                self.assertAlmostEqual(actual, width / height, delta=0.05)
 
 
 class WrapTextTests(unittest.TestCase):
@@ -33,6 +62,15 @@ class WrapTextTests(unittest.TestCase):
     def test_long_word_is_not_dropped(self):
         lines = w.wrap_text("сверхдлинноеслово", "Carlito", 9, 10)
         self.assertEqual(lines, ["сверхдлинноеслово"])
+
+
+class JustificationTests(unittest.TestCase):
+    def test_short_nonfinal_line_is_not_stretched(self):
+        canvas = MagicMock()
+        w.draw_justified(canvas, 10, 500, 20, ['несколько коротких слов', 'последняя строка'],
+                         'Carlito', 12, 17)
+        drawn = [call.args[2] for call in canvas.drawString.call_args_list]
+        self.assertEqual(drawn, ['несколько коротких слов', 'последняя строка'])
 
 
 class ModsLayoutTests(unittest.TestCase):
@@ -272,3 +310,20 @@ class CardFixtureTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+class NoModsDescriptionLayoutTest(unittest.TestCase):
+    def test_long_description_does_not_get_cut_off(self):
+        import tempfile
+        from pathlib import Path
+        import pymupdf
+        import weapon2pdf as w
+        w.register_fonts()
+        text = ('Обычный текст описания, который занимает место на странице. ' * 12) + ' ЗАВЕРШЕНИЕОПИСАНИЯ'
+        card = {'id': 'test_long', 'title': 'Проверка', 'page': 1, 'description': text, 'mods': [], 'weight': 1, 'cost': 1, 'rarity': 1}
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / 'page.pdf'
+            w.render_card(card, str(out))
+            with pymupdf.open(out) as pdf:
+                content = pdf[0].get_text()
+                self.assertIn('ЗАВЕРШЕНИЕОПИСАНИЯ', content)
+                self.assertIn('НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ', content)

@@ -1,0 +1,195 @@
+{
+  "weapon_combat_knife": {
+    "url": "https://www.fallout-2d20.ru/oruzhie/oruzhie-blizhnego-boya/boevoj-nozh",
+    "damage": 3,
+    "weight": 1,
+    "cost": 25,
+    "rarity": 1
+  },
+  "weapon_ripper": {
+    "url": "https://www.fallout-2d20.ru/oruzhie/oruzhie-blizhnego-boya/potroshitel",
+    "damage": 4,
+    "weight": 6,
+    "cost": 50,
+    "rarity": 2
+  },
+  "weapon_shishkebab": {
+    "url": "https://www.fallout-2d20.ru/oruzhie/oruzhie-blizhnego-boya/shish-kebab",
+    "damage": 5,
+    "weight": 3,
+    "cost": 200,
+    "rarity": 3
+  },
+  "weapon_boarding_pistol": {
+    "url": "https://www.fallout-2d20.ru/oruzhie/strelkovoe-oruzhie/abordazhnyj-pistolet",
+    "damage": 5,
+    "fireRate": 0,
+    "weight": 9,
+    "cost": 55,
+    "rarity": 2
+  },
+  "weapon_sword": {
+    "url": "https://www.fallout-2d20.ru/oruzhie/oruzhie-blizhnego-boya/mech",
+    "damage": 4,
+    "weight": 3,
+    "cost": 50,
+    "rarity": 2
+  },
+  "weapon_baseball_bat": {
+    "url": "https://www.fallout-2d20.ru/oruzhie/oruzhie-blizhnego-boya/bejsbolnaya-bita",
+    "damage": 4,
+    "weight": 3,
+    "cost": 25,
+    "rarity": 1
+  },
+  "weapon_sledgehammer": {
+    "url": "https://www.fallout-2d20.ru/oruzhie/oruzhie-blizhnego-boya/kuvalda",
+    "damage": 5,
+    "weight": 12,
+    "cost": 40,
+    "rarity": 2
+  },
+  "weapon_tear_gas_launcher": {
+    "url": "https://www.fallout-2d20.ru/oruzhie/tyazhjoloe-oruzhie/granatomet-so-slezotochivym-gazom",
+    "damage": 4,
+    "fireRate": 0,
+    "weight": 18,
+    "cost": 254,
+    "rarity": 3,
+    "site_category": "Тяжёлое оружие"
+  },
+  "weapon_12_7mm_smg": {
+    "url": "https://www.fallout-2d20.ru/oruzhie/strelkovoe-oruzhie/12-7-mm-pistolet-pulemjot",
+    "damage": 5,
+    "fireRate": 3,
+    "weight": 5,
+    "cost": 510,
+    "rarity": 4
+  },
+  "weapon_tesla_rifle": {
+    "url": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/karabin-tesly",
+    "damage": 5,
+    "fireRate": 2,
+    "weight": 8,
+    "cost": 180,
+    "rarity": 4
+  },
+  "weapon_alien_disintegrator": {
+    "url": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/dezintegrator-chuzhogo",
+    "damage": 8,
+    "fireRate": 2,
+    "weight": 7,
+    "cost": 921,
+    "rarity": 5
+  },
+  "weapon_arc_welder": {
+    "url": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/elektrosvarka",
+    "damage": 3,
+    "fireRate": 4,
+    "weight": 15,
+    "cost": 370,
+    "rarity": 4
+  },
+  "weapon_junk_jet": {
+    "url": "https://www.fallout-2d20.ru/oruzhie/tyazhjoloe-oruzhie/khlamotron",
+    "damage": 6,
+    "fireRate": 1,
+    "weight": 30,
+    "cost": 286,
+    "rarity": 3
+  },
+  "weapon_laser_musket": {
+    "url": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/lazernyj-mushket",
+    "damage": 5,
+    "fireRate": 0,
+    "weight": 13,
+    "cost": 57,
+    "rarity": 1
+  },
+  "weapon_assaultron_head_laser": {
+    "url": "https://www.fallout-2d20.ru/oruzhie/energooruzhie/golovnoj-lazer-shturmotrona",
+    "damage": 5,
+    "fireRate": 0,
+    "weight": 8,
+    "cost": 500,
+    "rarity": 3
+  },
+  "weapon_gatling_laser": {
+    "url": "https://www.fallout-2d20.ru/oruzhie/tyazhjoloe-oruzhie/gatling-lazer",
+    "damage": 3,
+    "fireRate": 6,
+    "weight": 19,
+    "cost": 804,
+    "rarity": 3
+  },
+  "weapon_pistol_injector": {
+    "url": "https://www.fallout-2d20.ru/oruzhie/strelkovoe-oruzhie/pistolet-inektor",
+    "damage": 5,
+    "fireRate": 0,
+    "weight": 5,
+    "cost": 333,
+    "rarity": 5
+  },
+  "weapon_gauss_rifle": {
+    "url": null,
+    "source": "jos_sppagebuilder.zip, page ID 100, first stats block",
+    "damage": 10,
+    "fireRate": 1,
+    "weight": 16,
+    "cost": 228,
+    "rarity": 4
+  },
+  "weapon_crossbow": {
+    "url": null,
+    "source": "jos_sppagebuilder.zip, page ID 132, first stats block",
+    "damage": 5,
+    "fireRate": 0,
+    "weight": 3,
+    "cost": 44,
+    "rarity": 2
+  },
+  "weapon_gamma_gun": {
+    "url": null,
+    "source": "jos_sppagebuilder.zip, page ID 262, first stats block",
+    "damage": 3,
+    "fireRate": 1,
+    "weight": 4,
+    "cost": 50,
+    "rarity": 2
+  },
+  "weapon_pulse_mine": {
+    "url": null,
+    "source": "jos_sppagebuilder.zip, page ID 210, first stats block",
+    "damage": 6,
+    "cost": 100,
+    "rarity": 3,
+    "weight": "<1",
+    "range": "not listed",
+    "effects": [
+      "Оглушающий"
+    ]
+  },
+  "weapon_sten_injector": {
+    "url": null,
+    "source": "jos_sppagebuilder.zip, page ID 359, first stats block",
+    "damage": 4,
+    "fireRate": 3,
+    "weight": 9,
+    "cost": 445,
+    "rarity": 5,
+    "damageType": "Яд",
+    "effects": [
+      "Усыпление 3",
+      "Стойкий",
+      "Очередь"
+    ]
+  },
+  "weapon_tomahawk": {
+    "url": null,
+    "source": "jos_sppagebuilder.zip, page ID 135, first stats block",
+    "damage": 4,
+    "weight": "<1",
+    "cost": 15,
+    "rarity": 2
+  }
+}

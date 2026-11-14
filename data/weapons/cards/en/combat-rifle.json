@@ -1,0 +1,101 @@
+{
+  "id": "weapon_combat_rifle",
+  "title": "Combat Rifle",
+  "category": "Light Weapons",
+  "weight": "11",
+  "cost": 117,
+  "rarity": 2,
+  "ammo": ".45 Round",
+  "damageType": "Physical",
+  "damage": 5,
+  "fireRate": 2,
+  "range": "Medium",
+  "effects": [],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "A pre-War weapon found across the wastelands and used in large numbers by various aggressive factions.",
+  "image": "/home/user/fallout-2d20-site/assets/pdf/weapons/combat-rifle.png",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        ".308 Receiver",
+        ".38 Receiver",
+        "Advanced",
+        "Armor-Piercing",
+        "Armor Piercing Automatic",
+        "Automatic",
+        "Calibrated",
+        "Calibrated Powerful",
+        "Hair Trigger",
+        "Hardened",
+        "Hardened Automatic",
+        "Hardened Piercing Auto",
+        "Powerful",
+        "Powerful Automatic",
+        "Rapid Automatic"
+      ]
+    },
+    {
+      "slot": "BARREL",
+      "items": [
+        "Long",
+        "Ported",
+        "Vented"
+      ]
+    },
+    {
+      "slot": "STOCK",
+      "items": [
+        "Full Stock",
+        "Marksman's Stock",
+        "Recoil Compensating Stock"
+      ]
+    },
+    {
+      "slot": "MAGAZINE",
+      "items": [
+        "Large Magazine",
+        "Large Quick-Eject Mag",
+        "Quick-Eject Mag"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Long Night Vision Scope",
+        "Long Scope",
+        "Recon Scope",
+        "Reflex Sight",
+        "Short Night Vision Scope",
+        "Short Scope"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Bayonet",
+        "Compensator",
+        "Suppressor"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 18
+}

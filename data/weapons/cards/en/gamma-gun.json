@@ -1,0 +1,55 @@
+{
+  "id": "weapon_gamma_gun",
+  "title": "Gamma Gun",
+  "category": "Energy Weapons",
+  "weight": "3",
+  "cost": 15,
+  "rarity": 5,
+  "ammo": "Gamma Round",
+  "damageType": "Radiation",
+  "damage": 3,
+  "fireRate": 1,
+  "range": "Medium",
+  "effects": [
+    "Stun",
+    "Piercing"
+  ],
+  "qualities": [
+    "Inaccurate",
+    "Blast"
+  ],
+  "description": "A crude-looking weapon, the gamma gun emits directed blasts of high-intensity ionizing radiation.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Electric Signal Carrier Antennae",
+        "Signal Repeater"
+      ]
+    },
+    {
+      "slot": "DISH",
+      "items": [
+        "Deep Dish"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 64
+}

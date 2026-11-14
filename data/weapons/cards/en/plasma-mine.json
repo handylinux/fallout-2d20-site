@@ -1,0 +1,45 @@
+{
+  "id": "weapon_plasma_mine",
+  "title": "Plasma Mine",
+  "category": "Explosive Weapons",
+  "weight": "<1",
+  "cost": 135,
+  "rarity": 3,
+  "ammo": "",
+  "damageType": "Energy and Physical",
+  "damage": 9,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [],
+  "qualities": [
+    "Mine",
+    "Blast"
+  ],
+  "description": "These magnetically sealed mines unleash a blast of energized plasma upon being triggered.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "BARREL",
+      "items": [
+        "Heavy Barrel"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 97
+}

@@ -1,0 +1,40 @@
+{
+  "id": "weapon_javelin",
+  "title": "Javelin",
+  "category": "Thrown Weapons",
+  "weight": "4",
+  "cost": 10,
+  "rarity": 1,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 4,
+  "fireRate": 0,
+  "range": "Medium",
+  "effects": [
+    "Piercing"
+  ],
+  "qualities": [
+    "Thrown",
+    "Suppressed"
+  ],
+  "description": "A short spear, not typically sturdy enough for close-in fighting.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 134
+}

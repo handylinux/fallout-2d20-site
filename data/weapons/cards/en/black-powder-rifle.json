@@ -1,0 +1,45 @@
+{
+  "id": "weapon_black_powder_rifle",
+  "title": "Black Powder Rifle",
+  "category": "Light Weapons",
+  "weight": "6",
+  "cost": 60,
+  "rarity": 3,
+  "ammo": ".50 Ball",
+  "damageType": "Physical",
+  "damage": 8,
+  "fireRate": 0,
+  "range": "Medium",
+  "effects": [],
+  "qualities": [
+    "Two-Handed",
+    "Unreliable"
+  ],
+  "description": "An archaic percussion-cap muzzle-loading rifle, of a kind possibly salvaged from museums or the collections of reenactors. The rifle's longer barrel gives it considerably longer range and slightly more stopping power than its smaller counterparts, but while it's fine against one or two foes, the slow rate of fire and long reload process make it inconvenient when heavily outnumbered.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Bayonet"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 14
+}

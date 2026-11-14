@@ -1,0 +1,53 @@
+{
+  "id": "weapon_crossbow",
+  "title": "Crossbow",
+  "category": "Light Weapons",
+  "weight": "3",
+  "cost": 44,
+  "rarity": 2,
+  "ammo": "Bolt",
+  "damageType": "Physical",
+  "damage": 5,
+  "fireRate": 2,
+  "range": "Medium",
+  "effects": [],
+  "qualities": [
+    "Suppressed",
+    "Two-Handed",
+    "Slow Load"
+  ],
+  "description": "Despite its primitiveness, the crossbow has many advantages: the weapon is light, ammunition is simpler to make than bullets, and shooting is nearly silent. Bolts can also be crafted with various effects, making it a versatile weapon.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Illuminated Sight",
+        "Iron Sight"
+      ]
+    },
+    {
+      "slot": "FRAME",
+      "items": [
+        "Block Frame"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 20
+}

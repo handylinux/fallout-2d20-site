@@ -1,0 +1,98 @@
+{
+  "id": "weapon_assault_rifle",
+  "title": "Assault Rifle",
+  "category": "Light Weapons",
+  "weight": "13",
+  "cost": 144,
+  "rarity": 2,
+  "ammo": "5.56mm Round",
+  "damageType": "Physical",
+  "damage": 5,
+  "fireRate": 2,
+  "range": "Medium",
+  "effects": [],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "This gas-operated rifle is a common sight across the wasteland.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        "Advanced",
+        "Armor-Piercing",
+        "Armor Piercing Automatic",
+        "Automatic",
+        "Calibrated",
+        "Calibrated Powerful",
+        "Hair Trigger",
+        "Hardened",
+        "Hardened Automatic",
+        "Hardened Piercing Auto",
+        "Powerful",
+        "Powerful Automatic",
+        "Rapid Automatic"
+      ]
+    },
+    {
+      "slot": "BARREL",
+      "items": [
+        "Long",
+        "Ported",
+        "Vented"
+      ]
+    },
+    {
+      "slot": "STOCK",
+      "items": [
+        "Full Stock",
+        "Marksman's Stock",
+        "Recoil Compensating Stock"
+      ]
+    },
+    {
+      "slot": "MAGAZINE",
+      "items": [
+        "Large Magazine",
+        "Large Quick-Eject Mag",
+        "Quick-Eject Mag"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Long Night Vision Scope",
+        "Long Scope",
+        "Recon Scope",
+        "Reflex Sight",
+        "Short Night Vision Scope",
+        "Short Scope"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Compensator",
+        "Suppressor"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 10
+}

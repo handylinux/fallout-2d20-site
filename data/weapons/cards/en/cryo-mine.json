@@ -1,0 +1,40 @@
+{
+  "id": "weapon_cryo_mine",
+  "title": "Cryo Mine",
+  "category": "Explosive Weapons",
+  "weight": "1",
+  "cost": 50,
+  "rarity": 3,
+  "ammo": "",
+  "damageType": "Energy",
+  "damage": 6,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [
+    "Freeze"
+  ],
+  "qualities": [
+    "Mine",
+    "Blast"
+  ],
+  "description": "A placed mine that freezes the area around it in a blast of cryogenic energy.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 84
+}

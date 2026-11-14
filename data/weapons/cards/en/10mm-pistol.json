@@ -1,0 +1,93 @@
+{
+  "id": "weapon_10mm_pistol",
+  "title": "10mm Pistol",
+  "category": "Light Weapons",
+  "weight": "4",
+  "cost": 50,
+  "rarity": 1,
+  "ammo": "10mm Round",
+  "damageType": "Physical",
+  "damage": 4,
+  "fireRate": 2,
+  "range": "Close",
+  "effects": [],
+  "qualities": [
+    "Close Quarters",
+    "Reliable"
+  ],
+  "description": "Small, dependable, reasonably powerful, and available, the 10mm pistol has been a staple widely since the bombs first fell.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        "Advanced",
+        "Armor-Piercing",
+        "Armor Piercing Automatic",
+        "Automatic",
+        "Calibrated",
+        "Calibrated Powerful",
+        "Hair Trigger",
+        "Hardened",
+        "Hardened Automatic",
+        "Hardened Piercing Auto",
+        "Powerful",
+        "Powerful Automatic",
+        "Rapid Automatic"
+      ]
+    },
+    {
+      "slot": "BARREL",
+      "items": [
+        "Long",
+        "Ported"
+      ]
+    },
+    {
+      "slot": "GRIP",
+      "items": [
+        "Comfort Grip",
+        "Sharpshooter's Grip"
+      ]
+    },
+    {
+      "slot": "MAGAZINE",
+      "items": [
+        "Large Magazine",
+        "Large Quick-Eject Mag",
+        "Quick-Eject Mag"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Recon Scope",
+        "Reflex Sight"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Compensator",
+        "Suppressor"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 3
+}

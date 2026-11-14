@@ -1,0 +1,89 @@
+{
+  "id": "weapon_10mm_smg",
+  "title": "10mm SMG",
+  "category": "Light Weapons",
+  "weight": "10",
+  "cost": 129,
+  "rarity": 1,
+  "ammo": "10mm Round",
+  "damageType": "Physical",
+  "damage": 4,
+  "fireRate": 3,
+  "range": "-",
+  "effects": [
+    "Burst"
+  ],
+  "qualities": [
+    "Inaccurate"
+  ],
+  "description": "",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        "Rapid",
+        "Armor-Piercing",
+        "Hardened",
+        "Powerful",
+        "Armor Piercing Receiver",
+        "Calibrated Powerful"
+      ]
+    },
+    {
+      "slot": "BARREL",
+      "items": [
+        "Snubnose"
+      ]
+    },
+    {
+      "slot": "STOCK",
+      "items": [
+        "Full Stock",
+        "Recoil Compensating Stock"
+      ]
+    },
+    {
+      "slot": "MAGAZINE",
+      "items": [
+        "Large Magazine",
+        "Quick-Eject Mag",
+        "Large Quick-Eject Mag",
+        "Extra-Large Magazine"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Reflex Sight",
+        "Gunner Sight",
+        "Front Sight Ring"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Compensator",
+        "Muzzle Break",
+        "Suppressor"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 4
+}

@@ -1,0 +1,37 @@
+{
+  "id": "weapon_multi_purpose_axe",
+  "title": "Multi-Purpose Axe",
+  "category": "Melee Weapons",
+  "weight": "4",
+  "cost": 40,
+  "rarity": 2,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 5,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "A practical two-handed axe able to double as a cutting implement.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 120
+}

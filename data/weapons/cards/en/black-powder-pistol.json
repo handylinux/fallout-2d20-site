@@ -1,0 +1,37 @@
+{
+  "id": "weapon_black_powder_pistol",
+  "title": "Black Powder Pistol",
+  "category": "Light Weapons",
+  "weight": "3",
+  "cost": 60,
+  "rarity": 3,
+  "ammo": ".50 Ball",
+  "damageType": "Physical",
+  "damage": 7,
+  "fireRate": 0,
+  "range": "Close",
+  "effects": [],
+  "qualities": [
+    "Unreliable"
+  ],
+  "description": "An archaic percussion-cap firearm, of a kind possibly salvaged from museums or the collections of reenactors. Compared to the blunderbuss, the pistol is less inaccurate and has a slightly longer effective range, but it packs no less of a punch.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 13
+}

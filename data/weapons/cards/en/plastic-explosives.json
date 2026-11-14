@@ -1,0 +1,42 @@
+{
+  "id": "weapon_plastic_explosives",
+  "title": "Plastic Explosives",
+  "category": "Explosive Weapons",
+  "weight": "2",
+  "cost": 200,
+  "rarity": 4,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 10,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [
+    "Breaking",
+    "Piercing"
+  ],
+  "qualities": [
+    "Blast",
+    "Delay X",
+    "Placed"
+  ],
+  "description": "Malleable explosive placed on a surface, detonated remotely or by delay; the Delay rating is set when placed.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 98
+}

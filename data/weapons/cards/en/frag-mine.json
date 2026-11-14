@@ -1,0 +1,38 @@
+{
+  "id": "weapon_frag_mine",
+  "title": "Frag Mine",
+  "category": "Explosive Weapons",
+  "weight": "1",
+  "cost": 50,
+  "rarity": 2,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 6,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [],
+  "qualities": [
+    "Mine",
+    "Blast"
+  ],
+  "description": "Similar in design and construction to a frag grenade, a fragmentation mine is instead placed on the ground.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 92
+}
