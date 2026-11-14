@@ -116,14 +116,13 @@ BOOK_CSS = r"""
 
 /* карты базового комплекта (книжная таблица статов, вертикальная) */
 .ab-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.ab-card{min-width:0;background:#ffebcd;padding:10px}
+.ab-card{min-width:0}
 .ab-card-name{
   margin:0 0 8px;text-align:center;font-size:1.05rem;font-weight:700;
   line-height:1.2;color:#000;
 }
 .ab-stat-table{
-  width:auto;border-collapse:collapse;table-layout:fixed;background:#ffebcd;
-  margin:0 auto;
+  width:100%;border-collapse:collapse;table-layout:fixed;background:#ffebcd;
 }
 .ab-stat-table th{
   padding:5px 7px;background:#000;color:#fff;
@@ -295,7 +294,7 @@ def render_card(piece: dict, comp: Companion) -> str:
         '<article class="ab-card">'
         + '<h3 class="ab-card-name">' + esc(name) + "</h3>"
         + '<table class="ab-stat-table"><colgroup>'
-        '<col style="width:88px"><col style="width:40px">'
+        '<col><col style="width:28px">'
         "</colgroup><tbody>"
         + rows
         + "</tbody></table>"
@@ -331,8 +330,8 @@ def render_delta_table(base_pieces_list: list[dict], pieces: list[dict],
             cells.append("<td" + css + ">" + esc(value) + "</td>")
         rows.append('<tr><th scope="row">' + esc(label) + "</th>" + "".join(cells) + "</tr>")
     ncols = max(1, len(pieces))
-    colgroup = '<colgroup><col style="width:72px">' + "".join(
-        '<col style="width:30px">' for _ in range(ncols)
+    colgroup = '<colgroup><col style="width:70px">' + "".join(
+        '<col style="width:34px">' for _ in range(ncols)
     ) + "</colgroup>"
     return (
         '<table class="ab-delta-table">'
