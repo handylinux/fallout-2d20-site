@@ -8,14 +8,15 @@ armor_book_pdf — тестовая страница брони в PDF по ст
 оружия.  Схема — по референсу «Броня», но в наших шрифтах, цветах,
 форматах и размерах, со фоном и картинкой брони (их в референсе не было).
 
-Структура — две страницы на броню:
+Структура — две страницы на броню (один разворот):
   страница 1 — заголовок; two-column-блок: слева картинка брони
-    (квадратная), справа таблицы характеристик элементов (метки — белый
-    на чёрном, значения — кремовый); описание; таблица модов привязана
-    к нижнему краю контента;
-  страница 2 — матрицы тиров: заголовок = тип тира, строки = элементы
-    (с чередованием цветов), столбцы = дельты статов, заголовки — белый
-    на чёрном.
+    (квадратная), справа панель элементов в ДВУХ столбцах (3 детали
+    + отступы); метки статов — белый на чёрном, значения — на кремовом;
+    описание; таблица модов привязана к нижнему краю контента;
+  страница 2 — продолжение разворота: заголовок и черта НЕ рисуются;
+    матрицы всех тиров (включая базовый): заголовок тира, строки =
+    элементы (заливка по ячейкам, чередование цветов), столбцы =
+    статысты (в базовом тире — значения, в остальных — дельты).
 
 Пример:
     python3 tools/armor_book_pdf.py \
@@ -53,19 +54,22 @@ RULE_TOP = w.RULE_TOP            # 78.37
 RULE_H = w.RULE_H
 RULE_W = w.RULE_W
 
-# two-column-блок: слева картинка (квадратная), справа таблицы элементов
+# two-column-блок: слева картинка (квадратная), справа панель элементов
 IMG_SIDE = 270.0                 # квадратная картинка брони
 TWO_COL_GAP = 18.0
 LEFT_W = IMG_SIDE
 RIGHT_X = w.MARGIN_L + LEFT_W + TWO_COL_GAP
 RIGHT_W = w.CONTENT_R - RIGHT_X
 
+# панель элементов: два столбца карточек (3 детали + отступы)
+ELEM_COL_GAP = 10.0
+
 # карточка элемента (таблица статов)
 CARD_HEADER_H = 17.0
 CARD_ROW_H = 13.0
 CARD_GAP = 7.0
-CARD_TITLE_SIZE = 10.5
-CARD_FONT = 9.0
+CARD_TITLE_SIZE = 10.0
+CARD_FONT = 8.5
 
 # описание
 DESC_LEFT = w.DESC_LEFT
@@ -82,7 +86,10 @@ TM_ROW_H = 14.0
 TM_LABEL_W = 70.0
 TM_FONT = 9.0
 TM_BLOCK_GAP = 18.0
-TIER_FILLS = None  # заполняется в draw_tier_matrix: [BEIGE, ORANGE]
+TIER_FILLS = [w.BEIGE, w.ORANGE]  # чередование цветов строк
+
+# верхний край контента на второй странице (без заголовка и черты)
+SPREAD_TOP = 75.0
 
 BEIGE = w.BEIGE
 ORANGE = w.ORANGE
@@ -145,6 +152,8 @@ def _cell_center(c, x, y_top, w_box, h, text, font, size, color=BLACK):
 
 
 def _grid_lines(c, x, y_top, width, y_bottom, edges):
+    """Внешний контур и вертикальные разделители (горизонтальных линий
+    между строками нет — строки разделены чередованием цветов)."""
     c.setStrokeColor(BLACK)
     c.setLineWidth(w.RULE_W_PT)
     c.line(x, w.y_from_top(y_top), x + width, w.y_from_top(y_top))
@@ -153,7 +162,7 @@ def _grid_lines(c, x, y_top, width, y_bottom, edges):
         c.line(e, w.y_from_top(y_top), e, w.y_from_top(y_bottom))
 
 
-# --- страница 1: картинка + таблицы элементов + описание + моды --------
+# --- страница 1: картинка + панель элементов (2 столбца) + описание + моды -
 def card_height(piece: dict) -> float:
     return CARD_HEADER_H + len(stat_fields(piece)) * CARD_ROW_H
 
@@ -193,9 +202,12 @@ def draw_hero_image(c, spec: dict, pages_dir: Path, y_top: float) -> float:
 
 def draw_element_card(c, piece: dict, x, y_top, width) -> float:
     """Таблица элемента: шапка чёрная, метки — белый на чёрном,
-    значения — кремовый фон."""
+    значения — на кремовом.  Заливки по ячейкам, в حدود сетки."""
     areas = piece.get("protectedAreas") or [""]
     title = " / ".join(AREA_TITLES.get(a, a.upper()) for a in areas) or "ДЕТАЛЬ"
+
+    label_w = width * 0.56
+    edges = [x, x + label_w, x + width]
 
     # шапка (название элемента)
     c.setFillColor(BLACK)
@@ -204,9 +216,7 @@ def draw_element_card(c, piece: dict, x, y_top, width) -> float:
                  "Carlito-Bold", CARD_TITLE_SIZE, color=WHITE)
 
     # строки: метки — белый на чёрном, значения — на кремовом
-    label_w = width * 0.56
     y = y_top + CARD_HEADER_H
-    edges = [x, x + label_w, x + width]
     for label, key in stat_fields(piece):
         c.setFillColor(BLACK)
         c.rect(x, w.y_from_top(y + CARD_ROW_H), label_w, -CARD_ROW_H, 0, 1)
@@ -218,6 +228,7 @@ def draw_element_card(c, piece: dict, x, y_top, width) -> float:
         _cell_center(c, x + label_w, y, width - label_w, CARD_ROW_H,
                      fmt_number(piece.get(key, 0)), "Carlito-Bold", CARD_FONT)
         y += CARD_ROW_H
+
     _grid_lines(c, x, y_top, width, y, edges)
     return y
 
@@ -230,13 +241,24 @@ def draw_stats_column(c, pieces: list[dict], x, y_top, width) -> float:
     return y - CARD_GAP
 
 
+def draw_element_panel(c, pieces: list[dict], x, y_top, width) -> float:
+    """Панель элементов брони в ДВУХ столбцах (3 детали + отступы)."""
+    col_w = (width - ELEM_COL_GAP) / 2.0
+    first_col = pieces[:2] if len(pieces) >= 2 else list(pieces)
+    second_col = pieces[2:]
+    bottom1 = draw_stats_column(c, first_col, x, y_top, col_w)
+    bottom2 = draw_stats_column(c, second_col, x + col_w + ELEM_COL_GAP,
+                                y_top, col_w)
+    return max(bottom1, bottom2)
+
+
 def draw_two_column(c, spec: dict, comp: Companion, set_data: dict,
                     pages_dir: Path, y_top: float) -> float:
-    """Слева картинка брони (квадрат), справа таблицы элементов."""
+    """Слева картинка брони (квадрат), справа панель элементов в 2 столбца."""
     pieces = base_pieces(set_data)
     img_bottom = draw_hero_image(c, spec, pages_dir, y_top)
-    col_bottom = draw_stats_column(c, pieces, RIGHT_X, y_top, RIGHT_W)
-    return max(img_bottom, col_bottom)
+    panel_bottom = draw_element_panel(c, pieces, RIGHT_X, y_top, RIGHT_W)
+    return max(img_bottom, panel_bottom)
 
 
 def draw_intro(c, spec: dict, y_top: float, bottom: float) -> float:
@@ -262,7 +284,7 @@ def draw_mods_section(c, comp: Companion, set_data: dict) -> None:
     w.draw_mods(c, card, block)
 
 
-# --- страница 2: матрицы тиров (чередование цветов) ----------------------
+# --- страница 2: матрицы всех тиров (чередование цветов по ячейкам) --------
 def tier_edges(x, width, label_w, n_stats) -> list[float]:
     step = (width - label_w) / n_stats
     edges = [x, x + label_w]
@@ -272,43 +294,55 @@ def tier_edges(x, width, label_w, n_stats) -> list[float]:
 
 
 def draw_tier_matrix(c, base_pieces_list: list[dict], tier_pieces: list[dict],
-                     tier_title: str, y_top: float) -> float:
-    """Матрица тира: заголовок сверху, строки = элементы (чередование
-    цветов), столбцы = дельты; заголовки — белый на чёрном."""
+                     tier_title: str, y_top: float, absolute: bool = False) -> float:
+    """Матрица тира: заголовок сверху, строки = элементы (заливка по
+    ячейкам, чередование цветов), столбцы = статысты.  Заголовки —
+    белый на чёрном.  absolute=True — значения вместо дельт."""
     x = w.MARGIN_L
     width = w.CONTENT_W
     base_by_area = {area_key(p): p for p in base_pieces_list}
     fields = stat_fields(base_pieces_list[0] if base_pieces_list else {})
     edges = tier_edges(x, width, TM_LABEL_W, len(fields))
-    fills = [BEIGE, ORANGE]
+    n_cells = len(fields) + 1  # метка + статы
 
     w.draw_center_line(c, y_top, tier_title.upper(), "Carlito-Bold", TM_TITLE_SIZE)
     y = y_top + TM_TITLE_SIZE + TM_TITLE_GAP
 
-    # шапка (статысты) — белый на чёрном
+    # шапка (статысты) — белый на чёрном, заливка по ячейкам
     c.setFillColor(BLACK)
-    c.rect(x, w.y_from_top(y + TM_HEADER_H), width, -TM_HEADER_H, 0, 1)
+    for i in range(n_cells):
+        cell_x = edges[i]
+        cell_w = edges[i + 1] - cell_x
+        c.rect(cell_x, w.y_from_top(y + TM_HEADER_H), cell_w, -TM_HEADER_H, 0, 1)
     for i, (label, _) in enumerate(fields):
         _cell_center(c, edges[i + 1], y, edges[i + 2] - edges[i + 1],
                      TM_HEADER_H, label, "Carlito-Bold", TM_FONT, color=WHITE)
     y += TM_HEADER_H
 
-    # строки (элементы) — чередование цветов
+    # строки (элементы) — чередование цветов, заливка по ячейкам
     for idx, piece in enumerate(tier_pieces):
         areas = piece.get("protectedAreas") or [""]
         name = " / ".join(AREA_TITLES.get(a, a.upper()) for a in areas)
-        c.setFillColor(fills[idx % 2])
-        c.rect(x, w.y_from_top(y + TM_ROW_H), width, -TM_ROW_H, 0, 1)
+        row_fill = TIER_FILLS[idx % 2]
+        c.setFillColor(row_fill)
+        for i in range(n_cells):
+            cell_x = edges[i]
+            cell_w = edges[i + 1] - cell_x
+            c.rect(cell_x, w.y_from_top(y + TM_ROW_H), cell_w, -TM_ROW_H, 0, 1)
         _cell_center(c, x, y, TM_LABEL_W, TM_ROW_H, name,
                      "Carlito-Bold", TM_FONT)
         base = base_by_area.get(area_key(piece))
         for i, (_, key) in enumerate(fields):
-            if base is None or key not in piece or key not in base:
-                value = "—"
+            if absolute:
+                value = fmt_number(piece.get(key, 0))
                 color = BLACK
             else:
-                value = fmt_delta(piece[key] - base[key])
-                color = BLACK if value != "0" else w.Color(0.54, 0.54, 0.54)
+                if base is None or key not in piece or key not in base:
+                    value = "—"
+                    color = BLACK
+                else:
+                    value = fmt_delta(piece[key] - base[key])
+                    color = BLACK if value != "0" else w.Color(0.54, 0.54, 0.54)
             _cell_center(c, edges[i + 1], y, edges[i + 2] - edges[i + 1],
                          TM_ROW_H, value, "Carlito-Bold", TM_FONT, color=color)
         y += TM_ROW_H
@@ -319,20 +353,19 @@ def draw_tier_matrix(c, base_pieces_list: list[dict], tier_pieces: list[dict],
 
 def draw_tiers_block(c, set_data: dict, tier_titles: dict,
                      y_top: float) -> float:
-    """Все матрицы тиров; низ блока."""
+    """Матрицы всех тиров (включая базовый); низ блока."""
     base_list = base_pieces(set_data)
     y = y_top
     first = True
     for key, tier in (set_data.get("tiers") or {}).items():
-        if key == "standard":
-            continue
         pieces = list(tier.get("pieces", []))
         if not pieces:
             continue
         if not first:
             y += TM_BLOCK_GAP
         y = draw_tier_matrix(c, base_list, pieces,
-                             tier_titles.get(key, key), y)
+                             tier_titles.get(key, key), y,
+                             absolute=(key == "standard"))
         first = False
     return y
 
@@ -349,7 +382,7 @@ def render_page(spec: dict, comp: Companion, out_path: str, pages_dir: Path,
     c.setTitle(f"{title} — тестовая страница брони")
     c.setAuthor("fallout-2d20.ru")
 
-    # === страница 1: картинка + таблицы элементов + описание + моды ===
+    # === страница 1: картинка + панель элементов (2 столбца) + моды ===
     w.draw_paper(c)
     draw_header(c, title)
     y = RULE_TOP + RULE_H + 22
@@ -362,11 +395,10 @@ def render_page(spec: dict, comp: Companion, out_path: str, pages_dir: Path,
     w.draw_page_number(c, page_num)
     c.showPage()
 
-    # === страница 2: матрицы тиров ===
+    # === страница 2: матрицы всех тиров (продолжение разворота) ===
     w.draw_paper(c)
-    draw_header(c, title)
-    draw_tiers_block(c, set_data, spec.get("tier_titles") or {},
-                     RULE_TOP + RULE_H + 24)
+    # заголовок и черта НЕ рисуются — страница 2 — продолжение разворота
+    draw_tiers_block(c, set_data, spec.get("tier_titles") or {}, SPREAD_TOP)
     w.draw_page_number(c, page_num + 1)
     c.showPage()
     c.save()
