@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Кожаная броня</title>
+<meta name="generator" content="armor_book_page">
+<style>
+@font-face{
+  font-family:'Carlito';
+  src:url('../../assets/fonts/Carlito-Regular.ttf') format('truetype');
+  font-weight:400;
+  font-style:normal;
+}
+@font-face{
+  font-family:'Carlito';
+  src:url('../../assets/fonts/Carlito-Bold.ttf') format('truetype');
+  font-weight:700;
+  font-style:normal;
+}
+
+/* фон: та же бумажная текстура, что в PDF, растянута на страницу */
+.ab-body{
+  margin:0;
+  font-family:'Carlito',Calibri,Arial,sans-serif;
+  color:#000;
+  background-color:#f2f1ef;
+  background-image:url('../../assets/pdf/paper.jpg');
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+}
+.ab-page{max-width:1140px;margin:0 auto;padding:48px 15px 70px}
+.ab-container{max-width:720px;margin:0 auto}
+
+/* заголовок */
+.ab-header{padding:0 0 8px}
+.ab-back{margin:0 0 14px;font-size:.9rem}
+.ab-back a{color:#000;text-decoration:underline}
+.ab-title{
+  margin:0;text-align:center;text-transform:uppercase;
+  font-weight:700;font-size:2rem;line-height:1.2;letter-spacing:.02em;
+}
+.ab-rule{
+  width:340px;height:3px;margin:10px auto 0;background:#000;
+}
+.ab-subtitle{
+  margin:10px 0 0;text-align:center;font-size:1.05rem;
+}
+
+/* картинка */
+.ab-hero{margin:26px 0 30px}
+.ab-hero img{display:block;width:100%;max-width:720px;height:auto;margin:0 auto}
+
+/* описание */
+.ab-desc{
+  margin:0 auto 34px;max-width:720px;
+  font-size:.85rem;line-height:1.45;text-align:justify;
+}
+.ab-desc p{margin:0 0 .7em}
+.ab-desc p:last-child{margin-bottom:0}
+
+/* разделы */
+.ab-section{margin:0 0 38px}
+.ab-section-title{
+  margin:0 0 14px;text-align:center;text-transform:uppercase;
+  font-weight:700;font-size:1.05rem;letter-spacing:.04em;
+}
+.ab-section-title::after{
+  content:"";display:block;width:120px;height:2px;margin:7px auto 0;background:#000;
+}
+.ab-tier-title{
+  margin:0 0 10px;text-align:center;text-transform:uppercase;
+  font-weight:700;font-size:.95rem;letter-spacing:.03em;
+}
+
+/* карты базового комплекта (книжная таблица статов, вертикальная) */
+.ab-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.ab-card{min-width:0}
+.ab-card-name{
+  margin:0 0 8px;text-align:center;font-size:.78rem;line-height:1.2;color:#333;
+}
+.ab-stat-table{
+  width:100%;border-collapse:collapse;table-layout:fixed;background:#ffebcd;
+}
+.ab-stat-table th{
+  width:62%;padding:5px 7px;background:#000;color:#fff;
+  border:1px solid #fff;text-align:left;font-weight:700;
+  font-size:.72rem;line-height:1.25;text-transform:uppercase;letter-spacing:.01em;
+}
+.ab-stat-table td{
+  padding:5px 7px;background:#ffebcd;border:1px solid #000;
+  text-align:center;font-weight:700;font-size:.8rem;line-height:1.25;
+}
+
+/* таблицы дельт по уровням (книжная таблица, матрица) */
+.ab-delta-table{
+  width:100%;border-collapse:collapse;table-layout:fixed;background:#ffebcd;
+  font-size:.82rem;line-height:1.3;
+}
+.ab-delta-table th,.ab-delta-table td{
+  padding:6px 8px;border:1px solid #000;vertical-align:middle;
+}
+.ab-delta-table thead th{
+  background:#000;color:#fff;text-align:center;font-weight:700;
+  font-size:.72rem;text-transform:uppercase;letter-spacing:.02em;
+}
+.ab-delta-table tbody th{
+  background:#ffebcd;text-align:left;font-weight:700;
+  font-size:.72rem;text-transform:uppercase;
+}
+.ab-delta-table td{
+  background:#ffebcd;text-align:center;font-weight:700;
+}
+.ab-delta-table td.is-zero{color:#8a8a8a;font-weight:400}
+
+/* таблица доступных модификаций (книжная таблица модов оружия) */
+.ab-mods-heading{
+  margin:0 0 12px;text-align:center;text-transform:uppercase;
+  font-weight:700;font-size:1.25rem;letter-spacing:.04em;
+}
+.ab-mods-heading::after{
+  content:"";display:block;width:200px;height:2px;margin:8px auto 0;background:#000;
+}
+.ab-mods-table{
+  width:100%;border-collapse:collapse;table-layout:fixed;
+  font-size:.8rem;line-height:1.3;
+}
+.ab-mods-table th,.ab-mods-table td{
+  padding:7px 5px;border:1px solid #000;text-align:center;vertical-align:middle;
+}
+.ab-mods-table .ab-mod-label{
+  background:#000;color:#fff;font-weight:700;
+  font-size:.72rem;text-transform:uppercase;letter-spacing:.02em;
+}
+.ab-mods-table .ab-fill-beige{background:#ffebcd}
+.ab-mods-table .ab-fill-orange{background:#ffc674}
+
+.ab-footer{
+  margin-top:40px;text-align:center;font-size:.78rem;color:#555;
+}
+
+@media (max-width: 900px){
+  .ab-cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width: 560px){
+  .ab-cards{grid-template-columns:1fr}
+  .ab-title{font-size:1.6rem}
+}
+</style>
+</head>
+<body class="ab-body">
+<div class="ab-page">
+<div class="ab-container ab-header"><p class="ab-back"><a href="https://www.fallout-2d20.ru/bronya">Назад в категорию: Броня</a></p><h1 class="ab-title">Кожаная броня</h1><div class="ab-rule"></div><p class="ab-subtitle">Вес: 9, Цена: 43, Редкость: 1</p></div><div class="ab-container ab-hero"><img src="../../assets/armor/leather-armor.png" alt="Кожаная броня" loading="lazy" decoding="async"></div><div class="ab-container ab-desc"><p>Кожаная броня — практичная и доступная защита пустошей: лёгкая, не сковывает движений и проста в ремонте. Она не сравнится с металлической или энергетической броней по стойкости, но для выживания в повседневных походах и перестрелок вполне достаточно.</p><p>Комплект состоит из нагрудника, поножей и наруча. Кожу можно укрепить дублением, прошивкой или клёпками, а для защиты от холода и осколков использовать подкладку — каждое улучшение сказывается на характеристиках.</p></div><section class="ab-section"><div class="ab-container"><h2 class="ab-section-title">Базовый комплект</h2><div class="ab-cards"><article class="ab-card"><p class="ab-card-name">Кожаный Нагрудник</p><table class="ab-stat-table"><tbody><tr><th scope="row">НАГРУДНИК</th><td></td></tr><tr><th scope="row">ФИЗ. СУ</th><td>1</td></tr><tr><th scope="row">ЭНРГ. СУ</th><td>2</td></tr><tr><th scope="row">РАД. СУ</th><td>0</td></tr><tr><th scope="row">ВЕС</th><td>5</td></tr><tr><th scope="row">ЦЕНА</th><td>25</td></tr><tr><th scope="row">РЕДКОСТЬ</th><td>1</td></tr></tbody></table></article><article class="ab-card"><p class="ab-card-name">Кожаный Понож</p><table class="ab-stat-table"><tbody><tr><th scope="row">ПОНОЖ</th><td></td></tr><tr><th scope="row">ФИЗ. СУ</th><td>1</td></tr><tr><th scope="row">ЭНРГ. СУ</th><td>2</td></tr><tr><th scope="row">РАД. СУ</th><td>0</td></tr><tr><th scope="row">ВЕС</th><td>2</td></tr><tr><th scope="row">ЦЕНА</th><td>10</td></tr><tr><th scope="row">РЕДКОСТЬ</th><td>1</td></tr></tbody></table></article><article class="ab-card"><p class="ab-card-name">Кожаный Наруч</p><table class="ab-stat-table"><tbody><tr><th scope="row">НАРУЧ</th><td></td></tr><tr><th scope="row">ФИЗ. СУ</th><td>1</td></tr><tr><th scope="row">ЭНРГ. СУ</th><td>2</td></tr><tr><th scope="row">РАД. СУ</th><td>0</td></tr><tr><th scope="row">ВЕС</th><td>2</td></tr><tr><th scope="row">ЦЕНА</th><td>8</td></tr><tr><th scope="row">РЕДКОСТЬ</th><td>1</td></tr></tbody></table></article></div></div></section><section class="ab-section"><div class="ab-container"><h2 class="ab-section-title">Уровни</h2><div class="ab-tier"><h3 class="ab-tier-title">Укреплённая</h3><table class="ab-delta-table"><thead><tr><th scope="col">Характеристика</th><th scope="col">НАГРУДНИК</th><th scope="col">ПОНОЖ</th><th scope="col">НАРУЧ</th></tr></thead><tbody><tr><th scope="row">ФИЗ. СУ</th><td>+1</td><td>+1</td><td>+1</td></tr><tr><th scope="row">ЭНРГ. СУ</th><td>+1</td><td>+1</td><td>+1</td></tr><tr><th scope="row">РАД. СУ</th><td class="is-zero">0</td><td class="is-zero">0</td><td class="is-zero">0</td></tr><tr><th scope="row">ВЕС</th><td>+5</td><td>+3</td><td>+3</td></tr><tr><th scope="row">ЦЕНА</th><td>+25</td><td>+10</td><td>+10</td></tr><tr><th scope="row">РЕДКОСТЬ</th><td>+1</td><td>+1</td><td>+1</td></tr></tbody></table></div><div class="ab-tier"><h3 class="ab-tier-title">Тяжёлая</h3><table class="ab-delta-table"><thead><tr><th scope="col">Характеристика</th><th scope="col">НАГРУДНИК</th><th scope="col">ПОНОЖ</th><th scope="col">НАРУЧ</th></tr></thead><tbody><tr><th scope="row">ФИЗ. СУ</th><td>+2</td><td>+2</td><td>+2</td></tr><tr><th scope="row">ЭНРГ. СУ</th><td>+2</td><td>+2</td><td>+2</td></tr><tr><th scope="row">РАД. СУ</th><td class="is-zero">0</td><td class="is-zero">0</td><td class="is-zero">0</td></tr><tr><th scope="row">ВЕС</th><td>+10</td><td>+5</td><td>+5</td></tr><tr><th scope="row">ЦЕНА</th><td>+50</td><td>+20</td><td>+20</td></tr><tr><th scope="row">РЕДКОСТЬ</th><td>+2</td><td>+2</td><td>+2</td></tr></tbody></table></div></div></section><section class="ab-section"><h2 class="ab-mods-heading">Поддерживаемые модификации</h2><div class="ab-container"><table class="ab-mods-table"><colgroup><col style="width:22%"><col><col><col><col><col><col></colgroup><tr><th class="ab-mod-label" rowspan="1">НАГРУДНИК</th><td class="ab-fill-beige">Мягкая</td><td class="ab-fill-beige">Асбестовая подкладка</td><td class="ab-fill-beige">Плотная</td><td class="ab-fill-beige">Сеть биокомпонентов</td><td class="ab-fill-beige">Пневматическая</td><td class="ab-fill-beige"></td></tr><tr><th class="ab-mod-label" rowspan="1">ПОНОЖ</th><td class="ab-fill-orange">Мягкая подкладка</td><td class="ab-fill-orange">Звукоизолированная</td><td class="ab-fill-orange"></td><td class="ab-fill-orange"></td><td class="ab-fill-orange"></td><td class="ab-fill-orange"></td></tr><tr><th class="ab-mod-label" rowspan="1">НАРУЧ</th><td class="ab-fill-beige">Рукопашная</td><td class="ab-fill-beige">Парирующая</td><td class="ab-fill-beige">Сбалансированная</td><td class="ab-fill-beige">Аэродинамическая</td><td class="ab-fill-beige">Облегчённая</td><td class="ab-fill-beige"></td></tr><tr><th class="ab-mod-label" rowspan="6">УНИКАЛЬНЫЙ</th><td class="ab-fill-orange">Сварная</td><td class="ab-fill-orange">Закалённая</td><td class="ab-fill-orange">Укреплённая</td><td class="ab-fill-orange">Усиленная</td><td class="ab-fill-orange">Вываренная кожа</td><td class="ab-fill-orange">Расшитая кожа</td></tr><tr><td class="ab-fill-orange">Дублёная кожа</td><td class="ab-fill-orange">Затенённая кожа</td><td class="ab-fill-orange">Клёпаная кожа</td><td class="ab-fill-orange">Крашенный металл</td><td class="ab-fill-orange">Эмалированный металл</td><td class="ab-fill-orange">Затенённый металл</td></tr><tr><td class="ab-fill-orange">Металлический сплав</td><td class="ab-fill-orange">Полированный металл</td><td class="ab-fill-orange">Усиленная</td><td class="ab-fill-orange">Затенённая</td><td class="ab-fill-orange">Стекловолоконная</td><td class="ab-fill-orange">Полимерная</td></tr><tr><td class="ab-fill-orange">Ламинированная</td><td class="ab-fill-orange">Прорезиненная</td><td class="ab-fill-orange">Микроуглеродистая</td><td class="ab-fill-orange">Нановолоконная</td><td class="ab-fill-orange">Баллистическое плетение</td><td class="ab-fill-orange">Баллистическое плетение Mk II</td></tr><tr><td class="ab-fill-orange">Баллистическое плетение Mk III</td><td class="ab-fill-orange">Баллистическое плетение Mk IV</td><td class="ab-fill-orange">Баллистическое плетение Mk V</td><td class="ab-fill-orange">Утеплённая подкладка</td><td class="ab-fill-orange">Обработанная подкладка</td><td class="ab-fill-orange">Прочная подкладка</td></tr><tr><td class="ab-fill-orange">Защитная подкладка</td><td class="ab-fill-orange">Экранированная подкладка</td><td class="ab-fill-orange"></td><td class="ab-fill-orange"></td><td class="ab-fill-orange"></td><td class="ab-fill-orange"></td></tr></table></div></section><div class="ab-container ab-footer">Страница собрана из данных Fallout 2d20 Companion</div>
+</div>
+</body>
+</html>
