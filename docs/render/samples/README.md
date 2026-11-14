@@ -14,6 +14,7 @@
 | `plasma-gun.pdf` | «Плазменный пистолет» — энергооружие со своей категорией «КОНДЕНСАТОР» |
 | `revolver-44.pdf` | «Револьвер калибра .44» без картинки (карточка из `data/weapons/cards/`) |
 | `combat-shotgun.pdf`, `tesla-rifle.pdf`, `fat-man.pdf` | те же страницы по отдельности |
+| `armor-leather-book.pdf` | тестовая страница «Кожанная броня» в стиле книги оружия: страница 1 — заголовок, картинка, таблицы характеристик по элементам и уровням; страница 2 — таблица модификаций |
 
 `plasma-gun.pdf` собран из Companion JSON (страница 21), остальные карточки —
 из `data/weapons/cards/`. Во всех образцах картинка оружия — заглушка `assets/pdf/weapons/combat-rifle.png`
@@ -25,4 +26,10 @@
 ```bash
 python3 tools/weapon2pdf.py data/weapons/cards/10mm-pistol.json \
     --out docs/render/samples/10mm-pistol.pdf
+```
+
+Броню:
+
+```bash
+python3 tools/armor_book_pdf.py --out docs/render/samples/armor-leather-book.pdf --only leather-armor-book
 ```
