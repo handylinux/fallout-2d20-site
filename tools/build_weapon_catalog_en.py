@@ -24,6 +24,7 @@ import weapon2pdf as w
 import weapon_heavy_preview as heavy
 import weapon_mod_policy as policy
 import weapon_mods_table_unicode as tables
+import weapon_book_toc as toc_render
 from weapons2cards import index_by_id, load as load_json, slugify
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -92,20 +93,6 @@ ORANGE_BULLET = (0.933, 0.525, 0.157)
 COVER_GOLD = (245 / 255, 196 / 255, 35 / 255)
 COVER_SHADOW = (26 / 255, 38 / 255, 52 / 255)
 COVER_CHARCOAL = (28 / 255, 28 / 255, 28 / 255)
-
-TOC_TITLE = 'TABLE OF CONTENTS'
-TOC_GUTTER = 22.0
-TOC_L1_SIZE = 10.5
-TOC_L2_SIZE = 9.2
-TOC_L1_LEADING = 15.5
-TOC_L2_LEADING = 11.8
-TOC_L1_GAP = 7.0
-TOC_INDENT = 11.0
-TOC_TOP = 104.0
-TOC_BOTTOM = 772.0
-TOC_NUM_RIGHT_PAD = 3.0
-TOC_LEAD_STEP = 3.2
-TOC_LEAD_COLOR = (0.36, 0.36, 0.36)
 
 
 class EnglishCatalogData:
@@ -621,97 +608,6 @@ def make_text_divider(title: str, page_num: int, out_path: Path):
     c.save()
 
 
-def make_blank_page(page_num: int, out_path: Path):
-    """Render a plain paper-background page used to pad the book to a multiple of 4."""
-    c = canvas.Canvas(str(out_path), pagesize=(w.PAGE_W, w.PAGE_H))
-    w.draw_paper(c)
-    w.draw_page_number(c, page_num)
-    c.showPage()
-    c.save()
-
-
-def _toc_entry_font(level: int, title: str) -> str:
-    if level == 1 or title.endswith('Modifications'):
-        return 'Carlito-Bold'
-    return 'Carlito'
-
-
-def _toc_entry_size(level: int) -> float:
-    return TOC_L1_SIZE if level == 1 else TOC_L2_SIZE
-
-
-def _toc_entry_leading(level: int) -> float:
-    return TOC_L1_LEADING if level == 1 else TOC_L2_LEADING
-
-
-def render_toc_pages(entries: list[list], out_path: Path) -> int:
-    """Render the printed table of contents to out_path.
-
-    entries: [[level, title, page], ...] with final page numbers. Two dotted
-    columns per page, section headers bold, weapons listed under their section.
-    Returns the number of pages rendered.
-    """
-    w.register_fonts()
-    c = canvas.Canvas(str(out_path), pagesize=(w.PAGE_W, w.PAGE_H))
-    col_w = (w.CONTENT_R - w.MARGIN_L - TOC_GUTTER) / 2.0
-    col_x = (w.MARGIN_L, w.MARGIN_L + TOC_GUTTER + col_w)
-    pages = 0
-
-    def start_page():
-        nonlocal pages
-        if pages:
-            c.showPage()
-        pages += 1
-        w.draw_paper(c)
-        w.draw_center_line(c, w.TITLE_TOP, TOC_TITLE, 'Carlito-Bold', w.TITLE_SIZE)
-        c.setFillColor(w.BLACK)
-        c.rect(
-            w.PAGE_W_WORK_CENTER - w.RULE_W / 2.0,
-            w.y_from_top(w.RULE_TOP + w.RULE_H),
-            w.RULE_W, -w.RULE_H,
-            stroke=0, fill=1,
-        )
-
-    start_page()
-    col = 0
-    y_top = TOC_TOP
-    for level, title, page in entries:
-        leading = _toc_entry_leading(level)
-        gap = TOC_L1_GAP if level == 1 else 0.0
-        if y_top + gap + leading > TOC_BOTTOM:
-            col += 1
-            if col > 1:
-                start_page()
-                col = 0
-            y_top = TOC_TOP
-            gap = 0.0
-        y_top += gap
-        font = _toc_entry_font(level, title)
-        size = _toc_entry_size(level)
-        while level != 1 and w.sw(title, font, size) > col_w - TOC_INDENT - 46.0:
-            size -= 0.5
-        text_x = col_x[col] + (0.0 if level == 1 else TOC_INDENT)
-        num_text = str(page)
-        num_x = col_x[col] + col_w - TOC_NUM_RIGHT_PAD - w.sw(num_text, font, size)
-        baseline_top = y_top + w.ASCENT * size
-        c.setFillColor(w.BLACK)
-        c.setFont(font, size)
-        c.drawString(text_x, w.y_from_top(baseline_top), title)
-        c.drawString(num_x, w.y_from_top(baseline_top), num_text)
-        leader_start = text_x + w.sw(title, font, size) + 4.0
-        leader_end = num_x - 4.0
-        if leader_end > leader_start:
-            c.setFillColorRGB(*TOC_LEAD_COLOR)
-            c.setFont('Carlito', size)
-            x = leader_start
-            while x < leader_end:
-                c.drawString(x, w.y_from_top(baseline_top), '.')
-                x += TOC_LEAD_STEP
-        y_top += leading
-    c.save()
-    return pages
-
-
 def render_en_card_page(
     data: EnglishCatalogData,
     wid: str,
@@ -973,7 +869,7 @@ def build(source: Path, output: Path, report: Path | None = None,
         for i in range(padding):
             blank_pno = len(result) + 1 + i
             blank_pdf = tmp / f'pad-blank-{i}.pdf'
-            make_blank_page(blank_pno, blank_pdf)
+            toc_render.make_blank_page(blank_pno, blank_pdf)
             with pymupdf.open(blank_pdf) as bdoc:
                 result.insert_pdf(bdoc)
         result.insert_pdf(original, from_page=105, to_page=105)
@@ -1035,7 +931,7 @@ def build_with_toc(source: Path, output: Path, report: Path | None = None) -> di
         toc_pdf = tmp / 'toc.pdf'
         offset = 0
         for _ in range(6):
-            render_toc_pages(
+            toc_render.render_toc_pages(
                 [[lvl, title, page + offset] for lvl, title, page in entries
                  if title != 'Cover'],
                 toc_pdf,

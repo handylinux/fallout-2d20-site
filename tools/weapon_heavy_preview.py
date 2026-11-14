@@ -218,7 +218,7 @@ def render_heavy(comp, wid, page_num, prefixes, out, extra_description='', card_
 
 
 
-def build(source, output, weapons=WEAPONS, report=None):
+def build(source, output, weapons=WEAPONS, report=None, toc=None, toc_pdf=None):
     source, output = Path(source), Path(output)
     if source.resolve() == output.resolve():
         raise ValueError('Выходной файл не должен совпадать с исходным PDF')
@@ -237,7 +237,7 @@ def build(source, output, weapons=WEAPONS, report=None):
     with tempfile.TemporaryDirectory() as tmp:
         base = Path(tmp) / 'small-guns.pdf'
         # The small-guns reference contains only SMALL_GUNS modifications.
-        small.build(source, base)
+        small.build(source, base, toc_pdf=toc_pdf, toc=toc)
         diagnostics.append('weapon_gatling_plasma: применены пять модов сайта; 17 конфликтующих слотов Companion не использованы.')
         with pymupdf.open(base) as base_pdf, pymupdf.open(source) as original, pymupdf.open() as result:
             if original.page_count < 57:
@@ -248,6 +248,8 @@ def build(source, output, weapons=WEAPONS, report=None):
             result.insert_pdf(original, from_page=56, to_page=56)
             divider = len(result)
             small.renumber_divider(result[-1], divider, source_number=57)
+            if toc is not None:
+                toc.append([1, 'ТЯЖЁЛОЕ ОРУЖИЕ', divider])
             for index, wid in enumerate(weapons):
                 path = Path(tmp) / f'heavy-{index}.pdf'
                 if wid in SOURCE_PAGES:
@@ -263,6 +265,8 @@ def build(source, output, weapons=WEAPONS, report=None):
                     diagnostics.append(f"{wid}: компактная таблица, шрифт {info['font_size']} pt")
                 with pymupdf.open(path) as doc:
                     result.insert_pdf(doc)
+                if toc is not None:
+                    toc.append([2, comp.weapon_name(wid), len(result)])
             output.parent.mkdir(parents=True, exist_ok=True)
             result.save(str(output), garbage=4, deflate=True)
             total = len(result)

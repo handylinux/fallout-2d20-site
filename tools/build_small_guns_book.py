@@ -109,7 +109,7 @@ def small_guns_reference_ids(comp, weapon_ids):
     return [wid for wid in weapon_ids if comp.weapons[wid].get('mainSkill') == 'SMALL_GUNS']
 
 
-def build(source, output, report=None):
+def build(source, output, report=None, toc_pdf=None, toc=None):
     source, output = Path(source), Path(output)
     if source.resolve() == output.resolve():
         raise ValueError('Выходной файл не должен совпадать с исходным PDF')
@@ -156,15 +156,36 @@ def build(source, output, report=None):
         if original.page_count < 13:
             raise ValueError('В исходном PDF нужно минимум 13 страниц')
         with tempfile.TemporaryDirectory() as tmp, pymupdf.open() as result:
-            result.insert_pdf(original, from_page=0, to_page=8)
+            result.insert_pdf(original, from_page=0, to_page=2)
+            if toc_pdf is not None:
+                with pymupdf.open(toc_pdf) as toc_doc:
+                    result.insert_pdf(toc_doc)
+            front_start = len(result) + 1
+            result.insert_pdf(original, from_page=3, to_page=8)
+            if toc_pdf is not None:
+                # The TOC shifts the copied front-matter pages; renumber the
+                # printed numbers to the new positions (original 4..9).
+                for source_number in range(4, 10):
+                    new_number = front_start + (source_number - 4)
+                    renumber_divider(result[new_number - 1], new_number,
+                                     source_number=source_number)
+            if toc is not None:
+                # Front-matter sections: original pages 4, 6 and 9.
+                toc.append([1, 'ЭФФЕКТЫ УРОНА', front_start])
+                toc.append([1, 'КАЧЕСТВА ОРУЖИЯ', front_start + 2])
+                toc.append([1, 'АРСЕНАЛ', front_start + 5])
             mod_file = Path(tmp) / 'mods.pdf'
-            tables.render(data, mod_file, page_start=10)
+            tables.render(data, mod_file, page_start=len(result) + 1)
             with pymupdf.open(mod_file) as mod_pdf:
                 mod_pages = mod_pdf.page_count
+                mod_start = len(result) + 1
                 result.insert_pdf(mod_pdf)
             result.insert_pdf(original, from_page=12, to_page=12)
             divider_number = len(result)
             renumber_divider(result[-1], divider_number)
+            if toc is not None:
+                toc.append([1, 'СТРЕЛКОВОЕ ОРУЖИЕ', divider_number])
+                toc.append([2, 'МОДИФИКАЦИИ СТРЕЛКОВОГО ОРУЖИЯ', mod_start])
             for i, wid in enumerate(weapon_ids):
                 card = build_card(comp, wid, page=len(result) + 1, image='')
                 page_file = Path(tmp) / f'weapon-{i}.pdf'
@@ -177,6 +198,8 @@ def build(source, output, report=None):
                     w.render_card(card, str(page_file))
                 with pymupdf.open(page_file) as weapon_page:
                     result.insert_pdf(weapon_page)
+                if toc is not None:
+                    toc.append([2, comp.weapon_name(wid), len(result)])
             output.parent.mkdir(parents=True, exist_ok=True)
             result.save(str(output), garbage=4, deflate=True)
             total = len(result)

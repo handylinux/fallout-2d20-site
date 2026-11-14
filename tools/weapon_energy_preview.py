@@ -102,7 +102,7 @@ def render_energy(comp, wid, source, source_page, page_num, out):
                 result.save(str(out), garbage=4, deflate=True)
 
 
-def build(source, output, report=None, full=False):
+def build(source, output, report=None, full=False, toc=None, toc_pdf=None):
     source, output = Path(source), Path(output)
     if source.resolve() == output.resolve():
         raise ValueError('Выходной файл не должен совпадать с оригиналом')
@@ -117,7 +117,8 @@ def build(source, output, report=None, full=False):
         weapons = SAMPLES
     with tempfile.TemporaryDirectory() as tmp:
         base = Path(tmp) / 'heavy.pdf'
-        heavy.build(source, base, weapons=[*heavy.SOURCE_PAGES, 'weapon_gatling_plasma'])
+        heavy.build(source, base, weapons=[*heavy.SOURCE_PAGES, 'weapon_gatling_plasma'],
+                    toc=toc, toc_pdf=toc_pdf)
         with pymupdf.open(source) as original, pymupdf.open(base) as result:
             if len(original) < max(page for _, page in weapons):
                 raise ValueError('В исходном PDF отсутствуют требуемые страницы')
@@ -126,6 +127,8 @@ def build(source, output, report=None, full=False):
                 result.insert_pdf(original, from_page=source_number-1, to_page=source_number-1)
                 small.renumber_divider(result[-1], len(result), source_number=source_number)
                 references.append(len(result))
+            if toc is not None:
+                toc.append([2, 'ДОПОЛНИТЕЛЬНЫЕ ЭНЕРГЕТИЧЕСКИЕ МОДИФИКАЦИИ', references[0]])
             # Continuation of the common reference, not a second weapon-page table.
             prefixes = conv.load(conv.PREFIXES)
             mod_data, problems = musket_reference(comp, prefixes)
@@ -144,6 +147,8 @@ def build(source, output, report=None, full=False):
             result.insert_pdf(original, from_page=79, to_page=79)
             divider = len(result)
             small.renumber_divider(result[-1], divider, source_number=80)
+            if toc is not None:
+                toc.append([1, 'ЭНЕРГЕТИЧЕСКОЕ ОРУЖИЕ', divider])
             pages = []
             for wid, source_page in weapons:
                 file = Path(tmp) / (wid+'.pdf')
@@ -151,6 +156,8 @@ def build(source, output, report=None, full=False):
                 with pymupdf.open(file) as weapon:
                     result.insert_pdf(weapon)
                 pages.append(len(result))
+                if toc is not None:
+                    toc.append([2, comp.weapon_name(wid), len(result)])
             output.parent.mkdir(parents=True, exist_ok=True)
             result.save(str(output), garbage=4, deflate=True)
             total = len(result)

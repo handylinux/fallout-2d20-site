@@ -129,25 +129,6 @@ class BuildWeaponCatalogEnTests(unittest.TestCase):
                     self.assertFalse(re.search(r'[а-яА-ЯёЁ]', text), f'Page {i} contains Cyrillic')
                     self.assertFalse(re.search(r'(?<!\w)DC(?!\w)', text), f'Page {i} has raw DC token')
 
-    def test_toc_renderer_layout(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            out = Path(tmp) / 'toc.pdf'
-            entries = [
-                [1, 'Small Guns', 13],
-                [2, '10mm Pistol', 14],
-                [2, 'Anti-Materiel Rifle', 15],
-                [2, 'Small Guns Modifications', 9],
-            ]
-            pages = cat.render_toc_pages(entries, out)
-            self.assertEqual(pages, 1)
-            with pymupdf.open(out) as doc:
-                text = doc[0].get_text()
-                self.assertIn('TABLE OF CONTENTS', text)
-                for _lvl, title, page in entries:
-                    self.assertIn(title, text)
-                self.assertIn('13', text)
-                self.assertIn('15', text)
-
 
 if __name__ == '__main__':
     unittest.main()
