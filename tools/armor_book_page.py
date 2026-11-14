@@ -5,11 +5,13 @@ armor_book_page — тестовая страница брони в стиле �
 
 Фон (бумажная текстура `assets/pdf/paper.jpg`) и гамма (бежевый #FFEBCD,
 оранжевый #FFC674, чёрные шапки, белый текст) взяты из PDF-справочника
-оружия (docs/weapon-pdf.md), шрифты — Carlito.  Расположение элементов —
-как на странице брони (armor2page): заголовок, картинка, карты базового
-комплекта, таблицы дельт по уровням.  Таблица доступных модов рисуется
-по примеру таблицы модов оружия: столбец метки + колонки модов, блоки по
-категориям с чередованием бежевого и оранжевого.
+оружия (docs/weapon-pdf.md), шрифты — Carlito.  Расположение элементов:
+заголовок, картинка слева и «Базовый комплект» в 2 столбца справа от
+изображения, описание ниже картинки и характеристик, таблицы дельт по
+уровням.  Таблица доступных модов рисуется по примеру таблицы модов
+оружия: столбец метки + колонки модов, блоки по категориям с чередованием
+бежевого и оранжевого; моды берутся только из категорий, допущенных для
+данного набора (`allowedModCategories` / `allowedUniqueModCategories`).
 
 Пример:
     python3 tools/armor_book_page.py \\
@@ -80,15 +82,15 @@ BOOK_CSS = r"""
 .ab-rule{
   width:340px;height:3px;margin:10px auto 0;background:#000;
 }
-.ab-subtitle{
-  margin:10px 0 0;text-align:center;font-size:1.05rem;
-}
 
-/* картинка */
-.ab-hero{margin:26px 0 30px}
-.ab-hero img{display:block;width:100%;max-width:720px;height:auto;margin:0 auto}
+/* картинка + характеристики: картинка слева, блок «Базовый комплект» —
+   2 столбца справа от изображения */
+.ab-hero-row{display:flex;gap:24px;align-items:flex-start;margin:26px 0 30px}
+.ab-hero-row .ab-hero{flex:0 0 40%;margin:0;min-width:0}
+.ab-hero-row .ab-hero img{display:block;width:100%;height:auto;margin:0 auto}
+.ab-hero-row .ab-base{flex:1;min-width:0}
 
-/* описание */
+/* описание (ниже картинки и характеристик) */
 .ab-desc{
   margin:0 auto 34px;max-width:720px;
   font-size:.85rem;line-height:1.45;text-align:justify;
@@ -111,7 +113,7 @@ BOOK_CSS = r"""
 }
 
 /* карты базового комплекта (книжная таблица статов, вертикальная) */
-.ab-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.ab-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 .ab-card{min-width:0}
 .ab-card-name{
   margin:0 0 8px;text-align:center;font-size:.78rem;line-height:1.2;color:#333;
@@ -163,7 +165,9 @@ BOOK_CSS = r"""
   font-size:.8rem;line-height:1.3;
 }
 .ab-mods-table th,.ab-mods-table td{
-  padding:7px 5px;border:1px solid #000;text-align:center;vertical-align:middle;
+  padding:6px 4px;border:1px solid #000;text-align:center;vertical-align:middle;
+  font-size:.76rem;line-height:1.25;
+  overflow-wrap:anywhere;word-break:break-word;
 }
 .ab-mods-table .ab-mod-label{
   background:#000;color:#fff;font-weight:700;
@@ -177,6 +181,8 @@ BOOK_CSS = r"""
 }
 
 @media (max-width: 900px){
+  .ab-hero-row{flex-direction:column}
+  .ab-hero-row .ab-hero{flex:none;width:100%}
   .ab-cards{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media (max-width: 560px){
@@ -215,17 +221,13 @@ def render_header(spec: dict, totals: dict[str, Any]) -> str:
             + esc(back["title"]) + "</a></p>"
         )
     title = spec.get("title") or ""
-    subtitle = "Вес: {w}, Цена: {c}, Редкость: {r}".format(
-        w=fmt_number(totals["weight"]),
-        c=fmt_number(totals["cost"]),
-        r=fmt_number(totals["rarity"]),
-    )
+    # общие Вес/Цена/Редкость набора не рисуются — они живут только в
+    # таблицах характеристик каждого элемента
     return (
         '<div class="ab-container ab-header">'
         + back_html
         + '<h1 class="ab-title">' + esc(title) + "</h1>"
         + '<div class="ab-rule"></div>'
-        + '<p class="ab-subtitle">' + esc(subtitle) + "</p>"
         "</div>"
     )
 
@@ -236,11 +238,34 @@ def render_hero(spec: dict) -> str:
         return ""
     alt = image.get("alt", spec.get("title", ""))
     return (
-        '<div class="ab-container ab-hero">'
+        '<div class="ab-hero">'
         '<img src="' + esc(image["src"]) + '" alt="' + esc(alt) + '"'
         ' loading="lazy" decoding="async">'
         "</div>"
     )
+
+
+def render_base_cell(comp: Companion, set_data: dict) -> str:
+    """Блок «Базовый комплект»: заголовок + карты статов в 2 столбца."""
+    pieces = base_pieces(set_data)
+    if not pieces:
+        return ""
+    cards = "".join(render_card(piece, comp) for piece in pieces)
+    return (
+        '<div class="ab-base">'
+        '<h2 class="ab-section-title">Базовый комплект</h2>'
+        '<div class="ab-cards">' + cards + "</div>"
+        "</div>"
+    )
+
+
+def render_hero_row(spec: dict, comp: Companion, set_data: dict) -> str:
+    """Разметка: картинка слева, «Базовый комплект» в 2 столбца справа."""
+    hero = render_hero(spec)
+    base = render_base_cell(comp, set_data)
+    if not hero and not base:
+        return ""
+    return '<div class="ab-hero-row">' + hero + base + "</div>"
 
 
 def render_description(spec: dict) -> str:
@@ -267,20 +292,6 @@ def render_card(piece: dict, comp: Companion) -> str:
         + rows
         + "</tbody></table>"
         "</article>"
-    )
-
-
-def render_base_section(spec: dict, comp: Companion, set_data: dict) -> str:
-    pieces = base_pieces(set_data)
-    if not pieces:
-        return ""
-    cards = "".join(render_card(piece, comp) for piece in pieces)
-    return (
-        '<section class="ab-section">'
-        '<div class="ab-container">'
-        '<h2 class="ab-section-title">Базовый комплект</h2>'
-        '<div class="ab-cards">' + cards + "</div>"
-        "</div></section>"
     )
 
 
@@ -342,24 +353,27 @@ def render_tiers_section(spec: dict, comp: Companion, set_data: dict) -> str:
     )
 
 
-def area_mods(comp: Companion, area: str, category: str = "standardMods") -> list[dict]:
+def area_mods(comp: Companion, area: str, allowed: list[str]) -> list[dict]:
     return [
         mod
         for mod in comp.mods
-        if mod.get("modCategory") == category and area in (mod.get("protectedAreas") or [])
+        if mod.get("modCategory") in allowed and area in (mod.get("protectedAreas") or [])
     ]
 
 
-def unique_mods(comp: Companion) -> list[dict]:
+def unique_mods(comp: Companion, allowed: list[str]) -> list[dict]:
     return [
         mod
         for mod in comp.unique_mods
-        if (mod.get("modCategory") or "").endswith("UniqueMods")
+        if mod.get("modCategory") in allowed
     ]
 
 
 def render_mods_table(comp: Companion, set_data: dict) -> str:
-    """Таблица доступных модов по примеру таблицы модов оружия."""
+    """Таблица доступных модов по примеру таблицы модов оружия.
+    Моды берутся только из категорий, допущенных для данного набора."""
+    allowed_std = set_data.get("allowedModCategories") or ["standardMods"]
+    allowed_uniq = set_data.get("allowedUniqueModCategories") or []
     # категории: части брони в порядке базового комплекта, затем уникальные
     areas: list[str] = []
     for piece in base_pieces(set_data):
@@ -369,10 +383,10 @@ def render_mods_table(comp: Companion, set_data: dict) -> str:
 
     blocks: list[tuple[str, list[dict]]] = []
     for area in areas:
-        mods = area_mods(comp, area)
+        mods = area_mods(comp, area, allowed_std)
         if mods:
             blocks.append((AREA_TITLES.get(area, area.upper()), mods))
-    uniq = unique_mods(comp)
+    uniq = unique_mods(comp, allowed_uniq)
     if uniq:
         blocks.append(("УНИКАЛЬНЫЙ", uniq))
 
@@ -444,9 +458,8 @@ def render_page(spec: dict, comp: Companion) -> str:
         '<body class="ab-body">\n'
         '<div class="ab-page">\n'
         + render_header(spec, totals)
-        + render_hero(spec)
+        + render_hero_row(spec, comp, set_data)
         + render_description(spec)
-        + render_base_section(spec, comp, set_data)
         + render_tiers_section(spec, comp, set_data)
         + render_mods_section(spec, comp, set_data)
         + '<div class="ab-container ab-footer">Страница собрана из данных '
