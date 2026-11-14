@@ -39,11 +39,18 @@ class LeatherBookPageTest(unittest.TestCase):
         self.assertIn("Кожаный Наруч", self.html)
 
     def test_tier_delta_tables(self) -> None:
+        self.assertIn("Стандартная", self.html)
         self.assertIn("Укреплённая", self.html)
         self.assertIn("Тяжёлая", self.html)
-        self.assertEqual(self.html.count('<table class="ab-delta-table">'), 2)
+        # три матрицы: стандартная (абсолютные) + укреплённая/тяжёлая (дельты)
+        self.assertEqual(self.html.count('<table class="ab-delta-table">'), 3)
+        # нестандартные тиры в 2 столбца
+        self.assertIn("ab-tier-row", self.html)
         # дельта для укреплённого нагрудника: +1 ФИЗ, +1 ЭНРГ
         self.assertIn("+1", self.html)
+        # стандартный тур — абсолютные значения (не «+»)
+        std = self.html.split("Стандартная", 1)[1].split("</table>", 1)[0]
+        self.assertIn("25", std)
 
     def test_mods_table_like_weapon_book(self) -> None:
         # столбец метки + колонки модов, чередование бежевого/оранжевого

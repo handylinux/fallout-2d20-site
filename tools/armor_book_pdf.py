@@ -88,9 +88,11 @@ TM_TITLE_SIZE = 13.0
 TM_TITLE_GAP = 13.0
 TM_HEADER_H = 18.0
 TM_ROW_H = 14.0
-TM_LABEL_W = 70.0
+TM_LABEL_W = 64.0          # узкий столбец с названиями элементов
+TM_COL_W = 26.0           # единые узкие столбцы статов (по значению)
 TM_FONT = 9.0
 TM_BLOCK_GAP = 18.0
+TM_TIER_GAP = 12.0        # отступ между стандартным и блоком «в 2 столбца»
 
 # верхний край контента на второй странице (без заголовка и черты)
 SPREAD_TOP = 75.0
@@ -390,15 +392,17 @@ def build_tier_matrix_html(base_pieces_list: list[dict], tier_pieces: list[dict]
                            tier_title: str, absolute: bool = False) -> str:
     """Матрица тира: заголовок сверху, строки = элементы (чередование
     цветов), столбцы = статысты.  Заголовки (названия статов: ФИЗ. СУ,
-    ВЕС, РЕДКОСТЬ) — белый текст на чёрном.  Ширина столбцов считается по
-    содержимому (через ширину текста): ячейка sized по контенту, таблица
-    не выходит за область контента."""
+    ВЕС, РЕДКОСТЬ) — белый текст на чёрном.  Единые узкие столбцы: ширина
+    ячейки по значению (числу), не по заголовку — узко везде, таблица не
+    выходит за область контента."""
     base_by_area = {area_key(p): p for p in base_pieces_list}
     fields = stat_fields(base_pieces_list[0] if base_pieces_list else {})
     fills = [BEIGE, ORANGE]
-    pad = 8.0  # отступы + рамка на ячейку
+    label_w = TM_LABEL_W
+    col_w = TM_COL_W
+    n = len(fields)
+    table_w = label_w + col_w * n
 
-    # содержимое значений: нужено для расчёта ширины столбцов
     def value_of(piece: dict, key: str) -> str:
         base = base_by_area.get(area_key(piece))
         if absolute:
@@ -407,27 +411,12 @@ def build_tier_matrix_html(base_pieces_list: list[dict], tier_pieces: list[dict]
             return "—"
         return fmt_delta(piece[key] - base[key])
 
-    # ширина столбцов по содержимому
-    names = []
-    for piece in tier_pieces:
-        areas = piece.get("protectedAreas") or [""]
-        names.append(" / ".join(AREA_TITLES.get(a, a.upper()) for a in areas))
-    label_w = (max((w.sw(n, "Carlito-Bold", TM_FONT) for n in names), default=0.0)
-               + pad)
-    col_ws: list[float] = []
-    for label, key in fields:
-        wi = w.sw(label, "Carlito-Bold", TM_FONT)
-        for piece in tier_pieces:
-            wi = max(wi, w.sw(value_of(piece, key), "Carlito-Bold", TM_FONT))
-        col_ws.append(wi + pad)
-    table_w = label_w + sum(col_ws)
-
     head_cells = "".join(
-        f'<td style="width:{col_ws[i]:.1f}pt;background:#000;color:#fff;'
+        f'<td style="width:{col_w}pt;background:#000;color:#fff;'
         f'font-family:CarlitoBold;font-size:{TM_FONT}pt;text-align:center;'
-        f'height:{TM_HEADER_H}pt;line-height:{TM_HEADER_H}pt;'
+        f'height:{TM_HEADER_H}pt;line-height:{TM_FONT}pt;'
         f'border:0.6pt solid #000">{esc(label)}</td>'
-        for i, (label, _) in enumerate(fields)
+        for label, _ in fields
     )
     rows = []
     for idx, piece in enumerate(tier_pieces):
@@ -435,17 +424,17 @@ def build_tier_matrix_html(base_pieces_list: list[dict], tier_pieces: list[dict]
         name = " / ".join(AREA_TITLES.get(a, a.upper()) for a in areas)
         fill = fills[idx % 2]
         cells = []
-        for i, (_, key) in enumerate(fields):
+        for _, key in fields:
             value = esc(value_of(piece, key))
             cells.append(
-                f'<td style="width:{col_ws[i]:.1f}pt;background:{fill};'
+                f'<td style="width:{col_w}pt;background:{fill};'
                 f'font-family:CarlitoBold;font-size:{TM_FONT}pt;text-align:center;'
                 f'height:{TM_ROW_H}pt;line-height:{TM_ROW_H}pt;'
                 f'border:0.6pt solid #000">{value}</td>'
             )
         rows.append(
             f'<tr>'
-            f'<td style="width:{label_w:.1f}pt;background:{fill};'
+            f'<td style="width:{label_w}pt;background:{fill};'
             f'font-family:CarlitoBold;font-size:{TM_FONT}pt;text-align:center;'
             f'height:{TM_ROW_H}pt;line-height:{TM_ROW_H}pt;'
             f'border:0.6pt solid #000">{esc(name)}</td>'
@@ -454,39 +443,67 @@ def build_tier_matrix_html(base_pieces_list: list[dict], tier_pieces: list[dict]
         )
 
     return (
-        f'<div style="margin-left:{w.MARGIN_L}pt;width:{w.CONTENT_W}pt;'
-        f'text-align:center;font-size:{TM_TITLE_SIZE}pt;'
+        f'<div style="text-align:center;font-size:{TM_TITLE_SIZE}pt;'
         f'font-family:CarlitoBold;line-height:{TM_TITLE_SIZE}pt">'
         f'{esc(tier_title.upper())}</div>'
-        f'<div style="margin-left:{w.MARGIN_L}pt;width:{w.CONTENT_W}pt;'
-        f'margin-top:{TM_TITLE_GAP}pt">'
         f'<table style="border-collapse:collapse;border:0.6pt solid #000;'
-        f'width:{table_w:.1f}pt">'
-        f'<tr><td style="width:{label_w:.1f}pt;background:#000;color:#fff;'
+        f'width:{table_w}pt;margin-top:{TM_TITLE_GAP}pt;margin-left:auto;'
+        f'margin-right:auto">'
+        f'<tr><td style="width:{label_w}pt;background:#000;color:#fff;'
         f'font-family:CarlitoBold;font-size:{TM_FONT}pt;text-align:center;'
-        f'height:{TM_HEADER_H}pt;line-height:{TM_HEADER_H}pt;'
+        f'height:{TM_HEADER_H}pt;line-height:{TM_FONT}pt;'
         f'border:0.6pt solid #000"></td>{head_cells}</tr>'
         + "".join(rows) +
         f'</table>'
-        f'</div>'
     )
 
 
 def build_tiers_html(set_data: dict, tier_titles: dict) -> str:
-    """Матрицы всех тиров (включая базовый)."""
+    """Матрицы всех тиров: стандартный — полноширинный, нестандартные
+    (укреплённая, тяжёлая) — в ДВУХ столбцах рядом."""
     base_list = base_pieces(set_data)
-    out = []
-    first = True
+    standard: tuple[str, list[dict]] | None = None
+    others: list[tuple[str, list[dict]]] = []
     for key, tier in (set_data.get("tiers") or {}).items():
         pieces = list(tier.get("pieces", []))
         if not pieces:
             continue
-        if not first:
-            out.append(f'<div style="height:{TM_BLOCK_GAP}pt"></div>')
+        if key == "standard":
+            standard = (key, pieces)
+        else:
+            others.append((key, pieces))
+
+    out = []
+    if standard:
         out.append(build_tier_matrix_html(
-            base_list, pieces, tier_titles.get(key, key),
-            absolute=(key == "standard")))
-        first = False
+            base_list, standard[1], tier_titles.get(standard[0], standard[0]),
+            absolute=True))
+    if others:
+        out.append(f'<div style="height:{TM_TIER_GAP}pt"></div>')
+        pair = others[:2]          # укреплённая + тяжёлая — в 2 столбца
+        half = (w.CONTENT_W - TM_BLOCK_GAP) / 2.0
+
+        def tier_cell(key: str, pieces: list[dict]) -> str:
+            return (
+                f'<td style="width:{half}pt;border:none;vertical-align:top">'
+                + build_tier_matrix_html(
+                    base_list, pieces, tier_titles.get(key, key),
+                    absolute=False)
+                + "</td>"
+            )
+
+        out.append(
+            '<table style="border:none"><tr>'
+            + (tier_cell(pair[0][0], pair[0][1]) if pair else "")
+            + f'<td style="width:{TM_BLOCK_GAP}pt;border:none"></td>'
+            + (tier_cell(pair[1][0], pair[1][1]) if len(pair) > 1 else "")
+            + "</tr></table>"
+        )
+        # если тиров больше двух — остальные подбрасываем под парой
+        for key, pieces in others[2:]:
+            out.append(f'<div style="height:{TM_TIER_GAP}pt"></div>')
+            out.append(build_tier_matrix_html(
+                base_list, pieces, tier_titles.get(key, key), absolute=False))
     return "".join(out)
 
 
@@ -524,7 +541,8 @@ def build_page_2_html(spec: dict, comp: Companion, set_data: dict) -> str:
     return (
         '<table class="sheet">'
         f'<tr><td style="vertical-align:top;height:827pt;'
-        f'padding:0"><div style="margin-top:{SPREAD_TOP}pt">{tiers}</div></td></tr>'
+        f'padding:0"><div style="margin-left:{w.MARGIN_L}pt;'
+        f'width:{w.CONTENT_W}pt;margin-top:{SPREAD_TOP}pt">{tiers}</div></td></tr>'
         f'<tr><td style="vertical-align:bottom;height:14pt;'
         f'padding:0">{num}</td></tr>'
         '</table>'

@@ -135,12 +135,14 @@ BOOK_CSS = r"""
 }
 
 /* таблицы дельт по уровням (книжная таблица, матрица).
-   Столбцы sized по содержимому — пустых ячеек нет, ширина совпадает с
-   контентом, таблица не выходит за область контента. */
+   Единые узкие столбцы: ширина по значению, а не по заголовку —
+   таблица не выходит за область контента. */
 .ab-delta-table{
-  width:auto;border-collapse:collapse;table-layout:auto;background:#ffebcd;
+  width:auto;border-collapse:collapse;table-layout:fixed;background:#ffebcd;
   font-size:.82rem;line-height:1.3;margin:0 auto;
 }
+.ab-tier-row{display:flex;gap:16px;align-items:flex-start}
+.ab-tier-row .ab-tier{flex:1;min-width:0}
 .ab-delta-table th,.ab-delta-table td{
   padding:6px 8px;border:1px solid #000;vertical-align:middle;
 }
@@ -298,7 +300,8 @@ def render_card(piece: dict, comp: Companion) -> str:
     )
 
 
-def render_delta_table(base_pieces_list: list[dict], pieces: list[dict]) -> str:
+def render_delta_table(base_pieces_list: list[dict], pieces: list[dict],
+                       absolute: bool = False) -> str:
     base_by_area = {area_key(piece): piece for piece in base_pieces_list}
     fields = stat_fields(base_pieces_list[0] if base_pieces_list else {})
 
@@ -311,18 +314,27 @@ def render_delta_table(base_pieces_list: list[dict], pieces: list[dict]) -> str:
     for label, key in fields:
         cells = []
         for piece in pieces:
-            base = base_by_area.get(area_key(piece))
-            if base is None or key not in piece or key not in base:
-                value, zero = "—", True
+            if absolute:
+                value = fmt_number(piece.get(key, 0))
+                zero = value == "0"
             else:
-                delta = piece[key] - base[key]
-                value, zero = fmt_delta(delta), delta == 0
+                base = base_by_area.get(area_key(piece))
+                if base is None or key not in piece or key not in base:
+                    value, zero = "—", True
+                else:
+                    delta = piece[key] - base[key]
+                    value, zero = fmt_delta(delta), delta == 0
             css = ' class="is-zero"' if zero else ""
             cells.append("<td" + css + ">" + esc(value) + "</td>")
         rows.append('<tr><th scope="row">' + esc(label) + "</th>" + "".join(cells) + "</tr>")
+    ncols = max(1, len(pieces))
+    colgroup = '<colgroup><col style="width:90px">' + "".join(
+        '<col style="width:56px">' for _ in range(ncols)
+    ) + "</colgroup>"
     return (
         '<table class="ab-delta-table">'
-        "<thead><tr><th scope=\"col\">Характеристика</th>" + head + "</tr></thead>"
+        + colgroup
+        + "<thead><tr><th scope=\"col\">Характеристика</th>" + head + "</tr></thead>"
         "<tbody>" + "".join(rows) + "</tbody>"
         "</table>"
     )
@@ -331,28 +343,44 @@ def render_delta_table(base_pieces_list: list[dict], pieces: list[dict]) -> str:
 def render_tiers_section(spec: dict, comp: Companion, set_data: dict) -> str:
     tier_titles = spec.get("tier_titles") or {}
     base_list = base_pieces(set_data)
-    blocks = []
+    standard: tuple[str, list[dict]] | None = None
+    others: list[tuple[str, list[dict]]] = []
     for key, tier in (set_data.get("tiers") or {}).items():
-        if key == "standard":
-            continue
         pieces = list(tier.get("pieces", []))
         if not pieces:
             continue
-        title = tier_titles.get(key, key)
-        blocks.append(
+        if key == "standard":
+            standard = (key, pieces)
+        else:
+            others.append((key, pieces))
+
+    def tier_block(key: str, pieces: list[dict], absolute: bool = False) -> str:
+        return (
             '<div class="ab-tier">'
-            '<h3 class="ab-tier-title">' + esc(title) + "</h3>"
-            + render_delta_table(base_list, pieces)
+            '<h3 class="ab-tier-title">' + esc(tier_titles.get(key, key)) + "</h3>"
+            + render_delta_table(base_list, pieces, absolute=absolute)
             + "</div>"
         )
-    if not blocks:
+
+    out = []
+    # стандартный тур — полноширинный (абсолютные значения)
+    if standard:
+        out.append(tier_block(standard[0], standard[1], absolute=True))
+    # нестандартные тиры — в 2 столбца
+    if others:
+        pair = others[:2]
+        cells = [tier_block(key, pieces) for key, pieces in pair]
+        out.append('<div class="ab-tier-row">' + "".join(cells) + "</div>")
+        for key, pieces in others[2:]:
+            out.append(tier_block(key, pieces))
+    if not out:
         return ""
     # уровни уходят на второй лист — отдельный разрыв страницы
     return (
         '<section class="ab-section ab-tiers-page">'
         '<div class="ab-container">'
         '<h2 class="ab-section-title">Уровни</h2>'
-        + "".join(blocks)
+        + "".join(out)
         + "</div></section>"
     )
 
