@@ -144,7 +144,7 @@ BOOK_CSS = r"""
 .ab-tier-row{display:flex;gap:16px;align-items:flex-start}
 .ab-tier-row .ab-tier{flex:1;min-width:0}
 .ab-delta-table th,.ab-delta-table td{
-  padding:6px 8px;border:1px solid #000;vertical-align:middle;
+  padding:5px 4px;border:1px solid #000;vertical-align:middle;
 }
 .ab-delta-table thead th{
   background:#000;color:#fff;text-align:center;font-weight:700;
@@ -328,8 +328,8 @@ def render_delta_table(base_pieces_list: list[dict], pieces: list[dict],
             cells.append("<td" + css + ">" + esc(value) + "</td>")
         rows.append('<tr><th scope="row">' + esc(label) + "</th>" + "".join(cells) + "</tr>")
     ncols = max(1, len(pieces))
-    colgroup = '<colgroup><col style="width:90px">' + "".join(
-        '<col style="width:56px">' for _ in range(ncols)
+    colgroup = '<colgroup><col style="width:78px">' + "".join(
+        '<col style="width:40px">' for _ in range(ncols)
     ) + "</colgroup>"
     return (
         '<table class="ab-delta-table">'

@@ -88,9 +88,10 @@ TM_TITLE_SIZE = 13.0
 TM_TITLE_GAP = 13.0
 TM_HEADER_H = 18.0
 TM_ROW_H = 14.0
-TM_LABEL_W = 64.0          # узкий столбец с названиями элементов
-TM_COL_W = 26.0           # единые узкие столбцы статов (по значению)
+TM_LABEL_W = 66.0          # узкий столбец с названиями элементов
+TM_COL_W = 20.0            # единые узкие столбцы статов (по значению)
 TM_FONT = 9.0
+TM_CELL_PAD = "padding:0 2pt"  # минимальный отступ — ячейка плотно к содержимому
 TM_BLOCK_GAP = 18.0
 TM_TIER_GAP = 12.0        # отступ между стандартным и блоком «в 2 столбца»
 
@@ -412,7 +413,7 @@ def build_tier_matrix_html(base_pieces_list: list[dict], tier_pieces: list[dict]
         return fmt_delta(piece[key] - base[key])
 
     head_cells = "".join(
-        f'<td style="width:{col_w}pt;background:#000;color:#fff;'
+        f'<td style="width:{col_w}pt;{TM_CELL_PAD};background:#000;color:#fff;'
         f'font-family:CarlitoBold;font-size:{TM_FONT}pt;text-align:center;'
         f'height:{TM_HEADER_H}pt;line-height:{TM_FONT}pt;'
         f'border:0.6pt solid #000">{esc(label)}</td>'
@@ -427,14 +428,14 @@ def build_tier_matrix_html(base_pieces_list: list[dict], tier_pieces: list[dict]
         for _, key in fields:
             value = esc(value_of(piece, key))
             cells.append(
-                f'<td style="width:{col_w}pt;background:{fill};'
+                f'<td style="width:{col_w}pt;{TM_CELL_PAD};background:{fill};'
                 f'font-family:CarlitoBold;font-size:{TM_FONT}pt;text-align:center;'
                 f'height:{TM_ROW_H}pt;line-height:{TM_ROW_H}pt;'
                 f'border:0.6pt solid #000">{value}</td>'
             )
         rows.append(
             f'<tr>'
-            f'<td style="width:{label_w}pt;background:{fill};'
+            f'<td style="width:{label_w}pt;{TM_CELL_PAD};background:{fill};'
             f'font-family:CarlitoBold;font-size:{TM_FONT}pt;text-align:center;'
             f'height:{TM_ROW_H}pt;line-height:{TM_ROW_H}pt;'
             f'border:0.6pt solid #000">{esc(name)}</td>'
@@ -449,7 +450,7 @@ def build_tier_matrix_html(base_pieces_list: list[dict], tier_pieces: list[dict]
         f'<table style="border-collapse:collapse;border:0.6pt solid #000;'
         f'width:{table_w}pt;margin-top:{TM_TITLE_GAP}pt;margin-left:auto;'
         f'margin-right:auto">'
-        f'<tr><td style="width:{label_w}pt;background:#000;color:#fff;'
+        f'<tr><td style="width:{label_w}pt;{TM_CELL_PAD};background:#000;color:#fff;'
         f'font-family:CarlitoBold;font-size:{TM_FONT}pt;text-align:center;'
         f'height:{TM_HEADER_H}pt;line-height:{TM_FONT}pt;'
         f'border:0.6pt solid #000"></td>{head_cells}</tr>'
