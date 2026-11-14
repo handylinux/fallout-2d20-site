@@ -86,12 +86,12 @@ DESC_GAP = 8.0
 # матрица тиров
 TM_TITLE_SIZE = 13.0
 TM_TITLE_GAP = 13.0
-TM_HEADER_H = 18.0
-TM_ROW_H = 14.0
-TM_LABEL_W = 66.0          # узкий столбец с названиями элементов
-TM_COL_W = 20.0            # единые узкие столбцы статов (по значению)
+TM_HEADER_H = 16.0
+TM_ROW_H = 12.0
+TM_LABEL_W = 62.0          # узкий столбец с названиями элементов
+TM_COL_W = 16.0            # единые узкие столбцы статов (по значению)
 TM_FONT = 9.0
-TM_CELL_PAD = "padding:0 2pt"  # минимальный отступ — ячейка плотно к содержимому
+TM_CELL_PAD = "padding:0 1.5pt"  # минимальный отступ — ячейка плотно к содержимому
 TM_BLOCK_GAP = 18.0
 TM_TIER_GAP = 12.0        # отступ между стандартным и блоком «в 2 столбца»
 
@@ -229,8 +229,10 @@ def build_header_html(title: str) -> str:
 
 def build_element_card_html(piece: dict, card_w: float, comp: Companion) -> str:
     name = comp.item_name(piece)
-    label_w = card_w * 0.56
-    value_w = card_w - label_w
+    # content-width: узкий столбец значений, таблица по содержимому
+    label_w = 58.0
+    value_w = 30.0
+    table_w = label_w + value_w
     rows = []
     for label, key in stat_fields(piece):
         rows.append(
@@ -246,8 +248,8 @@ def build_element_card_html(piece: dict, card_w: float, comp: Companion) -> str:
             f'</tr>'
         )
     return (
-        f'<table class="card" style="width:{card_w:.1f}pt;border-collapse:'
-        f'collapse;border:0.6pt solid #000">'
+        f'<table class="card" style="width:{table_w}pt;border-collapse:'
+        f'collapse;border:0.6pt solid #000;margin-left:auto;margin-right:auto">'
         f'<tr><td colspan="2" style="background:#000;color:#fff;'
         f'font-family:CarlitoBold;font-size:{CARD_TITLE_SIZE}pt;text-align:center;'
         f'height:{CARD_HEADER_H}pt;line-height:{CARD_HEADER_H}pt;'
