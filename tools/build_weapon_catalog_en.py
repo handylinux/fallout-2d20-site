@@ -3,6 +3,10 @@
 
 Reproduces the 173+ page reference layout of book-weapon-catalog.pdf in clean
 native English from Companion EN data, approved overrides, and structured JSON.
+
+Adds a printed table of contents mapping every weapon (and every reference
+section) to its page, and pads the total page count to a multiple of 4 so the
+booklet prints on exact sheet counts without offsets.
 """
 from __future__ import annotations
 
@@ -88,6 +92,20 @@ ORANGE_BULLET = (0.933, 0.525, 0.157)
 COVER_GOLD = (245 / 255, 196 / 255, 35 / 255)
 COVER_SHADOW = (26 / 255, 38 / 255, 52 / 255)
 COVER_CHARCOAL = (28 / 255, 28 / 255, 28 / 255)
+
+TOC_TITLE = 'TABLE OF CONTENTS'
+TOC_GUTTER = 22.0
+TOC_L1_SIZE = 10.5
+TOC_L2_SIZE = 9.2
+TOC_L1_LEADING = 15.5
+TOC_L2_LEADING = 11.8
+TOC_L1_GAP = 7.0
+TOC_INDENT = 11.0
+TOC_TOP = 104.0
+TOC_BOTTOM = 772.0
+TOC_NUM_RIGHT_PAD = 3.0
+TOC_LEAD_STEP = 3.2
+TOC_LEAD_COLOR = (0.36, 0.36, 0.36)
 
 
 class EnglishCatalogData:
@@ -603,6 +621,97 @@ def make_text_divider(title: str, page_num: int, out_path: Path):
     c.save()
 
 
+def make_blank_page(page_num: int, out_path: Path):
+    """Render a plain paper-background page used to pad the book to a multiple of 4."""
+    c = canvas.Canvas(str(out_path), pagesize=(w.PAGE_W, w.PAGE_H))
+    w.draw_paper(c)
+    w.draw_page_number(c, page_num)
+    c.showPage()
+    c.save()
+
+
+def _toc_entry_font(level: int, title: str) -> str:
+    if level == 1 or title.endswith('Modifications'):
+        return 'Carlito-Bold'
+    return 'Carlito'
+
+
+def _toc_entry_size(level: int) -> float:
+    return TOC_L1_SIZE if level == 1 else TOC_L2_SIZE
+
+
+def _toc_entry_leading(level: int) -> float:
+    return TOC_L1_LEADING if level == 1 else TOC_L2_LEADING
+
+
+def render_toc_pages(entries: list[list], out_path: Path) -> int:
+    """Render the printed table of contents to out_path.
+
+    entries: [[level, title, page], ...] with final page numbers. Two dotted
+    columns per page, section headers bold, weapons listed under their section.
+    Returns the number of pages rendered.
+    """
+    w.register_fonts()
+    c = canvas.Canvas(str(out_path), pagesize=(w.PAGE_W, w.PAGE_H))
+    col_w = (w.CONTENT_R - w.MARGIN_L - TOC_GUTTER) / 2.0
+    col_x = (w.MARGIN_L, w.MARGIN_L + TOC_GUTTER + col_w)
+    pages = 0
+
+    def start_page():
+        nonlocal pages
+        if pages:
+            c.showPage()
+        pages += 1
+        w.draw_paper(c)
+        w.draw_center_line(c, w.TITLE_TOP, TOC_TITLE, 'Carlito-Bold', w.TITLE_SIZE)
+        c.setFillColor(w.BLACK)
+        c.rect(
+            w.PAGE_W_WORK_CENTER - w.RULE_W / 2.0,
+            w.y_from_top(w.RULE_TOP + w.RULE_H),
+            w.RULE_W, -w.RULE_H,
+            stroke=0, fill=1,
+        )
+
+    start_page()
+    col = 0
+    y_top = TOC_TOP
+    for level, title, page in entries:
+        leading = _toc_entry_leading(level)
+        gap = TOC_L1_GAP if level == 1 else 0.0
+        if y_top + gap + leading > TOC_BOTTOM:
+            col += 1
+            if col > 1:
+                start_page()
+                col = 0
+            y_top = TOC_TOP
+            gap = 0.0
+        y_top += gap
+        font = _toc_entry_font(level, title)
+        size = _toc_entry_size(level)
+        while level != 1 and w.sw(title, font, size) > col_w - TOC_INDENT - 46.0:
+            size -= 0.5
+        text_x = col_x[col] + (0.0 if level == 1 else TOC_INDENT)
+        num_text = str(page)
+        num_x = col_x[col] + col_w - TOC_NUM_RIGHT_PAD - w.sw(num_text, font, size)
+        baseline_top = y_top + w.ASCENT * size
+        c.setFillColor(w.BLACK)
+        c.setFont(font, size)
+        c.drawString(text_x, w.y_from_top(baseline_top), title)
+        c.drawString(num_x, w.y_from_top(baseline_top), num_text)
+        leader_start = text_x + w.sw(title, font, size) + 4.0
+        leader_end = num_x - 4.0
+        if leader_end > leader_start:
+            c.setFillColorRGB(*TOC_LEAD_COLOR)
+            c.setFont('Carlito', size)
+            x = leader_start
+            while x < leader_end:
+                c.drawString(x, w.y_from_top(baseline_top), '.')
+                x += TOC_LEAD_STEP
+        y_top += leading
+    c.save()
+    return pages
+
+
 def render_en_card_page(
     data: EnglishCatalogData,
     wid: str,
@@ -637,7 +746,8 @@ def render_en_card_page(
     return {'mode': 'card', 'font_size': None, 'mod_count': sum(len(c['items']) for c in card['mods'])}
 
 
-def build(source: Path, output: Path, report: Path | None = None) -> dict:
+def build(source: Path, output: Path, report: Path | None = None,
+          toc_pdf: Path | None = None) -> dict:
     source, output = Path(source), Path(output)
     if source.resolve() == output.resolve():
         raise ValueError('Output file must differ from source PDF')
@@ -670,6 +780,11 @@ def build(source: Path, output: Path, report: Path | None = None) -> dict:
         with build_cover_page(source) as cover:
             result.insert_pdf(cover)
         toc.append([1, 'Cover', 1])
+
+        # 1b. Printed table of contents (inserted right after the cover)
+        if toc_pdf is not None:
+            with pymupdf.open(toc_pdf) as toc_doc:
+                result.insert_pdf(toc_doc)
 
         result.insert_pdf(original, from_page=1, to_page=2)
         renumber_source_page(result[-2], 2, 2)
@@ -848,10 +963,21 @@ def build(source: Path, output: Path, report: Path | None = None) -> dict:
                     result.insert_pdf(wp)
                 toc.append([2, data.weapons_en[wid]['name'], pno])
 
-        # 9. Closing Pages
-        for source_page in range(102, 107):
+        # 9. Closing Pages: blanks, PLEASE STAND BY spread, padded blanks, back cover
+        # The total page count must be a multiple of 4 for exact booklet
+        # printing, so extra blank pages go before the back cover.
+        for source_page in range(102, 106):
             result.insert_pdf(original, from_page=source_page - 1, to_page=source_page - 1)
             renumber_source_page(result[-1], len(result), source_page)
+        padding = (-(len(result) + 1)) % 4
+        for i in range(padding):
+            blank_pno = len(result) + 1 + i
+            blank_pdf = tmp / f'pad-blank-{i}.pdf'
+            make_blank_page(blank_pno, blank_pdf)
+            with pymupdf.open(blank_pdf) as bdoc:
+                result.insert_pdf(bdoc)
+        result.insert_pdf(original, from_page=105, to_page=105)
+        renumber_source_page(result[-1], len(result), 106)
 
         result.set_toc(toc)
         result.set_metadata({
@@ -863,6 +989,9 @@ def build(source: Path, output: Path, report: Path | None = None) -> dict:
         output.parent.mkdir(parents=True, exist_ok=True)
         result.save(str(output), garbage=4, deflate=True)
         stats['pages'] = len(result)
+        stats['toc'] = toc
+        stats['padding'] = padding
+        stats['toc_pages'] = pymupdf.open(toc_pdf).page_count if toc_pdf is not None else 0
         stats['sections'] = {
             'damage_effects': dmg_p,
             'weapon_qualities': qual_p,
@@ -880,12 +1009,52 @@ def build(source: Path, output: Path, report: Path | None = None) -> dict:
         report.write_text(
             f'# English Weapons Catalog Build Report\n\n'
             f'- Output: `{output}`\n'
-            f'- Total pages: {stats["pages"]}\n'
+            f'- Total pages: {stats["pages"]} (multiple of 4: {stats["pages"] % 4 == 0})\n'
             f'- Weapons: {stats["weapons"]}\n'
+            f'- TOC pages: {stats["toc_pages"]}\n'
+            f'- Padding blanks: {stats["padding"]}\n'
             f'- Section starts: `{json.dumps(stats["sections"])}`\n',
             encoding='utf-8',
         )
     return stats
+
+
+def build_with_toc(source: Path, output: Path, report: Path | None = None) -> dict:
+    """Two-pass build: record page numbers, render the TOC, rebuild with it.
+
+    Pass 1 records where every section and weapon lands. The printed TOC is
+    rendered with those page numbers shifted by its own page count, then pass
+    rebuilds the document with the TOC inserted after the cover; the recorded
+    page numbers must match the shifted ones exactly.
+    """
+    source, output = Path(source), Path(output)
+    with tempfile.TemporaryDirectory() as tmpdir:
+        tmp = Path(tmpdir)
+        stats1 = build(source, tmp / 'pass1.pdf', None)
+        entries = stats1['toc']
+        toc_pdf = tmp / 'toc.pdf'
+        offset = 0
+        for _ in range(6):
+            render_toc_pages(
+                [[lvl, title, page + offset] for lvl, title, page in entries
+                 if title != 'Cover'],
+                toc_pdf,
+            )
+            pages = pymupdf.open(toc_pdf).page_count
+            if pages == offset:
+                break
+            offset = pages
+        else:
+            raise RuntimeError('TOC page count did not converge')
+        stats2 = build(source, output, report, toc_pdf=toc_pdf)
+        expected = [
+            [lvl, title, page if title == 'Cover' else page + offset]
+            for lvl, title, page in entries
+        ]
+        if stats2['toc'] != expected:
+            raise RuntimeError('TOC page mapping mismatch between build passes')
+        stats2['toc_pages'] = offset
+        return stats2
 
 
 def main(argv=None) -> int:
@@ -893,8 +1062,13 @@ def main(argv=None) -> int:
     parser.add_argument('source', nargs='?', type=Path, default=ROOT / 'Справочник оружия.pdf')
     parser.add_argument('--out', type=Path, default=ROOT / 'docs/render/samples/book-weapon-catalog-en.pdf')
     parser.add_argument('--report', type=Path)
+    parser.add_argument('--no-toc', action='store_true',
+                        help='Build without the printed table of contents')
     args = parser.parse_args(argv)
-    stats = build(args.source, args.out, args.report)
+    if args.no_toc:
+        stats = build(args.source, args.out, args.report)
+    else:
+        stats = build_with_toc(args.source, args.out, args.report)
     print(stats)
     return 0
 

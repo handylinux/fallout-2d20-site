@@ -8,17 +8,21 @@ import pymupdf
 import build_weapon_catalog_en as cat
 
 
+def catalog_ids() -> list[str]:
+    small = cat.load_json(cat.SMALL_ORDER)
+    heavy = cat.load_json(cat.HEAVY_ORDER)
+    energy = list(cat.load_json(cat.ENERGY_ORDER))
+    energy.insert(energy.index('weapon_assaultron_head_laser') + 1, 'weapon_institute_laser')
+    melee = cat.load_json(cat.MELEE_ORDER)
+    rem = cat.load_json(cat.REMAINING_ORDER)
+    return small + heavy + energy + melee + rem['unarmed'] + rem['thrown'] + rem['explosives']
+
+
 class EnglishCatalogDataTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.data = cat.EnglishCatalogData()
-        small = cat.load_json(cat.SMALL_ORDER)
-        heavy = cat.load_json(cat.HEAVY_ORDER)
-        energy = list(cat.load_json(cat.ENERGY_ORDER))
-        energy.insert(energy.index('weapon_assaultron_head_laser') + 1, 'weapon_institute_laser')
-        melee = cat.load_json(cat.MELEE_ORDER)
-        rem = cat.load_json(cat.REMAINING_ORDER)
-        cls.all_ids = small + heavy + energy + melee + rem['unarmed'] + rem['thrown'] + rem['explosives']
+        cls.all_ids = catalog_ids()
 
     def test_all_143_catalog_weapons_resolve_in_clean_english(self):
         self.assertEqual(len(self.all_ids), 143)
@@ -74,9 +78,10 @@ class BuildWeaponCatalogEnTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp) / 'catalog-en.pdf'
             report = Path(tmp) / 'report.md'
-            stats = cat.build(source, out, report)
+            stats = cat.build_with_toc(source, out, report)
             self.assertEqual(stats['weapons'], 143)
-            self.assertGreaterEqual(stats['pages'], 165)
+            self.assertEqual(stats['pages'] % 4, 0)
+            self.assertGreaterEqual(stats['toc_pages'], 1)
             self.assertTrue(report.is_file())
 
             with pymupdf.open(out) as doc:
@@ -93,6 +98,29 @@ class BuildWeaponCatalogEnTests(unittest.TestCase):
                 self.assertIn('WASTELAND ARSENAL', cover_text)
                 self.assertNotIn('ТОМ', cover_text)
 
+                toc_pages_text = ''
+                toc_page_indices = []
+                for i, page in enumerate(doc, 1):
+                    text = page.get_text()
+                    if 'TABLE OF CONTENTS' in text:
+                        toc_page_indices.append(i)
+                        toc_pages_text += text + '\n'
+                self.assertEqual(len(toc_page_indices), stats['toc_pages'])
+                self.assertGreaterEqual(len(toc_page_indices), 1)
+
+                # Every weapon must be listed in the printed TOC with a page number
+                data = cat.EnglishCatalogData()
+                names = [data.weapons_en[wid]['name'] for wid in catalog_ids()]
+                for name in names:
+                    self.assertIn(name, toc_pages_text, f'TOC missing {name}')
+
+                # A sample entry carries the correct final page number
+                toc_page_map = {title: page for _lvl, title, page in stats['toc']}
+                lines = [l.strip() for l in toc_pages_text.splitlines() if l.strip()]
+                idx = next(i for i, l in enumerate(lines) if 'Gatling Plasma' in l)
+                self.assertRegex(lines[idx + 1], r'^\d+$')
+                self.assertEqual(int(lines[idx + 1]), toc_page_map['Gatling Plasma'])
+
                 for i, page in enumerate(doc, 1):
                     pymupdf.TOOLS.mupdf_warnings()
                     text = page.get_text()
@@ -100,6 +128,25 @@ class BuildWeaponCatalogEnTests(unittest.TestCase):
                     self.assertFalse(warnings, f'Page {i} MuPDF warning: {warnings}')
                     self.assertFalse(re.search(r'[а-яА-ЯёЁ]', text), f'Page {i} contains Cyrillic')
                     self.assertFalse(re.search(r'(?<!\w)DC(?!\w)', text), f'Page {i} has raw DC token')
+
+    def test_toc_renderer_layout(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / 'toc.pdf'
+            entries = [
+                [1, 'Small Guns', 13],
+                [2, '10mm Pistol', 14],
+                [2, 'Anti-Materiel Rifle', 15],
+                [2, 'Small Guns Modifications', 9],
+            ]
+            pages = cat.render_toc_pages(entries, out)
+            self.assertEqual(pages, 1)
+            with pymupdf.open(out) as doc:
+                text = doc[0].get_text()
+                self.assertIn('TABLE OF CONTENTS', text)
+                for _lvl, title, page in entries:
+                    self.assertIn(title, text)
+                self.assertIn('13', text)
+                self.assertIn('15', text)
 
 
 if __name__ == '__main__':
