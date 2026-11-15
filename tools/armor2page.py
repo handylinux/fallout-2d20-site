@@ -251,6 +251,7 @@ class Companion:
         eq = root / "equipment"
         self.armor = read_json(eq / "armor.json")
         self.power_armor = read_json(eq / "powerArmor.json")
+        self.clothes = read_json(eq / "clothes.json")
         self.mods = read_json(eq / "armor_mods.json")
         self.unique_mods = read_json(eq / "uniq_armor_mods.json")
         self.effects = read_json(eq / "armor_effects.json")
@@ -258,13 +259,15 @@ class Companion:
         i18n = root / "i18n" / "ru-RU" / "data" / "equipment" / "armor"
         self.item_names: dict[str, str] = {}
         self.set_names: dict[str, str] = {}
-        for filename in ("armor.json", "powerArmor.json"):
+        for filename in ("armor.json", "powerArmor.json", "clothes.json"):
             path = i18n / filename
             if not path.exists():
                 continue
             data = read_json(path)
             for group in next(iter(data.values())):
-                key = group.get("categoryKey") or group.get("type")
+                # одежда: ключ — clothingType (suit/outfit/headwear),
+                # название — type; у брони ключ — categoryKey или type.
+                key = group.get("categoryKey") or group.get("clothingType") or group.get("type")
                 self.set_names[key] = group.get("type", key)
                 for item in group.get("items", []):
                     self.item_names[item["id"]] = item["name"]
@@ -291,9 +294,22 @@ class Companion:
                     areas.append(area)
         return areas
 
+    def clothing_groups(self) -> list[tuple[str, str]]:
+        """Группы одежды: [(clothingType, display_name), ...]."""
+        out: list[tuple[str, str]] = []
+        for group in self.clothes.get("clothes", []):
+            ct = group.get("clothingType") or group.get("type")
+            out.append((ct, self.set_names.get(ct, group.get("type", ct))))
+        return out
+
     def set_pieces(self, collection: str, set_key: str) -> list[dict]:
         if collection == "powerArmor":
             return list(self.power_armor[set_key].get("pieces", []))
+        if collection == "clothing":
+            for group in self.clothes.get("clothes", []):
+                if group.get("clothingType") == set_key:
+                    return list(group.get("items", []))
+            return []
         pieces: list[dict] = []
         for tier in self.armor[set_key].get("tiers", {}).values():
             pieces.extend(tier.get("pieces", []))
