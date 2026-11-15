@@ -60,8 +60,9 @@ from armor2page import (  # noqa: E402
 # прилипает к левому краю и верху листа.
 BINDING_MARGIN_L = 12.0
 TRIM_MARGIN_TOP = 12.0
+# отступы слева = отступы справа (A4 width 595.276pt)
 MARGIN_L = 36.0 + BINDING_MARGIN_L
-CONTENT_R = 559.3 + BINDING_MARGIN_L
+CONTENT_R = 595.276 - MARGIN_L
 CONTENT_W = CONTENT_R - MARGIN_L
 
 # заголовки страниц (позиции по референсу)
@@ -402,14 +403,15 @@ def build_char_tables_grid(pieces: list[dict]) -> str:
                 f'<tr>'
                 f'<td style="width:{label_col:.1f}pt;background:#000;color:#fff;'
                 f'font-family:CarlitoBold;font-size:{CHAR_LABEL_SIZE}pt;'
-                f'text-align:left;padding-left:2.8pt;height:{CHAR_ROW_H}pt;'
-                f'line-height:{CHAR_ROW_H}pt;border:0.6pt solid #000">'
+                f'text-align:left;padding-left:2.8pt;vertical-align:middle;'
+                f'height:{CHAR_ROW_H}pt;'
+                f'line-height:{CHAR_LABEL_SIZE}pt;border:0.6pt solid #000">'
                 f'{esc(label)}</td>'
                 f'<td style="width:{value_col:.1f}pt;background:{BEIGE};'
                 f'border:0.6pt solid #000;'
                 f'font-family:CarlitoReg;font-size:{CHAR_LABEL_SIZE}pt;'
                 f'text-align:center;vertical-align:middle;'
-                f'line-height:{CHAR_ROW_H}pt">'
+                f'line-height:{CHAR_LABEL_SIZE}pt">'
                 f'{esc(value)}</td>'
                 f'</tr>'
             )
@@ -498,7 +500,8 @@ def build_mods_grid(comp: Companion, set_data: dict) -> str:
     # (Асбестовая подкладка, Звукоизолированная → 2 строки) повторялась
     # точно. Шлем-строку опускаем по правилу отсутствия шлема в данных.
     label_col = MODS_GRID_LABEL_W
-    col_widths = list(MODS_GRID_COLS)
+    col_widths = scale_to(list(MODS_GRID_COLS),
+                          CONTENT_W - label_col)
 
     # чередование цветов: НАГРУДНИК=крем, НАРУЧ=оранжевый, ПОНОЖ=крем,
     # УНИКАЛЬНАЯ=оранжевый (по референсу, без шлема)
@@ -580,9 +583,9 @@ def build_tier_matrix(pieces: list[dict], col_widths: tuple = None) -> str:
         f'<td style="width:{label_col:.1f}pt;background:#000;'
         f'border:0.6pt solid #000"></td>'
         + "".join(
-            f'<td style="width:{cw:.1f}pt;background:{BEIGE};'
+            f'<td style="width:{cw:.1f}pt;background:#000;color:#fff;'
             f'font-family:CarlitoBold;font-size:{TIER_FONT}pt;'
-            f'color:{BLACK};text-align:center;'
+            f'text-align:center;vertical-align:middle;'
             f'height:{TIER_HEADER_H}pt;line-height:{TIER_FONT}pt;'
             f'border:0.6pt solid #000">{esc(t)}</td>'
             for t, cw in zip(area_titles, col_widths)
@@ -594,14 +597,15 @@ def build_tier_matrix(pieces: list[dict], col_widths: tuple = None) -> str:
             f'<td style="width:{label_col:.1f}pt;background:#000;color:#fff;'
             f'font-family:CarlitoBold;font-size:{TIER_FONT}pt;'
             f'text-align:left;padding-left:{TIER_LABEL_PAD_L}pt;'
-            f'height:{TIER_ROW_H}pt;line-height:{TIER_ROW_H}pt;'
+            f'vertical-align:middle;height:{TIER_ROW_H}pt;'
+            f'line-height:{TIER_FONT}pt;'
             f'border:0.6pt solid #000">{esc(label)}</td>'
             + "".join(
                 f'<td style="width:{cw:.1f}pt;background:{BEIGE};'
                 f'border:0.6pt solid #000;'
                 f'font-family:CarlitoReg;font-size:{TIER_FONT}pt;'
                 f'text-align:center;vertical-align:middle;'
-                f'line-height:{TIER_ROW_H}pt">'
+                f'line-height:{TIER_FONT}pt">'
                 f'{esc(fmt_number(piece.get(key, 0)))}</td>'
                 for piece, cw in zip(pieces, col_widths)
             )
@@ -723,7 +727,7 @@ def build_unique_mods_table(comp: Companion, set_data: dict) -> str:
     head_cells = "".join(
         f'<td style="width:{cw:.1f}pt;background:#000;color:#fff;'
         f'font-family:CarlitoBold;font-size:{UNIQ_FONT}pt;'
-        f'text-align:left;padding-left:2.8pt;'
+        f'text-align:left;padding-left:2.8pt;vertical-align:middle;'
         f'height:{UNIQ_HEADER_H}pt;line-height:{UNIQ_FONT}pt;'
         f'border:0.6pt solid #000">{esc(h)}</td>'
         for h, cw in zip(headers, col_widths)
@@ -791,14 +795,14 @@ def build_page_1_html(spec: dict, comp: Companion, set_data: dict) -> str:
 
     content = (
         build_title_html(title)
-        + f'<div style="margin-top:29.7pt">{right_block}</div>'
-        + f'<div style="margin-top:40.3pt">{intro}</div>'
-        + f'<div style="margin-top:63.0pt">{heading}</div>'
-        + f'<div style="margin-top:30.6pt">{mods}</div>'
+        + f'<div style="margin-top:24.0pt">{right_block}</div>'
+        + f'<div style="margin-top:34.0pt">{intro}</div>'
+        + f'<div style="margin-top:56.0pt">{heading}</div>'
+        + f'<div style="margin-top:26.0pt">{mods}</div>'
     )
     return (
         '<table class="sheet">'
-        f'<tr><td style="vertical-align:top;height:841pt;padding:{47.8 + TRIM_MARGIN_TOP:.1f}pt 24pt 0 48pt">'
+        f'<tr><td style="vertical-align:top;height:841pt;padding:{47.8 + TRIM_MARGIN_TOP:.1f}pt 48pt {47.8 + TRIM_MARGIN_TOP:.1f}pt 48pt">'
         f'{content}</td></tr>'
         '</table>'
     )
@@ -834,7 +838,7 @@ def build_page_2_html(spec: dict, comp: Companion, set_data: dict) -> str:
     )
     return (
         '<table class="sheet">'
-        f'<tr><td style="vertical-align:top;height:841pt;padding:{47.8 + TRIM_MARGIN_TOP:.1f}pt 24pt 0 48pt">'
+        f'<tr><td style="vertical-align:top;height:841pt;padding:{47.8 + TRIM_MARGIN_TOP:.1f}pt 48pt {47.8 + TRIM_MARGIN_TOP:.1f}pt 48pt">'
         f'{content}</td></tr>'
         '</table>'
     )
