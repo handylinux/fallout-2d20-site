@@ -831,12 +831,11 @@ def build_page_2_html(spec: dict, comp: Companion, set_data: dict) -> str:
     labels = [tier_titles.get(k, k) for k in non_standard[:2]]
     tier_labels = build_tier_labels_html(labels)
 
-    # референс обрывает заголовок внутри слова:
-    # УНИКАЛЬНЫЕ МОДИФИКАЦ | ИИ КОЖАНОЙ БРОНИ
-    heading_text = f"УНИКАЛЬНЫЕ МОДИФИКАЦИИ {big_title}".upper()
-    # референс обрывает внутри слова МОДИФИКАЦИИ → МОДИФИКАЦ | ИИ
-    heading_text = heading_text.replace("МОДИФИКАЦИИ ",
-                                        "МОДИФИКАЦ<br/>ИИ ", 1)
+    # Заголовок на две строки по границе слов: слово «МОДИФИКАЦИИ» не
+    # обрывает внутри себя (реф. обрывает МОДИФИКАЦ | ИИ — пользователь
+    # попросил не переносить слово). «УНИКАЛЬНЫЕ МОДИФИКАЦИИ» — цело на
+    # первой строке, название брони — на второй.
+    heading_text = f"УНИКАЛЬНЫЕ МОДИФИКАЦИИ<br/>{big_title}".upper()
     heading = build_heading_html(heading_text, BIG_HEADING_SIZE,
                                  BIG_HEADING_MARGIN_L, raw=True)
     uniq = build_unique_mods_table(comp, set_data)
