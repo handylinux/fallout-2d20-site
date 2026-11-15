@@ -49,16 +49,19 @@ class GeometryTest(unittest.TestCase):
         self.assertAlmostEqual(ab.TITLE_RULE_H, 2.2, places=2)
 
     def test_char_grid(self):
+        """Широкие таблицы из нового референса не слипаются по горизонтали."""
         self.assertAlmostEqual(ab.CHAR_TABLE_TOP_UPPER, 167.33, places=2)
-        self.assertAlmostEqual(ab.CHAR_TABLE_TOP_LOWER, 330.80, places=2)
         self.assertAlmostEqual(ab.CHAR_ROW_H, 23.30, places=2)
-        self.assertAlmostEqual(ab.CHAR_LEFT_X, 327.80, places=2)
-        self.assertAlmostEqual(ab.CHAR_RIGHT_X, 448.13, places=2)
-        # 6 строк по 23.3 = 307.13 — низ верхних таблиц в референсе
+        self.assertAlmostEqual(ab.CHAR_LEFT_X, 126.0, places=2)
+        self.assertAlmostEqual(ab.CHAR_RIGHT_X, 338.0, places=2)
+        self.assertAlmostEqual(ab.CHAR_TABLE_W["left"], 189.0, places=2)
+        self.assertAlmostEqual(ab.CHAR_TABLE_W["right"], 177.0, places=2)
+        horizontal_gap = ab.CHAR_RIGHT_X - (ab.CHAR_LEFT_X + ab.CHAR_TABLE_W["left"])
+        self.assertAlmostEqual(horizontal_gap, ab.CHAR_COL_GAP, places=2)
+        self.assertGreaterEqual(horizontal_gap, 20.0)
+        # 6 строк по 23.3 = 307.13 — низ верхних таблиц.
         self.assertAlmostEqual(ab.CHAR_TABLE_TOP_UPPER + 6 * ab.CHAR_ROW_H,
                                307.13, places=2)
-        self.assertAlmostEqual(ab.CHAR_TABLE_TOP_LOWER + 6 * ab.CHAR_ROW_H,
-                               470.60, places=2)
 
     def test_char_grid_seven_rows(self):
         """Силовая броня: 7 строк, подпись нижнего ряда не налезает на верх."""
@@ -248,8 +251,8 @@ class RoundTwoTest(unittest.TestCase):
 
     # -- моды силовой брони --------------------------------------------
 
-    def test_pa_mods_have_three_classes_and_all_parts(self):
-        """Системы, обшивка и улучшения всех четырёх деталей Т-45 есть."""
+    def test_pa_common_list_and_unique_details_are_separated(self):
+        """На листе 1 — общие моды, на листе 2 — 20 уникальных улучшений."""
         grid = self.book.pa_mods_grid("t45")
         self.assertEqual([label for label, _ in grid], ["СИСТЕМА", "ОБШИВКА"])
         system = dict(grid)["СИСТЕМА"]
@@ -258,13 +261,24 @@ class RoundTwoTest(unittest.TestCase):
         armour = dict(grid)["ОБШИВКА"]
         self.assertIn("Титановая обшивка", armour)
 
-        levels, upgrades = self.book.pa_upgrade_matrix("t45")
-        self.assertEqual(levels, ["Т-45b", "Т-45c", "Т-45d", "Т-45e", "Т-45f"])
-        self.assertEqual([label for label, _ in upgrades],
-                         ["ШЛЕМ", "НАГРУДНИК", "НАРУЧ", "ПОНОЖ"])
-        self.assertEqual(sum(len(names) for _label, names in upgrades), 20)
-        self.assertIn("Т-45b · поножи", dict(upgrades)["ПОНОЖ"])
-        self.assertIn("Т-45f · наручи", dict(upgrades)["НАРУЧ"])
+        upgrades = self.book.pa_upgrade_mods("t45")
+        names = [self.book.mod_names[mod["id"]] for mod in upgrades]
+        self.assertEqual(len(upgrades), 20)
+        self.assertEqual(names[:4], ["Т-45b · шлем", "Т-45b · нагрудник",
+                                     "Т-45b · наручи", "Т-45b · поножи"])
+        self.assertEqual(names[-1], "Т-45f · поножи")
+        common_ids = self.book.pa_common_mod_ids()
+        self.assertFalse({mod["id"] for mod in upgrades} & common_ids)
+
+    def test_pa_common_catalog_has_effects_and_real_slots(self):
+        common = self.book.pa_common_mods()
+        self.assertEqual(len(common), 27)
+        scrubber = next(mod for mod in common if mod["id"] == "pa_systeme_epurateurradiations")
+        self.assertIn("Игнорируйте радиационный урон", ab.mod_effect_text(self.book, scrubber))
+        self.assertEqual(self.book.pa_compatible_areas(scrubber), ["Head"])
+        plating = next(mod for mod in common if mod["id"] == "pa_blindage_titane")
+        self.assertEqual(self.book.pa_compatible_areas(plating),
+                         ["Head", "Body", "Hand", "Leg"])
 
     def test_pa_frame_has_no_mods(self):
         """У каркаса модов нет — блок не печатается вовсе."""
@@ -283,13 +297,13 @@ class RoundTwoTest(unittest.TestCase):
         self.assertIn("Призматическая обшивка", armour)
 
     def test_pa_upgrades_belong_to_own_set(self):
-        """У Т-45 нет улучшений X-01 (Mk II…Mk VI) и наоборот."""
-        _levels, t45_rows = self.book.pa_upgrade_matrix("t45")
-        t45 = [name for _label, names in t45_rows for name in names]
-        self.assertTrue(all(name.startswith("Т-45") for name in t45), t45)
-        _levels, x01_rows = self.book.pa_upgrade_matrix("x01")
-        x01 = [name for _label, names in x01_rows for name in names]
-        self.assertTrue(all(name.startswith("Mk") for name in x01), x01)
+        """У Т-45 нет Mk II…Mk VI, а у X-01 нет ступеней Т-45."""
+        t45 = self.book.pa_upgrade_mods("t45")
+        self.assertTrue(all(self.book.mod_names[mod["id"]].startswith("Т-45")
+                            for mod in t45), t45)
+        x01 = self.book.pa_upgrade_mods("x01")
+        self.assertTrue(all(self.book.mod_names[mod["id"]].startswith("Mk")
+                            for mod in x01), x01)
         self.assertEqual(len(t45), 20)
         self.assertEqual(len(x01), 20)
         helmet = next(piece for piece in self.book.tier_pieces("powerArmor", "t45")
@@ -298,6 +312,18 @@ class RoundTwoTest(unittest.TestCase):
                           for mod in self.book.pa_mods_for_piece("t45", helmet)
                           if mod.get("modSlot") == "amelioration"}
         self.assertEqual(upgrade_groups, set(ab.PA_UPGRADE_GROUPS["t45"]))
+
+    def test_pa_exclusive_systems_stay_with_their_model(self):
+        """Вваренная арматура рейдеров и ЭМИ-защита X-01 не попадают в каталог."""
+        raider = self.book.pa_unique_mods_for_set("raiderPower")
+        x01 = self.book.pa_unique_mods_for_set("x01")
+        self.assertIn("Вваренная арматура",
+                      [self.book.mod_names[mod["id"]] for mod in raider])
+        self.assertIn("ЭМИ-защита",
+                      [self.book.mod_names[mod["id"]] for mod in x01])
+        common = {mod["id"] for mod in self.book.pa_common_mods()}
+        self.assertFalse({mod["id"] for mod in raider} & common)
+        self.assertFalse({mod["id"] for mod in x01} & common)
 
     def test_pa_source_has_no_paint_slot(self):
         """Не добавляем окраски: в источнике helper их для силовой брони нет."""
@@ -315,14 +341,15 @@ class RoundTwoTest(unittest.TestCase):
                     for row in section["rows"])
         self.assertEqual(drawn, len(rows[0][1]) + len(rows[1][1]))
 
-    def test_pa_mods_grid_stays_on_modifications_page(self):
+    def test_pa_common_grid_fits_on_first_page(self):
+        """Короткий список общих модов остаётся на первом листе модели."""
         for key in self.book.power_armor:
-            rows = self.book.pa_part_mod_rows(key)
+            rows = self.book.pa_mods_grid(key)
             if not rows:
                 continue
-            layout = ab.mods_grid_layout(rows, columns=4)
-            # Сетка на второй странице не налезает на номер страницы.
-            self.assertGreater(layout["top"], ab.DESC_TOP, key)
+            layout = ab.fit_mods_grid(rows)
+            self.assertGreaterEqual(layout["top"], ab.MODS_GRID_TOP, key)
+            self.assertLessEqual(layout["bottom"], ab.MODS_GRID_BOTTOM, key)
             self.assertLessEqual(layout["bottom"], ab.PAGE_NUMBER_TOP, key)
 
     def test_cells_have_padding_without_word_fragments(self):
@@ -338,6 +365,28 @@ class RoundTwoTest(unittest.TestCase):
                 self.assertLessEqual(ab.sw(line, ab.FONT, cell["font"]),
                                      width - 2 * ab.CELL_PAD + 0.01)
 
+    def test_pa_detail_cells_fit_without_word_fragments(self):
+        """Каталог эффектов и уникальные таблицы не режут слова по буквам."""
+        # Проверяем по отдельности, потому что у двух типов таблиц разная
+        # сетка колонок и разный внутренний отступ.
+        for row in ab.pa_detail_rows(self.book, self.book.pa_common_mods()):
+            for index, (cell, width) in enumerate(zip(row["cells"], ab.PA_DETAIL_COLS)):
+                font = ab.FONT_B if index == 0 else ab.FONT
+                for line in cell["lines"]:
+                    self.assertLessEqual(ab.sw(line, font, cell["font"]),
+                                         width - 2 * ab.PA_DETAIL_PAD + 0.01)
+        for row in ab.pa_unique_rows(self.book, self.book.pa_upgrade_mods("t45")):
+            for index, (cell, width) in enumerate(zip(row["cells"], ab.PA_UNIQUE_COLS)):
+                font = ab.FONT_B if index == 0 else ab.FONT
+                for line in cell["lines"]:
+                    self.assertLessEqual(ab.sw(line, font, cell["font"]),
+                                         width - 2 * ab.PA_UNIQUE_PAD + 0.01)
+        long_name = next(row for row in ab.pa_detail_rows(
+            self.book, self.book.pa_common_mods())
+            if "Фотоэлектрическое" in " ".join(row["cells"][0]["lines"]))
+        self.assertEqual(" ".join(long_name["cells"][0]["lines"]),
+                         "Фотоэлектрическое покрытие")
+
     def test_all_mod_grid_words_stay_whole(self):
         """Ни одна сетка не режет длинное русское слово посередине."""
         rows_by_set = [ab.mods_rows(self.book, "armor", key)
@@ -345,13 +394,12 @@ class RoundTwoTest(unittest.TestCase):
         rows_by_set += [ab.clothes_mods_rows(
             self.book, self.book.clothes_item(spec.set, spec.item))
             for spec in ab.auto_specs(self.book, "clothes")]
-        rows_by_set += [self.book.pa_part_mod_rows(key)
+        rows_by_set += [self.book.pa_mods_grid(key)
                         for key in self.book.power_armor]
         for rows in rows_by_set:
             if not rows:
                 continue
-            layout = ab.mods_grid_layout(rows, columns=4) if rows[0][0] == "ШЛЕМ" \
-                else ab.fit_mods_grid(rows)
+            layout = ab.fit_mods_grid(rows)
             cells = [cell for section in layout["sections"]
                      for row, _height in section["rows"] for cell in row]
             expected = [name for _label, names in rows for name in names]
@@ -470,9 +518,11 @@ class RenderedPdfTest(unittest.TestCase):
         self.assertIn("БРОНЯ", all_text)
         self.assertIn("СИЛОВАЯ БРОНЯ", all_text)
         self.assertIn("ОДЕЖДА", all_text)
-        # 6 комплектов брони, 6 силовой брони, 5 страниц её модификаций
-        # (у каркаса модов нет) и 32 страницы одежды.
-        self.assertEqual(pages, 58)
+        # 6 комплектов брони, 6 силовой брони, 5 страниц её уникальных
+        # модификаций, 3 страницы общего каталога и 32 страницы одежды.
+        self.assertEqual(pages, 61)
+        self.assertIn("МОДИФИКАЦИИ СИЛОВОЙ БРОНИ", all_text)
+        self.assertIn("ОБЩИЙ СПРАВОЧНИК", all_text)
 
     def test_clothes_page_title_is_drawn_once_and_translated(self):
         """У страницы вещи один заголовок; англоязычной «Blouse» в книге нет."""
@@ -489,27 +539,47 @@ class RenderedPdfTest(unittest.TestCase):
         self.assertNotIn("BLOUSE", all_text)
 
     def test_all_supported_mods_are_rendered(self):
-        """Тексты всех модов, включая все части улучшений, попали в PDF."""
+        """Общие эффекты и уникальные моды каждой модели попали в PDF."""
         with pymupdf.open(self.full) as doc:
             source_pages = [(page.get_text().splitlines(), "".join(page.get_text().split()))
                             for page in doc if page.get_text().splitlines()]
         pages = {lines[0]: text for lines, text in source_pages}
+
+        catalog = "".join(text for lines, text in source_pages
+                            if lines[0] == "МОДИФИКАЦИИ СИЛОВОЙ БРОНИ")
+        self.assertEqual(len([1 for lines, _text in source_pages
+                              if lines[0] == "МОДИФИКАЦИИ СИЛОВОЙ БРОНИ"]),
+                         len(ab.pa_common_catalog_pages(self.book)))
+        for mod in self.book.pa_common_mods():
+            name = self.book.mod_names[mod["id"]]
+            self.assertIn("".join(name.split()), catalog, name)
+            effect = ab.pa_effect_text(self.book, mod)
+            self.assertNotEqual(effect, "—", name)
+            self.assertIn("".join(effect.split()), catalog, name)
+
         for key in self.book.power_armor:
-            title = "".join(self.book.set_title("powerArmor", key).upper().split())
-            matches = [text for lines, text in source_pages
-                       if lines[0] == "МОДИФИКАЦИИ" and title in text]
+            title_raw = self.book.set_title("powerArmor", key).upper()
+            title = "".join(title_raw.split())
+            standard = [text for lines, text in source_pages if lines[0] == title_raw]
+            self.assertEqual(len(standard), 1, key)
+            for _label, names in self.book.pa_mods_grid(key):
+                for name in names:
+                    self.assertIn("".join(name.split()), standard[0], (key, name))
+
+            unique_pages = [text for lines, text in source_pages
+                            if lines[0] == "УНИКАЛЬНЫЕ МОДИФИКАЦИИ" and title in text]
             if key == "frame":
-                self.assertFalse(matches)
+                self.assertFalse(unique_pages)
                 continue
-            self.assertEqual(len(matches), 1, key)
-            page = matches[0]
-            for _label, names in self.book.pa_part_mod_rows(key):
-                for name in names:
-                    self.assertIn("".join(name.split()), page, (key, name))
-            _levels, upgrades = self.book.pa_upgrade_matrix(key)
-            for _label, names in upgrades:
-                for name in names:
-                    self.assertIn("".join(name.split()), page, (key, name))
+            self.assertEqual(len(unique_pages), 1, key)
+            page = unique_pages[0]
+            for mod in self.book.pa_unique_mods_for_set(key):
+                name = self.book.mod_names[mod["id"]].replace(" · ", " ")
+                self.assertIn("".join(name.split()), page, (key, name))
+                effect = ab.mod_effect_text(self.book, mod)
+                if effect:
+                    self.assertIn("".join(effect.split()), page, (key, name))
+
         for spec in ab.auto_specs(self.book, "clothes"):
             page = pages[spec.title.upper()]
             item = self.book.clothes_item(spec.set, spec.item)

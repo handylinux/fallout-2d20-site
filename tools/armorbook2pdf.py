@@ -3,18 +3,18 @@
 """
 armorbook2pdf — книга брони, силовой брони и одежды в PDF.
 
-Вёрстка снята с референса `docs/render/samples/armor-leather-book.pdf`
-(2 страницы A4 на сет, все координаты ниже — замеры из этого PDF через
-PyMuPDF: get_drawings() для линий/заливок, get_text("dict") для кеглей):
+Базовая геометрия снята с референса `docs/render/samples/armor-leather-book.pdf`;
+сетка деталей и таблицы силовой брони уточнены по пользовательским
+референсам. Все размеры вынесены в константы ниже.
 
   страница 1 «<НАЗВАНИЕ СЕТА>»
     - заголовок 22 pt Bold по центру + линейка 385.94×2.2 pt;
-    - справа «СТАНДАРТНЫЙ КОМПЛЕКТ» (10 pt Bold + линейка);
-    - сетка характерист. таблиц 2×2: верхний ряд — ШЛЕМ (слева) /
+    - «СТАНДАРТНЫЙ КОМПЛЕКТ» (10 pt Bold + линейка) по центру блока;
+    - широкая сетка характеристик 2×2: верхний ряд — ШЛЕМ (слева) /
       НАГРУДНИК (справа), нижний — НАРУЧ (слева) / ПОНОЖ (справа).
-      Шаг строки 23.3 pt, метка — белый текст на чёрном, значение —
-      кремовое (#FFEBCD). Если детали зоны в данных нет — её ячейка
-      пустая и подпись не печатается;
+      Между каждой парой таблиц есть заметный пустой промежуток. Шаг строки
+      23.3 pt, метка — белый текст на чёрном, значение — кремовое (#FFEBCD).
+      Если детали зоны в данных нет — её ячейка пустая и подпись не печатается;
     - описание (12 pt / 17.4 pt, по ширине) — один абзац; место под
       второй абзац остаётся свободным, чтобы вписать руками;
     - «ПОДДЕРЖИВАЕМЫЕ МОДИФИКАЦИИ» (18 pt Bold) + сетка модов:
@@ -31,6 +31,13 @@ PyMuPDF: get_drawings() для линий/заливок, get_text("dict") дл�
       из statModifiers / weightModifier / costModifier / requiredPerk;
       эффект — русское описание из i18n; строки чередуют цвет.
 
+  силовая броня
+    - перед моделями расположен единый каталог общих систем и обшивок:
+      эффект, совместимая деталь, вес, цена, перк и навык;
+    - на первой странице модели остаётся короткий список её общих модов;
+    - на второй странице — только уникальные улучшения и исключительные
+      системы/обшивки с полными числовыми характеристиками.
+
 Данные — Fallout 2d20 Companion (`data/companion`), оформление — Carlito
 (метрический клон Calibri) и бумажная текстура `assets/pdf/paper.jpg`.
 
@@ -40,9 +47,8 @@ PyMuPDF: get_drawings() для линий/заливок, get_text("dict") дл�
   * только один тир (например, «Броня охранника Волт-Тек») — вторая
     страница печатается только ради уникальных модов, без матриц;
   * нет уникальных модов — таблица уникальных модов не печатается;
-  * картинки в данных Companion нет — вместо неё остаётся пустое место,
-    чтобы вставить иллюстрацию в PDF-редакторе (файл ищется по адресу
-    `assets/armor/<slug>.png`, если он есть — печатается он).
+  * иллюстрация используется только компактным шаблоном одежды; широкие
+    таблицы комплектов брони занимают её прежнее место без перекрытий.
 
 Пример:
     python3 tools/armorbook2pdf.py --out docs/render/samples/armor-book.pdf
@@ -110,30 +116,28 @@ SECTION_RULE_PAD = 16.5
 SECTION_RULE_MIN = 124.7
 SECTION_RULE_GAP = 2.8
 
-# сетка характерист. таблиц (страница 1) — абсолютные tops из референса:
-#   подписи ШЛЕМ/НАГРУДНИК — 152.13 (12 pt), НАРУЧ/ПОНОЖ — 313.43 (14 pt);
-#   таблицы начинаются на 167.33 и 330.80, шаг строки 23.3 pt (6 строк).
-CHAR_LABEL_TOP_UPPER = 152.13
-CHAR_LABEL_TOP_LOWER = 313.43
+# Сетка характеристик (страница 1). Пользовательский референс задаёт
+# широкие таблицы 2×2 с отчётливыми промежутками и по горизонтали, и по
+# вертикали: детали воспринимаются как четыре самостоятельных блока, а не
+# как одна слитая сетка.
 CHAR_TABLE_TOP_UPPER = 167.33
-CHAR_TABLE_TOP_LOWER = 330.80
-CHAR_ROW_H = 23.30           # высота строки таблицы (= шаг в референсе)
-CHAR_ROW_GAP = 6.30          # минимум: подпись нижнего ряда над таблицей
-# Прогал между рядами таблиц: в референсе между ними 23.67 pt (6 строк ×
-# 23.3 = 307.13, подпись «НАРУЧ» на 313.43, её таблица — на 330.80).
-# В книге он намеренно больше: оба ряда должны восприниматься отдельными
-# блоками даже на экране телефона, а подпись нижнего ряда стоит в центре.
+CHAR_ROW_H = 23.30
+CHAR_ROW_GAP = 6.30
+# Между нижней границей верхних таблиц и верхней границей нижних остаётся
+# заметный прогал; подписи нижнего ряда находятся внутри него.
 CHAR_ROW_GAP_EXTRA = 42.0
 CHAR_LABEL_SIZE = 11.0
 CHAR_PIECE_SIZE_TOP = 12.0   # ШЛЕМ / НАГРУДНИК
 CHAR_PIECE_SIZE_BOT = 14.0   # НАРУЧ / ПОНОЖ
-CHAR_LEFT_LABEL_W = 79.6
-CHAR_LEFT_VALUE_W = 39.6
-CHAR_RIGHT_LABEL_W = 75.0
-CHAR_RIGHT_VALUE_W = 35.0
-CHAR_LEFT_X = 327.80
-CHAR_RIGHT_X = 448.13
-CHAR_COL_GAP = 14.3
+# Габариты и позиции сняты с нового референса: между таблицами есть 23 pt,
+# а сами таблицы шире прежних, прижатых друг к другу справа.
+CHAR_LEFT_LABEL_W = 128.0
+CHAR_LEFT_VALUE_W = 61.0
+CHAR_RIGHT_LABEL_W = 119.0
+CHAR_RIGHT_VALUE_W = 58.0
+CHAR_LEFT_X = 126.0
+CHAR_RIGHT_X = 338.0
+CHAR_COL_GAP = 23.0
 CHAR_SECTION_TOP = 116.63    # «СТАНДАРТНЫЙ КОМПЛЕКТ»
 
 # описание
@@ -142,11 +146,9 @@ DESC_SIZE = 12.0
 DESC_LEADING = 17.4
 DESC_INDENT = 3.0
 
-# место под иллюстрацию сета: слева от таблиц, от подписи до описания.
-# Картинки в данных Companion нет — если файла `assets/armor/<slug>.png`
-# тоже нет, место остаётся пустым (как в референсе) и его можно занять
-# в PDF-редакторе. Границы — для справки и для тестов.
-IMAGE_BOX = (MARGIN_L, 140.0, CHAR_LEFT_X - 18.0, DESC_TOP - 30.0)
+# Место под иллюстрацию используется компактным шаблоном одежды. Широкий
+# блок характеристик комплектов брони занимает всю эту область сам.
+IMAGE_BOX = (MARGIN_L, 140.0, 309.8, DESC_TOP - 30.0)
 
 # «ПОДДЕРЖИВАЕМЫЕ МОДИФИКАЦИИ» и сетка модов (страница 1)
 MODS_HEADING_TOP = 613.10
@@ -216,6 +218,10 @@ AREA_TITLES = {
     "Body": "НАГРУДНИК",
     "Hand": "НАРУЧ",
     "Leg": "ПОНОЖ",
+}
+PA_AREA_ORDER = ("Head", "Body", "Hand", "Leg")
+PA_AREA_DETAIL_TITLES = {
+    "Head": "Голова", "Body": "Тело", "Hand": "Рука", "Leg": "Нога",
 }
 # порядок зон в сетке модов (как в референсе)
 MODS_AREA_ORDER = ("Body", "Hand", "Leg")
@@ -317,6 +323,10 @@ class Book:
     set_names: dict[str, str] = field(default_factory=dict)
     mod_names: dict[str, str] = field(default_factory=dict)
     mod_effects: dict[str, str] = field(default_factory=dict)
+    # Тексты эффектов по ID мода. В powerArmor_mods.json базовые числа и
+    # переводы разделены: эффекты живут в i18n-версии записи, поэтому их
+    # нельзя восстановить только из данных снаряжения.
+    mod_effect_texts: dict[str, str] = field(default_factory=dict)
     armor: dict = field(default_factory=dict)
     power_armor: dict = field(default_factory=dict)
     clothes: dict = field(default_factory=dict)
@@ -377,11 +387,17 @@ class Book:
             if not path.exists():
                 continue
             for mod in read_json(path):
-                self.mod_names[mod["id"]] = mod.get("name", mod["id"])
+                mod_id = mod["id"]
+                self.mod_names[mod_id] = mod.get("name", mod_id)
+                texts: list[str] = []
                 for effect in mod.get("specialEffects") or []:
                     text = effect.get("description")
                     if text:
-                        self.mod_effects.setdefault(effect.get("id", mod["id"]), text)
+                        self.mod_effects.setdefault(effect.get("id", mod_id), text)
+                        if text not in texts:
+                            texts.append(text)
+                if texts:
+                    self.mod_effect_texts[mod_id] = "; ".join(texts)
 
         effects_path = i18n / "armor_effects.json"
         if effects_path.exists():
@@ -488,7 +504,7 @@ class Book:
         деталь сопоставляется по имени helper («T-45 Chest Piece»),
         улучшения — по зоне детали. Каркас модов не имеет.
         """
-        if not self.power_armor_mods:
+        if key == "frame" or not self.power_armor_mods:
             return []
         area = area_of(piece)
         names = self.pa_compat.get(pa_compat_name(key, piece), [])
@@ -508,25 +524,94 @@ class Book:
                 out.append(mod)
         return out
 
-    def pa_mods_grid(self, key: str) -> list[tuple[str, list[str]]]:
-        """Общий список систем и обшивки силовой брони.
+    def pa_set_mods(self, key: str) -> list[dict]:
+        """Все реально совместимые моды модели, без повторов и в порядке JSON."""
+        supported = {
+            mod["id"]
+            for piece in self.tier_pieces("powerArmor", key)
+            for mod in self.pa_mods_for_piece(key, piece)
+        }
+        return [mod for mod in self.power_armor_mods if mod["id"] in supported]
 
-        Улучшения не сводятся к одному представителю уровня: у каждого
-        уровня есть отдельная запись для шлема, нагрудника, наруча и поножа.
-        Их возвращает :meth:`pa_upgrade_matrix` и рисует отдельная матрица.
+    def pa_common_mod_ids(self) -> set[str]:
+        """ID общих модов, совместимых как минимум с двумя моделями.
+
+        Их эффект описывается в одном общем справочнике, а не повторяется на
+        странице каждой Т-45/Т-51/Т-60/X-01. Улучшения модели намеренно не
+        попадают сюда: они всегда уникальны для конкретной лестницы тиров.
         """
-        pieces = self.tier_pieces("powerArmor", key)
-        if not pieces or not self.power_armor_mods:
-            return []
-        available: dict[str, list[str]] = {}
-        for piece in pieces:
-            for mod in self.pa_mods_for_piece(key, piece):
+        used_by: dict[str, set[str]] = {}
+        for key in self.power_armor:
+            for mod in self.pa_set_mods(key):
                 if mod.get("modSlot") == "amelioration":
                     continue
-                names = available.setdefault(mod["modSlot"], [])
-                name = self.mod_names.get(mod["id"], mod["id"])
-                if name not in names:
-                    names.append(name)
+                used_by.setdefault(mod["id"], set()).add(key)
+        return {mod_id for mod_id, sets in used_by.items() if len(sets) > 1}
+
+    def pa_common_mods(self) -> list[dict]:
+        common = self.pa_common_mod_ids()
+        return [mod for mod in self.power_armor_mods if mod["id"] in common]
+
+    def pa_common_mods_for_set(self, key: str) -> list[dict]:
+        common = self.pa_common_mod_ids()
+        return [mod for mod in self.pa_set_mods(key) if mod["id"] in common]
+
+    def pa_unique_mods_for_set(self, key: str) -> list[dict]:
+        """Улучшения и исключительные системы/обшивки одной модели."""
+        common = self.pa_common_mod_ids()
+        return [mod for mod in self.pa_set_mods(key) if mod["id"] not in common]
+
+    def pa_upgrade_mods(self, key: str) -> list[dict]:
+        """Улучшения в порядке уровень → шлем → нагрудник → наруч → понож."""
+        pieces = {area_of(piece): piece
+                  for piece in self.tier_pieces("powerArmor", key)}
+        upgrades: list[dict] = []
+        for group in PA_UPGRADE_GROUPS.get(key, ()):
+            for area in PA_AREA_ORDER:
+                piece = pieces.get(area)
+                if not piece:
+                    continue
+                mod = next((candidate for candidate in self.pa_mods_for_piece(key, piece)
+                            if candidate.get("modSlot") == "amelioration"
+                            and candidate.get("upgradeGroup") == group), None)
+                if mod:
+                    upgrades.append(mod)
+        return upgrades
+
+    def pa_compatible_areas(self, mod: dict) -> list[str]:
+        """Реальные области детали для общего каталога модов.
+
+        Базовое поле `protectedAreas` у systeme в helper широкое, но файл
+        совместимости уточняет слот: датчик ставится в шлем, а кинетическое
+        динамо — в нагрудник. Используем именно это уточнение.
+        """
+        name = self.pa_helper_names.get(mod.get("id", ""), "")
+        found: list[str] = []
+        for piece_name, allowed in self.pa_compat.items():
+            if name not in allowed:
+                continue
+            area = next((candidate for candidate, part in PA_PARTS.items()
+                         if piece_name.endswith(part)), "")
+            if area and area not in found:
+                found.append(area)
+        if found:
+            return [area for area in PA_AREA_ORDER if area in found]
+        return [area for area in PA_AREA_ORDER
+                if area in (mod.get("protectedAreas") or [])]
+
+    def pa_mods_grid(self, key: str) -> list[tuple[str, list[str]]]:
+        """Короткий список **общих** совместимых модов на первой странице.
+
+        Уникальные улучшения/системы намеренно отсутствуют: на второй
+        странице набора им отведена подробная таблица, а эффекты общих модов
+        собраны отдельно в общем справочнике силовой брони.
+        """
+        available: dict[str, list[str]] = {}
+        for mod in self.pa_common_mods_for_set(key):
+            names = available.setdefault(mod["modSlot"], [])
+            name = self.mod_names.get(mod["id"], mod["id"])
+            if name not in names:
+                names.append(name)
         rows: list[tuple[str, list[str]]] = []
         for slot, label in PA_MOD_ROWS:
             if available.get(slot):
@@ -534,37 +619,25 @@ class Book:
         return rows
 
     def pa_part_mod_rows(self, key: str) -> list[tuple[str, list[str]]]:
-        """Системы по деталям и общая обшивка для страницы модификаций.
+        """Общие системы по деталям — вспомогательное представление данных.
 
-        Совместимость из helper действительно различает детали: например,
-        датчик ставится в шлем, а сервоприводы движения — в нагрудник.
-        Обшивка же подходит всем деталям модели и выводится одним рядом.
+        В итоговой книге подробности показываются единым общим каталогом,
+        но этот метод оставлен для проверок совместимости и внешних скриптов.
         """
-        pieces = {area_of(piece): piece
-                  for piece in self.tier_pieces("powerArmor", key)}
-        rows: list[tuple[str, list[str]]] = []
-        for area in ("Head", "Body", "Hand", "Leg"):
-            piece = pieces.get(area)
-            if not piece:
-                continue
-            names = []
-            for mod in self.pa_mods_for_piece(key, piece):
-                if mod.get("modSlot") != "systeme":
-                    continue
-                name = self.mod_names.get(mod["id"], mod["id"])
-                if name not in names:
-                    names.append(name)
-            if names:
-                rows.append((AREA_TITLES[area], names))
-
+        by_area: dict[str, list[str]] = {}
         plating: list[str] = []
-        for piece in pieces.values():
-            for mod in self.pa_mods_for_piece(key, piece):
-                if mod.get("modSlot") != "blindage":
-                    continue
-                name = self.mod_names.get(mod["id"], mod["id"])
+        for mod in self.pa_common_mods_for_set(key):
+            name = self.mod_names.get(mod["id"], mod["id"])
+            if mod.get("modSlot") == "blindage":
                 if name not in plating:
                     plating.append(name)
+                continue
+            for area in self.pa_compatible_areas(mod):
+                names = by_area.setdefault(area, [])
+                if name not in names:
+                    names.append(name)
+        rows = [(AREA_TITLES[area], by_area[area]) for area in PA_AREA_ORDER
+                if by_area.get(area)]
         if plating:
             rows.append(("ОБШИВКА", plating))
         return rows
@@ -1177,103 +1250,291 @@ def draw_mods_grid(c, rows: list[tuple[str, list[str]]],
     return layout["top"], y
 
 
-# -- страница модификаций силовой брони -------------------------------------
+# -- подробные модификации силовой брони -----------------------------------
+#
+# Общие системы и обшивка описываются один раз в каталоге: это именно те
+# строки, которые повторяются у нескольких моделей. Страница конкретного
+# набора содержит только его уникальные улучшения/системы — по образцу
+# пользовательских таблиц T-45 и рейдерской брони.
 
-PA_UPGRADE_TOP = 176.0
-PA_UPGRADE_HEADER_H = 22.3
-PA_UPGRADE_ROW_MIN = 31.0
-PA_UPGRADE_FONT = 9.0
-PA_UPGRADE_LINE_H = 10.8
-PA_UPGRADE_PAD = 6.0
-PA_UPGRADE_LABEL_W = 94.0
+PA_DETAIL_TOP = 150.0
+PA_DETAIL_SECTION_H = 18.5
+PA_DETAIL_HEADER_H = 27.0
+PA_DETAIL_ROW_MIN = 25.0
+PA_DETAIL_FONT = 8.5
+PA_DETAIL_HEADER_FONT = 8.0
+PA_DETAIL_LINE_H = 10.0
+PA_DETAIL_PAD = 4.5
+# модификация / эффект / часть / вес / цена / перки / навык
+PA_DETAIL_COLS = (90.0, 171.0, 62.0, 32.0, 35.0, 69.0, 40.0)
+PA_DETAIL_HEADERS = (
+    "МОДИФИКАЦИЯ", "ЭФФЕКТ", "ЗАЩИЩАЕМАЯ ДЕТАЛЬ", "ВЕС", "ЦЕНА", "ПЕРКИ", "НАВЫК",
+)
+
+# Уникальные улучшения: подробные числовые поля, как в референсе T-45.
+PA_UNIQUE_TOP = 162.0
+PA_UNIQUE_HEADER_H = 33.0
+PA_UNIQUE_ROW_MIN = 20.0
+PA_UNIQUE_FONT = 8.6
+PA_UNIQUE_LINE_H = 9.5
+PA_UNIQUE_PAD = 3.5
+# улучшение / физ. / энерг. / рад. / ОЗ / деталь / вес / цена / перки
+PA_UNIQUE_COLS = (102.0, 36.0, 36.0, 42.0, 57.0, 78.0, 32.0, 37.0, 79.0)
+PA_UNIQUE_HEADERS = (
+    ("УЛУЧШЕНИЕ",), ("ФИЗ.", "СУ"), ("ЭНРГ.", "СУ"), ("РАД.", "СУ"),
+    ("ОЧКИ", "ЗДОРОВЬЯ"), ("ЗАЩИЩАЕМАЯ", "ДЕТАЛЬ"), ("ВЕС",),
+    ("ЦЕНА",), ("ПЕРКИ",),
+)
 
 
-def draw_pa_upgrade_matrix(c, levels: list[str],
-                           rows: list[tuple[str, list[str]]],
-                           top: float = PA_UPGRADE_TOP) -> float:
-    """Матрица улучшений силовой брони: детали × уровни.
+def pa_area_text(book: Book, mod: dict) -> str:
+    """Человеческая подпись совместимой детали для подробной таблицы."""
+    areas = book.pa_compatible_areas(mod)
+    if set(areas) == set(PA_AREA_ORDER):
+        return "Все детали"
+    return " / ".join(PA_AREA_DETAIL_TITLES.get(area, area) for area in areas) or "—"
 
-    В ячейках стоят полные названия реальных модов, а не галочки. Поэтому
-    видно, что у Т-60b…Т-60f и Mk II…Mk VI улучшаются все детали, не только
-    шлем. Возвращает вертикальную позицию низа таблицы.
-    """
-    if not levels or not rows:
-        return top
-    x0 = MARGIN_L
-    value_w = (CONTENT_W - PA_UPGRADE_LABEL_W) / len(levels)
-    widths = [PA_UPGRADE_LABEL_W] + [value_w] * len(levels)
-    edges = [x0]
-    for width in widths:
+
+def pa_effect_text(book: Book, mod: dict) -> str:
+    """Эффект PA-мода, включая числовой эффект обшивки без prose-описания."""
+    description = mod_effect_text(book, mod)
+    if description:
+        return description
+    labels = {
+        "physicalDamageRating": "ФИЗ. СУ",
+        "energyDamageRating": "ЭНРГ. СУ",
+        "radiationDamageRating": "РАД. СУ",
+        "hp": "прочности",
+    }
+    modifiers = mod.get("statModifiers") or {}
+    values = [f"{mod_stat_text(mod, key)} к {label}"
+              for key, label in labels.items() if key in modifiers]
+    return "; ".join(values) or "—"
+
+
+def pa_skill_text(mod: dict) -> str:
+    """Навык выводится отдельно от перка, как в пользовательском референсе."""
+    perk = mod.get("requiredPerk") or ""
+    skills: list[str] = []
+    if "Наука" in perk:
+        skills.append("Наука")
+    # В присланной таблице «Бронник» использует «Ремонт»; тот же навык
+    # относится и к «Кузнецу», который встречается у наручей.
+    if "Бронник" in perk or "Кузнец" in perk:
+        skills.append("Ремонт")
+    return " / ".join(skills) or "—"
+
+
+def pa_detail_rows(book: Book, mods: list[dict]) -> list[dict]:
+    """Подготовить строки общего каталога с измеренной высотой."""
+    rows: list[dict] = []
+    for mod in mods:
+        effect = pa_effect_text(book, mod)
+        values = [
+            book.mod_names.get(mod["id"], mod["id"]),
+            effect,
+            pa_area_text(book, mod),
+            mod_offset_text(mod, "weightModifier"),
+            mod_offset_text(mod, "costModifier"),
+            mod.get("requiredPerk") or "—",
+            pa_skill_text(mod),
+        ]
+        cells = [fitted_cell(value, width, PA_DETAIL_FONT, PA_DETAIL_PAD,
+                             FONT if index != 0 else FONT_B)
+                 for index, (value, width) in enumerate(zip(values, PA_DETAIL_COLS))]
+        height = max(PA_DETAIL_ROW_MIN,
+                     max(len(cell["lines"]) for cell in cells) * PA_DETAIL_LINE_H
+                     + PA_DETAIL_PAD)
+        rows.append({"cells": cells, "height": height})
+    return rows
+
+
+def pa_detail_edges() -> list[float]:
+    edges = [MARGIN_L]
+    for width in PA_DETAIL_COLS:
         edges.append(edges[-1] + width)
+    return edges
 
-    # Шапка: деталь и обозначения уровней.
-    for index, title in enumerate(["ДЕТАЛЬ", *levels]):
-        rect(c, edges[index], top, edges[index + 1],
-             top + PA_UPGRADE_HEADER_H, fill=BLACK)
-        rect(c, edges[index], top, edges[index + 1],
-             top + PA_UPGRADE_HEADER_H, stroke=BLACK)
-        header_size = fit_size(title, FONT_B, PA_UPGRADE_FONT,
-                               widths[index] - 2 * CELL_PAD)
-        draw_top(c, edges[index] + widths[index] / 2.0,
-                 vcenter_top(top, top + PA_UPGRADE_HEADER_H, header_size),
-                 title, FONT_B, header_size, align="center", color=WHITE)
 
-    y = top + PA_UPGRADE_HEADER_H
-    for row_index, (label, names) in enumerate(rows):
-        cells = [fitted_mod_cell(name, value_w, PA_UPGRADE_FONT)
-                 for name in names]
-        height = max(
-            PA_UPGRADE_ROW_MIN,
-            max((len(cell["lines"]) for cell in cells), default=1)
-            * PA_UPGRADE_LINE_H + PA_UPGRADE_PAD,
-        )
-        fill = BEIGE if row_index % 2 == 0 else ORANGE
-        rect(c, edges[0], y, edges[1], y + height, fill=BLACK)
-        rect(c, edges[0], y, edges[1], y + height, stroke=BLACK)
-        label_size = fit_size(label, FONT_B, PA_UPGRADE_FONT,
-                              widths[0] - 2 * CELL_PAD)
-        draw_top(c, edges[0] + widths[0] / 2.0,
-                 vcenter_top(y, y + height, label_size), label, FONT_B,
-                 label_size, align="center", color=WHITE)
-        for index, width in enumerate(widths[1:]):
-            x = edges[index + 1]
+def draw_pa_detail_table(c, rows: list[dict], section: str,
+                         top: float = PA_DETAIL_TOP) -> float:
+    """Таблица общих или исключительных систем с эффектами и требованиями."""
+    edges = pa_detail_edges()
+    right = edges[-1]
+    # Полоса категории повторяет «МОДИФИКАЦИЯ СИСТЕМЫ» из референса.
+    rect(c, MARGIN_L, top, right, top + PA_DETAIL_SECTION_H, fill=BEIGE)
+    rect(c, MARGIN_L, top, right, top + PA_DETAIL_SECTION_H, stroke=BLACK)
+    draw_top(c, MARGIN_L + PA_DETAIL_PAD, vcenter_top(
+        top, top + PA_DETAIL_SECTION_H, PA_DETAIL_HEADER_FONT), section.upper(),
+        FONT_B, PA_DETAIL_HEADER_FONT)
+
+    header_top = top + PA_DETAIL_SECTION_H
+    for index, (width, title) in enumerate(zip(PA_DETAIL_COLS, PA_DETAIL_HEADERS)):
+        x = edges[index]
+        rect(c, x, header_top, x + width, header_top + PA_DETAIL_HEADER_H, fill=BLACK)
+        rect(c, x, header_top, x + width, header_top + PA_DETAIL_HEADER_H, stroke=BLACK)
+        cell = fitted_cell(title, width, PA_DETAIL_HEADER_FONT, PA_DETAIL_PAD, FONT_B)
+        start = vcenter_top(header_top, header_top + PA_DETAIL_HEADER_H,
+                            cell["font"], len(cell["lines"]), PA_DETAIL_LINE_H)
+        draw_lines(c, x, start, cell["lines"], FONT_B, cell["font"],
+                   leading=PA_DETAIL_LINE_H, align="center", color=WHITE, width=width)
+
+    y = header_top + PA_DETAIL_HEADER_H
+    for index, row in enumerate(rows):
+        fill = BEIGE if index % 2 == 0 else ORANGE
+        height = row["height"]
+        for col, (width, cell) in enumerate(zip(PA_DETAIL_COLS, row["cells"])):
+            x = edges[col]
             rect(c, x, y, x + width, y + height, fill=fill)
             rect(c, x, y, x + width, y + height, stroke=BLACK)
-            if index < len(cells):
-                cell = cells[index]
-                start = vcenter_top(y, y + height, cell["font"],
-                                    len(cell["lines"]), PA_UPGRADE_LINE_H)
+            start = vcenter_top(y, y + height, cell["font"],
+                                len(cell["lines"]), PA_DETAIL_LINE_H)
+            if col in (0, 1):
+                draw_lines(c, x + PA_DETAIL_PAD, start, cell["lines"],
+                           FONT_B if col == 0 else FONT, cell["font"],
+                           leading=PA_DETAIL_LINE_H)
+            else:
                 draw_lines(c, x, start, cell["lines"], FONT, cell["font"],
-                           leading=PA_UPGRADE_LINE_H, align="center", width=width)
+                           leading=PA_DETAIL_LINE_H, align="center", width=width)
+        y += height
+    return y
+
+
+def split_pa_detail_rows(rows: list[dict], top: float = PA_DETAIL_TOP) -> list[list[dict]]:
+    """Разбить общий каталог на страницы с повторяемой шапкой."""
+    capacity = PAGE_NUMBER_TOP - 15.0 - top - PA_DETAIL_SECTION_H - PA_DETAIL_HEADER_H
+    chunks: list[list[dict]] = []
+    chunk: list[dict] = []
+    used = 0.0
+    for row in rows:
+        if chunk and used + row["height"] > capacity:
+            chunks.append(chunk)
+            chunk = []
+            used = 0.0
+        chunk.append(row)
+        used += row["height"]
+    if chunk:
+        chunks.append(chunk)
+    return chunks
+
+
+def pa_common_catalog_pages(book: Book) -> list[tuple[str, list[dict]]]:
+    """Страницы единого справочника эффектов общих PA-модов."""
+    pages: list[tuple[str, list[dict]]] = []
+    for slot, label in PA_MOD_ROWS:
+        rows = pa_detail_rows(book, [mod for mod in book.pa_common_mods()
+                                     if mod.get("modSlot") == slot])
+        for index, chunk in enumerate(split_pa_detail_rows(rows)):
+            suffix = "" if index == 0 else " · ПРОДОЛЖЕНИЕ"
+            pages.append((label + suffix, chunk))
+    return pages
+
+
+def draw_pa_common_catalog_page(c, section: str, rows: list[dict]) -> None:
+    draw_page_title(c, "Модификации силовой брони")
+    draw_section_label(c, MARGIN_L + CONTENT_W / 2.0, 116.63, "Общий справочник")
+    draw_pa_detail_table(c, rows, section)
+
+
+def pa_modifier_text(mod: dict, key: str) -> str:
+    """Знак модификатора или тире, если этот стат улучшение не меняет."""
+    if key not in (mod.get("statModifiers") or {}):
+        return "—"
+    return mod_stat_text(mod, key)
+
+
+def pa_unique_rows(book: Book, mods: list[dict]) -> list[dict]:
+    """Строки таблицы уникальных улучшений конкретной модели."""
+    rows: list[dict] = []
+    for mod in mods:
+        name = book.mod_names.get(mod["id"], mod["id"]).replace(" · ", " ")
+        values = [
+            name,
+            pa_modifier_text(mod, "physicalDamageRating"),
+            pa_modifier_text(mod, "energyDamageRating"),
+            pa_modifier_text(mod, "radiationDamageRating"),
+            pa_modifier_text(mod, "hp"),
+            pa_area_text(book, mod),
+            mod_offset_text(mod, "weightModifier"),
+            mod_offset_text(mod, "costModifier"),
+            mod.get("requiredPerk") or "—",
+        ]
+        cells = [fitted_cell(value, width, PA_UNIQUE_FONT, PA_UNIQUE_PAD,
+                             FONT if index else FONT_B)
+                 for index, (value, width) in enumerate(zip(values, PA_UNIQUE_COLS))]
+        height = max(PA_UNIQUE_ROW_MIN,
+                     max(len(cell["lines"]) for cell in cells) * PA_UNIQUE_LINE_H
+                     + PA_UNIQUE_PAD)
+        rows.append({"cells": cells, "height": height})
+    return rows
+
+
+def pa_unique_edges() -> list[float]:
+    edges = [MARGIN_L]
+    for width in PA_UNIQUE_COLS:
+        edges.append(edges[-1] + width)
+    return edges
+
+
+def draw_pa_unique_table(c, rows: list[dict], top: float = PA_UNIQUE_TOP) -> float:
+    """Подробная числовая таблица улучшений: строка на реальную деталь."""
+    edges = pa_unique_edges()
+    for index, (width, lines) in enumerate(zip(PA_UNIQUE_COLS, PA_UNIQUE_HEADERS)):
+        x = edges[index]
+        rect(c, x, top, x + width, top + PA_UNIQUE_HEADER_H, fill=BLACK)
+        rect(c, x, top, x + width, top + PA_UNIQUE_HEADER_H, stroke=BLACK)
+        start = vcenter_top(top, top + PA_UNIQUE_HEADER_H, PA_UNIQUE_FONT,
+                            len(lines), PA_UNIQUE_LINE_H)
+        draw_lines(c, x, start, lines, FONT_B, PA_UNIQUE_FONT,
+                   leading=PA_UNIQUE_LINE_H, align="center", color=WHITE, width=width)
+
+    y = top + PA_UNIQUE_HEADER_H
+    for index, row in enumerate(rows):
+        fill = BEIGE if index % 2 == 0 else ORANGE
+        height = row["height"]
+        for col, (width, cell) in enumerate(zip(PA_UNIQUE_COLS, row["cells"])):
+            x = edges[col]
+            rect(c, x, y, x + width, y + height, fill=fill)
+            rect(c, x, y, x + width, y + height, stroke=BLACK)
+            start = vcenter_top(y, y + height, cell["font"],
+                                len(cell["lines"]), PA_UNIQUE_LINE_H)
+            if col == 0:
+                draw_lines(c, x + PA_UNIQUE_PAD, start, cell["lines"], FONT_B,
+                           cell["font"], leading=PA_UNIQUE_LINE_H)
+            else:
+                draw_lines(c, x, start, cell["lines"], FONT, cell["font"],
+                           leading=PA_UNIQUE_LINE_H, align="center", width=width)
         y += height
     return y
 
 
 def draw_pa_modifications_page(c, book: Book, spec: "Spec", title: str) -> None:
-    """Отдельная читабельная страница всех модификаций силовой брони."""
-    draw_page_title(c, "Модификации")
+    """Подробности только уникальных модов конкретной модели силовой брони."""
+    draw_page_title(c, "Уникальные модификации")
     draw_section_label(c, MARGIN_L + CONTENT_W / 2.0, 116.63, title)
 
-    levels, upgrades = book.pa_upgrade_matrix(spec.set)
+    upgrades = book.pa_upgrade_mods(spec.set)
+    y = PA_UNIQUE_TOP
     if upgrades:
-        draw_heading(c, "Улучшения деталей", 150.0, 18.0)
-        draw_pa_upgrade_matrix(c, levels, upgrades)
+        draw_heading(c, "Улучшения деталей", 141.0, 15.0)
+        y = draw_pa_unique_table(c, pa_unique_rows(book, upgrades), y)
 
-    rows = book.pa_part_mod_rows(spec.set)
-    if not rows:
+    other = [mod for mod in book.pa_unique_mods_for_set(spec.set)
+             if mod.get("modSlot") != "amelioration"]
+    if not other:
         return
-    # Четыре широкие колонки оставляют целые слова («Сервоприводы»,
-    # «Кинетическое») и не вынуждают сжимать весь набор до 7–8 pt.
-    layout = mods_grid_layout(rows, columns=4,
-                              style=(MODS_FONT, MODS_LINE_H, MODS_ROW_PAD))
-    heading_top = layout["top"] - MODS_HEADING_SIZE - 22.0
-    draw_heading(c, "Системы и обшивка", heading_top, MODS_HEADING_SIZE)
-    subtitle = "СИСТЕМЫ — ПО ДЕТАЛЯМ"
-    if any(label == "ОБШИВКА" for label, _names in rows):
-        subtitle += " · ОБШИВКА — ВСЕ ДЕТАЛИ"
-    draw_top(c, MARGIN_L + CONTENT_W / 2.0, heading_top + 22.0, subtitle,
-             FONT, 8.5, align="center")
-    draw_mods_grid(c, rows, layout=layout)
+    # У рейдерской брони это «Вваренная арматура», у X-01 — особая ЭМИ-защита.
+    # Компактная таблица с эффектом помещается после лестницы улучшений.
+    heading_top = y + 10.0
+    label = "УНИКАЛЬНЫЕ МОДИФИКАЦИИ"
+    slots = {mod.get("modSlot") for mod in other}
+    if slots == {"systeme"}:
+        label = "УНИКАЛЬНЫЕ СИСТЕМЫ"
+    elif slots == {"blindage"}:
+        label = "УНИКАЛЬНАЯ ОБШИВКА"
+    draw_heading(c, label, heading_top, 13.0)
+    draw_pa_detail_table(c, pa_detail_rows(book, other), label,
+                         top=heading_top + 19.0)
 
 
 # -- страница 2: матрицы тиров ----------------------------------------------
@@ -1399,6 +1660,10 @@ def mod_offset_text(mod: dict, key: str) -> str:
 
 
 def mod_effect_text(book: Book, mod: dict) -> str:
+    """Русское описание эффекта, в том числе из i18n PA-мода."""
+    known = book.mod_effect_texts.get(mod.get("id", ""))
+    if known:
+        return known
     texts = []
     for effect in mod.get("specialEffects") or []:
         text = book.mod_effects.get(effect.get("id"))
@@ -1565,7 +1830,7 @@ def resolve_image(spec: Spec) -> str | None:
 
 
 def draw_image(c, path: str) -> None:
-    """Иллюстрация сета в свободном месте слева от таблиц (по пропорциям)."""
+    """Иллюстрация предмета одежды в его компактной левой области."""
     x0, y0, x1, y1 = IMAGE_BOX
     reader = ImageReader(path)
     img_w, img_h = reader.getSize()
@@ -1592,26 +1857,28 @@ def draw_first_page(c, book: Book, spec: Spec, title: str) -> list[dict]:
     pieces = book.tier_pieces(spec.collection, spec.set, "standard")
     grid_bottom = CHAR_TABLE_TOP_UPPER
     if pieces:
-        center = CHAR_RIGHT_X - CHAR_COL_GAP / 2.0
+        # Заголовок выровнен по центру всего блока из четырёх разнесённых
+        # таблиц, а не по зазору между двумя его старыми узкими колонками.
+        center = (CHAR_LEFT_X + CHAR_RIGHT_X + CHAR_TABLE_W["right"]) / 2.0
         draw_section_label(c, center, CHAR_SECTION_TOP, "Стандартный комплект")
         grid_bottom = draw_char_grid(c, pieces)["bottom"]
-    image = resolve_image(spec)
-    if image:
-        draw_image(c, image)
+    # Широкий блок четырёх таблиц занимает место прежней иллюстрации: так у
+    # каждой детали есть собственный заметно отделённый прямоугольник.
+    # Иллюстрации одежды по-прежнему рисует её отдельный шаблон.
 
-    # У силовой брони систем, обшивки и улучшений гораздо больше, чем у
-    # обычной. Они занимают следующую, специально размеченную страницу:
-    # так не приходится дробить слова и прятать улучшения деталей.
-    rows = [] if spec.collection == "powerArmor" else book.mods_grid(
-        spec.collection, spec.set)
+    # Первая страница силовой брони сохраняет короткий перечень общих
+    # совместимых модов. Их эффекты вынесены в единый каталог, а уникальные
+    # улучшения модели получают подробную таблицу на второй странице.
+    rows = book.mods_grid(spec.collection, spec.set)
     heading_top = MODS_HEADING_TOP
     if rows:
         layout = fit_mods_grid(rows)
         draw_mods_grid(c, rows, layout=layout)
         heading_top = min(MODS_HEADING_TOP,
                           layout["top"] - MODS_HEADING_SIZE - 26.0)
-        draw_heading(c, "Поддерживаемые модификации", heading_top,
-                     MODS_HEADING_SIZE)
+        heading = ("Общие модификации" if spec.collection == "powerArmor"
+                   else "Поддерживаемые модификации")
+        draw_heading(c, heading, heading_top, MODS_HEADING_SIZE)
 
     # описание занимает то, что осталось между таблицами и заголовком модов
     desc_top = max(DESC_TOP, grid_bottom + MODS_LINE_H * 2)
@@ -1628,8 +1895,12 @@ def draw_first_page(c, book: Book, spec: Spec, title: str) -> list[dict]:
 # Предмет один, поэтому в сетке 2×2 печатается только одна ячейка; зон,
 # которых у предмета нет, в таблице не появляется.
 
-CLOTHES_TABLE_X = CHAR_LEFT_X
-CLOTHES_TABLE_LABEL_W = CHAR_LEFT_LABEL_W + CHAR_LEFT_VALUE_W
+# Одежда остаётся в прежней компактной правой раскладке: широкая 2×2
+# геометрия выше предназначена именно для четырёх деталей комплектов брони.
+CLOTHES_TABLE_X = 327.80
+CLOTHES_TABLE_LABEL_W = 119.20
+CLOTHES_ITEM_VALUE_W = 39.60
+CLOTHES_SECTION_CENTER = 441.0
 CLOTHES_ITEM_SECTION_TOP = CHAR_SECTION_TOP      # подпись группы над таблицей
 CLOTHES_ITEM_TABLE_TOP = 152.0                   # верх таблицы характеристик
 ITEM_BOTTOM = MODS_GRID_BOTTOM                   # ниже — только номер страницы
@@ -1643,7 +1914,7 @@ def draw_item_char_table(c, item: dict, x: float, top: float,
     значение кремовым. Строка «ПРОЧНОСТЬ» есть только если в данных есть hp.
     """
     rows = stat_fields(item)
-    total_w = label_w + CHAR_LEFT_VALUE_W
+    total_w = label_w + CLOTHES_ITEM_VALUE_W
     for index, (key, label) in enumerate(rows):
         y = top + index * CHAR_ROW_H
         rect(c, x, y, x + total_w, y + CHAR_ROW_H, fill=BEIGE)
@@ -1652,7 +1923,7 @@ def draw_item_char_table(c, item: dict, x: float, top: float,
         mid = y + CHAR_ROW_H / 2.0
         draw_top(c, x + 2.8, mid - CHAR_LABEL_SIZE / 2.0, label, FONT_B,
                  CHAR_LABEL_SIZE, color=WHITE)
-        draw_top(c, x + label_w + CHAR_LEFT_VALUE_W / 2.0,
+        draw_top(c, x + label_w + CLOTHES_ITEM_VALUE_W / 2.0,
                  mid - CHAR_LABEL_SIZE / 2.0, fmt_number(item.get(key, 0)),
                  FONT, CHAR_LABEL_SIZE, align="center")
     return top + len(rows) * CHAR_ROW_H
@@ -1681,7 +1952,7 @@ def draw_clothes_item_page(c, book: Book, spec: Spec, title: str) -> None:
     draw_page_title(c, title)
     label = book.clothes_group_title_by_key(spec.set)
     if label:
-        draw_section_label(c, CHAR_RIGHT_X - CHAR_COL_GAP / 2.0,
+        draw_section_label(c, CLOTHES_SECTION_CENTER,
                            CLOTHES_ITEM_SECTION_TOP, label)
     name = book.piece_name(item)
     draw_top(c, CLOTHES_TABLE_X + CLOTHES_TABLE_LABEL_W / 2.0,
@@ -1736,8 +2007,9 @@ def second_page_parts(book: Book, spec: Spec) -> tuple[dict, list[dict]]:
 
 def has_second_page(book: Book, spec: Spec) -> bool:
     if spec.collection == "powerArmor":
-        levels, upgrades = book.pa_upgrade_matrix(spec.set)
-        return bool(book.pa_part_mod_rows(spec.set) or (levels and upgrades))
+        # Каркас не имеет собственных модов; у остальных моделей второй лист
+        # посвящён только их уникальным улучшениям и системам.
+        return bool(book.pa_unique_mods_for_set(spec.set))
     tiers, uniq = second_page_parts(book, spec)
     return bool(uniq) or any(k != "standard" and v for k, v in tiers.items())
 
@@ -1814,7 +2086,8 @@ def build_book(specs: list[Spec], book: Book, out_path: Path,
             stats["skipped"].append(f"{spec.collection}/{spec.set}")
             continue
 
-        if sections and spec.collection != current:
+        if spec.collection != current:
+            # Титул должен появиться до общего каталога даже при --no-sections.
             if cover and not have_cover:
                 w.draw_paper(c)
                 draw_cover(c, config)
@@ -1822,23 +2095,27 @@ def build_book(specs: list[Spec], book: Book, out_path: Path,
                 page += 1
                 stats["pages"] += 1
                 have_cover = True
-            name, note = COLLECTION_TITLES.get(spec.collection,
-                                               (spec.collection, ""))
-            w.draw_paper(c)
-            draw_section(c, name, note)
-            draw_page_number(c, page)
-            c.showPage()
-            page += 1
-            stats["pages"] += 1
+            if sections:
+                name, note = COLLECTION_TITLES.get(spec.collection,
+                                                   (spec.collection, ""))
+                w.draw_paper(c)
+                draw_section(c, name, note)
+                draw_page_number(c, page)
+                c.showPage()
+                page += 1
+                stats["pages"] += 1
             current = spec.collection
 
-        if cover and not have_cover:
-            w.draw_paper(c)
-            draw_cover(c, config)
-            c.showPage()
-            page += 1
-            stats["pages"] += 1
-            have_cover = True
+            # Один раз перед моделями: подробные эффекты всех общих систем и
+            # обшивок. На листах конкретной модели они не дублируются.
+            if current == "powerArmor":
+                for section, rows in pa_common_catalog_pages(book):
+                    w.draw_paper(c)
+                    draw_pa_common_catalog_page(c, section, rows)
+                    draw_page_number(c, page)
+                    c.showPage()
+                    page += 1
+                    stats["pages"] += 1
 
         w.draw_paper(c)
         rest = draw_first_page(c, book, spec, title)
