@@ -1,0 +1,63 @@
+{
+  "id": "weapon_sniper_rifle",
+  "title": "Sniper Rifle",
+  "category": "Light Weapons",
+  "weight": "10",
+  "cost": 300,
+  "rarity": 4,
+  "ammo": ".308 Round",
+  "damageType": "Physical",
+  "damage": 7,
+  "fireRate": 0,
+  "range": "Long",
+  "effects": [
+    "Piercing"
+  ],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "A scoped rifle once designed for use by military and police forces to eliminate targets efficiently from long distances. The design incorporates many features that other weapons would be modded to have, but such built-in design means that it's difficult to alter purpose-made sniper rifles",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        "Calibrated",
+        "Calibrated Powerful",
+        "Hardened",
+        "Powerful"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Long Night Vision Scope",
+        "Long Scope",
+        "Short Scope"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Suppressor"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 37
+}

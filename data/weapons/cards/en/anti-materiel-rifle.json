@@ -1,0 +1,72 @@
+{
+  "id": "weapon_anti_materiel_rifle",
+  "title": "Anti-Materiel Rifle",
+  "category": "Light Weapons",
+  "weight": "20",
+  "cost": 560,
+  "rarity": 4,
+  "ammo": ".50 Round",
+  "damageType": "Physical",
+  "damage": 8,
+  "fireRate": 0,
+  "range": "Long",
+  "effects": [
+    "Piercing"
+  ],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "Utilizing an ergonomic, metallic skeleton design with a free-floating barrel, the anti-materiel rifle is a bolt-action, high-caliber precision weapon intended for use against materiel and hard targets. The weapon is designed for use at long ranges and should ideally not be fired while standing up due to the heavy recoil. Rare and highly sought-after, these guns are ideal for dealing with things like deathclaws, the larger radscorpions, and other sizeable threats… so long as you've got time to set up the first shot.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        "Hair Trigger",
+        "Hardened",
+        "Powerful"
+      ]
+    },
+    {
+      "slot": "MAGAZINE",
+      "items": [
+        "Large Magazine",
+        "Large Quick-Eject Mag",
+        "Quick-Eject Mag"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Long Night Vision Scope",
+        "Long Scope",
+        "Recon Scope",
+        "Short Night Vision Scope",
+        "Short Scope"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Suppressor"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 9
+}

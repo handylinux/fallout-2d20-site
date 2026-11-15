@@ -1,0 +1,39 @@
+{
+  "id": "weapon_war_drum",
+  "title": "War Drum",
+  "category": "Melee Weapons",
+  "weight": "20",
+  "cost": 115,
+  "rarity": 3,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 5,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [
+    "Stun"
+  ],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "A heavy two-handed drum weapon; its booming sound raises the complication range on sneak attacks.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 133
+}

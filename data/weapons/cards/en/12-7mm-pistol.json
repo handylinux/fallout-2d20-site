@@ -1,0 +1,81 @@
+{
+  "id": "weapon_12_7mm_pistol",
+  "title": "12.7mm Pistol",
+  "category": "Light Weapons",
+  "weight": "4",
+  "cost": 400,
+  "rarity": 4,
+  "ammo": "12.7mm Round",
+  "damageType": "Physical",
+  "damage": 6,
+  "fireRate": 1,
+  "range": "Close",
+  "effects": [
+    "Vicious"
+  ],
+  "qualities": [
+    "Close Quarters"
+  ],
+  "description": "A heavy-duty single-shot weapon with exceptional stopping power. Most known examples are believed to have been imported from overseas before the war. Given the weapon's punishing recoil, it can be tricky to use for those not prepared for its kick.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        "Advanced",
+        "Armor-Piercing",
+        "Calibrated",
+        "Calibrated Powerful",
+        "Hair Trigger",
+        "Hardened",
+        "Powerful"
+      ]
+    },
+    {
+      "slot": "BARREL",
+      "items": [
+        "Long",
+        "Ported"
+      ]
+    },
+    {
+      "slot": "GRIP",
+      "items": [
+        "Comfort Grip",
+        "Sharpshooter's Grip"
+      ]
+    },
+    {
+      "slot": "MAGAZINE",
+      "items": [
+        "Large Magazine",
+        "Large Quick-Eject Mag",
+        "Quick-Eject Mag"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Compensator",
+        "Suppressor"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 5
+}

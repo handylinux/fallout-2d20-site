@@ -1,0 +1,39 @@
+{
+  "id": "weapon_cattle_prod",
+  "title": "Cattle Prod",
+  "category": "Melee Weapons",
+  "weight": "3",
+  "cost": 90,
+  "rarity": 4,
+  "ammo": "",
+  "damageType": "Energy",
+  "damage": 7,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [
+    "Stun"
+  ],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "A two-handed rod delivering a powerful electric stun to its target.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 111
+}

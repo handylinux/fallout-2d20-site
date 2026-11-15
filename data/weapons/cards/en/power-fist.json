@@ -1,0 +1,45 @@
+{
+  "id": "weapon_power_fist",
+  "title": "Power Fist",
+  "category": "Unarmed Weapons",
+  "weight": "4",
+  "cost": 100,
+  "rarity": 2,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 4,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [
+    "Stun"
+  ],
+  "qualities": [],
+  "description": "A Power Fist is a reinforced gauntlet or vambrace which mounts a heavy-duty pneumatic ram.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "UNIQUE",
+      "items": [
+        "Heating Coil",
+        "Puncturing"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 144
+}

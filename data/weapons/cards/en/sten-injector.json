@@ -1,0 +1,42 @@
+{
+  "id": "weapon_sten_injector",
+  "title": "Sten Injector",
+  "category": "Light Weapons",
+  "weight": "9",
+  "cost": 445,
+  "rarity": 5,
+  "ammo": "Tranquilizer Dart",
+  "damageType": "Physical",
+  "damage": 3,
+  "fireRate": 4,
+  "range": "Medium",
+  "effects": [
+    "Persistent",
+    "Burst"
+  ],
+  "qualities": [
+    "Tranquilizer X",
+    "Inaccurate",
+    "Two-Handed"
+  ],
+  "description": "For those times when a single dart is not enough, this tranquilizer submachine gun can turn several enemies at once into truly... exceptionally calm pincushions. Side effects may vary. Vault-Tec is not responsible for loss of taste, touch, motor functions, or death caused by an overdose of tranquilizer.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 39
+}

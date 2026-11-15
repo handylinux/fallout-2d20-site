@@ -1,0 +1,49 @@
+{
+  "id": "weapon_auto_axe",
+  "title": "Auto-Axe",
+  "category": "Melee Weapons",
+  "weight": "20",
+  "cost": 100,
+  "rarity": 3,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 5,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [
+    "Vicious"
+  ],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "A powered industrial chainsaw re-fitted as a vicious two-handed melee weapon.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "UNIQUE",
+      "items": [
+        "Burning Blade",
+        "Electrified Blade",
+        "Poison Blade",
+        "Turbo"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 106
+}

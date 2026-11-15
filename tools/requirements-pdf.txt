@@ -1,4 +1,4 @@
 reportlab>=4.0
 pillow>=10.0
-# only for tests and PNG previews of the generated PDF
+# also used for extracting images, PDF assembly, tests and previews
 pymupdf>=1.24

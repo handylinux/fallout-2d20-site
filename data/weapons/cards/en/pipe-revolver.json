@@ -1,0 +1,92 @@
+{
+  "id": "weapon_pipe_revolver",
+  "title": "Pipe Revolver",
+  "category": "Light Weapons",
+  "weight": "4",
+  "cost": 25,
+  "rarity": 0,
+  "ammo": ".45 Round",
+  "damageType": "Physical",
+  "damage": 4,
+  "fireRate": 1,
+  "range": "Close",
+  "effects": [],
+  "qualities": [
+    "Close Quarters",
+    "Unreliable"
+  ],
+  "description": "Like the other forms of pipe gun, the pipe revolver is a makeshift or homemade gun.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        ".308 Receiver",
+        ".357 Receiver",
+        ".38 Receiver",
+        "Calibrated",
+        "Calibrated Powerful",
+        "Powerful"
+      ]
+    },
+    {
+      "slot": "BARREL",
+      "items": [
+        "Finned",
+        "Long",
+        "Ported"
+      ]
+    },
+    {
+      "slot": "GRIP",
+      "items": [
+        "Sharpshooter's Grip"
+      ]
+    },
+    {
+      "slot": "STOCK",
+      "items": [
+        "Marksman's Stock",
+        "Recoil Compensating Stock",
+        "Standard Stock"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Long Night Vision Scope",
+        "Long Scope",
+        "Recon Scope",
+        "Reflex Sight",
+        "Short Night Vision Scope",
+        "Short Scope"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Bayonet",
+        "Compensator",
+        "Muzzle Break",
+        "Suppressor"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 32
+}

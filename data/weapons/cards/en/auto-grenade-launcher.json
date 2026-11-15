@@ -1,0 +1,54 @@
+{
+  "id": "weapon_auto_grenade_launcher",
+  "title": "Auto Grenade Launcher",
+  "category": "Heavy Weapons",
+  "weight": "30",
+  "cost": 450,
+  "rarity": 4,
+  "ammo": "40mm Grenade",
+  "damageType": "Physical",
+  "damage": 6,
+  "fireRate": 2,
+  "range": "Long",
+  "effects": [
+    "Burst"
+  ],
+  "qualities": [
+    "Two-Handed",
+    "Blast"
+  ],
+  "description": "The automatic grenade launcher (sometimes referred to as a grenade machine gun), is a belt-fed, blowback-operated, air-cooled automatic weapon designed to lay down a heavy volume of explosive ordnance and support infantry and vehicle operations. Designed for use as a crew-served weapon, the automatic grenade launcher was intended for use against a variety of targets ranging from infantry and light vehicles to fortifications and other materiel. The sheer weight of the weapon and bulk of the ammunition limited its versatility, until the advent of Power Armor. Since then, many units were converted for use on foot, rather than from a tripod.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        "25mm Receiver"
+      ]
+    },
+    {
+      "slot": "BARREL",
+      "items": [
+        "Heavy Barrel",
+        "Long"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 44
+}

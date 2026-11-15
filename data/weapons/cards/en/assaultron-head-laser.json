@@ -1,0 +1,49 @@
+{
+  "id": "weapon_assaultron_head_laser",
+  "title": "Assaultron Head Laser",
+  "category": "Energy Weapons",
+  "weight": "8",
+  "cost": 500,
+  "rarity": 3,
+  "ammo": "Fusion Core",
+  "damageType": "Energy",
+  "damage": 5,
+  "fireRate": 0,
+  "range": "Close",
+  "effects": [
+    "Piercing"
+  ],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "The head of an Assaultron contains a high-yield laser emitter, shielded behind sturdy armor plating. Assaultrons use this laser to blast the enemy as they close into melee. The laser itself uses a capacitor that can build up an extremely powerful charge, but which requires considerable energy for each fully charged blast. Due to the solid design, destroyed Assaultrons sometimes have an intact head that can be used as an impromptu hand-held laser.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "CAPACITOR",
+      "items": [
+        "Capacitor Mk III",
+        "Capacitor Mk IV",
+        "Capacitor Mk V",
+        "Capacitor Mk VI"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 61
+}

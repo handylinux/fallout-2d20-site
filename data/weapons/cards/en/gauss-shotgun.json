@@ -1,0 +1,53 @@
+{
+  "id": "weapon_gauss_shotgun",
+  "title": "Gauss Shotgun",
+  "category": "Energy Weapons",
+  "weight": "14",
+  "cost": 400,
+  "rarity": 5,
+  "ammo": "2mm EC Round",
+  "damageType": "Physical",
+  "damage": 7,
+  "fireRate": 0,
+  "range": "Close",
+  "effects": [
+    "Spread"
+  ],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "Technically more of a volley gun than a shotgun, as it fires multiple shots from multiple barrels at once, the gauss shotgun is a rare and devastating weapon which peppers a target with hypervelocity rounds.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "BARREL",
+      "items": [
+        "Shielded Barrel"
+      ]
+    },
+    {
+      "slot": "CAPACITOR",
+      "items": [
+        "Capacitor Boosting Coil",
+        "Full Capacitors"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 70
+}

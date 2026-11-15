@@ -1,0 +1,65 @@
+{
+  "id": "weapon_cryolator",
+  "title": "Cryolator",
+  "category": "Energy Weapons",
+  "weight": "14",
+  "cost": 300,
+  "rarity": 4,
+  "ammo": "Cryo Cell",
+  "damageType": "Energy",
+  "damage": 4,
+  "fireRate": 4,
+  "range": "Close",
+  "effects": [
+    "Burst"
+  ],
+  "qualities": [
+    "Two-Handed",
+    "Debilitating"
+  ],
+  "description": "The cryolator, a machine designed with the ability to perform cryogenic freezing while maintaining mobility. Operating on a similar principle to a flamer, the cryolater takes pressurized nitrogen gas from a cryo cell and liquefies it, spraying the concentrated chemical element over a desired area in range.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "BARREL",
+      "items": [
+        "Crystallizing Barrel"
+      ]
+    },
+    {
+      "slot": "STOCK",
+      "items": [
+        "Recoil Compensating Stock"
+      ]
+    },
+    {
+      "slot": "MAGAZINE",
+      "items": [
+        "Fusion Mag"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Reflex Sight"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 62
+}

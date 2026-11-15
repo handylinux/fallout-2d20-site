@@ -1,0 +1,43 @@
+{
+  "id": "weapon_fat_man",
+  "title": "Fat Man",
+  "category": "Heavy Weapons",
+  "weight": "31",
+  "cost": 512,
+  "rarity": 4,
+  "ammo": "Mini Nuke",
+  "damageType": "Physical",
+  "damage": 21,
+  "fireRate": 0,
+  "range": "Medium",
+  "effects": [
+    "Vicious",
+    "Breaking",
+    "Radioactive"
+  ],
+  "qualities": [
+    "Two-Handed",
+    "Inaccurate",
+    "Blast"
+  ],
+  "description": "The M42 Nuclear Catapult is a shoulder-fired infantry support weapon.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 48
+}

@@ -1,0 +1,99 @@
+{
+  "id": "weapon_combat_shotgun",
+  "title": "Combat Shotgun",
+  "category": "Light Weapons",
+  "weight": "11",
+  "cost": 87,
+  "rarity": 2,
+  "ammo": "Shotgun Shell",
+  "damageType": "Physical",
+  "damage": 5,
+  "fireRate": 2,
+  "range": "Close",
+  "effects": [
+    "Spread"
+  ],
+  "qualities": [
+    "Two-Handed",
+    "Inaccurate"
+  ],
+  "description": "Combat shotguns are shotguns intended for an offensive role.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        "Advanced",
+        "Automatic",
+        "Calibrated",
+        "Calibrated Powerful",
+        "Hair Trigger",
+        "Hardened",
+        "Hardened Automatic",
+        "Powerful",
+        "Powerful Automatic",
+        "Rapid Automatic"
+      ]
+    },
+    {
+      "slot": "BARREL",
+      "items": [
+        "Long",
+        "Ported"
+      ]
+    },
+    {
+      "slot": "STOCK",
+      "items": [
+        "Full Stock",
+        "Marksman's Stock",
+        "Recoil Compensating Stock"
+      ]
+    },
+    {
+      "slot": "MAGAZINE",
+      "items": [
+        "Large Magazine",
+        "Large Quick-Eject Mag",
+        "Quick-Eject Mag"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Long Night Vision Scope",
+        "Long Scope",
+        "Recon Scope",
+        "Reflex Sight",
+        "Short Night Vision Scope",
+        "Short Scope"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Bayonet",
+        "Compensator",
+        "Muzzle Break",
+        "Suppressor"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 19
+}

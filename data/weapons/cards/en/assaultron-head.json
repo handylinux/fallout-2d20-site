@@ -1,0 +1,37 @@
+{
+  "id": "weapon_assaultron_head",
+  "title": "Assaultron Head",
+  "category": "Energy Weapons",
+  "weight": "8",
+  "cost": 500,
+  "rarity": 3,
+  "ammo": "Energy Cell",
+  "damageType": "Energy",
+  "damage": 5,
+  "fireRate": 0,
+  "range": "Close",
+  "effects": [
+    "Piercing"
+  ],
+  "qualities": [],
+  "description": "A head-mounted energy weapon that fires concentrated blasts, consuming two shots of ammunition each time it fires.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 60
+}

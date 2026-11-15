@@ -1,6 +1,11 @@
 """Tests for tools/weapons2cards.py (Companion JSON → card JSON)."""
 
 import unittest
+import json
+import os
+import shutil
+import tempfile
+from unittest.mock import patch
 
 import weapons2cards as cards
 
@@ -9,6 +14,22 @@ class CompanionTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.comp = cards.Companion()
+
+    def test_working_copy_edits_drive_cards(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            copy = os.path.join(tmp, 'companion')
+            shutil.copytree(cards.COMP, copy)
+            ru = os.path.join(copy, 'i18n', 'ru-RU', 'data')
+            names = os.path.join(ru, 'equipment', 'weapons', 'weapons.json')
+            with open(names, encoding='utf-8') as f:
+                items = json.load(f)
+            next(x for x in items if x['id'] == 'weapon_10mm_pistol')['name'] = 'Изменённый пистолет'
+            with open(names, 'w', encoding='utf-8') as f:
+                json.dump(items, f, ensure_ascii=False)
+            with patch.object(cards, 'COMP', copy), patch.object(cards, 'RU', ru):
+                result = cards.build_card(cards.Companion(), 'weapon_10mm_pistol')
+            self.assertEqual(result['title'], 'Изменённый пистолет')
+            self.assertEqual(self.comp.weapon_name('weapon_10mm_pistol'), '10-мм пистолет')
 
     def test_slugify(self):
         self.assertEqual(cards.slugify("weapon_10mm_pistol"), "10mm-pistol")
@@ -25,6 +46,11 @@ class CompanionTests(unittest.TestCase):
         self.assertEqual(card["qualities"], ["Вплотную", "Надежное"])
         self.assertEqual(card["page"], 18)
 
+    def test_multiple_ammo_types_are_preserved(self):
+        self.assertEqual(self.comp.ammo_name(self.comp.weapons['weapon_gatling_laser']),
+                         'Энергоячейка / Ядерный блок')
+        self.assertIn('[unknown_ammo]', self.comp.ammo_name({'ammoId': 'ammo_fusion_core,unknown_ammo'}))
+
     def test_slots_are_in_book_order(self):
         card = cards.build_card(self.comp, "weapon_10mm_pistol")
         self.assertEqual([m["slot"] for m in card["mods"]],
@@ -37,6 +63,21 @@ class CompanionTests(unittest.TestCase):
         self.assertEqual(receiver[:4], ["Продвинутый", "Бронебойный",
                                         "Автоматический бронебойный",
                                         "Для автоогня"])
+
+    def test_mod_names_do_not_repeat_the_weapon_name(self):
+        ripper = cards.build_card(self.comp, 'weapon_ripper')
+        self.assertEqual(ripper['mods'][0]['items'][:2],
+                         ['Изогнутое лезвие', 'Удлиненное лезвие'])
+        for mod_id in ('mod_curved_blade', 'mod_electrified', 'mod_extended_blade',
+                       'mod_extra_claw', 'mod_extra_heavy', 'mod_heavy',
+                       'mod_hooked', 'mod_lead_lining'):
+            self.assertNotIn(':', self.comp.mods_ru[mod_id]['name'])
+        with open(os.path.join(cards.ROOT, 'data/weapon-book/mod-prefixes.ru.json'), encoding='utf-8') as source:
+            prefixes = json.load(source)
+        for mod_id in ('mod_curved_blade', 'mod_electrified', 'mod_extended_blade',
+                       'mod_extra_claw', 'mod_extra_heavy', 'mod_heavy',
+                       'mod_hooked', 'mod_lead_lining'):
+            self.assertNotIn(':', prefixes[mod_id])
 
     def test_energy_weapon(self):
         card = cards.build_card(self.comp, "weapon_cryolator")
@@ -58,6 +99,14 @@ class CompanionTests(unittest.TestCase):
     def test_effects_are_mapped_and_joined(self):
         card = cards.build_card(self.comp, "weapon_tesla_cannon")
         self.assertEqual(card["effects"], ["Дуга", "Проникающий 2"])
+
+    def test_canonical_quality_and_effect_terms(self):
+        self.assertEqual(self.comp.qualities['quality_debilitating']['name'], 'Изнуряющий')
+        self.assertEqual(self.comp.qualities['quality_concealed']['name'], 'Скрытное')
+        self.assertEqual(self.comp.qualities['quality_placed']['name'], 'Установка')
+        self.assertEqual(self.comp.qualities['quality_parry']['name'], 'Парирование')
+        self.assertEqual(self.comp.effects['effect_freeze']['name'], 'Заморозка')
+        self.assertEqual(self.comp.effects['effect_stun']['name'], 'Оглушение')
 
     def test_three_effect_weapon(self):
         card = cards.build_card(self.comp, "weapon_fat_man")

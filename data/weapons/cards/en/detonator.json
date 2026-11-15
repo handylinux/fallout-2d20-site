@@ -1,0 +1,35 @@
+{
+  "id": "weapon_detonator",
+  "title": "Detonator",
+  "category": "Explosive Weapons",
+  "weight": "1",
+  "cost": 75,
+  "rarity": 3,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 0,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [],
+  "qualities": [],
+  "description": "A remote detonator used to trigger placed explosives from a distance as a minor action.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 86
+}

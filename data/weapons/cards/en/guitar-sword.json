@@ -1,0 +1,39 @@
+{
+  "id": "weapon_guitar_sword",
+  "title": "Guitar Sword",
+  "category": "Melee Weapons",
+  "weight": "3",
+  "cost": 45,
+  "rarity": 3,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 4,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [
+    "Piercing"
+  ],
+  "qualities": [
+    "Parry"
+  ],
+  "description": "A reviled instrument used as a bladed weapon; its twang raises the complication range on sneak attacks.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 115
+}

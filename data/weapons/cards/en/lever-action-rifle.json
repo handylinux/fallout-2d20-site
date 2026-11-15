@@ -1,0 +1,79 @@
+{
+  "id": "weapon_lever_action_rifle",
+  "title": "Lever-Action Rifle",
+  "category": "Light Weapons",
+  "weight": "9",
+  "cost": 201,
+  "rarity": 3,
+  "ammo": ".308 Round",
+  "damageType": "Physical",
+  "damage": 7,
+  "fireRate": 0,
+  "range": "Medium",
+  "effects": [],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "As the name suggests, a lever-action rifle uses a lever to cycle the weapon's action; this is typically part of the trigger guard, allowing the shooter to cycle the action with minimal effort or movement. Though this slows the rate of fire, it's a reliable design that stands up to use, time, and nuclear war.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        ".357 Receiver",
+        "Advanced",
+        "Calibrated",
+        "Calibrated Powerful",
+        "Hardened",
+        "Powerful"
+      ]
+    },
+    {
+      "slot": "BARREL",
+      "items": [
+        "Long",
+        "Ported"
+      ]
+    },
+    {
+      "slot": "STOCK",
+      "items": [
+        "Full Stock",
+        "Marksman's Stock"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Long Night Vision Scope",
+        "Long Scope",
+        "Reflex Sight",
+        "Short Night Vision Scope",
+        "Short Scope"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Suppressor"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 26
+}

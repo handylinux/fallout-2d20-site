@@ -1,0 +1,186 @@
+{
+  "damage_effects": {
+    "title": "DAMAGE EFFECTS",
+    "intro": "Damage effects are special properties of a weapon. If at least one Effect symbol DC is rolled on the damage dice, all damage effects listed for that weapon trigger. Some effects depend on the number of Effect symbols rolled, as detailed in each effect's description.",
+    "items": [
+      {
+        "name": "ARC",
+        "text": "For each Effect rolled, one additional target within Close range of the primary target is automatically hit. Each secondary target takes half the damage rolled. Unlike Burst, Arc does not consume additional ammunition."
+      },
+      {
+        "name": "BREAKING",
+        "text": "For each Effect rolled, permanently reduce the target's cover dice by 1. If the target has no cover dice, instead reduce the Damage Resistance of the hit location by 1 for the weapon's damage type (e.g., Physical damage reduces Physical DR, Energy damage reduces Energy DR)."
+      },
+      {
+        "name": "BURST",
+        "text": "The attack may hit one additional target within Close range of the primary target for each Effect rolled. Each additional target consumes 1 additional shot of ammunition from the weapon."
+      },
+      {
+        "name": "FREEZE",
+        "text": "Opponents struck by this attack are frozen if the number of Effects rolled equals or exceeds half the target's END (or half Body for creatures). A frozen target cannot take actions on its next turn."
+      },
+      {
+        "name": "PERSISTENT",
+        "text": "If one or more Effects are rolled, at the end of its next and subsequent turns the target suffers damage equal to the weapon's rolled damage for a number of rounds equal to the number of Effects rolled (for example, rolling 5 damage including 2 Effects deals 5 damage per round for 2 rounds). A character may spend a major action to attempt a skill test (difficulty equal to the remaining rounds; Attribute + Skill chosen by the GM) to end the effect early. Some weapons inflict Persistent damage of a specific type shown in parentheses, such as Persistent (Poison)."
+      },
+      {
+        "name": "PIERCING X",
+        "text": "Ignores X points of the target's Damage Resistance for each Effect rolled, where X is the rating of the weapon's Piercing effect."
+      },
+      {
+        "name": "RADIOACTIVE",
+        "text": "For each Effect rolled, the target also suffers 1 point of Radiation damage. This Radiation damage is totaled and applied separately after the target takes the attack's normal damage."
+      },
+      {
+        "name": "SPREAD",
+        "text": "For each Effect rolled, your attack inflicts one additional hit on the target. Each additional hit deals half the rolled damage (rounded down) and strikes a random hit location, even if the initial attack targeted a specific location."
+      },
+      {
+        "name": "STUN",
+        "text": "If one or more Effects are rolled, the target cannot take any actions (neither major nor minor) on its next turn. A stunned character or creature may still spend AP to buy additional actions."
+      },
+      {
+        "name": "VICIOUS",
+        "text": "The attack inflicts +1 damage for each Effect rolled."
+      }
+    ]
+  },
+  "weapon_qualities": {
+    "title": "WEAPON QUALITIES",
+    "intro": "Qualities are special rules that describe how a weapon functions and how it differs from other types of weapons.",
+    "items": [
+      {
+        "name": "ACCURATE",
+        "text": "If you take the Aim minor action before attacking with an Accurate weapon, you may spend up to 3 AP to add +1 DC damage per AP spent. If you gain bonus damage this way, you cannot also spend ammunition for bonus damage. A weapon cannot be both Accurate and Inaccurate."
+      },
+      {
+        "name": "AMMO-HUNGRY (X)",
+        "text": "The weapon consumes ammunition at a voracious rate. Each attack spends X shots of ammunition instead of 1. Additionally, spending ammunition to add +1 DC damage costs X shots per bonus die (up to the weapon's Fire Rate), and other ammo-spending effects (such as Burst) likewise spend X shots per target instead of 1."
+      },
+      {
+        "name": "BAYONET",
+        "text": "The fitted bayonet allows the weapon to be used as a melee weapon in Reach, dealing 4 DC Physical damage with Piercing 1 (or 5 DC Physical damage with Piercing 1 when fitted with a Large Bayonet)."
+      },
+      {
+        "name": "BLAST",
+        "text": "When attacking with a Blast weapon, you do not target a single enemy. Instead, choose a single zone you can see and make an attack skill test with a base difficulty of 2 (modified by range as normal). On a success, every creature and damageable object in that zone suffers the rolled damage. On a failure, roll only half the weapon's DC to determine damage inflicted on targets in the zone, and ignore the weapon's damage effects."
+      },
+      {
+        "name": "BOMBARD",
+        "text": "Functions like Blast, except that during the attack you may spend additional ammunition to strike extra zones. Each additional zone costs 2 ammunition and must be adjacent to the initial target zone; total extra ammunition spent cannot exceed the weapon's Fire Rate."
+      },
+      {
+        "name": "CLOSE QUARTERS",
+        "text": "A weapon with the Close Quarters quality does not suffer an attack difficulty increase when used within Reach of an enemy."
+      },
+      {
+        "name": "CONCEALED",
+        "text": "Concealed weapons are small and easily hidden on your person. Enemies do not notice a Concealed weapon unless you are holding it in your hands or they search you thoroughly and succeed at a PER + Survival test with a difficulty of 2."
+      },
+      {
+        "name": "CRANK (X)",
+        "text": "The weapon uses a hand-cranked capacitor or multi-chamber feed rated up to X shots or charges. When attacking, you can crank or feed additional charges as specified by the weapon or modification to increase damage or shots fired per attack."
+      },
+      {
+        "name": "DEBILITATING",
+        "text": "The difficulty of any skill test to treat injuries inflicted by a Debilitating weapon increases by +1."
+      },
+      {
+        "name": "DELAY (X)",
+        "text": "Equipped with a timed fuse or delay mechanism, the device does not detonate immediately. Weapons with Delay (1) detonate at the start of the first round after being thrown or primed; Delay (2) detonates at the start of the second round, and so on."
+      },
+      {
+        "name": "DISARM",
+        "text": "On a successful attack with this weapon, you may spend 2 AP to disarm the opponent, knocking one held weapon or item out of their grasp."
+      },
+      {
+        "name": "FUEL (X)",
+        "text": "Requires loading the specified fuel ammunition type equal to the weapon's base damage rating before use. Whenever a complication is rolled on an attack, the weapon runs out of fuel and must be reloaded as a minor action before its next attack."
+      },
+      {
+        "name": "GATLING",
+        "text": "Consumes ammunition at ten times the normal rate: whenever you would spend 1 shot of ammunition, a Gatling weapon instead fires a 10-round burst. Each burst of 10 rounds spent to boost damage adds +2 DC (up to the weapon's Fire Rate) instead of +1 DC per single shot."
+      },
+      {
+        "name": "INACCURATE",
+        "text": "When attacking with an Inaccurate weapon, you gain no benefit from the Aim minor action. A weapon cannot be both Accurate and Inaccurate."
+      },
+      {
+        "name": "MINE",
+        "text": "Once placed on a surface and armed, a Mine becomes a hazardous object that detonates and inflicts damage on anyone entering Reach (and to all targets in the zone if it also has the Blast quality)."
+      },
+      {
+        "name": "NIGHT VISION",
+        "text": "Equipped with night-vision optics designed to see clearly in low light. When you Aim with a Night Vision weapon, ignore any attack difficulty increases caused by darkness."
+      },
+      {
+        "name": "PARRY",
+        "text": "When an enemy attacks you in melee while you wield a Parry weapon, you may spend 1 AP to add +1 to your Defense against that attack."
+      },
+      {
+        "name": "PLACED",
+        "text": "The explosive is placed on a surface and armed rather than thrown, often paired with Delay (X) or a Detonator. Placing it requires a PER + Explosives test with a difficulty of 1 (or 2 if you have been attacked since your last turn). On a failure it is improperly set and fails to detonate (or triggers unpredictably on a complication)."
+      },
+      {
+        "name": "RE-ROLL HIT LOCATION",
+        "text": "When making an attack with this weapon, you may re-roll the Hit Location die once."
+      },
+      {
+        "name": "RECOIL (X)",
+        "text": "Generates severe recoil when fired. If the wielder's STR is lower than X, the difficulty of all attacks with the weapon increases by +1. This penalty is ignored if the weapon is held in two hands, or (if already Two-Handed) braced against a solid object or bipod."
+      },
+      {
+        "name": "RECON",
+        "text": "When you Aim at a target with a Recon weapon, you mark that target. The next ally who attacks that marked target may re-roll one d20 during their attack."
+      },
+      {
+        "name": "RELIABLE",
+        "text": "During each combat encounter, a Reliable weapon ignores the first complication you roll on a skill test using it. A weapon cannot be both Reliable and Unreliable."
+      },
+      {
+        "name": "SHREDDER",
+        "text": "Fits toothed blades or bayonet fittings around the muzzle so the weapon can be used in Reach as a melee weapon, inflicting Physical damage equal to the weapon's Fire Rate (Minigun) or 4 DC Piercing 1 Physical damage (Missile Launcher)."
+      },
+      {
+        "name": "SLOW LOAD",
+        "text": "This weapon takes longer to reload between shots. After firing, you must spend a minor action to reload before you can fire it again."
+      },
+      {
+        "name": "SNEAK ATTACK",
+        "text": "Modifies sneak attacks made with the weapon: a Stealth Blade deals bonus damage on a Sneak Attack, while noisy musical weapons (such as the War Drum, Guitar Sword, and Death Tambo) increase the complication range by 1 during sneak attacks."
+      },
+      {
+        "name": "SUPPRESSED",
+        "text": "If an enemy cannot see you when you attack with a Suppressed weapon, they do not notice the attack unless they are the target or pass a PER + Survival test with a difficulty of 2."
+      },
+      {
+        "name": "SURGE",
+        "text": "Especially effective against machines, robots, and targets in Power Armor. Attacks with a Surge weapon gain the Vicious damage effect against robots, opponents in Power Armor, and other mechanical or electronic targets (such as turrets)."
+      },
+      {
+        "name": "TARGETING COMPUTER",
+        "text": "When you Aim at a target with this weapon, the target gains no benefit from cover, and the bonus from aiming applies to your next attack on any subsequent turn during the same scene."
+      },
+      {
+        "name": "THROWN",
+        "text": "Thrown (C) weapons have an ideal range of Close; Thrown (M) weapons have an ideal range of Medium. Attacking with a Thrown weapon uses an AGI + Throwing test (or the weapon's listed skill)."
+      },
+      {
+        "name": "TRANQUILIZER X",
+        "text": "Inflicts damage normally but does not cause Critical Hits. If the attack deals enough damage to inflict a Critical Hit, the target must pass an END + Survival (or Body + Other) test at difficulty X or fall unconscious for 1 hour (targets reduced to 0 HP automatically fail and fall unconscious). Does not affect targets immune to Poison or wearing a full suit of Power Armor."
+      },
+      {
+        "name": "TWO-HANDED",
+        "text": "Must be held in both hands to use effectively. Attempting to attack with a Two-Handed weapon using only one hand increases the attack difficulty by +2."
+      },
+      {
+        "name": "UNDERWATER",
+        "text": "When attacking with this weapon while submerged underwater, no underwater attack penalties apply."
+      },
+      {
+        "name": "UNRELIABLE",
+        "text": "When attacking with an Unreliable weapon, increase the complication range of the attack by 1. A weapon cannot be both Reliable and Unreliable."
+      }
+    ]
+  }
+}

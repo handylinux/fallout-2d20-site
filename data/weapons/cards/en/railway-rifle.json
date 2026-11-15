@@ -1,0 +1,82 @@
+{
+  "id": "weapon_railway_rifle",
+  "title": "Railway Rifle",
+  "category": "Light Weapons",
+  "weight": "14",
+  "cost": 290,
+  "rarity": 4,
+  "ammo": "Railway Spike",
+  "damageType": "Physical",
+  "damage": 10,
+  "fireRate": 0,
+  "range": "Medium",
+  "effects": [
+    "Breaking"
+  ],
+  "qualities": [
+    "Two-Handed",
+    "Unreliable",
+    "Debilitating"
+  ],
+  "description": "A makeshift weapon created by enterprising engineers in the wastelands.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        "Automatic Piston"
+      ]
+    },
+    {
+      "slot": "BARREL",
+      "items": [
+        "Long"
+      ]
+    },
+    {
+      "slot": "STOCK",
+      "items": [
+        "Full Stock",
+        "Marksman's Stock",
+        "Recoil Compensating Stock"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Long Night Vision Scope",
+        "Long Scope",
+        "Recon Scope",
+        "Reflex Sight",
+        "Short Night Vision Scope",
+        "Short Scope"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Bayonet",
+        "Compensator",
+        "Muzzle Break",
+        "Suppressor"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 36
+}

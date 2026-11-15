@@ -1,0 +1,37 @@
+{
+  "id": "weapon_flare_gun",
+  "title": "Flare Gun",
+  "category": "Light Weapons",
+  "weight": "2",
+  "cost": 50,
+  "rarity": 1,
+  "ammo": "Flare",
+  "damageType": "Physical",
+  "damage": 3,
+  "fireRate": 0,
+  "range": "Medium",
+  "effects": [],
+  "qualities": [
+    "Reliable"
+  ],
+  "description": "A Flare gun is a break-action single-shot device not really designed to inflict damage.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 22
+}

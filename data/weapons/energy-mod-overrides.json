@@ -1,0 +1,36 @@
+{
+  "weapon_laser_musket": {
+    "mod_three_crank_capacitor": {
+      "effects": "Урон: +1 DC; расходует 3 заряда на атаку",
+      "weight": "—"
+    },
+    "mod_four_crank_capacitor": {
+      "effects": "Урон: +2 DC; расходует 4 заряда на атаку"
+    },
+    "mod_five_crank_capacitor": {
+      "effects": "Урон: +3 DC; расходует 5 зарядов на атаку"
+    },
+    "mod_six_crank_capacitor": {
+      "effects": "Урон: +4 DC; расходует 6 зарядов на атаку"
+    }
+  },
+  "weapon_assaultron_head_laser": {
+    "mod_capacitor_mk_iii": {
+      "effects": "Урон: +1 DC; расходует 3 заряда на атаку",
+      "perks": "Эксперт по робототехнике",
+      "weight": "—"
+    },
+    "mod_capacitor_mk_iv": {
+      "effects": "Урон: +2 DC; расходует 4 заряда на атаку",
+      "perks": "Эксперт по робототехнике, Наука! 1"
+    },
+    "mod_capacitor_mk_v": {
+      "effects": "Урон: +3 DC; расходует 5 зарядов на атаку",
+      "perks": "Эксперт по робототехнике, Наука! 2"
+    },
+    "mod_capacitor_mk_vi": {
+      "effects": "Урон: +4 DC; расходует 6 зарядов на атаку",
+      "perks": "Эксперт по робототехнике, Наука! 3"
+    }
+  }
+}

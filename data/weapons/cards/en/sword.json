@@ -1,0 +1,50 @@
+{
+  "id": "weapon_sword",
+  "title": "Sword",
+  "category": "Melee Weapons",
+  "weight": "3",
+  "cost": 50,
+  "rarity": 2,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 4,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [
+    "Piercing"
+  ],
+  "qualities": [
+    "Parry"
+  ],
+  "description": "Swords have been in use for almost as long as wars have been fought.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "UNIQUE",
+      "items": [
+        "Electrified Blade",
+        "Electrified Serrated Blade",
+        "Serrated Blade",
+        "Stealth Blade",
+        "Stun Pack"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 130
+}

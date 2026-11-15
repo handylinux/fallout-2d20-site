@@ -1,0 +1,47 @@
+{
+  "id": "weapon_super_sledge",
+  "title": "Super Sledge",
+  "category": "Melee Weapons",
+  "weight": "20",
+  "cost": 180,
+  "rarity": 3,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 6,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [
+    "Breaking"
+  ],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "Super Sledgehammers are powered variants of the regular sledgehammer.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "UNIQUE",
+      "items": [
+        "Heating Coil",
+        "Stun Pack"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 128
+}

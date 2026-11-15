@@ -1,0 +1,44 @@
+{
+  "id": "weapon_deathclaw_gauntlet",
+  "title": "Deathclaw Gauntlet",
+  "category": "Unarmed Weapons",
+  "weight": "10",
+  "cost": 75,
+  "rarity": 3,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 5,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [
+    "Piercing"
+  ],
+  "qualities": [],
+  "description": "Made from the severed fingers and talons of a deathclaw.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "UNIQUE",
+      "items": [
+        "Extra Claw"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 140
+}

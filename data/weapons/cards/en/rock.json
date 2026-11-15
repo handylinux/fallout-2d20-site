@@ -1,0 +1,39 @@
+{
+  "id": "weapon_rock",
+  "title": "Rock",
+  "category": "Thrown Weapons",
+  "weight": "0.5",
+  "cost": 0,
+  "rarity": 0,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 2,
+  "fireRate": 0,
+  "range": "Close",
+  "effects": [
+    "Vicious"
+  ],
+  "qualities": [
+    "Thrown"
+  ],
+  "description": "A simple rock. Primitive, but effective when thrown with enough force.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 135
+}

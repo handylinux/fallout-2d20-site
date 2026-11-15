@@ -1,0 +1,101 @@
+{
+  "id": "weapon_pipe_bolt_action",
+  "title": "Pipe Bolt-Action",
+  "category": "Light Weapons",
+  "weight": "3",
+  "cost": 30,
+  "rarity": 0,
+  "ammo": ".308 Round",
+  "damageType": "Physical",
+  "damage": 5,
+  "fireRate": 0,
+  "range": "Close",
+  "effects": [
+    "Piercing"
+  ],
+  "qualities": [
+    "Unreliable"
+  ],
+  "description": "A makeshift weapon, usually seen in the hands of those who can't make, buy or scavenge anything better.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        ".38 Receiver",
+        ".50 Receiver",
+        "Calibrated",
+        "Calibrated Powerful",
+        "Powerful"
+      ]
+    },
+    {
+      "slot": "BARREL",
+      "items": [
+        "Finned",
+        "Long",
+        "Ported",
+        "Sawed-Off"
+      ]
+    },
+    {
+      "slot": "GRIP",
+      "items": [
+        "Sharpshooter's Grip"
+      ]
+    },
+    {
+      "slot": "STOCK",
+      "items": [
+        "Full Stock",
+        "Marksman's Stock",
+        "Recoil Compensating Stock"
+      ]
+    },
+    {
+      "slot": "MAGAZINE",
+      "items": [
+        "Large Magazine",
+        "Large Quick-Eject Mag",
+        "Quick-Eject Mag"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Long Night Vision Scope",
+        "Long Scope",
+        "Recon Scope",
+        "Reflex Sight",
+        "Short Night Vision Scope",
+        "Short Scope"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Bayonet",
+        "Compensator",
+        "Muzzle Break",
+        "Suppressor"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 30
+}

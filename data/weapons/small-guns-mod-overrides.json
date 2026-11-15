@@ -1,0 +1,28 @@
+{
+  "weapon_boarding_pistol": {
+    "mod_protected_winch": {
+      "effects": "Убирает качество «Ненадёжное»",
+      "weight": "—",
+      "cost": "—",
+      "perks": "Наука! 1"
+    },
+    "mod_reinforced_winch": {
+      "effects": "Урон: +2 DC; добавляет энергетический к физическому урону",
+      "weight": "—",
+      "cost": "—",
+      "perks": "Наука! 2"
+    },
+    "mod_long": {
+      "effects": "Убирает качество «Неточное»",
+      "weight": "—",
+      "cost": "—",
+      "perks": "Наука! 1"
+    },
+    "mod_aerodynamic_barrel": {
+      "effects": "Урон: +1 DC; добавляет эффект «Проникающий 2»",
+      "weight": "—",
+      "cost": "—",
+      "perks": "Наука! 2"
+    }
+  }
+}

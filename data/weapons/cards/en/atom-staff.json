@@ -1,0 +1,47 @@
+{
+  "id": "weapon_atom_staff",
+  "title": "Atom's Staff",
+  "category": "Melee Weapons",
+  "weight": "15",
+  "cost": 200,
+  "rarity": 4,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 6,
+  "fireRate": 0,
+  "range": "Close",
+  "effects": [
+    "Piercing"
+  ],
+  "qualities": [
+    "Parry",
+    "Two-Handed"
+  ],
+  "description": "",
+  "image": "",
+  "mods": [
+    {
+      "slot": "UNIQUE",
+      "items": [
+        "Shocking Coils"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 105
+}

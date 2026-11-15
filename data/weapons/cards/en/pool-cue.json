@@ -1,0 +1,45 @@
+{
+  "id": "weapon_pool_cue",
+  "title": "Pool Cue",
+  "category": "Melee Weapons",
+  "weight": "1",
+  "cost": 10,
+  "rarity": 0,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 3,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "A long, slender piece of wood used in games like pool.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "UNIQUE",
+      "items": [
+        "Barbed",
+        "Sharp"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 122
+}

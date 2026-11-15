@@ -1,0 +1,38 @@
+{
+  "id": "weapon_pulse_mine",
+  "title": "Pulse Mine",
+  "category": "Explosive Weapons",
+  "weight": "0.5",
+  "cost": 135,
+  "rarity": 3,
+  "ammo": "",
+  "damageType": "Energy",
+  "damage": 9,
+  "fireRate": 0,
+  "range": "Medium",
+  "effects": [],
+  "qualities": [
+    "Mine",
+    "Blast"
+  ],
+  "description": "A proximity-triggered mine that emits a burst of electromagnetism, devastating to machines.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 101
+}

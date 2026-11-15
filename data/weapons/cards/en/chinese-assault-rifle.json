@@ -1,0 +1,79 @@
+{
+  "id": "weapon_chinese_assault_rifle",
+  "title": "Chinese Assault Rifle",
+  "category": "Light Weapons",
+  "weight": "2",
+  "cost": 184,
+  "rarity": 3,
+  "ammo": "5.56mm Round",
+  "damageType": "Physical",
+  "damage": 4,
+  "fireRate": 4,
+  "range": "Medium",
+  "effects": [
+    "Burst"
+  ],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "The Chinese assault rifle is a reliable and simple-to-maintain weapon, commonly found in the hands of raiders across the wasteland.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        "Advanced",
+        "Calibrated",
+        "Hardened",
+        "Powerful"
+      ]
+    },
+    {
+      "slot": "BARREL",
+      "items": [
+        "Long",
+        "Ported",
+        "Vented"
+      ]
+    },
+    {
+      "slot": "MAGAZINE",
+      "items": [
+        "Large Magazine",
+        "Large Quick-Eject Mag",
+        "Quick-Eject Mag"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Reflex Sight"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Bayonet",
+        "Compensator",
+        "Suppressor"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 17
+}

@@ -1,0 +1,47 @@
+{
+  "id": "weapon_ripper",
+  "title": "Ripper",
+  "category": "Melee Weapons",
+  "weight": "6",
+  "cost": 50,
+  "rarity": 2,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 4,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [
+    "Vicious"
+  ],
+  "qualities": [],
+  "description": "The Ripper is a small, handheld, militarised chainsaw.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "UNIQUE",
+      "items": [
+        "Curved Blade",
+        "Extended Blade",
+        "Serrated Blade",
+        "Stealth Blade"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 124
+}

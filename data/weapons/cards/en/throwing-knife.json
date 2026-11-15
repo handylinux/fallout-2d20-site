@@ -1,0 +1,41 @@
+{
+  "id": "weapon_throwing_knife",
+  "title": "Throwing Knife",
+  "category": "Thrown Weapons",
+  "weight": "<1",
+  "cost": 10,
+  "rarity": 1,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 3,
+  "fireRate": 0,
+  "range": "Close",
+  "effects": [
+    "Piercing"
+  ],
+  "qualities": [
+    "Concealed",
+    "Thrown",
+    "Suppressed"
+  ],
+  "description": "A small, sharp knife, specially balanced for throwing.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 136
+}

@@ -1,0 +1,40 @@
+{
+  "id": "weapon_bumper_sword",
+  "title": "Bumper Sword",
+  "category": "Melee Weapons",
+  "weight": "12",
+  "cost": 125,
+  "rarity": 2,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 6,
+  "fireRate": 0,
+  "range": "Close",
+  "effects": [
+    "Piercing 1"
+  ],
+  "qualities": [
+    "Recoil X",
+    "Two-Handed"
+  ],
+  "description": "A sword welded from a car bumper — heavy and crude, but effective.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 110
+}

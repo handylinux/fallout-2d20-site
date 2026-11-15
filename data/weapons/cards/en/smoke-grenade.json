@@ -1,0 +1,38 @@
+{
+  "id": "weapon_smoke_grenade",
+  "title": "Smoke Grenade",
+  "category": "Explosive Weapons",
+  "weight": "1",
+  "cost": 40,
+  "rarity": 2,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 0,
+  "fireRate": 0,
+  "range": "Medium",
+  "effects": [],
+  "qualities": [
+    "Thrown",
+    "Blast"
+  ],
+  "description": "A thrown grenade that produces a thick cloud of smoke, blocking sight and imposing +2 difficulty to tests.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 102
+}

@@ -1,0 +1,81 @@
+{
+  "id": "weapon_microwave_emitter",
+  "title": "Microwave Emitter",
+  "category": "Energy Weapons",
+  "weight": "8",
+  "cost": 500,
+  "rarity": 5,
+  "ammo": "Fusion Core",
+  "damageType": "Energy",
+  "damage": 6,
+  "fireRate": 1,
+  "range": "Medium",
+  "effects": [],
+  "qualities": [
+    "Two-Handed",
+    "Debilitating"
+  ],
+  "description": "This advanced energy weapon generates intense blasts of microwave radiation. While it won't irradiate you—microwaves are non-ionizing radiation—it can cause intense burns as whatever is hit by the blast is heated up from the inside, boiling the water in your cells. And metal is little protection: the microwave blast can't effectively be dispersed by metallic objects, which heat up, produce electrical sparks, damage delicate circuitry. While extremely rare, these weapons provide a serious advantage when used against heavily armored targets.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        "Hardened",
+        "Powerful",
+        "Hair Trigger"
+      ]
+    },
+    {
+      "slot": "BARREL",
+      "items": [
+        "Long",
+        "Ported"
+      ]
+    },
+    {
+      "slot": "STOCK",
+      "items": [
+        "Full Stock",
+        "Recoil Compensating Stock"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Reflex Sight",
+        "Short Scope",
+        "Long Scope",
+        "Short Night Vision Scope",
+        "Long Night Vision Scope",
+        "Recon Scope"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Bayonet",
+        "Compensator",
+        "Muzzle Break",
+        "Suppressor"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 76
+}

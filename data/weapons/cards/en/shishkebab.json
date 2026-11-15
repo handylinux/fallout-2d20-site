@@ -1,0 +1,46 @@
+{
+  "id": "weapon_shishkebab",
+  "title": "Shishkebab",
+  "category": "Melee Weapons",
+  "weight": "3",
+  "cost": 200,
+  "rarity": 3,
+  "ammo": "",
+  "damageType": "Energy",
+  "damage": 5,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [
+    "Piercing"
+  ],
+  "qualities": [
+    "Parry"
+  ],
+  "description": "A makeshift \"flaming sword\".",
+  "image": "",
+  "mods": [
+    {
+      "slot": "UNIQUE",
+      "items": [
+        "Extra Flame Jets"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 126
+}

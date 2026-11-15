@@ -1,0 +1,74 @@
+{
+  "id": "weapon_9mm_pistol",
+  "title": "9mm Pistol",
+  "category": "Light Weapons",
+  "weight": "2",
+  "cost": 50,
+  "rarity": 2,
+  "ammo": "9mm Round",
+  "damageType": "Physical",
+  "damage": 3,
+  "fireRate": 2,
+  "range": "Close",
+  "effects": [],
+  "qualities": [
+    "Close Quarters",
+    "Reliable"
+  ],
+  "description": "A common sight in the California and Mojave Wastelands and used as a standard sidearm by the New California Republic Army, this model of 9mm autoloader handgun was manufactured in vast quantities before the Great War. Its light weight, ease of handling, and common ammunition makes it a popular choice for personal defense, or as a backup weapon. However, the sturdy design doesn't lend itself as well to modifications as other common weapons.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        "Automatic",
+        "Calibrated",
+        "Hair Trigger",
+        "Hardened Automatic",
+        "Powerful"
+      ]
+    },
+    {
+      "slot": "GRIP",
+      "items": [
+        "Comfort Grip"
+      ]
+    },
+    {
+      "slot": "MAGAZINE",
+      "items": [
+        "Large Magazine"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Reflex Sight",
+        "Short Scope"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Suppressor"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 8
+}

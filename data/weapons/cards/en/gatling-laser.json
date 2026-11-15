@@ -1,0 +1,76 @@
+{
+  "id": "weapon_gatling_laser",
+  "title": "Gatling Laser",
+  "category": "Energy Weapons",
+  "weight": "19",
+  "cost": 804,
+  "rarity": 3,
+  "ammo": "Energy Cell, Fusion Core",
+  "damageType": "Energy",
+  "damage": 3,
+  "fireRate": 6,
+  "range": "Medium",
+  "effects": [
+    "Burst",
+    "Piercing"
+  ],
+  "qualities": [
+    "Two-Handed",
+    "Gatling",
+    "Inaccurate"
+  ],
+  "description": "A high rate-of-fire laser weapon.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "BARREL",
+      "items": [
+        "Charging Barrels"
+      ]
+    },
+    {
+      "slot": "CAPACITOR",
+      "items": [
+        "Beta Wave Tuner",
+        "Boosted Capacitor",
+        "Photon Agitator",
+        "Photon Exciter"
+      ]
+    },
+    {
+      "slot": "NOZZLE",
+      "items": [
+        "Beam Focuser"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Reflex Sight"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Beam Focuser"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 65
+}

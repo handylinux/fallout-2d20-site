@@ -1,0 +1,38 @@
+{
+  "id": "weapon_dynamite",
+  "title": "Dynamite",
+  "category": "Explosive Weapons",
+  "weight": "1",
+  "cost": 25,
+  "rarity": 2,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 5,
+  "fireRate": 0,
+  "range": "Medium",
+  "effects": [],
+  "qualities": [
+    "Thrown",
+    "Blast"
+  ],
+  "description": "A stick of dynamite with a lit fuse, thrown and set to detonate on impact.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 87
+}

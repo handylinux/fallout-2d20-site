@@ -1,0 +1,46 @@
+{
+  "id": "weapon_switchblade",
+  "title": "Switchblade",
+  "category": "Melee Weapons",
+  "weight": "1",
+  "cost": 20,
+  "rarity": 0,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 2,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [
+    "Piercing"
+  ],
+  "qualities": [
+    "Concealed"
+  ],
+  "description": "The switchblade is a commonly found melee weapon.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "UNIQUE",
+      "items": [
+        "Serrated Blade"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 129
+}

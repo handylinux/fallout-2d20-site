@@ -1,0 +1,75 @@
+{
+  "id": "weapon_alien_blaster",
+  "title": "Alien Blaster",
+  "category": "Energy Weapons",
+  "weight": "2",
+  "cost": 90,
+  "rarity": 5,
+  "ammo": "Alien Power Cell",
+  "damageType": "Energy",
+  "damage": 5,
+  "fireRate": 2,
+  "range": "Close",
+  "effects": [],
+  "qualities": [
+    "Close Quarters"
+  ],
+  "description": "The alien blaster is sometimes referred to as an alien blaster pistol.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "BARREL",
+      "items": [
+        "Automatic Barrel",
+        "Bracketed Short Barrel",
+        "Improved Barrel",
+        "Long",
+        "Long Barrel",
+        "Sniper Barrel"
+      ]
+    },
+    {
+      "slot": "GRIP",
+      "items": [
+        "Sharpshooter's Grip"
+      ]
+    },
+    {
+      "slot": "STOCK",
+      "items": [
+        "Marksman's Stock",
+        "Standard Stock"
+      ]
+    },
+    {
+      "slot": "MAGAZINE",
+      "items": [
+        "Fusion Mag"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Reflex Sight",
+        "Short Scope"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 57
+}

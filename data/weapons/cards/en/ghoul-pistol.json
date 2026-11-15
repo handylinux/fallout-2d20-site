@@ -1,0 +1,41 @@
+{
+  "id": "weapon_ghoul_pistol",
+  "title": "Ghoul Pistol",
+  "category": "Light Weapons",
+  "weight": "5",
+  "cost": 372,
+  "rarity": 5,
+  "ammo": "Homemade Rounds",
+  "damageType": "Physical",
+  "damage": 8,
+  "fireRate": 3,
+  "range": "Medium",
+  "effects": [
+    "Piercing",
+    "Vicious"
+  ],
+  "qualities": [
+    "Close Quarters",
+    "Debilitating"
+  ],
+  "description": "The Ghoul pistol is so heavily modified that its original form remains a mystery. Part revolver, part grenade launcher, this super-powerful pistol brings death and destruction both up close and at range. A truly terrifying weapon that is sure to leave a bloody mess at the pull of the trigger.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 23
+}

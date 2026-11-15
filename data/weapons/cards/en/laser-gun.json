@@ -1,0 +1,97 @@
+{
+  "id": "weapon_laser_gun",
+  "title": "Laser Gun",
+  "category": "Energy Weapons",
+  "weight": "4",
+  "cost": 69,
+  "rarity": 2,
+  "ammo": "Energy Cell",
+  "damageType": "Energy",
+  "damage": 4,
+  "fireRate": 2,
+  "range": "Close",
+  "effects": [
+    "Piercing"
+  ],
+  "qualities": [
+    "Close Quarters"
+  ],
+  "description": "Laser guns are high-tech weapons which emit a concentrated beam of coherent, directional light.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "BARREL",
+      "items": [
+        "Automatic Barrel",
+        "Improved Barrel",
+        "Long",
+        "Sniper Barrel"
+      ]
+    },
+    {
+      "slot": "CAPACITOR",
+      "items": [
+        "Beta Wave Tuner",
+        "Boosted Capacitor",
+        "Photon Agitator",
+        "Photon Exciter"
+      ]
+    },
+    {
+      "slot": "NOZZLE",
+      "items": [
+        "Beam Focuser"
+      ]
+    },
+    {
+      "slot": "GRIP",
+      "items": [
+        "Sharpshooter's Grip"
+      ]
+    },
+    {
+      "slot": "STOCK",
+      "items": [
+        "Marksman's Stock",
+        "Recoil Compensating Stock",
+        "Standard Stock"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Long Night Vision Scope",
+        "Long Scope",
+        "Recon Scope",
+        "Reflex Sight",
+        "Short Night Vision Scope",
+        "Short Scope"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Beam Focuser",
+        "Beam Splitter",
+        "Gyro Compensating Lens"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 73
+}

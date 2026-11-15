@@ -1,0 +1,47 @@
+{
+  "id": "weapon_knuckles",
+  "title": "Knuckles",
+  "category": "Unarmed Weapons",
+  "weight": "<1",
+  "cost": 10,
+  "rarity": 1,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 3,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [],
+  "qualities": [
+    "Concealed"
+  ],
+  "description": "Developed in antiquity, this weapon is nevertheless quite prevalent in the post-Great War wastelands.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "UNIQUE",
+      "items": [
+        "Bladed",
+        "Puncturing",
+        "Sharp",
+        "Spiked"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 143
+}

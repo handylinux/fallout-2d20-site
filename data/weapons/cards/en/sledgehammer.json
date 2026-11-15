@@ -1,0 +1,43 @@
+{
+  "id": "weapon_sledgehammer",
+  "title": "Sledgehammer",
+  "category": "Melee Weapons",
+  "weight": "12",
+  "cost": 40,
+  "rarity": 2,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 5,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [],
+  "qualities": [],
+  "description": "Sledgehammers are primitive weapons, used as tools before the Great War.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "UNIQUE",
+      "items": [
+        "Heavy",
+        "Puncturing"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 127
+}

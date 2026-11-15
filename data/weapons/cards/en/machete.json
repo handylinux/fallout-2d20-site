@@ -1,0 +1,44 @@
+{
+  "id": "weapon_machete",
+  "title": "Machete",
+  "category": "Melee Weapons",
+  "weight": "2",
+  "cost": 25,
+  "rarity": 1,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 3,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [
+    "Piercing"
+  ],
+  "qualities": [],
+  "description": "A long, sharp knife designed to hack through dense or tough vegetation.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "UNIQUE",
+      "items": [
+        "Serrated Blade"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 117
+}

@@ -1,0 +1,40 @@
+{
+  "id": "weapon_ballistic_fist",
+  "title": "Ballistic Fist",
+  "category": "Unarmed Weapons",
+  "weight": "6",
+  "cost": 150,
+  "rarity": 4,
+  "ammo": "Shotgun Shell",
+  "damageType": "Physical",
+  "damage": 6,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [
+    "Stun",
+    "Vicious"
+  ],
+  "qualities": [
+    "Slow Load"
+  ],
+  "description": "A heavy fist-mounted weapon that fires a shotgun shell with each punch; must be reloaded between attacks.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 138
+}

@@ -1,0 +1,53 @@
+{
+  "id": "weapon_eugene",
+  "title": "Eugene",
+  "category": "Heavy Weapons",
+  "weight": "31",
+  "cost": 2625,
+  "rarity": 3,
+  "ammo": "5mm Round",
+  "damageType": "Physical",
+  "damage": 3,
+  "fireRate": 4,
+  "range": "Medium",
+  "effects": [
+    "Burst",
+    "Spread"
+  ],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "A heavily modified minigun, this impressive 'vacuum cleaner' is the pride and joy of Brick, an eager heavy-weapons specialist from Reilly's Rangers. Fine-tuned and ready for anything, it is perhaps one of the most lethal and flawlessly tuned killing machines in the Capital Wasteland.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "BARREL",
+      "items": [
+        "Tri-Barrel"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Gunner Sight"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 47
+}

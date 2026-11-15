@@ -1,0 +1,77 @@
+{
+  "id": "weapon_gauss_rifle",
+  "title": "Gauss Rifle",
+  "category": "Energy Weapons",
+  "weight": "16",
+  "cost": 228,
+  "rarity": 5,
+  "ammo": "2mm EC Round",
+  "damageType": "Physical",
+  "damage": 10,
+  "fireRate": 1,
+  "range": "Long",
+  "effects": [
+    "Piercing"
+  ],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "The gauss rifle uses magnetic induction to propel a projectile at incredible, devastating speeds.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "BARREL",
+      "items": [
+        "Shielded Barrel"
+      ]
+    },
+    {
+      "slot": "CAPACITOR",
+      "items": [
+        "Capacitor Boosting Coil",
+        "Full Capacitors"
+      ]
+    },
+    {
+      "slot": "STOCK",
+      "items": [
+        "Recoil Compensating",
+        "Recoil Compensating Stock"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Long Night Vision Scope",
+        "Long Scope",
+        "Recon Scope",
+        "Reflex Sight",
+        "Short Night Vision Scope",
+        "Short Scope"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Suppressor"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 69
+}

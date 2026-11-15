@@ -1,0 +1,41 @@
+{
+  "id": "weapon_dynamite_bundle",
+  "title": "Dynamite Bundle",
+  "category": "Explosive Weapons",
+  "weight": "2",
+  "cost": 150,
+  "rarity": 3,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 9,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [
+    "Breaking"
+  ],
+  "qualities": [
+    "Blast",
+    "Delay X",
+    "Placed"
+  ],
+  "description": "A bundle of dynamite sticks rigged to detonate with a delay; the Delay rating is set when placed.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 88
+}

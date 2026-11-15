@@ -1,0 +1,89 @@
+{
+  "id": "weapon_laser_musket",
+  "title": "Laser Musket",
+  "category": "Energy Weapons",
+  "weight": "13",
+  "cost": 57,
+  "rarity": 1,
+  "ammo": "Energy Cell",
+  "damageType": "Energy",
+  "damage": 5,
+  "fireRate": 0,
+  "range": "Medium",
+  "effects": [
+    "Piercing"
+  ],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "The laser musket is a homemade form of laser rifle.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "BARREL",
+      "items": [
+        "Bracketed Short Barrel",
+        "Long",
+        "Long Barrel"
+      ]
+    },
+    {
+      "slot": "CAPACITOR",
+      "items": [
+        "Five-Crank Capacitor",
+        "Four-Crank Capacitor",
+        "Six-Crank Capacitor",
+        "Three-Crank Capacitor"
+      ]
+    },
+    {
+      "slot": "NOZZLE",
+      "items": [
+        "Beam Focuser"
+      ]
+    },
+    {
+      "slot": "STOCK",
+      "items": [
+        "Full Stock"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Long Night Vision Scope",
+        "Long Scope",
+        "Recon Scope",
+        "Reflex Sight",
+        "Short Night Vision Scope",
+        "Short Scope"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Bayonet",
+        "Beam Focuser",
+        "Beam Splitter",
+        "Gyro Compensating Lens"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 74
+}

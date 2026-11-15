@@ -1,0 +1,68 @@
+{
+  "id": "weapon_tesla_rifle",
+  "title": "Tesla Rifle",
+  "category": "Energy Weapons",
+  "weight": "8",
+  "cost": 180,
+  "rarity": 4,
+  "ammo": "Energy Cell",
+  "damageType": "Energy",
+  "damage": 4,
+  "fireRate": 2,
+  "range": "Medium",
+  "effects": [
+    "Arc"
+  ],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "The Tesla gun is a firearm that takes the energy from a fusion cell and launches the energy out as a coil of electrical energy. The energy generally seeks out a way to dissipate allowing for it to arc out to multiple targets in a single shot.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "BARREL",
+      "items": [
+        "Automatic Barrel",
+        "Improved Barrel",
+        "Quantum Gyro Compensating Lens",
+        "Splitter"
+      ]
+    },
+    {
+      "slot": "NOZZLE",
+      "items": [
+        "Beam Focuser"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Reflex Sight"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Beam Focuser",
+        "Beam Splitter"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 80
+}

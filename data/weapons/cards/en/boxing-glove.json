@@ -1,0 +1,46 @@
+{
+  "id": "weapon_boxing_glove",
+  "title": "Boxing Glove",
+  "category": "Unarmed Weapons",
+  "weight": "1",
+  "cost": 10,
+  "rarity": 1,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 3,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [
+    "Stun"
+  ],
+  "qualities": [],
+  "description": "A large, leather mitt, used to protect the hands and wrists while punching.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "UNIQUE",
+      "items": [
+        "Lead Lining",
+        "Puncturing",
+        "Spiked"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 139
+}

@@ -1,0 +1,43 @@
+{
+  "id": "weapon_tesla_cannon",
+  "title": "Tesla Cannon",
+  "category": "Energy Weapons",
+  "weight": "24",
+  "cost": 870,
+  "rarity": 5,
+  "ammo": "Energy Cell",
+  "damageType": "Energy",
+  "damage": 8,
+  "fireRate": 0,
+  "range": "Long",
+  "effects": [
+    "Arc",
+    "Piercing 2"
+  ],
+  "qualities": [
+    "Accurate",
+    "Ammo-Hungry",
+    "Surge",
+    "Two-Handed"
+  ],
+  "description": "The Tesla cannon is a shoulder-mounted directed energy weapon using technology based on designs by Nikola Tesla. The weapon entered limited production pre-War, and is a rare sight in the Wastelands, but some branches of the Brotherhood of Steel have sought out the technology and attempted to recreate it for their own needs.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 79
+}

@@ -1,0 +1,35 @@
+{
+  "id": "weapon_unarmed_attack",
+  "title": "Unarmed Attack",
+  "category": "Unarmed Weapons",
+  "weight": "0",
+  "cost": 0,
+  "rarity": 0,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 2,
+  "fireRate": 0,
+  "range": "Close",
+  "effects": [],
+  "qualities": [],
+  "description": "Sometimes your fists are the only weapon you have.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 145
+}

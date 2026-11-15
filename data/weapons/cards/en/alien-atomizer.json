@@ -1,0 +1,82 @@
+{
+  "id": "weapon_alien_atomizer",
+  "title": "Alien Atomizer",
+  "category": "Energy Weapons",
+  "weight": "3",
+  "cost": 1536,
+  "rarity": 5,
+  "ammo": "Alien Power Cell",
+  "damageType": "Energy",
+  "damage": 6,
+  "fireRate": 3,
+  "range": "Close",
+  "effects": [
+    "Burst"
+  ],
+  "qualities": [
+    "Close Quarters"
+  ],
+  "description": "A form of alien energy pistol, found in use by the extra-terrestrial beings sometimes called \"Zetans\". Encounters with these creatures are extremely rare, and their weapons are extremely potent. Nobody understands their technology well enough to modify these guns, however.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        "Hardened",
+        "Powerful",
+        "Hair Trigger"
+      ]
+    },
+    {
+      "slot": "BARREL",
+      "items": [
+        "Long",
+        "Ported"
+      ]
+    },
+    {
+      "slot": "STOCK",
+      "items": [
+        "Full Stock",
+        "Recoil Compensating Stock"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Reflex Sight",
+        "Short Scope",
+        "Long Scope",
+        "Short Night Vision Scope",
+        "Long Night Vision Scope",
+        "Recon Scope"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Bayonet",
+        "Compensator",
+        "Muzzle Break",
+        "Suppressor"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 56
+}

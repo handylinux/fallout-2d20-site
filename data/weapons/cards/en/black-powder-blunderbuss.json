@@ -1,0 +1,40 @@
+{
+  "id": "weapon_black_powder_blunderbuss",
+  "title": "Black Powder Blunderbuss",
+  "category": "Light Weapons",
+  "weight": "3",
+  "cost": 90,
+  "rarity": 3,
+  "ammo": ".50 Ball",
+  "damageType": "Physical",
+  "damage": 7,
+  "fireRate": 0,
+  "range": "Close",
+  "effects": [
+    "Spread"
+  ],
+  "qualities": [
+    "Two-Handed",
+    "Unreliable"
+  ],
+  "description": "An archaic percussion-cap firearm, of a kind possibly salvaged from museums or the collections of reenactors. They fire a heavy .50 musket ball propelled by gunpowder, and are only effective at very close ranges, but when they do hit, they can do a lot of damage.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 12
+}

@@ -1,0 +1,47 @@
+{
+  "id": "weapon_50_cal_machine_gun",
+  "title": ".50 Cal Machine Gun",
+  "category": "Heavy Weapons",
+  "weight": "31",
+  "cost": 350,
+  "rarity": 3,
+  "ammo": ".50 Round",
+  "damageType": "Physical",
+  "damage": 7,
+  "fireRate": 3,
+  "range": "Medium",
+  "effects": [
+    "Burst"
+  ],
+  "qualities": [
+    "Two-Handed",
+    "Inaccurate"
+  ],
+  "description": "These machine guns, chambered for the powerful .50 round, are extremely effective against infantry, materiel, lightly armored vehicles, boats, buildings, aircraft, and a wide range of other targets. This design has been in use in one form or another since long before the Great War but finds a new lease of life when carried by Power Armored fighters who can wield the cumbersome gun.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "BARREL",
+      "items": [
+        "Heavy Barrel"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 43
+}

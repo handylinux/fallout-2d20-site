@@ -1,0 +1,39 @@
+{
+  "id": "weapon_mr_handy_buzz_blade",
+  "title": "Mr Handy Buzz Blade",
+  "category": "Melee Weapons",
+  "weight": "10",
+  "cost": 50,
+  "rarity": 2,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 4,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [
+    "Vicious"
+  ],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "A two-handed rotary blade attachment for a Mr Handy robot, driven by a buzz-saw mechanism.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 119
+}

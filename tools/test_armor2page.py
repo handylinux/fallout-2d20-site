@@ -73,7 +73,8 @@ class LeatherPageTest(unittest.TestCase):
         self.assertIn('<th colspan="2">НАГРУДНИК</th>', self.html)
 
     def test_mod_effect_and_areas(self) -> None:
-        self.assertIn("+2 к сопротивлению взрывным повреждениям.", self.html)
+        # приоритет описания на уровне мода над глобальным armor_effects.json
+        self.assertIn("+2 к сопротивлению всем повреждениям против взрывного оружия.", self.html)
         self.assertIn("Бронник 1", self.html)
         self.assertIn("Тело, Руки, Ноги", self.html)
 

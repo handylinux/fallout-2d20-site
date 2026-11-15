@@ -1,0 +1,43 @@
+{
+  "id": "weapon_lead_pipe",
+  "title": "Lead Pipe",
+  "category": "Melee Weapons",
+  "weight": "3",
+  "cost": 15,
+  "rarity": 0,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 3,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [],
+  "qualities": [],
+  "description": "A length of heavy, metal pipe.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "UNIQUE",
+      "items": [
+        "Heavy",
+        "Spiked"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 116
+}

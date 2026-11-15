@@ -1,0 +1,63 @@
+{
+  "id": "weapon_syringer",
+  "title": "Syringer",
+  "category": "Light Weapons",
+  "weight": "6",
+  "cost": 132,
+  "rarity": 2,
+  "ammo": "Syringe",
+  "damageType": "Physical",
+  "damage": 3,
+  "fireRate": 0,
+  "range": "Medium",
+  "effects": [],
+  "qualities": [
+    "Two-Handed"
+  ],
+  "description": "A makeshift weapon using air pressure to propel customized syringes at a target.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "BARREL",
+      "items": [
+        "Long",
+        "Sawed-Off"
+      ]
+    },
+    {
+      "slot": "STOCK",
+      "items": [
+        "Marksman's Stock",
+        "Recoil Compensating Stock"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Long Night Vision Scope",
+        "Long Scope",
+        "Recon Scope",
+        "Reflex Sight",
+        "Short Night Vision Scope",
+        "Short Scope"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 41
+}

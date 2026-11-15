@@ -1,0 +1,67 @@
+{
+  "id": "weapon_357_magnum_revolver",
+  "title": ".357 Magnum Revolver",
+  "category": "Light Weapons",
+  "weight": "2",
+  "cost": 110,
+  "rarity": 2,
+  "ammo": ".357 Magnum Round",
+  "damageType": "Physical",
+  "damage": 5,
+  "fireRate": 1,
+  "range": "Close",
+  "effects": [
+    "Vicious"
+  ],
+  "qualities": [
+    "Close Quarters"
+  ],
+  "description": "A single-action revolver chambered for .357 magnum (though ones using .38 special rounds also exist). Not as potent as the feared and respected .44 revolver, these guns remain scattered around parts of the Wasteland due to their common use by police forces as service weapons and due to their extremely simple, durable build that makes them easy to maintain and extremely reliable.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        "Hair Trigger"
+      ]
+    },
+    {
+      "slot": "BARREL",
+      "items": [
+        "Long"
+      ]
+    },
+    {
+      "slot": "GRIP",
+      "items": [
+        "Comfort Grip",
+        "Sharpshooter's Grip"
+      ]
+    },
+    {
+      "slot": "MAGAZINE",
+      "items": [
+        "Large Magazine",
+        "Large Quick-Eject Mag",
+        "Quick-Eject Mag"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 1
+}

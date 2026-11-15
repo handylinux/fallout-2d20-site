@@ -1,0 +1,84 @@
+{
+  "id": "weapon_gatling_plasma",
+  "title": "Gatling Plasma",
+  "category": "Energy Weapons",
+  "weight": "24",
+  "cost": 1000,
+  "rarity": 4,
+  "ammo": "Plasma Cartridge",
+  "damageType": "Energy and Physical",
+  "damage": 4,
+  "fireRate": 4,
+  "range": "Medium",
+  "effects": [
+    "Burst"
+  ],
+  "qualities": [
+    "Two-Handed",
+    "Gatling",
+    "Inaccurate"
+  ],
+  "description": "An evolution of plasma gun technology, the gatling plasma is a rare, potent, and costly weapon to use. Like smaller weapons of its kind, it inflicts damage through a combination of both physical impact and thermal transfer, and like other gatling weaponry, it inflicts this damage via a rapid-firing collection of rotating barrels that spray huge numbers of shots at the enemy. The relative scarcity of plasma cartridges, or extremely rare plasma cores, and the rate at which this weapon consumes ammunition, means that keeping the weapon supplied for use can be a full-time job.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "RECEIVER",
+      "items": [
+        "Hardened",
+        "Powerful",
+        "Hair Trigger"
+      ]
+    },
+    {
+      "slot": "BARREL",
+      "items": [
+        "Long",
+        "Ported"
+      ]
+    },
+    {
+      "slot": "STOCK",
+      "items": [
+        "Full Stock",
+        "Recoil Compensating Stock"
+      ]
+    },
+    {
+      "slot": "SIGHT",
+      "items": [
+        "Reflex Sight",
+        "Short Scope",
+        "Long Scope",
+        "Short Night Vision Scope",
+        "Long Night Vision Scope",
+        "Recon Scope"
+      ]
+    },
+    {
+      "slot": "MUZZLE",
+      "items": [
+        "Bayonet",
+        "Compensator",
+        "Muzzle Break",
+        "Suppressor"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 66
+}

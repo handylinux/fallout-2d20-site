@@ -1,0 +1,43 @@
+{
+  "id": "weapon_rolling_pin",
+  "title": "Rolling Pin",
+  "category": "Melee Weapons",
+  "weight": "1",
+  "cost": 10,
+  "rarity": 0,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 3,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [],
+  "qualities": [],
+  "description": "A sturdy cylinder of wood found in kitchens everywhere.",
+  "image": "",
+  "mods": [
+    {
+      "slot": "UNIQUE",
+      "items": [
+        "Sharp",
+        "Spiked"
+      ]
+    }
+  ],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 125
+}

@@ -1,0 +1,38 @@
+{
+  "id": "weapon_displacer_glove",
+  "title": "Displacer Glove",
+  "category": "Unarmed Weapons",
+  "weight": "6",
+  "cost": 175,
+  "rarity": 4,
+  "ammo": "",
+  "damageType": "Physical",
+  "damage": 6,
+  "fireRate": 0,
+  "range": "-",
+  "effects": [
+    "Piercing",
+    "Stun"
+  ],
+  "qualities": [],
+  "description": "A heavy gauntlet that delivers piercing and stunning damage in melee.",
+  "image": "",
+  "mods": [],
+  "labels": {
+    "weight": "Weight",
+    "cost": "Cost",
+    "rarity": "Rarity",
+    "mods_heading": "SUPPORTED MODIFICATIONS",
+    "no_mods": "NO SUPPORTED MODIFICATIONS",
+    "headers": [
+      "AMMO",
+      "DAMAGE\nTYPE",
+      "DAMAGE",
+      "FIRE\nRATE",
+      "RANGE",
+      "EFFECTS",
+      "QUALITIES"
+    ]
+  },
+  "page": 141
+}
