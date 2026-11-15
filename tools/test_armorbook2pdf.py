@@ -192,6 +192,12 @@ class LayoutHelpersTest(unittest.TestCase):
         two = ab.tier_columns(ab.TIER_COL_SETS["left"], 2)
         self.assertEqual(len(two), 3)
         self.assertAlmostEqual(sum(two), sum(ab.TIER_COL_SETS["left"]), places=1)
+        # Матрица из шлема и трёх частей справа не пересекает край набора.
+        bounded = ab.bounded_tier_columns(ab.TIER_RIGHT_X,
+                                          ab.TIER_COL_SETS["right"], 4)
+        self.assertEqual(len(bounded), 5)
+        self.assertLessEqual(ab.TIER_RIGHT_X + sum(bounded),
+                             ab.CONTENT_R + 0.01)
 
     def test_mods_label_fits_longest(self):
         rows = [("НАГРУДНИК", ["Мягкая"]), ("УНИКАЛЬНАЯ", ["Клёпаная кожа"])]
@@ -200,6 +206,142 @@ class LayoutHelpersTest(unittest.TestCase):
         self.assertGreaterEqual(label_w, widest)
         self.assertLessEqual(label_w + sum(ab.mods_col_widths(label_w)),
                              ab.CONTENT_W + 0.01)
+
+
+class RoundTwoTest(unittest.TestCase):
+    """Прогал между таблицами, моды силовой брони, страницы одежды."""
+
+    def setUp(self):
+        self.book = book()
+        ab.register_fonts()
+
+    # -- прогал между рядами таблиц -------------------------------------
+
+    def test_gap_between_char_rows(self):
+        """Нижний ряд таблиц не приклеен к верхнему: подпись — в прогале."""
+        geometry = ab.char_grid_geometry([{}])
+        upper_bottom = geometry["upper_top"] + 6 * ab.CHAR_ROW_H
+        self.assertGreater(geometry["lower_label"] - upper_bottom,
+                           ab.CHAR_ROW_GAP)
+        # подпись — по центру прогала, а не у кромки верхней таблицы
+        self.assertAlmostEqual(geometry["lower_label"] - upper_bottom,
+                               ab.CHAR_ROW_GAP + ab.CHAR_ROW_GAP_EXTRA / 2.0,
+                               places=2)
+        # прогал больше, чем в референсе (23.67), и таблица ниже подписи
+        self.assertGreater(geometry["lower_top"] - upper_bottom, 23.67)
+        self.assertGreater(geometry["lower_top"],
+                           geometry["lower_label"] + ab.CHAR_PIECE_SIZE_BOT)
+
+    def test_gap_scales_with_rows(self):
+        """Семь строк — тоже прогал, а не наложение."""
+        geometry = ab.char_grid_geometry([{"hp": 7}])
+        upper_bottom = geometry["upper_top"] + 7 * ab.CHAR_ROW_H
+        self.assertGreater(geometry["lower_label"], upper_bottom)
+
+    # -- моды силовой брони --------------------------------------------
+
+    def test_pa_mods_have_three_groups(self):
+        grid = self.book.pa_mods_grid("t45")
+        labels = [label for label, _ in grid]
+        self.assertEqual(labels, ["СИСТЕМА", "ОБШИВКА", "УЛУЧШЕНИЯ"])
+        system = dict(grid)["СИСТЕМА"]
+        self.assertIn("Датчик", system)
+        self.assertIn("Реакторный узел", system)
+        armour = dict(grid)["ОБШИВКА"]
+        self.assertIn("Титановая обшивка", armour)
+        levels = dict(grid)["УЛУЧШЕНИЯ"]
+        self.assertEqual(levels[:2], ["Т-45b · шлем", "Т-45c · шлем"])
+
+    def test_pa_frame_has_no_mods(self):
+        """У каркаса модов нет — блок не печатается вовсе."""
+        self.assertEqual(self.book.pa_mods_grid("frame"), [])
+
+    def test_raider_pa_has_no_plating(self):
+        labels = [label for label, _ in self.book.pa_mods_grid("raiderPower")]
+        self.assertNotIn("ОБШИВКА", labels)
+        self.assertIn("СИСТЕМА", labels)
+
+    def test_x01_has_no_winterized_plating(self):
+        """В helper антифризное покрытие X-01 не положено — и в книге его нет."""
+        armour = dict(self.book.pa_mods_grid("x01"))["ОБШИВКА"]
+        self.assertNotIn("Антифризное покрытие", armour)
+        self.assertIn("Призматическая обшивка", armour)
+
+    def test_pa_upgrades_belong_to_own_set(self):
+        """У Т-45 нет улучшений X-01 (Mk II…Mk VI) и наоборот."""
+        t45 = dict(self.book.pa_mods_grid("t45"))["УЛУЧШЕНИЯ"]
+        self.assertTrue(all(name.startswith("Т-45") for name in t45), t45)
+        x01 = dict(self.book.pa_mods_grid("x01"))["УЛУЧШЕНИЯ"]
+        self.assertTrue(all(name.startswith("Mk") for name in x01), x01)
+        helmet = next(piece for piece in self.book.tier_pieces("powerArmor", "t45")
+                      if ab.area_of(piece) == "Head")
+        upgrade_groups = {mod["upgradeGroup"]
+                          for mod in self.book.pa_mods_for_piece("t45", helmet)
+                          if mod.get("modSlot") == "amelioration"}
+        self.assertEqual(upgrade_groups, set(ab.PA_UPGRADE_GROUPS["t45"]))
+
+    # -- раскладка сетки модов -----------------------------------------
+
+    def test_every_mod_is_drawn(self):
+        """Ни один мод не теряется: строк столько, сколько нужно на все."""
+        rows = [("СИСТЕМА", [f"мод {i}" for i in range(21)]),
+                ("ОБШИВКА", [f"плита {i}" for i in range(6)])]
+        layout = ab.fit_mods_grid(rows)
+        drawn = sum(len(row[0]) for section in layout["sections"]
+                    for row in section["rows"])
+        self.assertEqual(drawn, len(rows[0][1]) + len(rows[1][1]))
+
+    def test_mods_grid_stays_on_page(self):
+        for key in self.book.power_armor:
+            rows = self.book.pa_mods_grid(key)
+            if not rows:
+                continue
+            layout = ab.fit_mods_grid(rows)
+            # сетка не залезает на описание и не уходит под номер страницы
+            self.assertGreater(layout["top"], ab.DESC_TOP, key)
+            self.assertLessEqual(layout["bottom"], ab.PAGE_NUMBER_TOP, key)
+
+    def test_cells_have_padding(self):
+        """Перенос строк считает поля ячейки — текст не упирается в рамку."""
+        rows = [("СИСТЕМА", ["Форсированные сервоприводы"])]
+        layout = ab.fit_mods_grid(rows)
+        section = layout["sections"][0]
+        width = layout["col_widths"][0]
+        for lines in section["rows"][0][0]:
+            for line in lines:
+                self.assertLessEqual(ab.sw(line, ab.FONT, layout["font"]),
+                                     width - 2 * ab.CELL_PAD + 0.01)
+
+    # -- одежда --------------------------------------------------------
+
+    def test_clothes_one_page_per_item(self):
+        specs = ab.auto_specs(self.book, "clothes")
+        items = [item for group in self.book.clothes["clothes"]
+                 for item in group["items"]]
+        self.assertEqual(len(specs), len(items))
+        self.assertEqual([spec.item for spec in specs],
+                         [item["id"] for item in items])
+        self.assertTrue(all(spec.title for spec in specs))
+        blouse = next(spec for spec in specs if spec.item == "clothing_blouse")
+        self.assertEqual(blouse.title, "Блузка")
+
+    def test_clothes_mods_from_helper(self):
+        """Плетение и подкладки — только у вещей, которым они положены."""
+        b = self.book
+        self.assertTrue(b.clothes_mod_groups("clothing_vault_jumpsuit"))
+        labels = [label for label, _ in
+                  b.clothes_mod_groups("clothing_vault_jumpsuit")]
+        self.assertIn("ТКАНЕВАЯ ОСНОВА", labels)
+        self.assertIn("ПОДКЛАДКА КОМБИНЕЗОНА", labels)
+        self.assertEqual(b.clothes_mod_groups("headwear_skull_mask"), [])
+
+    def test_clothes_stat_table_rows(self):
+        """Таблица характеристик предмета — те же строки, что у брони."""
+        b = self.book
+        item = b.clothes_item("headwear", "headwear_casual_hat")
+        labels = [label for _key, label in ab.stat_fields(item)]
+        self.assertEqual(labels, ["ФИЗ. СУ", "ЭНРГ. СУ", "РАД. СУ",
+                                  "ВЕС", "ЦЕНА", "РЕДКОСТЬ"])
 
 
 @unittest.skipIf(pymupdf is None, "нужен pymupdf для проверки PDF")
@@ -282,8 +424,39 @@ class RenderedPdfTest(unittest.TestCase):
         self.assertIn("БРОНЯ", all_text)
         self.assertIn("СИЛОВАЯ БРОНЯ", all_text)
         self.assertIn("ОДЕЖДА", all_text)
-        # 15 наборов: 6 брони + 6 силовой + 3 группы одежды
-        self.assertGreaterEqual(pages, 15)
+        # 6 комплектов брони, 6 силовой брони и 32 страницы одежды.
+        self.assertEqual(pages, 53)
+
+    def test_clothes_page_title_is_drawn_once_and_translated(self):
+        """У страницы вещи один заголовок; англоязычной «Blouse» в книге нет."""
+        clothes = ab.auto_specs(self.book, "clothes")
+        with pymupdf.open(self.full) as doc:
+            pages = [page.get_text().splitlines() for page in doc]
+        for spec in clothes:
+            title = spec.title.upper()
+            matches = [lines for lines in pages if lines and lines[0] == title]
+            self.assertEqual(len(matches), 1, title)
+            self.assertEqual(matches[0].count(title), 1, title)
+        all_text = "\n".join("\n".join(lines) for lines in pages)
+        self.assertIn("БЛУЗКА", all_text)
+        self.assertNotIn("BLOUSE", all_text)
+
+    def test_all_supported_mods_are_rendered(self):
+        """Тексты всех модов из сеток действительно попали в итоговый PDF."""
+        with pymupdf.open(self.full) as doc:
+            pages = {page.get_text().splitlines()[0]: "".join(
+                page.get_text().split()) for page in doc if page.get_text().splitlines()}
+        for key in self.book.power_armor:
+            page = pages[self.book.set_title("powerArmor", key).upper()]
+            for _label, names in self.book.pa_mods_grid(key):
+                for name in names:
+                    self.assertIn("".join(name.split()), page, (key, name))
+        for spec in ab.auto_specs(self.book, "clothes"):
+            page = pages[spec.title.upper()]
+            item = self.book.clothes_item(spec.set, spec.item)
+            for _label, names in ab.clothes_mods_rows(self.book, item):
+                for name in names:
+                    self.assertIn("".join(name.split()), page, (spec.item, name))
 
     def test_power_armor_page_has_hp_row(self):
         with pymupdf.open(self.full) as doc:
