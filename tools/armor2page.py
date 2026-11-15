@@ -691,8 +691,8 @@ def main(argv: list[str] | None = None) -> int:
     pages_dir = Path(args.pages)
     specs = []
     for path in sorted(pages_dir.glob("*.json")):
-        if path.name.startswith("_"):
-            continue
+        if path.name.startswith("_") or path.stem == "book":
+            continue  # book.json — конфиг книги брони, а не страница
         spec = read_json(path)
         if args.only and spec.get("id") != args.only:
             continue

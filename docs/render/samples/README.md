@@ -24,3 +24,19 @@
 python3 tools/weapon2pdf.py data/weapons/cards/10mm-pistol.json \
     --out docs/render/samples/10mm-pistol.pdf
 ```
+
+## Книга брони
+
+| Файл | Что это |
+|---|---|
+| `armor-leather-book.pdf` | референс пользователя: кожаная броня, 2 страницы (снята геометрия) |
+| `armor-book.pdf` | книга, собранная `tools/armorbook2pdf.py`: 24 страницы — броня (6 сетов), силовая броня (6 наборов), одежда (3 группы) |
+
+В `armor-book.pdf` одна страница сета = разворот референса: стр. 1 —
+«Стандартный комплект» + описание + «Поддерживаемые модификации»,
+стр. 2 — «Варианты» (укреплённая/тяжёлая) + уникальные модификации.
+Место под иллюстрации оставлено пустым — картинок в данных Companion нет.
+
+```bash
+python3 tools/armorbook2pdf.py --out docs/render/samples/armor-book.pdf
+```
