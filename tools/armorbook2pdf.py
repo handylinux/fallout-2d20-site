@@ -123,16 +123,14 @@ SECTION_RULE_GAP = 2.8
 # таблицы деталей. Поэтому это не две широкие таблицы на всю страницу.
 CHAR_TABLE_TOP_UPPER = 167.33
 CHAR_ROW_H = 23.30
-CHAR_ROW_GAP = 6.30
-# Между нижней границей верхних таблиц и верхней границей нижних остаётся
-# заметный прогал. Подписи нижнего ряда стоят непосредственно над своими
-# таблицами, как «ШЛЕМ» и «НАГРУДНИК», а не посередине этого прогала.
-CHAR_ROW_GAP_EXTRA = 42.0
+# Чистое расстояние от нижней границы верхних таблиц до верхней границы
+# нижних: достаточно для самостоятельных блоков, но оставляет место описанию.
+CHAR_TABLE_ROW_GAP = 45.0
 CHAR_LABEL_SIZE = 11.0
-CHAR_PIECE_SIZE_TOP = 12.0   # ШЛЕМ / НАГРУДНИК
-CHAR_PIECE_SIZE_BOT = 14.0   # НАРУЧ / ПОНОЖ
-CHAR_UPPER_LABEL_TABLE_GAP = 2.2
-CHAR_LOWER_LABEL_TABLE_GAP = 3.37
+# Все четыре части подписываются одним шрифтом и одним кеглем.
+CHAR_PIECE_FONT = FONT_B
+CHAR_PIECE_SIZE = 12.0
+CHAR_LABEL_TABLE_GAP = 2.2
 
 # Внешний row: col-6 для изображения и col-6 для вложенной сетки таблиц.
 CHAR_OUTER_COL_W = CONTENT_W / 2.0
@@ -885,15 +883,14 @@ def char_grid_geometry(pieces: list[dict], gap: float | None = None) -> dict:
     """
     rows = max((len(stat_fields(p)) for p in pieces), default=6)
     block_h = rows * CHAR_ROW_H
-    gap = CHAR_ROW_GAP_EXTRA if gap is None else gap
+    table_gap = CHAR_TABLE_ROW_GAP if gap is None else gap
     upper_top = CHAR_TABLE_TOP_UPPER
-    upper_label = upper_top - CHAR_PIECE_SIZE_TOP - CHAR_UPPER_LABEL_TABLE_GAP
-    # Сохраняем большой чистый прогал между прямоугольниками таблиц. При этом
-    # НАРУЧ / ПОНОЖ больше не висят в его центре: нижние подписи следуют за
-    # своей таблицей с тем же компактным визуальным ритмом, что верхние.
-    lower_top = (upper_top + block_h + CHAR_ROW_GAP + gap
-                 + CHAR_PIECE_SIZE_BOT + CHAR_LOWER_LABEL_TABLE_GAP)
-    lower_label = lower_top - CHAR_PIECE_SIZE_BOT - CHAR_LOWER_LABEL_TABLE_GAP
+    upper_label = upper_top - CHAR_PIECE_SIZE - CHAR_LABEL_TABLE_GAP
+    # НАРУЧ / ПОНОЖ находятся прямо над своими таблицами тем же шрифтом и с
+    # тем же отступом, что ШЛЕМ / НАГРУДНИК. Чистый прогал между таблицами
+    # задаётся отдельно и равен 45 pt.
+    lower_top = upper_top + block_h + table_gap
+    lower_label = lower_top - CHAR_PIECE_SIZE - CHAR_LABEL_TABLE_GAP
     return {
         "tops": [upper_top + i * CHAR_ROW_H for i in range(rows)],
         "upper_top": upper_top,
@@ -948,11 +945,11 @@ def draw_char_grid(c, pieces: list[dict]) -> dict:
         x = CHAR_LEFT_X if side == "left" else CHAR_RIGHT_X
         table_top = geometry["upper_top"] if row == 0 else geometry["lower_top"]
         label_top = geometry["upper_label"] if row == 0 else geometry["lower_label"]
-        size = CHAR_PIECE_SIZE_TOP if row == 0 else CHAR_PIECE_SIZE_BOT
         title = area_title(piece)
-        size = fit_size(title, FONT_B, size, CHAR_TABLE_W[side])
-        draw_top(c, x + CHAR_TABLE_W[side] / 2.0, label_top, title, FONT_B,
-                 size, align="center")
+        size = fit_size(title, CHAR_PIECE_FONT, CHAR_PIECE_SIZE,
+                        CHAR_TABLE_W[side])
+        draw_top(c, x + CHAR_TABLE_W[side] / 2.0, label_top, title,
+                 CHAR_PIECE_FONT, size, align="center")
         tops = [top + (table_top - geometry["upper_top"])
                 for top in geometry["tops"]]
         char_table(c, x, tops, piece, side)
@@ -2019,8 +2016,8 @@ def draw_clothes_item_page(c, book: Book, spec: Spec, title: str) -> None:
                            CLOTHES_ITEM_SECTION_TOP, label)
     name = book.piece_name(item)
     draw_top(c, CLOTHES_TABLE_X + CLOTHES_TABLE_LABEL_W / 2.0,
-             CLOTHES_ITEM_TABLE_TOP - CHAR_PIECE_SIZE_TOP - 4.5, name, FONT_B,
-             fit_size(name, FONT_B, CHAR_PIECE_SIZE_TOP, CLOTHES_TABLE_LABEL_W),
+             CLOTHES_ITEM_TABLE_TOP - CHAR_PIECE_SIZE - 4.5, name, FONT_B,
+             fit_size(name, FONT_B, CHAR_PIECE_SIZE, CLOTHES_TABLE_LABEL_W),
              align="center")
     table_bottom = draw_item_char_table(c, item, CLOTHES_TABLE_X,
                                        CLOTHES_ITEM_TABLE_TOP,

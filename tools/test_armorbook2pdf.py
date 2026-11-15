@@ -83,7 +83,7 @@ class GeometryTest(unittest.TestCase):
         self.assertGreaterEqual(geometry["lower_label"],
                                 geometry["upper_top"] + 7 * ab.CHAR_ROW_H)
         self.assertGreater(geometry["lower_top"],
-                           geometry["lower_label"] + ab.CHAR_PIECE_SIZE_BOT)
+                           geometry["lower_label"] + ab.CHAR_PIECE_SIZE)
 
     def test_mods_grid(self):
         self.assertAlmostEqual(ab.MODS_GRID_TOP, 658.60, places=2)
@@ -242,13 +242,18 @@ class RoundTwoTest(unittest.TestCase):
         """Нижний ряд отделён, но НАРУЧ / ПОНОЖ стоят прямо над таблицами."""
         geometry = ab.char_grid_geometry([{}])
         upper_bottom = geometry["upper_top"] + 6 * ab.CHAR_ROW_H
-        # Это именно заметный прогал, а не лишь технический отступ референса.
-        self.assertGreater(geometry["lower_top"] - upper_bottom, 60.0)
+        # Граница до границы — ровно 45 pt: отдельные блоки не слипаются,
+        # но описание не теряет лишнюю строку.
+        self.assertAlmostEqual(geometry["lower_top"] - upper_bottom,
+                               ab.CHAR_TABLE_ROW_GAP, places=2)
         # В отличие от прежней раскладки, нижняя подпись не висит посередине
-        # свободной области, а имеет такой же короткий отступ до своей таблицы.
+        # свободной области, а имеет такой же шрифт и короткий отступ до
+        # своей таблицы, как подпись верхнего ряда.
+        self.assertAlmostEqual(ab.CHAR_PIECE_SIZE, 12.0, places=2)
+        self.assertEqual(ab.CHAR_PIECE_FONT, ab.FONT_B)
         self.assertAlmostEqual(
             geometry["lower_top"] - geometry["lower_label"],
-            ab.CHAR_PIECE_SIZE_BOT + ab.CHAR_LOWER_LABEL_TABLE_GAP,
+            ab.CHAR_PIECE_SIZE + ab.CHAR_LABEL_TABLE_GAP,
             places=2,
         )
         self.assertGreater(geometry["lower_label"], upper_bottom)
