@@ -49,16 +49,27 @@ class GeometryTest(unittest.TestCase):
         self.assertAlmostEqual(ab.TITLE_RULE_H, 2.2, places=2)
 
     def test_char_grid(self):
-        """Широкие таблицы из нового референса не слипаются по горизонтали."""
+        """Внешняя 6+6: изображение слева, вложенные таблицы 2×2 справа."""
         self.assertAlmostEqual(ab.CHAR_TABLE_TOP_UPPER, 167.33, places=2)
         self.assertAlmostEqual(ab.CHAR_ROW_H, 23.30, places=2)
-        self.assertAlmostEqual(ab.CHAR_LEFT_X, 126.0, places=2)
-        self.assertAlmostEqual(ab.CHAR_RIGHT_X, 338.0, places=2)
-        self.assertAlmostEqual(ab.CHAR_TABLE_W["left"], 189.0, places=2)
-        self.assertAlmostEqual(ab.CHAR_TABLE_W["right"], 177.0, places=2)
+        # Внешняя строка делит контент строго пополам; левая col-6 полностью
+        # отдана иллюстрации, правая — вложенной сетке характеристик.
+        self.assertAlmostEqual(ab.CHAR_OUTER_COL_W, ab.CONTENT_W / 2.0, places=2)
+        self.assertAlmostEqual(ab.IMAGE_BOX[0], ab.MARGIN_L, places=2)
+        self.assertAlmostEqual(ab.IMAGE_BOX[2], ab.CHAR_GRID_X, places=2)
+        self.assertAlmostEqual(ab.CHAR_GRID_X, ab.MARGIN_L + ab.CHAR_OUTER_COL_W,
+                               places=2)
+        # Две вложенные col-6 и явный gutter занимают ровно правую половину.
+        self.assertAlmostEqual(ab.CHAR_LEFT_X, ab.CHAR_GRID_X, places=2)
+        self.assertAlmostEqual(ab.CHAR_TABLE_W["left"], ab.CHAR_INNER_TABLE_W,
+                               places=2)
+        self.assertAlmostEqual(ab.CHAR_TABLE_W["right"], ab.CHAR_INNER_TABLE_W,
+                               places=2)
         horizontal_gap = ab.CHAR_RIGHT_X - (ab.CHAR_LEFT_X + ab.CHAR_TABLE_W["left"])
         self.assertAlmostEqual(horizontal_gap, ab.CHAR_COL_GAP, places=2)
-        self.assertGreaterEqual(horizontal_gap, 20.0)
+        self.assertGreaterEqual(horizontal_gap, 12.0)
+        self.assertAlmostEqual(ab.CHAR_RIGHT_X + ab.CHAR_TABLE_W["right"],
+                               ab.CONTENT_R, places=2)
         # 6 строк по 23.3 = 307.13 — низ верхних таблиц.
         self.assertAlmostEqual(ab.CHAR_TABLE_TOP_UPPER + 6 * ab.CHAR_ROW_H,
                                307.13, places=2)
