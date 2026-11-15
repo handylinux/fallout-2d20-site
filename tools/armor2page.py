@@ -278,7 +278,7 @@ class Companion:
                     if effect.get("description"):
                         self.mod_effects[effect["id"]] = effect["description"]
         for effect_id, effect in read_json(i18n / "armor_effects.json").items():
-            if effect.get("description"):
+            if effect.get("description") and effect_id not in self.mod_effects:
                 self.mod_effects[effect_id] = effect["description"]
 
     # -- сеты -----------------------------------------------------------
