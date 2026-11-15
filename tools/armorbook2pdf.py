@@ -125,11 +125,14 @@ CHAR_TABLE_TOP_UPPER = 167.33
 CHAR_ROW_H = 23.30
 CHAR_ROW_GAP = 6.30
 # Между нижней границей верхних таблиц и верхней границей нижних остаётся
-# заметный прогал; подписи нижнего ряда находятся внутри него.
+# заметный прогал. Подписи нижнего ряда стоят непосредственно над своими
+# таблицами, как «ШЛЕМ» и «НАГРУДНИК», а не посередине этого прогала.
 CHAR_ROW_GAP_EXTRA = 42.0
 CHAR_LABEL_SIZE = 11.0
 CHAR_PIECE_SIZE_TOP = 12.0   # ШЛЕМ / НАГРУДНИК
 CHAR_PIECE_SIZE_BOT = 14.0   # НАРУЧ / ПОНОЖ
+CHAR_UPPER_LABEL_TABLE_GAP = 2.2
+CHAR_LOWER_LABEL_TABLE_GAP = 3.37
 
 # Внешний row: col-6 для изображения и col-6 для вложенной сетки таблиц.
 CHAR_OUTER_COL_W = CONTENT_W / 2.0
@@ -158,9 +161,12 @@ DESC_INDENT = 3.0
 # контентной ширины. Если локальной картинки нет, область остаётся пустой.
 IMAGE_BOX = (CHAR_IMAGE_X, 140.0, CHAR_GRID_X, DESC_TOP - 30.0)
 
-# «ПОДДЕРЖИВАЕМЫЕ МОДИФИКАЦИИ» и сетка модов (страница 1)
+# «ПОДДЕРЖИВАЕМЫЕ МОДИФИКАЦИИ» / «ОБЩИЕ МОДИФИКАЦИИ» и сетка (страница 1).
+# Координата заголовка всегда считается от верха своей таблицы, чтобы даже
+# короткая сетка не оставляла между ними случайно большую пустоту.
 MODS_HEADING_TOP = 613.10
 MODS_HEADING_SIZE = 18.0
+MODS_HEADING_TABLE_OFFSET = 45.0
 MODS_GRID_TOP = 658.60       # там же, где сетка в референсе
 MODS_GRID_BOTTOM = 794.20    # низ сетки в референсе: сетка прижата к низу
 MODS_LABEL_MIN = 67.90                 # в референсе 48.0 → 115.9
@@ -881,12 +887,13 @@ def char_grid_geometry(pieces: list[dict], gap: float | None = None) -> dict:
     block_h = rows * CHAR_ROW_H
     gap = CHAR_ROW_GAP_EXTRA if gap is None else gap
     upper_top = CHAR_TABLE_TOP_UPPER
-    upper_label = upper_top - CHAR_PIECE_SIZE_TOP - 2.2
-    # между рядами — прогал: в референсе между таблицами 23.67 pt, здесь он
-    # расширен (CHAR_ROW_GAP_EXTRA), а подпись нижнего ряда стоит по центру
-    # прогала, а не прижата к верхней таблице
-    lower_label = upper_top + block_h + CHAR_ROW_GAP + gap / 2.0
-    lower_top = lower_label + CHAR_PIECE_SIZE_BOT + 3.37 + gap / 2.0
+    upper_label = upper_top - CHAR_PIECE_SIZE_TOP - CHAR_UPPER_LABEL_TABLE_GAP
+    # Сохраняем большой чистый прогал между прямоугольниками таблиц. При этом
+    # НАРУЧ / ПОНОЖ больше не висят в его центре: нижние подписи следуют за
+    # своей таблицей с тем же компактным визуальным ритмом, что верхние.
+    lower_top = (upper_top + block_h + CHAR_ROW_GAP + gap
+                 + CHAR_PIECE_SIZE_BOT + CHAR_LOWER_LABEL_TABLE_GAP)
+    lower_label = lower_top - CHAR_PIECE_SIZE_BOT - CHAR_LOWER_LABEL_TABLE_GAP
     return {
         "tops": [upper_top + i * CHAR_ROW_H for i in range(rows)],
         "upper_top": upper_top,
@@ -1209,6 +1216,11 @@ def fit_mods_grid(rows: list[tuple[str, list[str]]],
     return layout
 
 
+def mods_heading_top(layout: dict) -> float:
+    """Верх заголовка модов: ровно 45 pt над верхней границей его сетки."""
+    return layout["top"] - MODS_HEADING_TABLE_OFFSET
+
+
 def draw_mods_grid(c, rows: list[tuple[str, list[str]]],
                    columns: int | None = None,
                    layout: dict | None = None) -> tuple[float, float]:
@@ -1267,6 +1279,8 @@ def draw_mods_grid(c, rows: list[tuple[str, list[str]]],
 # пользовательских таблиц T-45 и рейдерской брони.
 
 PA_DETAIL_TOP = 150.0
+# Отступ между таблицами системы и обшивки на одной странице каталога.
+PA_DETAIL_STACK_GAP = 22.0
 PA_DETAIL_SECTION_H = 18.5
 PA_DETAIL_HEADER_H = 27.0
 PA_DETAIL_ROW_MIN = 25.0
@@ -1427,22 +1441,62 @@ def split_pa_detail_rows(rows: list[dict], top: float = PA_DETAIL_TOP) -> list[l
     return chunks
 
 
-def pa_common_catalog_pages(book: Book) -> list[tuple[str, list[dict]]]:
-    """Страницы единого справочника эффектов общих PA-модов."""
-    pages: list[tuple[str, list[dict]]] = []
+def pa_detail_table_height(rows: list[dict]) -> float:
+    """Полная высота таблицы PA с полосой категории и шапкой."""
+    return PA_DETAIL_SECTION_H + PA_DETAIL_HEADER_H + sum(row["height"] for row in rows)
+
+
+def pa_catalog_page_bottom(tables: list[tuple[str, list[dict]]]) -> float:
+    """Нижняя граница стопки таблиц общего PA-каталога."""
+    bottom = PA_DETAIL_TOP
+    for index, (_section, rows) in enumerate(tables):
+        if index:
+            bottom += PA_DETAIL_STACK_GAP
+        bottom += pa_detail_table_height(rows)
+    return bottom
+
+
+def pa_catalog_table_fits(tables: list[tuple[str, list[dict]]],
+                          rows: list[dict]) -> bool:
+    """Помещается ли следующая таблица под предыдущей до номера страницы."""
+    top = pa_catalog_page_bottom(tables)
+    if tables:
+        top += PA_DETAIL_STACK_GAP
+    return top + pa_detail_table_height(rows) <= PAGE_NUMBER_TOP - 15.0
+
+
+def pa_common_catalog_pages(book: Book) -> list[list[tuple[str, list[dict]]]]:
+    """Страницы общего справочника; система и обшивка составляют один блок.
+
+    При продолжении системы свободное место не превращается в отдельный пустой
+    лист: таблица обшивки встаёт ниже «СИСТЕМА · ПРОДОЛЖЕНИЕ» с небольшим
+    отступом. Если таблицы действительно не помещаются, создаётся новая
+    страница с повторённым заголовком книги.
+    """
+    pages: list[list[tuple[str, list[dict]]]] = []
     for slot, label in PA_MOD_ROWS:
         rows = pa_detail_rows(book, [mod for mod in book.pa_common_mods()
                                      if mod.get("modSlot") == slot])
         for index, chunk in enumerate(split_pa_detail_rows(rows)):
             suffix = "" if index == 0 else " · ПРОДОЛЖЕНИЕ"
-            pages.append((label + suffix, chunk))
+            table = (label + suffix, chunk)
+            if pages and pa_catalog_table_fits(pages[-1], chunk):
+                pages[-1].append(table)
+            else:
+                pages.append([table])
     return pages
 
 
-def draw_pa_common_catalog_page(c, section: str, rows: list[dict]) -> None:
+def draw_pa_common_catalog_page(c, tables: list[tuple[str, list[dict]]]) -> float:
+    """Одна страница общего каталога с одной или несколькими таблицами."""
     draw_page_title(c, "Модификации силовой брони")
     draw_section_label(c, MARGIN_L + CONTENT_W / 2.0, 116.63, "Общий справочник")
-    draw_pa_detail_table(c, rows, section)
+    top = PA_DETAIL_TOP
+    for index, (section, rows) in enumerate(tables):
+        if index:
+            top += PA_DETAIL_STACK_GAP
+        top = draw_pa_detail_table(c, rows, section, top)
+    return top
 
 
 def pa_modifier_text(mod: dict, key: str) -> str:
@@ -1884,8 +1938,7 @@ def draw_first_page(c, book: Book, spec: Spec, title: str) -> list[dict]:
     if rows:
         layout = fit_mods_grid(rows)
         draw_mods_grid(c, rows, layout=layout)
-        heading_top = min(MODS_HEADING_TOP,
-                          layout["top"] - MODS_HEADING_SIZE - 26.0)
+        heading_top = mods_heading_top(layout)
         heading = ("Общие модификации" if spec.collection == "powerArmor"
                    else "Поддерживаемые модификации")
         draw_heading(c, heading, heading_top, MODS_HEADING_SIZE)
@@ -1982,8 +2035,7 @@ def draw_clothes_item_page(c, book: Book, spec: Spec, title: str) -> None:
     if rows:
         layout = fit_mods_grid(rows)
         mods_top = layout["top"]
-        heading_top = min(MODS_HEADING_TOP,
-                          mods_top - MODS_HEADING_SIZE - 26.0)
+        heading_top = mods_heading_top(layout)
         draw_heading(c, "Поддерживаемые модификации", heading_top,
                      MODS_HEADING_SIZE)
         draw_mods_grid(c, rows, layout=layout)
@@ -2119,9 +2171,9 @@ def build_book(specs: list[Spec], book: Book, out_path: Path,
             # Один раз перед моделями: подробные эффекты всех общих систем и
             # обшивок. На листах конкретной модели они не дублируются.
             if current == "powerArmor":
-                for section, rows in pa_common_catalog_pages(book):
+                for tables in pa_common_catalog_pages(book):
                     w.draw_paper(c)
-                    draw_pa_common_catalog_page(c, section, rows)
+                    draw_pa_common_catalog_page(c, tables)
                     draw_page_number(c, page)
                     c.showPage()
                     page += 1

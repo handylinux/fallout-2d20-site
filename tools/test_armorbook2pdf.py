@@ -239,20 +239,19 @@ class RoundTwoTest(unittest.TestCase):
     # -- прогал между рядами таблиц -------------------------------------
 
     def test_gap_between_char_rows(self):
-        """Нижний ряд таблиц не приклеен к верхнему: подпись — в прогале."""
+        """Нижний ряд отделён, но НАРУЧ / ПОНОЖ стоят прямо над таблицами."""
         geometry = ab.char_grid_geometry([{}])
         upper_bottom = geometry["upper_top"] + 6 * ab.CHAR_ROW_H
-        self.assertGreater(geometry["lower_label"] - upper_bottom,
-                           ab.CHAR_ROW_GAP)
-        # подпись — по центру прогала, а не у кромки верхней таблицы
-        self.assertAlmostEqual(geometry["lower_label"] - upper_bottom,
-                               ab.CHAR_ROW_GAP + ab.CHAR_ROW_GAP_EXTRA / 2.0,
-                               places=2)
-        # Это именно заметный провал, а не лишь технический отступ референса.
+        # Это именно заметный прогал, а не лишь технический отступ референса.
         self.assertGreater(geometry["lower_top"] - upper_bottom, 60.0)
-        self.assertGreater(geometry["lower_label"] - upper_bottom, 25.0)
-        self.assertGreater(geometry["lower_top"],
-                           geometry["lower_label"] + ab.CHAR_PIECE_SIZE_BOT)
+        # В отличие от прежней раскладки, нижняя подпись не висит посередине
+        # свободной области, а имеет такой же короткий отступ до своей таблицы.
+        self.assertAlmostEqual(
+            geometry["lower_top"] - geometry["lower_label"],
+            ab.CHAR_PIECE_SIZE_BOT + ab.CHAR_LOWER_LABEL_TABLE_GAP,
+            places=2,
+        )
+        self.assertGreater(geometry["lower_label"], upper_bottom)
 
     def test_gap_scales_with_rows(self):
         """Семь строк — тоже прогал, а не наложение."""
@@ -290,6 +289,19 @@ class RoundTwoTest(unittest.TestCase):
         plating = next(mod for mod in common if mod["id"] == "pa_blindage_titane")
         self.assertEqual(self.book.pa_compatible_areas(plating),
                          ["Head", "Body", "Hand", "Leg"])
+
+    def test_pa_catalog_stacks_plating_after_system_continuation(self):
+        """Обшивка продолжает общий каталог, а не начинает пустую страницу."""
+        pages = ab.pa_common_catalog_pages(self.book)
+        self.assertEqual(len(pages), 2)
+        self.assertEqual([section for section, _rows in pages[0]], ["СИСТЕМА"])
+        self.assertEqual([section for section, _rows in pages[1]],
+                         ["СИСТЕМА · ПРОДОЛЖЕНИЕ", "ОБШИВКА"])
+        continuation, plating = pages[1]
+        continuation_bottom = ab.PA_DETAIL_TOP + ab.pa_detail_table_height(continuation[1])
+        plating_top = continuation_bottom + ab.PA_DETAIL_STACK_GAP
+        self.assertLessEqual(plating_top + ab.pa_detail_table_height(plating[1]),
+                             ab.PAGE_NUMBER_TOP - 15.0)
 
     def test_pa_frame_has_no_mods(self):
         """У каркаса модов нет — блок не печатается вовсе."""
@@ -362,6 +374,19 @@ class RoundTwoTest(unittest.TestCase):
             self.assertGreaterEqual(layout["top"], ab.MODS_GRID_TOP, key)
             self.assertLessEqual(layout["bottom"], ab.MODS_GRID_BOTTOM, key)
             self.assertLessEqual(layout["bottom"], ab.PAGE_NUMBER_TOP, key)
+
+    def test_mods_heading_is_45_points_above_its_table(self):
+        """Поддерживаемые и общие моды не отделяются лишней пустотой."""
+        grids = [
+            ab.mods_rows(self.book, "armor", "leatherArmor"),
+            self.book.pa_mods_grid("raiderPower"),
+            ab.clothes_mods_rows(
+                self.book, self.book.clothes_item("suits", "clothing_vault_jumpsuit")),
+        ]
+        for rows in grids:
+            layout = ab.fit_mods_grid(rows)
+            self.assertAlmostEqual(layout["top"] - ab.mods_heading_top(layout),
+                                   ab.MODS_HEADING_TABLE_OFFSET, places=2)
 
     def test_cells_have_padding_without_word_fragments(self):
         """Строки не упираются в рамку и длинное слово не разрезается."""
@@ -530,8 +555,8 @@ class RenderedPdfTest(unittest.TestCase):
         self.assertIn("СИЛОВАЯ БРОНЯ", all_text)
         self.assertIn("ОДЕЖДА", all_text)
         # 6 комплектов брони, 6 силовой брони, 5 страниц её уникальных
-        # модификаций, 3 страницы общего каталога и 32 страницы одежды.
-        self.assertEqual(pages, 61)
+        # модификаций, 2 страницы общего каталога и 32 страницы одежды.
+        self.assertEqual(pages, 60)
         self.assertIn("МОДИФИКАЦИИ СИЛОВОЙ БРОНИ", all_text)
         self.assertIn("ОБЩИЙ СПРАВОЧНИК", all_text)
 
