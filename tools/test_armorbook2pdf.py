@@ -166,6 +166,17 @@ class DataRulesTest(unittest.TestCase):
         slots = ab.char_grid_slots(b.tier_pieces("armor", "metalArmor"))
         self.assertIn("Head", [area for area, _piece in slots])
 
+    def test_armor_common_catalog_uses_real_effects_and_requirements(self):
+        b = book()
+        mods = b.armor_common_mods()
+        self.assertEqual(len(mods), 12)
+        soft = next(mod for mod in mods if mod["id"] == "mod_std_soft_padding")
+        self.assertEqual(ab.armor_area_text(soft), "Нагрудник")
+        self.assertEqual(ab.armor_skill_text(soft), "Ремонт")
+        self.assertIn("+2 к сопротивлению", ab.armor_effect_text(b, soft))
+        asbestos = next(mod for mod in mods if mod["id"] == "mod_std_asbestos_lining")
+        self.assertIn("+3 к ЭНРГ. СУ", ab.armor_effect_text(b, asbestos))
+
     def test_all_sets_present(self):
         b = book()
         for collection in ("armor", "powerArmor", "clothes"):
@@ -264,7 +275,16 @@ class RoundTwoTest(unittest.TestCase):
         upper_bottom = geometry["upper_top"] + 7 * ab.CHAR_ROW_H
         self.assertGreater(geometry["lower_label"], upper_bottom)
 
-    # -- моды силовой брони --------------------------------------------
+    # -- общие каталоги и моды силовой брони ---------------------------
+
+    def test_armor_catalog_is_a_single_common_page(self):
+        """Эффекты стандартных модов обычной брони доступны до моделей."""
+        pages = ab.armor_common_catalog_pages(self.book)
+        self.assertEqual(len(pages), 1)
+        self.assertEqual([section for section, _rows in pages[0]],
+                         ["СТАНДАРТНЫЕ МОДИФИКАЦИИ"])
+        rows = pages[0][0][1]
+        self.assertEqual(len(rows), len(self.book.armor_common_mods()))
 
     def test_pa_common_list_and_unique_details_are_separated(self):
         """На листе 1 — общие моды, на листе 2 — 20 уникальных улучшений."""
@@ -559,9 +579,11 @@ class RenderedPdfTest(unittest.TestCase):
         self.assertIn("БРОНЯ", all_text)
         self.assertIn("СИЛОВАЯ БРОНЯ", all_text)
         self.assertIn("ОДЕЖДА", all_text)
-        # 6 комплектов брони, 6 силовой брони, 5 страниц её уникальных
-        # модификаций, 2 страницы общего каталога и 32 страницы одежды.
-        self.assertEqual(pages, 60)
+        # 6 комплектов брони, 1 страница её общего каталога, 6 силовой брони,
+        # 5 страниц уникальных PA-модификаций, 2 страницы PA-каталога и
+        # 32 страницы одежды.
+        self.assertEqual(pages, 61)
+        self.assertIn("МОДИФИКАЦИИ БРОНИ", all_text)
         self.assertIn("МОДИФИКАЦИИ СИЛОВОЙ БРОНИ", all_text)
         self.assertIn("ОБЩИЙ СПРАВОЧНИК", all_text)
 
@@ -585,6 +607,18 @@ class RenderedPdfTest(unittest.TestCase):
             source_pages = [(page.get_text().splitlines(), "".join(page.get_text().split()))
                             for page in doc if page.get_text().splitlines()]
         pages = {lines[0]: text for lines, text in source_pages}
+
+        armor_catalog = "".join(text for lines, text in source_pages
+                                 if lines[0] == "МОДИФИКАЦИИ БРОНИ")
+        self.assertEqual(len([1 for lines, _text in source_pages
+                              if lines[0] == "МОДИФИКАЦИИ БРОНИ"]),
+                         len(ab.armor_common_catalog_pages(self.book)))
+        for mod in self.book.armor_common_mods():
+            name = self.book.mod_names[mod["id"]]
+            self.assertIn("".join(name.split()), armor_catalog, name)
+            effect = ab.armor_effect_text(self.book, mod)
+            self.assertNotEqual(effect, "—", name)
+            self.assertIn("".join(effect.split()), armor_catalog, name)
 
         catalog = "".join(text for lines, text in source_pages
                             if lines[0] == "МОДИФИКАЦИИ СИЛОВОЙ БРОНИ")

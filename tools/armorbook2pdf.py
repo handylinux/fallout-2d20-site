@@ -31,6 +31,10 @@ armorbook2pdf — книга брони, силовой брони и одежд
       из statModifiers / weightModifier / costModifier / requiredPerk;
       эффект — русское описание из i18n; строки чередуют цвет.
 
+  обычная броня
+    - перед наборами расположен единый каталог стандартных модов: эффект,
+      совместимая деталь, вес, цена, перк и требуемый навык;
+
   силовая броня
     - перед моделями расположен единый каталог общих систем и обшивок:
       эффект, совместимая деталь, вес, цена, перк и навык;
@@ -234,6 +238,11 @@ AREA_TITLES = {
 PA_AREA_ORDER = ("Head", "Body", "Hand", "Leg")
 PA_AREA_DETAIL_TITLES = {
     "Head": "Голова", "Body": "Тело", "Hand": "Рука", "Leg": "Нога",
+}
+# Детали обычной брони в общем каталоге называются так же, как на странице
+# комплекта, а не абстрактными зонами «Тело» / «Рука» / «Нога».
+ARMOR_AREA_DETAIL_TITLES = {
+    "Head": "Шлем", "Body": "Нагрудник", "Hand": "Наруч", "Leg": "Понож",
 }
 # порядок зон в сетке модов (как в референсе)
 MODS_AREA_ORDER = ("Body", "Hand", "Leg")
@@ -497,6 +506,20 @@ class Book:
             if area in (mod.get("protectedAreas") or []):
                 names.append(self.mod_names.get(mod["id"], mod["id"]))
         return names
+
+    def armor_common_mods(self) -> list[dict]:
+        """Стандартные моды, реально разрешённые хотя бы одному набору брони.
+
+        Каталог не выдумывает совместимость: список категорий берётся из
+        `allowedModCategories` каждого набора, а порядок сохраняется из
+        исходного `armor_mods.json`.
+        """
+        allowed = {
+            category
+            for armor in self.armor.values()
+            for category in armor.get("allowedModCategories") or []
+        }
+        return [mod for mod in self.mods if mod.get("modCategory") in allowed]
 
     def unique_mods_for(self, allowed: list[str]) -> list[dict]:
         return [m for m in self.unique_mods if m.get("modCategory") in allowed]
@@ -1268,12 +1291,11 @@ def draw_mods_grid(c, rows: list[tuple[str, list[str]]],
     return layout["top"], y
 
 
-# -- подробные модификации силовой брони -----------------------------------
+# -- подробные каталоги модификаций -----------------------------------------
 #
-# Общие системы и обшивка описываются один раз в каталоге: это именно те
-# строки, которые повторяются у нескольких моделей. Страница конкретного
-# набора содержит только его уникальные улучшения/системы — по образцу
-# пользовательских таблиц T-45 и рейдерской брони.
+# Обычная броня и силовая броня используют одну подробную табличную сетку:
+# сначала идёт общий справочник, а на страницах моделей остаются только
+# короткие списки совместимости и уникальные моды.
 
 PA_DETAIL_TOP = 150.0
 # Отступ между таблицами системы и обшивки на одной странице каталога.
@@ -1305,6 +1327,69 @@ PA_UNIQUE_HEADERS = (
     ("ОЧКИ", "ЗДОРОВЬЯ"), ("ЗАЩИЩАЕМАЯ", "ДЕТАЛЬ"), ("ВЕС",),
     ("ЦЕНА",), ("ПЕРКИ",),
 )
+
+
+def armor_area_text(mod: dict) -> str:
+    """Деталь обычной брони, к которой относится стандартный мод."""
+    areas = mod.get("protectedAreas") or []
+    return " / ".join(ARMOR_AREA_DETAIL_TITLES.get(area, area) for area in areas) or "—"
+
+
+def armor_skill_text(mod: dict) -> str:
+    """Локализовать реальный `requiredSkill` обычной брони."""
+    skill = str(mod.get("requiredSkill") or "")
+    titles = {
+        "REPAIR": "Ремонт",
+        "SCIENCE": "Наука",
+        "SURVIVAL": "Выживание",
+    }
+    return titles.get(skill.upper(), skill) or "—"
+
+
+def armor_effect_text(book: Book, mod: dict) -> str:
+    """Подробный эффект мода обычной брони, включая числовые СУ.
+
+    В локализации некоторые эффекты описывают правило, но не стат (например,
+    асбестовая подкладка даёт и +3 ЭНРГ. СУ). В общем справочнике показываем
+    оба подтверждённых источника данных, чтобы назначение мода было ясным.
+    """
+    labels = {
+        "physicalDamageRating": "ФИЗ. СУ",
+        "energyDamageRating": "ЭНРГ. СУ",
+        "radiationDamageRating": "РАД. СУ",
+        "hp": "прочности",
+    }
+    numeric: list[str] = []
+    modifiers = mod.get("statModifiers") or {}
+    for key, label in labels.items():
+        modifier = modifiers.get(key) or {}
+        if modifier.get("value", 0):
+            numeric.append(f"{mod_stat_text(mod, key)} к {label}")
+    description = mod_effect_text(book, mod)
+    return "; ".join([*numeric, *([description] if description else [])]) or "—"
+
+
+def armor_detail_rows(book: Book, mods: list[dict]) -> list[dict]:
+    """Строки общего справочника стандартных модов обычной брони."""
+    rows: list[dict] = []
+    for mod in mods:
+        values = [
+            book.mod_names.get(mod["id"], mod["id"]),
+            armor_effect_text(book, mod),
+            armor_area_text(mod),
+            mod_offset_text(mod, "weightModifier"),
+            mod_offset_text(mod, "costModifier"),
+            mod.get("requiredPerk") or "—",
+            armor_skill_text(mod),
+        ]
+        cells = [fitted_cell(value, width, PA_DETAIL_FONT, PA_DETAIL_PAD,
+                             FONT if index != 0 else FONT_B)
+                 for index, (value, width) in enumerate(zip(values, PA_DETAIL_COLS))]
+        height = max(PA_DETAIL_ROW_MIN,
+                     max(len(cell["lines"]) for cell in cells) * PA_DETAIL_LINE_H
+                     + PA_DETAIL_PAD)
+        rows.append({"cells": cells, "height": height})
+    return rows
 
 
 def pa_area_text(book: Book, mod: dict) -> str:
@@ -1378,7 +1463,7 @@ def pa_detail_edges() -> list[float]:
 
 def draw_pa_detail_table(c, rows: list[dict], section: str,
                          top: float = PA_DETAIL_TOP) -> float:
-    """Таблица общих или исключительных систем с эффектами и требованиями."""
+    """Подробная таблица модификаций с эффектами и требованиями."""
     edges = pa_detail_edges()
     right = edges[-1]
     # Полоса категории повторяет «МОДИФИКАЦИЯ СИСТЕМЫ» из референса.
@@ -1439,7 +1524,7 @@ def split_pa_detail_rows(rows: list[dict], top: float = PA_DETAIL_TOP) -> list[l
 
 
 def pa_detail_table_height(rows: list[dict]) -> float:
-    """Полная высота таблицы PA с полосой категории и шапкой."""
+    """Полная высота подробной таблицы с полосой категории и шапкой."""
     return PA_DETAIL_SECTION_H + PA_DETAIL_HEADER_H + sum(row["height"] for row in rows)
 
 
@@ -1460,6 +1545,28 @@ def pa_catalog_table_fits(tables: list[tuple[str, list[dict]]],
     if tables:
         top += PA_DETAIL_STACK_GAP
     return top + pa_detail_table_height(rows) <= PAGE_NUMBER_TOP - 15.0
+
+
+def armor_common_catalog_pages(book: Book) -> list[list[tuple[str, list[dict]]]]:
+    """Страницы общего справочника стандартных модов обычной брони."""
+    rows = armor_detail_rows(book, book.armor_common_mods())
+    pages: list[list[tuple[str, list[dict]]]] = []
+    for index, chunk in enumerate(split_pa_detail_rows(rows)):
+        suffix = "" if index == 0 else " · ПРОДОЛЖЕНИЕ"
+        pages.append([("СТАНДАРТНЫЕ МОДИФИКАЦИИ" + suffix, chunk)])
+    return pages
+
+
+def draw_armor_common_catalog_page(c, tables: list[tuple[str, list[dict]]]) -> float:
+    """Одна страница общего каталога модов обычной брони."""
+    draw_page_title(c, "Модификации брони")
+    draw_section_label(c, MARGIN_L + CONTENT_W / 2.0, 116.63, "Общий справочник")
+    top = PA_DETAIL_TOP
+    for index, (section, rows) in enumerate(tables):
+        if index:
+            top += PA_DETAIL_STACK_GAP
+        top = draw_pa_detail_table(c, rows, section, top)
+    return top
 
 
 def pa_common_catalog_pages(book: Book) -> list[list[tuple[str, list[dict]]]]:
@@ -2165,9 +2272,19 @@ def build_book(specs: list[Spec], book: Book, out_path: Path,
                 stats["pages"] += 1
             current = spec.collection
 
-            # Один раз перед моделями: подробные эффекты всех общих систем и
-            # обшивок. На листах конкретной модели они не дублируются.
-            if current == "powerArmor":
+            # Один раз перед моделями: подробные эффекты общих модов. На
+            # страницах конкретных наборов остаются только краткие списки.
+            # Каталог обычной брони не навязывается одиночному рендеру с
+            # --no-sections: тот по-прежнему состоит только из страниц сета.
+            if current == "armor" and sections:
+                for tables in armor_common_catalog_pages(book):
+                    w.draw_paper(c)
+                    draw_armor_common_catalog_page(c, tables)
+                    draw_page_number(c, page)
+                    c.showPage()
+                    page += 1
+                    stats["pages"] += 1
+            elif current == "powerArmor":
                 for tables in pa_common_catalog_pages(book):
                     w.draw_paper(c)
                     draw_pa_common_catalog_page(c, tables)
