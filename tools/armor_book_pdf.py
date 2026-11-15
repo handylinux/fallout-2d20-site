@@ -51,12 +51,17 @@ from armor2page import (  # noqa: E402
     AREA_TITLES,
     Companion,
     fmt_delta,
+    fmt_number,
     stat_fields,
 )
 
 # --- геометрия (по референсу, pt) ----------------------------------------
-MARGIN_L = 36.0
-CONTENT_R = 559.3
+# Отступы для переплёта (слева) и обрезки (сверху/справа): контент не
+# прилипает к левому краю и верху листа.
+BINDING_MARGIN_L = 12.0
+TRIM_MARGIN_TOP = 12.0
+MARGIN_L = 36.0 + BINDING_MARGIN_L
+CONTENT_R = 559.3 + BINDING_MARGIN_L
 CONTENT_W = CONTENT_R - MARGIN_L
 
 # заголовки страниц (позиции по референсу)
@@ -134,7 +139,7 @@ TIER_FONT = 10.0
 TIER_LABEL_PAD = 6.0
 TIER_ELEM_PAD = 6.0
 TIER_COL_GAP = 14.0
-TIER_LABEL_CENTERS = (146.85, 449.65)
+TIER_LABEL_CENTERS = (146.85 + BINDING_MARGIN_L, 449.65 + BINDING_MARGIN_L)
 # ширины колонок матриц тиров по векторным линиям референса (ШЛЕМ опущен
 # по правилу отсутствия шлема в данных).
 TIER_LEFT_COLS = (54.2, 71.7, 42.5, 43.4)
@@ -391,7 +396,8 @@ def build_char_tables_grid(pieces: list[dict]) -> str:
         name = " / ".join(AREA_TITLES.get(a, a.upper())
                           for a in piece.get("protectedAreas", []))
         rows = []
-        for label in stat_labels(piece):
+        for label, key in stat_fields(piece):
+            value = fmt_number(piece.get(key, 0))
             rows.append(
                 f'<tr>'
                 f'<td style="width:{label_col:.1f}pt;background:#000;color:#fff;'
@@ -400,7 +406,11 @@ def build_char_tables_grid(pieces: list[dict]) -> str:
                 f'line-height:{CHAR_ROW_H}pt;border:0.6pt solid #000">'
                 f'{esc(label)}</td>'
                 f'<td style="width:{value_col:.1f}pt;background:{BEIGE};'
-                f'border:0.6pt solid #000"></td>'
+                f'border:0.6pt solid #000;'
+                f'font-family:CarlitoReg;font-size:{CHAR_LABEL_SIZE}pt;'
+                f'text-align:center;vertical-align:middle;'
+                f'line-height:{CHAR_ROW_H}pt">'
+                f'{esc(value)}</td>'
                 f'</tr>'
             )
         table = (
@@ -554,6 +564,7 @@ def build_tier_matrix(pieces: list[dict], col_widths: tuple = None) -> str:
     areas.sort(key=lambda a: order.get(a, 99))
     area_titles = [AREA_TITLES.get(a, a.upper()) for a in areas]
 
+    pieces = pieces_by_area_order(pieces)
     labels = stat_labels(pieces[0] if pieces else {})
     if col_widths is None:
         label_w = max((text_w(l, TIER_FONT, bold=True) for l in labels),
@@ -566,20 +577,19 @@ def build_tier_matrix(pieces: list[dict], col_widths: tuple = None) -> str:
         col_widths = col_widths[1:]
 
     head_cells = (
-        f'<td style="width:{label_col:.1f}pt;background:#000;color:#fff;'
-        f'font-family:CarlitoBold;font-size:{TIER_FONT}pt;text-align:center;'
-        f'height:{TIER_HEADER_H}pt;line-height:{TIER_FONT}pt;'
+        f'<td style="width:{label_col:.1f}pt;background:#000;'
         f'border:0.6pt solid #000"></td>'
         + "".join(
-            f'<td style="width:{cw:.1f}pt;background:#000;color:#fff;'
-            f'font-family:CarlitoBold;font-size:{TIER_FONT}pt;text-align:center;'
+            f'<td style="width:{cw:.1f}pt;background:{BEIGE};'
+            f'font-family:CarlitoBold;font-size:{TIER_FONT}pt;'
+            f'color:{BLACK};text-align:center;'
             f'height:{TIER_HEADER_H}pt;line-height:{TIER_FONT}pt;'
             f'border:0.6pt solid #000">{esc(t)}</td>'
             for t, cw in zip(area_titles, col_widths)
         )
     )
     rows = []
-    for label in labels:
+    for label, key in stat_fields(pieces[0] if pieces else {}):
         cells = (
             f'<td style="width:{label_col:.1f}pt;background:#000;color:#fff;'
             f'font-family:CarlitoBold;font-size:{TIER_FONT}pt;'
@@ -588,8 +598,12 @@ def build_tier_matrix(pieces: list[dict], col_widths: tuple = None) -> str:
             f'border:0.6pt solid #000">{esc(label)}</td>'
             + "".join(
                 f'<td style="width:{cw:.1f}pt;background:{BEIGE};'
-                f'border:0.6pt solid #000"></td>'
-                for cw in col_widths
+                f'border:0.6pt solid #000;'
+                f'font-family:CarlitoReg;font-size:{TIER_FONT}pt;'
+                f'text-align:center;vertical-align:middle;'
+                f'line-height:{TIER_ROW_H}pt">'
+                f'{esc(fmt_number(piece.get(key, 0)))}</td>'
+                for piece, cw in zip(pieces, col_widths)
             )
         )
         rows.append(f'<tr>{cells}</tr>')
@@ -615,9 +629,10 @@ def build_tiers_grid(set_data: dict) -> str:
     if not matrices:
         return ""
 
-    # позиции референса: левая матрица x36.2, правая x319.7
-    left_w = 319.7 - MARGIN_L - TIER_COL_GAP
-    right_w = CONTENT_R - 319.7
+    # позиции референса: левая матрица x36.2, правая x319.7 (с учётом
+    # отступа переплёта)
+    left_w = 319.7 + BINDING_MARGIN_L - MARGIN_L - TIER_COL_GAP
+    right_w = CONTENT_R - 319.7 - BINDING_MARGIN_L
     left_cols = TIER_LEFT_COLS
     right_cols = TIER_RIGHT_COLS
 
@@ -685,17 +700,13 @@ def build_unique_mods_table(comp: Companion, set_data: dict) -> str:
     rows_data: list[tuple[str, tuple[str, ...]]] = []
     for mod in mods:
         name = comp.mod_names.get(mod.get("id", ""), mod.get("id", ""))
-        if not rows_data:  # первая строка — со статистикой, как в референсе
-            vals = (stat_val(mod, "physicalDamageRating"),
-                    stat_val(mod, "energyDamageRating"),
-                    stat_val(mod, "radiationDamageRating"),
-                    mod_val(mod, "weightModifier"),
-                    mod_val(mod, "costModifier"),
-                    (mod.get("requiredPerk") or "").upper(),
-                    "")
-        else:
-            vals = ("", "", "", "", "",
-                    (mod.get("requiredPerk") or "").upper(), "")
+        vals = (stat_val(mod, "physicalDamageRating"),
+                stat_val(mod, "energyDamageRating"),
+                stat_val(mod, "radiationDamageRating"),
+                mod_val(mod, "weightModifier"),
+                mod_val(mod, "costModifier"),
+                (mod.get("requiredPerk") or "").upper(),
+                "")
         effects = [comp.mod_effects.get(e.get("id", ""), "")
                    for e in (mod.get("specialEffects") or [])]
         effects_text = " ".join(e for e in effects if e)
@@ -705,7 +716,8 @@ def build_unique_mods_table(comp: Companion, set_data: dict) -> str:
     if not rows_data:
         return ""
 
-    col_widths = list(UNIQ_COLS)
+    # таблица уникальных модов — во всю область контента по ширине
+    col_widths = scale_to(list(UNIQ_COLS), CONTENT_W)
 
     # заголовок
     head_cells = "".join(
@@ -766,7 +778,7 @@ def build_page_1_html(spec: dict, comp: Companion, set_data: dict) -> str:
     # блок справа: x 315.8 .. 559.3; подпись СТАНДАРТНЫЙ КОМПЛЕКТ на 29.7pt
     # ниже title-черты (реф. y110.3)
     right_block = (
-        f'<div style="margin-left:{315.8 - MARGIN_L:.1f}pt;'
+        f'<div style="margin-left:{315.8 + BINDING_MARGIN_L - MARGIN_L:.1f}pt;'
         f'width:{CHAR_BLOCK_W}pt">{section}'
         f'<div style="margin-top:{CHAR_GRID_MARGIN_TOP}pt">{char_grid}</div>'
         f'</div>'
@@ -786,7 +798,7 @@ def build_page_1_html(spec: dict, comp: Companion, set_data: dict) -> str:
     )
     return (
         '<table class="sheet">'
-        f'<tr><td style="vertical-align:top;height:841pt;padding:47.8pt 36pt 0 36pt">'
+        f'<tr><td style="vertical-align:top;height:841pt;padding:{47.8 + TRIM_MARGIN_TOP:.1f}pt 24pt 0 48pt">'
         f'{content}</td></tr>'
         '</table>'
     )
@@ -822,7 +834,7 @@ def build_page_2_html(spec: dict, comp: Companion, set_data: dict) -> str:
     )
     return (
         '<table class="sheet">'
-        f'<tr><td style="vertical-align:top;height:841pt;padding:47.8pt 36pt 0 36pt">'
+        f'<tr><td style="vertical-align:top;height:841pt;padding:{47.8 + TRIM_MARGIN_TOP:.1f}pt 24pt 0 48pt">'
         f'{content}</td></tr>'
         '</table>'
     )
