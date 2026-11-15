@@ -495,11 +495,20 @@ def build_mods_grid(comp: Companion, set_data: dict) -> str:
     ncols = 5
 
     # ширины колонок — по векторным линиям референса (get_drawings):
-    # метка 81.2, мод-колонки 80.7 / 69.2 / 90.3 / 104.6 / 97.2.
+    # мод-колонки 80.7 / 69.2 / 90.3 / 104.6 / 97.2.
     # Используем измеренные ширины референса, чтобы обёртка текста
     # (Асбестовая подкладка, Звукоизолированная → 2 строки) повторялась
     # точно. Шлем-строку опускаем по правилу отсутствия шлема в данных.
-    label_col = MODS_GRID_LABEL_W
+    # Меточную колонку делаем по самой длинной метке + отступ (не фиксированную
+    # 81.2): после симметричных отступов CONTENT_W суженее референса, и фикс
+    # 81.2 оставлял мод-колонкам недостаточно места — «Сбалансированная»
+    # (87.1pt) не помещалась в колонку 2 (85.4pt) и обрывалась. Метка
+    # «УНИКАЛЬНАЯ» (59.9pt) требует ~68pt, освобождая pt для мод-колонок.
+    label_col = 0.0
+    for lbl, _mods in rows_data:
+        need = text_w(lbl, MODS_FONT, bold=True) + 8.0
+        if need > label_col:
+            label_col = need
     col_widths = scale_to(list(MODS_GRID_COLS),
                           CONTENT_W - label_col)
 
@@ -723,14 +732,17 @@ def build_unique_mods_table(comp: Companion, set_data: dict) -> str:
     # таблица уникальных модов — во всю область контента по ширине
     col_widths = scale_to(list(UNIQ_COLS), CONTENT_W)
 
-    # заголовок
+    # заголовок: колонка с названием — слева, статистические колонки —
+    # по центру (как в референсе)
     head_cells = "".join(
         f'<td style="width:{cw:.1f}pt;background:#000;color:#fff;'
         f'font-family:CarlitoBold;font-size:{UNIQ_FONT}pt;'
-        f'text-align:left;padding-left:2.8pt;vertical-align:middle;'
+        + ("text-align:left;padding-left:2.8pt;" if idx == 0 else
+           "text-align:center;")
+        + f'vertical-align:middle;'
         f'height:{UNIQ_HEADER_H}pt;line-height:{UNIQ_FONT}pt;'
         f'border:0.6pt solid #000">{esc(h)}</td>'
-        for h, cw in zip(headers, col_widths)
+        for idx, (h, cw) in enumerate(zip(headers, col_widths))
     )
 
     rows_html = []
