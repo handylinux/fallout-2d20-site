@@ -177,6 +177,22 @@ class DataRulesTest(unittest.TestCase):
         asbestos = next(mod for mod in mods if mod["id"] == "mod_std_asbestos_lining")
         self.assertIn("+3 к ЭНРГ. СУ", ab.armor_effect_text(b, asbestos))
 
+    def test_clothes_common_catalog_uses_real_ballistic_weave_values(self):
+        b = book()
+        groups = b.clothes_common_mod_groups()
+        self.assertEqual([label for label, _mods in groups],
+                         ["ТКАНЕВАЯ ОСНОВА", "ПОДКЛАДКА КОМБИНЕЗОНА"])
+        self.assertEqual(len(b.clothes_common_mods()), 10)
+        weave = next(mod for mod in b.clothes_common_mods()
+                     if mod["id"] == "uniq_weave_ballistic")
+        self.assertEqual(ab.clothes_effect_text(b, weave),
+                         "+2 к ФИЗ. СУ; +2 к ЭНРГ. СУ")
+        mk5 = next(mod for mod in b.clothes_common_mods()
+                   if mod["id"] == "uniq_weave_ballistic_mk5")
+        self.assertEqual(ab.clothes_effect_text(b, mk5),
+                         "+6 к ФИЗ. СУ; +6 к ЭНРГ. СУ")
+        self.assertEqual(ab.armor_skill_text(weave), "Ремонт")
+
     def test_all_sets_present(self):
         b = book()
         for collection in ("armor", "powerArmor", "clothes"):
@@ -285,6 +301,16 @@ class RoundTwoTest(unittest.TestCase):
                          ["СТАНДАРТНЫЕ МОДИФИКАЦИИ"])
         rows = pages[0][0][1]
         self.assertEqual(len(rows), len(self.book.armor_common_mods()))
+
+    def test_clothes_catalog_is_a_single_page_with_ballistic_weave(self):
+        """Справочник одежды объясняет все уровни тканевой основы."""
+        pages = ab.clothes_common_catalog_pages(self.book)
+        self.assertEqual(len(pages), 1)
+        self.assertEqual([section for section, _rows in pages[0]],
+                         ["ТКАНЕВАЯ ОСНОВА", "ПОДКЛАДКА КОМБИНЕЗОНА"])
+        rows = [row for _section, section_rows in pages[0]
+                for row in section_rows]
+        self.assertEqual(len(rows), len(self.book.clothes_common_mods()))
 
     def test_pa_common_list_and_unique_details_are_separated(self):
         """На листе 1 — общие моды, на листе 2 — 20 уникальных улучшений."""
@@ -442,6 +468,12 @@ class RoundTwoTest(unittest.TestCase):
                 for line in cell["lines"]:
                     self.assertLessEqual(ab.sw(line, font, cell["font"]),
                                          width - 2 * ab.PA_UNIQUE_PAD + 0.01)
+        for row in ab.clothes_detail_rows(self.book, self.book.clothes_common_mods()):
+            for index, (cell, width) in enumerate(zip(row["cells"], ab.CLOTHES_DETAIL_COLS)):
+                font = ab.FONT_B if index == 0 else ab.FONT
+                for line in cell["lines"]:
+                    self.assertLessEqual(ab.sw(line, font, cell["font"]),
+                                         width - 2 * ab.PA_DETAIL_PAD + 0.01)
         long_name = next(row for row in ab.pa_detail_rows(
             self.book, self.book.pa_common_mods())
             if "Фотоэлектрическое" in " ".join(row["cells"][0]["lines"]))
@@ -580,11 +612,12 @@ class RenderedPdfTest(unittest.TestCase):
         self.assertIn("СИЛОВАЯ БРОНЯ", all_text)
         self.assertIn("ОДЕЖДА", all_text)
         # 6 комплектов брони, 1 страница её общего каталога, 6 силовой брони,
-        # 5 страниц уникальных PA-модификаций, 2 страницы PA-каталога и
-        # 32 страницы одежды.
-        self.assertEqual(pages, 61)
+        # 5 страниц уникальных PA-модификаций, 2 страницы PA-каталога,
+        # 1 страница каталога одежды и 32 страницы одежды.
+        self.assertEqual(pages, 62)
         self.assertIn("МОДИФИКАЦИИ БРОНИ", all_text)
         self.assertIn("МОДИФИКАЦИИ СИЛОВОЙ БРОНИ", all_text)
+        self.assertIn("МОДИФИКАЦИИ ОДЕЖДЫ", all_text)
         self.assertIn("ОБЩИЙ СПРАВОЧНИК", all_text)
 
     def test_clothes_page_title_is_drawn_once_and_translated(self):
@@ -600,6 +633,16 @@ class RenderedPdfTest(unittest.TestCase):
         all_text = "\n".join("\n".join(lines) for lines in pages)
         self.assertIn("БЛУЗКА", all_text)
         self.assertNotIn("BLOUSE", all_text)
+
+    def test_single_clothing_item_stays_compact_without_sections(self):
+        """Общий каталог не добавляется к одиночному рендеру предмета."""
+        spec = next(s for s in ab.auto_specs(self.book, "clothes")
+                    if s.item == "clothing_military_fatigues")
+        out = Path(self.tmp.name) / "fatigues.pdf"
+        stats = ab.build_book([spec], self.book, out, cover=False, sections=False)
+        self.assertEqual(stats["pages"], 1)
+        self.assertNotIn("МОДИФИКАЦИИ ОДЕЖДЫ", self.text(out, 0))
+        self.assertIn("Баллистическоеплетение", "".join(self.text(out, 0).split()))
 
     def test_all_supported_mods_are_rendered(self):
         """Общие эффекты и уникальные моды каждой модели попали в PDF."""
@@ -619,6 +662,18 @@ class RenderedPdfTest(unittest.TestCase):
             effect = ab.armor_effect_text(self.book, mod)
             self.assertNotEqual(effect, "—", name)
             self.assertIn("".join(effect.split()), armor_catalog, name)
+
+        clothes_catalog = "".join(text for lines, text in source_pages
+                                   if lines[0] == "МОДИФИКАЦИИ ОДЕЖДЫ")
+        self.assertEqual(len([1 for lines, _text in source_pages
+                              if lines[0] == "МОДИФИКАЦИИ ОДЕЖДЫ"]),
+                         len(ab.clothes_common_catalog_pages(self.book)))
+        for mod in self.book.clothes_common_mods():
+            name = self.book.mod_names[mod["id"]]
+            self.assertIn("".join(name.split()), clothes_catalog, name)
+            effect = ab.clothes_effect_text(self.book, mod)
+            self.assertNotEqual(effect, "—", name)
+            self.assertIn("".join(effect.split()), clothes_catalog, name)
 
         catalog = "".join(text for lines, text in source_pages
                             if lines[0] == "МОДИФИКАЦИИ СИЛОВОЙ БРОНИ")

@@ -42,6 +42,11 @@ armorbook2pdf — книга брони, силовой брони и одежд
     - на второй странице — только уникальные улучшения и исключительные
       системы/обшивки с полными числовыми характеристиками.
 
+  одежда
+    - перед предметами расположен единый каталог подтверждённых тканевых
+      основ и подкладок: уровни баллистического плетения показывают точные
+      бонусы к ФИЗ. и ЭНРГ. СУ, а также вес, цену, перк и навык.
+
 Данные — Fallout 2d20 Companion (`data/companion`), оформление — Carlito
 (метрический клон Calibri) и бумажная текстура `assets/pdf/paper.jpg`.
 
@@ -748,6 +753,37 @@ class Book:
                 rows.append((label, existing))
         return rows
 
+    def clothes_common_mod_groups(self) -> list[tuple[str, list[dict]]]:
+        """Подтверждённые моды одежды, сгруппированные по реальным слотам.
+
+        В Companion совместимость одежды хранится отдельно в
+        `clothes_mods.json`. Поэтому общий справочник берёт только моды,
+        которые действительно встречаются хотя бы у одного предмета, и
+        сохраняет порядок слотов и уровней из этого файла.
+        """
+        by_id = {mod["id"]: mod for mod in self.unique_mods}
+        groups: list[tuple[str, list[dict]]] = []
+        grouped: dict[str, list[dict]] = {}
+        seen: set[str] = set()
+        for item_id in self.clothes_mods:
+            for label, ids in self.clothes_mod_groups(item_id):
+                if label not in grouped:
+                    grouped[label] = []
+                    groups.append((label, grouped[label]))
+                for mod_id in ids:
+                    # Одно и то же плетение совместимо с несколькими вещами,
+                    # но в едином каталоге оно должно быть только один раз.
+                    if mod_id in seen or mod_id not in by_id:
+                        continue
+                    grouped[label].append(by_id[mod_id])
+                    seen.add(mod_id)
+        return [(label, mods) for label, mods in groups if mods]
+
+    def clothes_common_mods(self) -> list[dict]:
+        """Плоский список модов общего справочника одежды."""
+        return [mod for _label, mods in self.clothes_common_mod_groups()
+                for mod in mods]
+
 
 # --------------------------------------------------------------------------
 # рисование
@@ -1293,9 +1329,9 @@ def draw_mods_grid(c, rows: list[tuple[str, list[str]]],
 
 # -- подробные каталоги модификаций -----------------------------------------
 #
-# Обычная броня и силовая броня используют одну подробную табличную сетку:
-# сначала идёт общий справочник, а на страницах моделей остаются только
-# короткие списки совместимости и уникальные моды.
+# Обычная, силовая броня и одежда используют подробные табличные сетки:
+# сначала идёт общий справочник, а на страницах моделей и предметов остаются
+# только короткие списки совместимости и уникальные моды.
 
 PA_DETAIL_TOP = 150.0
 # Отступ между таблицами системы и обшивки на одной странице каталога.
@@ -1311,6 +1347,14 @@ PA_DETAIL_PAD = 4.5
 PA_DETAIL_COLS = (90.0, 171.0, 62.0, 32.0, 35.0, 69.0, 40.0)
 PA_DETAIL_HEADERS = (
     "МОДИФИКАЦИЯ", "ЭФФЕКТ", "ЗАЩИЩАЕМАЯ ДЕТАЛЬ", "ВЕС", "ЦЕНА", "ПЕРКИ", "НАВЫК",
+)
+
+# Одежде не требуется колонка детали: категория задана полосой таблицы
+# («ТКАНЕВАЯ ОСНОВА» или «ПОДКЛАДКА КОМБИНЕЗОНА»). Освободившееся место
+# получает эффект, чтобы уровни баллистического плетения читались целиком.
+CLOTHES_DETAIL_COLS = (108.0, 190.0, 35.0, 40.0, 80.0, 46.2)
+CLOTHES_DETAIL_HEADERS = (
+    "МОДИФИКАЦИЯ", "ЭФФЕКТ", "ВЕС", "ЦЕНА", "ПЕРКИ", "НАВЫК",
 )
 
 # Уникальные улучшения: подробные числовые поля, как в референсе T-45.
@@ -1392,6 +1436,39 @@ def armor_detail_rows(book: Book, mods: list[dict]) -> list[dict]:
     return rows
 
 
+def clothes_effect_text(book: Book, mod: dict) -> str:
+    """Эффект мода одежды с подтверждёнными числовыми сопротивлениями.
+
+    У уровней баллистического плетения нет текстового описания в i18n, однако
+    `statModifiers` прямо задают их бонусы к ФИЗ. и ЭНРГ. СУ. Используем ту
+    же объединённую логику, что и для стандартной брони, чтобы в справочнике
+    было видно, что делает каждый Mk.
+    """
+    return armor_effect_text(book, mod)
+
+
+def clothes_detail_rows(book: Book, mods: list[dict]) -> list[dict]:
+    """Строки подробного справочника тканевых основ и подкладок одежды."""
+    rows: list[dict] = []
+    for mod in mods:
+        values = [
+            book.mod_names.get(mod["id"], mod["id"]),
+            clothes_effect_text(book, mod),
+            mod_offset_text(mod, "weightModifier"),
+            mod_offset_text(mod, "costModifier"),
+            mod.get("requiredPerk") or "—",
+            armor_skill_text(mod),
+        ]
+        cells = [fitted_cell(value, width, PA_DETAIL_FONT, PA_DETAIL_PAD,
+                             FONT if index != 0 else FONT_B)
+                 for index, (value, width) in enumerate(zip(values, CLOTHES_DETAIL_COLS))]
+        height = max(PA_DETAIL_ROW_MIN,
+                     max(len(cell["lines"]) for cell in cells) * PA_DETAIL_LINE_H
+                     + PA_DETAIL_PAD)
+        rows.append({"cells": cells, "height": height})
+    return rows
+
+
 def pa_area_text(book: Book, mod: dict) -> str:
     """Человеческая подпись совместимой детали для подробной таблицы."""
     areas = book.pa_compatible_areas(mod)
@@ -1462,9 +1539,18 @@ def pa_detail_edges() -> list[float]:
 
 
 def draw_pa_detail_table(c, rows: list[dict], section: str,
-                         top: float = PA_DETAIL_TOP) -> float:
-    """Подробная таблица модификаций с эффектами и требованиями."""
-    edges = pa_detail_edges()
+                         top: float = PA_DETAIL_TOP,
+                         columns: tuple[float, ...] = PA_DETAIL_COLS,
+                         headers: tuple[str, ...] = PA_DETAIL_HEADERS) -> float:
+    """Подробная таблица модификаций с эффектами и требованиями.
+
+    Обычная и силовая броня используют стандартный набор колонок. У одежды
+    нет отдельной детали, поэтому её каталог передаёт компактную шестиколоночную
+    раскладку с более широкой колонкой эффекта.
+    """
+    edges = [MARGIN_L]
+    for width in columns:
+        edges.append(edges[-1] + width)
     right = edges[-1]
     # Полоса категории повторяет «МОДИФИКАЦИЯ СИСТЕМЫ» из референса.
     rect(c, MARGIN_L, top, right, top + PA_DETAIL_SECTION_H, fill=BEIGE)
@@ -1474,7 +1560,7 @@ def draw_pa_detail_table(c, rows: list[dict], section: str,
         FONT_B, PA_DETAIL_HEADER_FONT)
 
     header_top = top + PA_DETAIL_SECTION_H
-    for index, (width, title) in enumerate(zip(PA_DETAIL_COLS, PA_DETAIL_HEADERS)):
+    for index, (width, title) in enumerate(zip(columns, headers)):
         x = edges[index]
         rect(c, x, header_top, x + width, header_top + PA_DETAIL_HEADER_H, fill=BLACK)
         rect(c, x, header_top, x + width, header_top + PA_DETAIL_HEADER_H, stroke=BLACK)
@@ -1488,7 +1574,7 @@ def draw_pa_detail_table(c, rows: list[dict], section: str,
     for index, row in enumerate(rows):
         fill = BEIGE if index % 2 == 0 else ORANGE
         height = row["height"]
-        for col, (width, cell) in enumerate(zip(PA_DETAIL_COLS, row["cells"])):
+        for col, (width, cell) in enumerate(zip(columns, row["cells"])):
             x = edges[col]
             rect(c, x, y, x + width, y + height, fill=fill)
             rect(c, x, y, x + width, y + height, stroke=BLACK)
@@ -1566,6 +1652,41 @@ def draw_armor_common_catalog_page(c, tables: list[tuple[str, list[dict]]]) -> f
         if index:
             top += PA_DETAIL_STACK_GAP
         top = draw_pa_detail_table(c, rows, section, top)
+    return top
+
+
+def clothes_common_catalog_pages(book: Book) -> list[list[tuple[str, list[dict]]]]:
+    """Страницы справочника реальных модов одежды.
+
+    Группы приходят из `clothes_mods.json`, поэтому баллистическое плетение
+    и подкладки попадают в книгу только при подтверждённой совместимости с
+    конкретными предметами. Как и в PA-каталоге, несколько коротких групп
+    складываются на один лист без лишней пустой страницы.
+    """
+    pages: list[list[tuple[str, list[dict]]]] = []
+    for label, mods in book.clothes_common_mod_groups():
+        rows = clothes_detail_rows(book, mods)
+        for index, chunk in enumerate(split_pa_detail_rows(rows)):
+            suffix = "" if index == 0 else " · ПРОДОЛЖЕНИЕ"
+            table = (label + suffix, chunk)
+            if pages and pa_catalog_table_fits(pages[-1], chunk):
+                pages[-1].append(table)
+            else:
+                pages.append([table])
+    return pages
+
+
+def draw_clothes_common_catalog_page(c, tables: list[tuple[str, list[dict]]]) -> float:
+    """Одна страница общего каталога модификаций одежды."""
+    draw_page_title(c, "Модификации одежды")
+    draw_section_label(c, MARGIN_L + CONTENT_W / 2.0, 116.63, "Общий справочник")
+    top = PA_DETAIL_TOP
+    for index, (section, rows) in enumerate(tables):
+        if index:
+            top += PA_DETAIL_STACK_GAP
+        top = draw_pa_detail_table(c, rows, section, top,
+                                   columns=CLOTHES_DETAIL_COLS,
+                                   headers=CLOTHES_DETAIL_HEADERS)
     return top
 
 
@@ -2274,8 +2395,9 @@ def build_book(specs: list[Spec], book: Book, out_path: Path,
 
             # Один раз перед моделями: подробные эффекты общих модов. На
             # страницах конкретных наборов остаются только краткие списки.
-            # Каталог обычной брони не навязывается одиночному рендеру с
-            # --no-sections: тот по-прежнему состоит только из страниц сета.
+            # Каталоги обычной брони и одежды не навязываются одиночному
+            # рендеру с --no-sections: тот по-прежнему состоит только из
+            # страниц выбранного набора или предмета.
             if current == "armor" and sections:
                 for tables in armor_common_catalog_pages(book):
                     w.draw_paper(c)
@@ -2288,6 +2410,14 @@ def build_book(specs: list[Spec], book: Book, out_path: Path,
                 for tables in pa_common_catalog_pages(book):
                     w.draw_paper(c)
                     draw_pa_common_catalog_page(c, tables)
+                    draw_page_number(c, page)
+                    c.showPage()
+                    page += 1
+                    stats["pages"] += 1
+            elif current == "clothes" and sections:
+                for tables in clothes_common_catalog_pages(book):
+                    w.draw_paper(c)
+                    draw_clothes_common_catalog_page(c, tables)
                     draw_page_number(c, page)
                     c.showPage()
                     page += 1
