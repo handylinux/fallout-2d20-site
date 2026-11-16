@@ -1,0 +1,687 @@
+[
+  {
+    "id": "pa_systeme_epurateurradiations",
+    "name": "Radiation Scrubber",
+    "specialEffects": [
+      {
+        "id": "effect_pa_radiationPurifier",
+        "description": "Ignore radiation damage from Irradiated food or drink consumed while the armor is powered"
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_detecteur",
+    "name": "Sensor",
+    "specialEffects": [
+      {
+        "id": "effect_pa_sensor",
+        "description": "You may reroll 1d20 on all PER tests while the armor is powered"
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_athvisee",
+    "name": "Targeting HUD",
+    "specialEffects": [
+      {
+        "id": "effect_pa_targetingHud",
+        "description": "When you take the Aim minor action, you may take a second minor action for 0 AP while the armor is powered"
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_basedonnees",
+    "name": "Internal Database",
+    "specialEffects": [
+      {
+        "id": "effect_pa_internalDatabase",
+        "description": "You may reroll 1d20 on all INT tests while the armor is powered"
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_barrearmature",
+    "name": "Welded Rebar",
+    "specialEffects": [
+      {
+        "id": "effect_pa_weldenRebar",
+        "description": "Enemies who make a melee or unarmed attack against you and suffer a complication take 2 CD damage"
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_noyaureacteur",
+    "name": "Core Assembly",
+    "specialEffects": [
+      {
+        "id": "effect_pa_reactorCore",
+        "description": "While the armor is powered, if the group AP pool is empty at the start of your turn, add +1 AP to it"
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_purificateursanguin",
+    "name": "Blood Cleanser",
+    "specialEffects": [
+      {
+        "id": "effect_pa_bloodCleanser",
+        "description": "You may reroll the addiction roll for addictive chems while the armor is powered"
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_protocolesurgence",
+    "name": "Emergency Protocols",
+    "specialEffects": [
+      {
+        "id": "effect_pa_emergencyProtocols",
+        "description": "While the armor is powered, if your current HP is below a quarter of your maximum, add +1 to your Defense and +3 to all your damage resistances"
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_servomoteursassiste",
+    "name": "Motion-Assist",
+    "specialEffects": [
+      {
+        "id": "effect_pa_motionAssistServos",
+        "description": "The frame's STR becomes 13 while the armor is powered"
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_dynamocinetique",
+    "name": "Kinetic Dynamo",
+    "specialEffects": [
+      {
+        "id": "effect_pa_kineticDynamo",
+        "description": "While the armor is powered, when you take damage (after DR reduction), add +1 AP to the group pool"
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_pompemedicale",
+    "name": "Medic Pump",
+    "specialEffects": [
+      {
+        "id": "effect_pa_medicalPump",
+        "description": "While the armor is powered, when your HP drops below half of your maximum, you immediately use a Stimpak and recover 3 HP or treat 1 wound"
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_plaquesreactives",
+    "name": "Reactive Plates",
+    "specialEffects": [
+      {
+        "id": "effect_pa_reactivePlates",
+        "description": "While the armor is powered, when you take damage from a melee or unarmed attack, you deal half the damage roll total back to the attacker (ballistic)"
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_bobinestesla",
+    "name": "Tesla Coils",
+    "specialEffects": [
+      {
+        "id": "effect_pa_teslaCoils",
+        "description": "While the armor is powered, each time an enemy makes a melee attack against you, they take 4 CD energy damage"
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_stealthboy",
+    "name": "Stealth Boy",
+    "specialEffects": [
+      {
+        "id": "effect_pa_stealthBoy",
+        "description": "You may activate a Stealth Boy once per scene by spending 1 charge"
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_jetpack",
+    "name": "Jetpack",
+    "specialEffects": [
+      {
+        "id": "effect_pa_jetpack",
+        "description": "When you move, you may activate a jetpack by spending 1 charge, allowing you to move 1 extra zone (horizontal or vertical)"
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_poingrouille",
+    "name": "Rusty Knuckles",
+    "specialEffects": [
+      {
+        "id": "effect_pa_pa_systeme_poingrouille_quality",
+        "description": "Attacks gain the Persistent quality."
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_braceletshydrauliques",
+    "name": "Hydraulic",
+    "specialEffects": [
+      {
+        "id": "effect_pa_hydraulicBracers",
+        "description": "While the armor is powered, your unarmed attacks deal +2 CD damage"
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_braceletsoptimises",
+    "name": "Optimized",
+    "specialEffects": [
+      {
+        "id": "effect_pa_optimizedBracers",
+        "description": "While the armor is powered, you may spend up to 4 AP as bonus damage for melee attacks"
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_braceletstesla",
+    "name": "Tesla",
+    "specialEffects": [
+      {
+        "id": "effect_pa_teslaBracers",
+        "description": "While the armor is powered, your unarmed attacks deal +2 CD damage. The damage from these attacks is energy."
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_amortisseurscalibres",
+    "name": "Calibrated Shocks",
+    "specialEffects": [
+      {
+        "id": "effect_pa_pa_systeme_amortisseurscalibres_carry",
+        "description": "+25 to maximum carry weight."
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_eventexplosion",
+    "name": "Explosion Vent",
+    "specialEffects": [
+      {
+        "id": "effect_pa_explosionVent",
+        "description": "While the armor is powered, when you land from a height, you deal 4 CD damage to all creatures and objects at close range"
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_servomoteursvitesse",
+    "name": "Overdrive",
+    "specialEffects": [
+      {
+        "id": "effect_pa_overdriveServos",
+        "description": "While the armor is powered, when you sprint, you may spend +2 AP to move 1 extra zone"
+      }
+    ]
+  },
+  {
+    "id": "pa_blindage_titane",
+    "name": "Titanium",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_blindage_plomb",
+    "name": "Lead",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_blindage_photovoltaique",
+    "name": "Photovoltaic",
+    "specialEffects": [
+      {
+        "id": "effect_pa_photovoltaic",
+        "description": "+1 AP at the start of a scene if you are in direct sunlight (applies only once)"
+      }
+    ]
+  },
+  {
+    "id": "pa_blindage_antigel",
+    "name": "Winterized",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_blindage_prismatique",
+    "name": "Prism",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_blindage_antiexplosion",
+    "name": "Blast-Proof",
+    "specialEffects": [
+      {
+        "id": "effect_pa_blastResist2",
+        "description": "+2 to all damage resistances against Blast weapons"
+      }
+    ]
+  },
+  {
+    "id": "pa_amelioration_raider2_casque",
+    "name": "Raider II Helmet",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_raider2_plastron",
+    "name": "Raider II Chest Piece",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_raider2_brassard",
+    "name": "Raider II Arm",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_raider2_jambiere",
+    "name": "Raider II Leg",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45b_casque",
+    "name": "T-45b Helmet",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45b_plastron",
+    "name": "T-45b Chest Piece",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45b_brassard",
+    "name": "T-45b Arm",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45b_jambiere",
+    "name": "T-45b Leg",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45c_casque",
+    "name": "T-45c Helmet",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45c_plastron",
+    "name": "T-45c Chest Piece",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45c_brassard",
+    "name": "T-45c Arm",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45c_jambiere",
+    "name": "T-45c Leg",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45d_casque",
+    "name": "T-45d Helmet",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45d_plastron",
+    "name": "T-45d Chest Piece",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45d_brassard",
+    "name": "T-45d Arm",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45d_jambiere",
+    "name": "T-45d Leg",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45e_casque",
+    "name": "T-45e Helmet",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45e_plastron",
+    "name": "T-45e Chest Piece",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45e_brassard",
+    "name": "T-45e Arm",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45e_jambiere",
+    "name": "T-45e Leg",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45f_casque",
+    "name": "T-45f Helmet",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45f_plastron",
+    "name": "T-45f Chest Piece",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45f_brassard",
+    "name": "T-45f Arm",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45f_jambiere",
+    "name": "T-45f Leg",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51b_casque",
+    "name": "T-51b Helmet",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51b_plastron",
+    "name": "T-51b Chest Piece",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51b_brassard",
+    "name": "T-51b Arm",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51b_jambiere",
+    "name": "T-51b Leg",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51c_casque",
+    "name": "T-51c Helmet",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51c_plastron",
+    "name": "T-51c Chest Piece",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51c_brassard",
+    "name": "T-51c Arm",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51c_jambiere",
+    "name": "T-51c Leg",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51d_casque",
+    "name": "T-51d Helmet",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51d_plastron",
+    "name": "T-51d Chest Piece",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51d_brassard",
+    "name": "T-51d Arm",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51d_jambiere",
+    "name": "T-51d Leg",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51e_casque",
+    "name": "T-51e Helmet",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51e_plastron",
+    "name": "T-51e Chest Piece",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51e_brassard",
+    "name": "T-51e Arm",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51e_jambiere",
+    "name": "T-51e Leg",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51f_casque",
+    "name": "T-51f Helmet",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51f_plastron",
+    "name": "T-51f Chest Piece",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51f_brassard",
+    "name": "T-51f Arm",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51f_jambiere",
+    "name": "T-51f Leg",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60b_casque",
+    "name": "T-60b Helmet",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60b_plastron",
+    "name": "T-60b Chest Piece",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60b_brassard",
+    "name": "T-60b Arm",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60b_jambiere",
+    "name": "T-60b Leg",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60c_casque",
+    "name": "T-60c Helmet",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60c_plastron",
+    "name": "T-60c Chest Piece",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60c_brassard",
+    "name": "T-60c Arm",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60c_jambiere",
+    "name": "T-60c Leg",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60d_casque",
+    "name": "T-60d Helmet",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60d_plastron",
+    "name": "T-60d Chest Piece",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60d_brassard",
+    "name": "T-60d Arm",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60d_jambiere",
+    "name": "T-60d Leg",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60e_casque",
+    "name": "T-60e Helmet",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60e_plastron",
+    "name": "T-60e Chest Piece",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60e_brassard",
+    "name": "T-60e Arm",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60e_jambiere",
+    "name": "T-60e Leg",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60f_casque",
+    "name": "T-60f Helmet",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60f_plastron",
+    "name": "T-60f Chest Piece",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60f_brassard",
+    "name": "T-60f Arm",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60f_jambiere",
+    "name": "T-60f Leg",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk2_casque",
+    "name": "Mk II Helmet",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk2_plastron",
+    "name": "Mk II Chest Piece",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk2_brassard",
+    "name": "Mk II Arm",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk2_jambiere",
+    "name": "Mk II Leg",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk3_casque",
+    "name": "Mk III Helmet",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk3_plastron",
+    "name": "Mk III Chest Piece",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk3_brassard",
+    "name": "Mk III Arm",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk3_jambiere",
+    "name": "Mk III Leg",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk4_casque",
+    "name": "Mk IV Helmet",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk4_plastron",
+    "name": "Mk IV Chest Piece",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk4_brassard",
+    "name": "Mk IV Arm",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk4_jambiere",
+    "name": "Mk IV Leg",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk5_casque",
+    "name": "Mk V Helmet",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk5_plastron",
+    "name": "Mk V Chest Piece",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk5_brassard",
+    "name": "Mk V Arm",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk5_jambiere",
+    "name": "Mk V Leg",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk6_casque",
+    "name": "Mk VI Helmet",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk6_plastron",
+    "name": "Mk VI Chest Piece",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk6_brassard",
+    "name": "Mk VI Arm",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk6_jambiere",
+    "name": "Mk VI Leg",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_blindage_protectioniem",
+    "name": "EMP Shielding",
+    "specialEffects": []
+  }
+]

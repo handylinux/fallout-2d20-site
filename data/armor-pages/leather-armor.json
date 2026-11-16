@@ -49,5 +49,37 @@
         "leatherUniqueMods"
       ]
     }
-  ]
+  ],
+  "translations": {
+    "en-EN": {
+      "title": "Leather Armor",
+      "intro": [
+        "Leather armor is practical, affordable protection for the wasteland: light, easy to move in, and simple to repair. It cannot match metal or energy armor for durability, but it is more than sufficient for everyday expeditions and firefights.",
+        "The set consists of a chest piece, leg, and arm pieces. The leather can be reinforced with tanning, stitching, or rivets, while lining offers protection from cold and shrapnel; every upgrade changes its statistics."
+      ],
+      "tier_titles": {
+        "standard": "Standard",
+        "sturdy": "Sturdy",
+        "heavy": "Heavy"
+      },
+      "tabs_title": "Categories and Modifications",
+      "tabs": [
+        {
+          "type": "tiers",
+          "title": "Categories",
+          "tiers": ["sturdy", "heavy"]
+        },
+        {
+          "type": "mods",
+          "title": "Armor Modifications",
+          "categories": ["standardMods"]
+        },
+        {
+          "type": "mods",
+          "title": "Upgrades",
+          "categories": ["leatherUniqueMods"]
+        }
+      ]
+    }
+  }
 }

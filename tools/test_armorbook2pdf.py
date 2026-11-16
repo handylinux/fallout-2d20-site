@@ -38,6 +38,10 @@ def book() -> ab.Book:
     return ab.Book(DATA)
 
 
+def english_book() -> ab.Book:
+    return ab.Book(DATA, locale="en-EN")
+
+
 class GeometryTest(unittest.TestCase):
     """Числа из docs/render/samples/armor-leather-book.pdf."""
 
@@ -201,6 +205,52 @@ class DataRulesTest(unittest.TestCase):
             for spec in specs:
                 self.assertTrue(spec.title, spec.set)
                 self.assertTrue(b.tier_pieces(collection, spec.set), spec.set)
+
+
+class EnglishLocaleTest(unittest.TestCase):
+    """The English book uses explicit i18n data, never Russian fallbacks."""
+
+    def setUp(self):
+        self.book = english_book()
+
+    def test_english_names_interface_and_effects(self):
+        self.assertEqual(self.book.set_title("armor", "leatherArmor"),
+                         "Leather Armor")
+        self.assertEqual(self.book.strings.text["standard_set"], "Standard Set")
+        self.assertEqual(self.book.strings.area_titles["Body"], "CHEST")
+        self.assertEqual([label for _key, label in ab.stat_fields(
+            self.book.tier_pieces("powerArmor", "t45")[0], "en-EN")],
+            ["PHYS. DR", "ENERGY DR", "RAD. DR", "DURABILITY", "WEIGHT", "COST", "RARITY"])
+        soft = next(mod for mod in self.book.armor_common_mods()
+                    if mod["id"] == "mod_std_soft_padding")
+        self.assertEqual(self.book.mod_names[soft["id"]], "Soft Padding")
+        self.assertEqual(ab.armor_effect_text(self.book, soft),
+                         "+2 resistance to explosive damage.")
+
+    def test_generated_power_armor_i18n_has_names_and_effects(self):
+        scrubber = next(mod for mod in self.book.pa_common_mods()
+                        if mod["id"] == "pa_systeme_epurateurradiations")
+        self.assertEqual(self.book.mod_names[scrubber["id"]], "Radiation Scrubber")
+        self.assertIn("Ignore radiation damage", ab.pa_effect_text(self.book, scrubber))
+        self.assertTrue(all(ab.pa_effect_text(self.book, mod) != "—"
+                            for mod in self.book.pa_common_mods()))
+
+    def test_page_and_book_overlays_are_selected(self):
+        pages = ab.load_specs(ROOT / "data" / "armor-pages", "en-EN")
+        leather = next(spec for spec in pages if spec.set == "leatherArmor")
+        self.assertEqual(leather.title, "Leather Armor")
+        self.assertTrue(leather.intro)
+        self.assertNotIn("Кожаная", " ".join(leather.intro))
+        config = ab.load_config(ROOT / "data" / "armor-pages", "en-EN")
+        self.assertEqual(config["title"], "ARMOR HANDBOOK")
+        self.assertEqual(config["subtitle"], "Armor · Power Armor · Clothing")
+
+    def test_missing_non_russian_overlay_does_not_use_russian_prose(self):
+        raw = {"collection": "armor", "set": "x", "title": "Русский",
+               "intro": ["Русское описание"]}
+        spec = ab.spec_from_page_json(raw, "en-EN")
+        self.assertEqual(spec.title, "")
+        self.assertEqual(spec.intro, [])
 
 
 class LayoutHelpersTest(unittest.TestCase):
@@ -619,6 +669,23 @@ class RenderedPdfTest(unittest.TestCase):
         self.assertIn("МОДИФИКАЦИИ СИЛОВОЙ БРОНИ", all_text)
         self.assertIn("МОДИФИКАЦИИ ОДЕЖДЫ", all_text)
         self.assertIn("ОБЩИЙ СПРАВОЧНИК", all_text)
+
+    def test_english_leather_pdf_uses_localized_text(self):
+        out = Path(self.tmp.name) / "leather-en.pdf"
+        b = english_book()
+        spec = next(s for s in ab.load_specs(ROOT / "data" / "armor-pages", "en-EN")
+                    if s.set == "leatherArmor")
+        ab.build_book([spec], b, out, cover=False, sections=False)
+        with pymupdf.open(out) as doc:
+            self.assertEqual(doc.page_count, 2)
+            text = "\n".join(page.get_text() for page in doc)
+        for phrase in ("LEATHER ARMOR", "STANDARD SET", "CHEST",
+                       "PHYS. DR", "SUPPORTED MODIFICATIONS",
+                       "Soft Padding", "VARIANTS", "UNIQUE MODIFICATIONS"):
+            self.assertIn(phrase, text)
+        self.assertIn("Leather armor is practical", text)
+        self.assertNotIn("КОЖАНАЯ БРОНЯ", text)
+        self.assertNotIn("ПОДДЕРЖИВАЕМЫЕ МОДИФИКАЦИИ", text)
 
     def test_clothes_page_title_is_drawn_once_and_translated(self):
         """У страницы вещи один заголовок; англоязычной «Blouse» в книге нет."""

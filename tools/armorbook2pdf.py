@@ -102,6 +102,8 @@ RULE_W_PT = 0.6
 
 FONT = "Carlito"
 FONT_B = "Carlito-Bold"
+DEFAULT_LOCALE = "ru-RU"
+SUPPORTED_LOCALES = ("ru-RU", "en-EN")
 
 # --------------------------------------------------------------------------
 # геометрия — всё замерено по docs/render/samples/armor-leather-book.pdf
@@ -326,12 +328,13 @@ def fmt_signed(value: Any) -> str:
     return fmt_number(value)
 
 
-def stat_fields(piece: dict) -> list[tuple[str, str]]:
-    """Строки таблицы характеристик: «прочность» только у силовой брони."""
-    rows = list(STAT_FIELDS)
+def stat_fields(piece: dict, locale: str = DEFAULT_LOCALE) -> list[tuple[str, str]]:
+    """Строки таблицы характеристик: durability только у силовой брони."""
+    strings = locale_strings(locale)
+    rows = list(strings.stat_fields)
     if piece.get("hp") is not None:
-        rows.append(("hp", "ПРОЧНОСТЬ"))
-    rows.extend(EXTRA_FIELDS)
+        rows.append(("hp", strings.text["durability"]))
+    rows.extend(strings.extra_fields)
     return rows
 
 
@@ -342,9 +345,10 @@ def area_of(piece: dict) -> str:
 
 @dataclass
 class Book:
-    """Данные Companion + русская локализация."""
+    """Данные Companion и выбранная локализация интерфейса/названий."""
 
     root: Path
+    locale: str = DEFAULT_LOCALE
     item_names: dict[str, str] = field(default_factory=dict)
     set_names: dict[str, str] = field(default_factory=dict)
     mod_names: dict[str, str] = field(default_factory=dict)
@@ -367,6 +371,9 @@ class Book:
     clothes_mods: dict = field(default_factory=dict)
 
     def __post_init__(self) -> None:
+        # Проверяем локаль до чтения данных: иначе незаметно напечатаются
+        # технические ID вместо имён предметов и модификаций.
+        locale_strings(self.locale)
         eq = self.root / "equipment"
         self.armor = read_json(eq / "armor.json")
         self.power_armor = read_json(eq / "powerArmor.json")
@@ -386,7 +393,9 @@ class Book:
         self.pa_helper_names = {mod["id"]: mod.get("helperName", "")
                                 for mod in self.power_armor_mods}
 
-        i18n = self.root / "i18n" / "ru-RU" / "data" / "equipment" / "armor"
+        i18n = self.root / "i18n" / self.locale / "data" / "equipment" / "armor"
+        if not i18n.is_dir():
+            raise FileNotFoundError(f"no armor i18n data for locale: {self.locale}")
         for filename in ("armor.json", "powerArmor.json", "clothes.json"):
             path = i18n / filename
             if not path.exists():
@@ -430,6 +439,21 @@ class Book:
             for effect_id, effect in read_json(effects_path).items():
                 if effect.get("description"):
                     self.mod_effects.setdefault(effect_id, effect["description"])
+
+    @property
+    def strings(self) -> LocaleStrings:
+        return locale_strings(self.locale)
+
+    def perk_text(self, perk: str | None) -> str:
+        """Перевести требования, оставленные исходными данными по-русски."""
+        value = str(perk or "")
+        for source, target in self.strings.perk_replacements:
+            value = value.replace(source, target)
+        return value
+
+    def clothes_slot_title(self, label: str) -> str:
+        """Локализовать стабильную подпись слота из clothes_mods.json."""
+        return self.strings.clothes_slots.get(label, label)
 
     # -- наборы ---------------------------------------------------------
 
@@ -653,7 +677,7 @@ class Book:
             if name not in names:
                 names.append(name)
         rows: list[tuple[str, list[str]]] = []
-        for slot, label in PA_MOD_ROWS:
+        for slot, label in self.strings.pa_mod_rows:
             if available.get(slot):
                 rows.append((label, list(available[slot])))
         return rows
@@ -676,10 +700,11 @@ class Book:
                 names = by_area.setdefault(area, [])
                 if name not in names:
                     names.append(name)
-        rows = [(AREA_TITLES[area], by_area[area]) for area in PA_AREA_ORDER
+        rows = [(self.strings.area_titles[area], by_area[area]) for area in PA_AREA_ORDER
                 if by_area.get(area)]
         if plating:
-            rows.append(("ОБШИВКА", plating))
+            plating_title = dict(self.strings.pa_mod_rows).get("blindage", "blindage")
+            rows.append((plating_title, plating))
         return rows
 
     def pa_upgrade_matrix(self, key: str) -> tuple[list[str], list[tuple[str, list[str]]]]:
@@ -720,7 +745,7 @@ class Book:
                 continue
             names = [upgrades[group] for group in groups if group in upgrades]
             if names:
-                rows.append((AREA_TITLES[area], names))
+                rows.append((self.strings.area_titles[area], names))
         return levels, rows
 
     # -- одежда ---------------------------------------------------------
@@ -750,7 +775,7 @@ class Book:
         for label, ids in data.items():
             existing = [mod_id for mod_id in ids if mod_id in known]
             if existing:
-                rows.append((label, existing))
+                rows.append((self.clothes_slot_title(label), existing))
         return rows
 
     def clothes_common_mod_groups(self) -> list[tuple[str, list[dict]]]:
@@ -902,7 +927,8 @@ CHAR_TABLE_W = {"left": CHAR_LEFT_LABEL_W + CHAR_LEFT_VALUE_W,
                 "right": CHAR_RIGHT_LABEL_W + CHAR_RIGHT_VALUE_W}
 
 
-def char_table(c, x: float, tops: list[float], piece: dict, side: str) -> None:
+def char_table(c, x: float, tops: list[float], piece: dict, side: str,
+               locale: str = DEFAULT_LOCALE) -> None:
     """Таблица характеристик одной детали во вложенной правой сетке.
 
     Внутренняя col-6 делится на подпись и значение в пропорции 2:1. tops —
@@ -911,7 +937,7 @@ def char_table(c, x: float, tops: list[float], piece: dict, side: str) -> None:
     """
     label_w = CHAR_LEFT_LABEL_W if side == "left" else CHAR_RIGHT_LABEL_W
     value_w = CHAR_LEFT_VALUE_W if side == "left" else CHAR_RIGHT_VALUE_W
-    keys = stat_fields(piece)
+    keys = stat_fields(piece, locale)
     for top, (key, label) in zip(tops, keys):
         height = CHAR_ROW_H
         rect(c, x, top, x + label_w, top + height, fill=BLACK)
@@ -990,7 +1016,7 @@ def char_grid_slots(pieces: list[dict]) -> list[tuple[str, dict]]:
             if position in slots]
 
 
-def draw_char_grid(c, pieces: list[dict]) -> dict:
+def draw_char_grid(c, pieces: list[dict], locale: str = DEFAULT_LOCALE) -> dict:
     """Вложенная правая сетка 2×2: ШЛЕМ / НАГРУДНИК, НАРУЧ / ПОНОЖ.
 
     Левая половина внешней строки зарезервирована для иллюстрации. Зоны,
@@ -1004,20 +1030,21 @@ def draw_char_grid(c, pieces: list[dict]) -> dict:
         x = CHAR_LEFT_X if side == "left" else CHAR_RIGHT_X
         table_top = geometry["upper_top"] if row == 0 else geometry["lower_top"]
         label_top = geometry["upper_label"] if row == 0 else geometry["lower_label"]
-        title = area_title(piece)
+        title = area_title(piece, locale)
         size = fit_size(title, CHAR_PIECE_FONT, CHAR_PIECE_SIZE,
                         CHAR_TABLE_W[side])
         draw_top(c, x + CHAR_TABLE_W[side] / 2.0, label_top, title,
                  CHAR_PIECE_FONT, size, align="center")
         tops = [top + (table_top - geometry["upper_top"])
                 for top in geometry["tops"]]
-        char_table(c, x, tops, piece, side)
+        char_table(c, x, tops, piece, side, locale)
     return geometry
 
 
-def area_title(piece: dict) -> str:
-    return " / ".join(AREA_TITLES.get(a, a.upper())
-                      for a in piece.get("protectedAreas") or []) or "ДЕТАЛЬ"
+def area_title(piece: dict, locale: str = DEFAULT_LOCALE) -> str:
+    strings = locale_strings(locale)
+    return " / ".join(strings.area_titles.get(a, a.upper())
+                      for a in piece.get("protectedAreas") or []) or strings.text["default_area"]
 
 
 # -- страница 1: описание ---------------------------------------------------
@@ -1035,12 +1062,14 @@ def is_placeholder(text: str) -> bool:
     return any(marker in lowered for marker in LOREM_MARKERS)
 
 
-def description_lines(paragraphs: Iterable[str]) -> list[str]:
+def description_lines(paragraphs: Iterable[str],
+                      width: float = CONTENT_W - 2 * DESC_INDENT) -> list[str]:
+    """Word-wrapped prose lines for the available description column."""
     lines: list[str] = []
     for paragraph in paragraphs:
         if not paragraph or is_placeholder(paragraph):
             continue
-        wrapped = wrap(paragraph, FONT, DESC_SIZE, CONTENT_W - 2 * DESC_INDENT)
+        wrapped = wrap(paragraph, FONT, DESC_SIZE, width)
         if lines:
             lines.append("")
         lines.extend(wrapped)
@@ -1048,19 +1077,19 @@ def description_lines(paragraphs: Iterable[str]) -> list[str]:
 
 
 def draw_description(c, paragraphs: Iterable[str], top: float = DESC_TOP,
-                     max_bottom: float | None = None) -> None:
+                     max_bottom: float | None = None,
+                     width: float = CONTENT_W - 2 * DESC_INDENT) -> None:
     """Описание под таблицами: 12 pt / 17.4 pt, выключка по ширине.
 
     max_bottom — граница, ниже которой текст не печатается (там уже
     заголовок модов или сетка), чтобы описания разной длины не наезжали.
     """
-    lines = description_lines(paragraphs)
+    lines = description_lines(paragraphs, width)
     if max_bottom is not None:
         # последняя строка кончается на top+(n-1)*leading+size и не должна
         # заходить за max_bottom (там заголовок модов или сетка)
         room = int((max_bottom - top - DESC_SIZE) // DESC_LEADING) + 1
-        lines = fit_lines(lines, CONTENT_W - 2 * DESC_INDENT, DESC_SIZE,
-                          max(0, room))
+        lines = fit_lines(lines, width, DESC_SIZE, max(0, room))
     if not lines:
         return
     c.setFillColor(BLACK)
@@ -1076,7 +1105,6 @@ def draw_description(c, paragraphs: Iterable[str], top: float = DESC_TOP,
         if len(words) == 1:
             c.drawString(MARGIN_L + DESC_INDENT, baseline, line)
             continue
-        width = CONTENT_W - 2 * DESC_INDENT
         gap = (width - sum(sw(word, FONT, DESC_SIZE) for word in words)) / (
             len(words) - 1)
         cursor = MARGIN_L + DESC_INDENT
@@ -1105,11 +1133,11 @@ def mods_rows(book: Book, collection: str, key: str) -> list[tuple[str, list[str
             continue
         names = book.mods_for_area(area, allowed)
         if names:
-            rows.append((AREA_TITLES[area], names))
+            rows.append((book.strings.area_titles[area], names))
     uniq = [book.mod_names.get(m["id"], m["id"])
             for m in book.unique_mods_for(allowed_uniq)]
     if uniq:
-        rows.append(("УНИКАЛЬНАЯ", uniq))
+        rows.append((book.strings.text["unique_row"], uniq))
     return rows
 
 
@@ -1373,21 +1401,180 @@ PA_UNIQUE_HEADERS = (
 )
 
 
-def armor_area_text(mod: dict) -> str:
+@dataclass(frozen=True)
+class LocaleStrings:
+    """Текст интерфейса PDF, не входящий в Companion i18n."""
+
+    area_titles: dict[str, str]
+    pa_area_detail_titles: dict[str, str]
+    armor_area_detail_titles: dict[str, str]
+    stat_fields: tuple[tuple[str, str], ...]
+    extra_fields: tuple[tuple[str, str], ...]
+    tier_titles: dict[str, str]
+    pa_mod_rows: tuple[tuple[str, str], ...]
+    auto_titles: dict[str, str]
+    uniq_headers: tuple[str, ...]
+    pa_detail_headers: tuple[str, ...]
+    clothes_detail_headers: tuple[str, ...]
+    pa_unique_headers: tuple[tuple[str, ...], ...]
+    text: dict[str, str]
+    collections: dict[str, tuple[str, str]]
+    clothes_slots: dict[str, str]
+    skills: dict[str, str]
+    perk_replacements: tuple[tuple[str, str], ...]
+    effect_stat_labels: dict[str, str]
+
+
+LOCALES = {
+    "ru-RU": LocaleStrings(
+        area_titles=AREA_TITLES,
+        pa_area_detail_titles=PA_AREA_DETAIL_TITLES,
+        armor_area_detail_titles=ARMOR_AREA_DETAIL_TITLES,
+        stat_fields=STAT_FIELDS,
+        extra_fields=EXTRA_FIELDS,
+        tier_titles=TIER_TITLES,
+        pa_mod_rows=PA_MOD_ROWS,
+        auto_titles=AUTO_TITLES,
+        uniq_headers=UNIQ_HEADERS,
+        pa_detail_headers=PA_DETAIL_HEADERS,
+        clothes_detail_headers=CLOTHES_DETAIL_HEADERS,
+        pa_unique_headers=PA_UNIQUE_HEADERS,
+        text={
+            "default_area": "ДЕТАЛЬ",
+            "dash": "—",
+            "all_parts": "Все детали",
+            "unique_row": "УНИКАЛЬНАЯ",
+            "standard_modifications": "СТАНДАРТНЫЕ МОДИФИКАЦИИ",
+            "continuation": " · ПРОДОЛЖЕНИЕ",
+            "armor_modifications": "Модификации брони",
+            "power_armor_modifications": "Модификации силовой брони",
+            "clothing_modifications": "Модификации одежды",
+            "common_reference": "Общий справочник",
+            "unique_modifications": "Уникальные модификации",
+            "part_upgrades": "Улучшения деталей",
+            "unique_systems": "УНИКАЛЬНЫЕ СИСТЕМЫ",
+            "unique_plating": "УНИКАЛЬНАЯ ОБШИВКА",
+            "standard_set": "Стандартный комплект",
+            "common_modifications": "Общие модификации",
+            "supported_modifications": "Поддерживаемые модификации",
+            "variants": "Варианты",
+            "armor_reference": "Справочник брони",
+            "durability": "ПРОЧНОСТЬ",
+        },
+        collections={
+            "armor": ("БРОНЯ", "Стандартные комплекты, варианты и модификации."),
+            "powerArmor": ("СИЛОВАЯ БРОНЯ",
+                           "Каркас, рейдерская и все модели — Т-45, Т-51, Т-60, X-01."),
+            "clothes": ("ОДЕЖДА", "Костюмы, обмундирование и головные уборы."),
+        },
+        clothes_slots={
+            "ТКАНЕВАЯ ОСНОВА": "ТКАНЕВАЯ ОСНОВА",
+            "ПОДКЛАДКА КОМБИНЕЗОНА": "ПОДКЛАДКА КОМБИНЕЗОНА",
+        },
+        skills={"REPAIR": "Ремонт", "SCIENCE": "Наука", "SURVIVAL": "Выживание"},
+        perk_replacements=(),
+        effect_stat_labels={
+            "physicalDamageRating": "ФИЗ. СУ",
+            "energyDamageRating": "ЭНРГ. СУ",
+            "radiationDamageRating": "РАД. СУ",
+            "hp": "прочности",
+        },
+    ),
+    "en-EN": LocaleStrings(
+        area_titles={"Head": "HELMET", "Body": "CHEST", "Hand": "ARM", "Leg": "LEG"},
+        pa_area_detail_titles={"Head": "Head", "Body": "Chest", "Hand": "Arm", "Leg": "Leg"},
+        armor_area_detail_titles={"Head": "Helmet", "Body": "Chest", "Hand": "Arm", "Leg": "Leg"},
+        stat_fields=(
+            ("physicalDamageRating", "PHYS. DR"),
+            ("energyDamageRating", "ENERGY DR"),
+            ("radiationDamageRating", "RAD. DR"),
+        ),
+        extra_fields=(("weight", "WEIGHT"), ("cost", "COST"), ("rarity", "RARITY")),
+        tier_titles={"standard": "Standard", "sturdy": "Sturdy", "heavy": "Heavy"},
+        pa_mod_rows=(("systeme", "SYSTEM"), ("blindage", "PLATING")),
+        auto_titles={
+            "armor": "Armor · Power Armor · Clothing",
+            "powerArmor": "Power Armor",
+            "clothes": "Clothing",
+        },
+        uniq_headers=("", "PHYS. DR", "ENERGY DR", "RAD. DR", "WEIGHT", "COST",
+                      "PERKS", "EFFECTS"),
+        pa_detail_headers=(
+            "MODIFICATION", "EFFECT", "AFFECTED PART", "WEIGHT", "COST", "PERKS", "SKILL",
+        ),
+        clothes_detail_headers=("MODIFICATION", "EFFECT", "WEIGHT", "COST", "PERKS", "SKILL"),
+        pa_unique_headers=(
+            ("UPGRADE",), ("PHYS.", "DR"), ("ENERGY", "DR"), ("RAD.", "DR"),
+            ("HP",), ("AFFECTED", "PART"), ("WEIGHT",), ("COST",), ("PERKS",),
+        ),
+        text={
+            "default_area": "PART",
+            "dash": "—",
+            "all_parts": "All parts",
+            "unique_row": "UNIQUE",
+            "standard_modifications": "STANDARD MODIFICATIONS",
+            "continuation": " · CONTINUED",
+            "armor_modifications": "Armor Modifications",
+            "power_armor_modifications": "Power Armor Modifications",
+            "clothing_modifications": "Clothing Modifications",
+            "common_reference": "Common Reference",
+            "unique_modifications": "Unique Modifications",
+            "part_upgrades": "Part Upgrades",
+            "unique_systems": "UNIQUE SYSTEMS",
+            "unique_plating": "UNIQUE PLATING",
+            "standard_set": "Standard Set",
+            "common_modifications": "Common Modifications",
+            "supported_modifications": "Supported Modifications",
+            "variants": "Variants",
+            "armor_reference": "Armor Reference",
+            "durability": "DURABILITY",
+        },
+        collections={
+            "armor": ("ARMOR", "Standard sets, variants, and modifications."),
+            "powerArmor": ("POWER ARMOR",
+                           "Frame, raider armor, and all models — T-45, T-51, T-60, X-01."),
+            "clothes": ("CLOTHING", "Outfits, uniforms, and headwear."),
+        },
+        clothes_slots={
+            "ТКАНЕВАЯ ОСНОВА": "FABRIC BASE",
+            "ПОДКЛАДКА КОМБИНЕЗОНА": "VAULT SUIT LINING",
+        },
+        skills={"REPAIR": "Repair", "SCIENCE": "Science", "SURVIVAL": "Survival"},
+        perk_replacements=(
+            ("Наука!", "Science!"), ("Наука", "Science"),
+            ("Бронник", "Armorer"), ("Кузнец", "Blacksmith"),
+        ),
+        effect_stat_labels={
+            "physicalDamageRating": "PHYS. DR",
+            "energyDamageRating": "ENERGY DR",
+            "radiationDamageRating": "RAD. DR",
+            "hp": "durability",
+        },
+    ),
+}
+
+
+def locale_strings(locale: str = DEFAULT_LOCALE) -> LocaleStrings:
+    """Вернуть полный набор строк интерфейса для поддерживаемой локали."""
+    try:
+        return LOCALES[locale]
+    except KeyError as exc:
+        raise ValueError(f"unsupported locale: {locale}") from exc
+
+
+def armor_area_text(mod: dict, locale: str = DEFAULT_LOCALE) -> str:
     """Деталь обычной брони, к которой относится стандартный мод."""
+    strings = locale_strings(locale)
     areas = mod.get("protectedAreas") or []
-    return " / ".join(ARMOR_AREA_DETAIL_TITLES.get(area, area) for area in areas) or "—"
+    return " / ".join(strings.armor_area_detail_titles.get(area, area)
+                      for area in areas) or strings.text["dash"]
 
 
-def armor_skill_text(mod: dict) -> str:
+def armor_skill_text(mod: dict, locale: str = DEFAULT_LOCALE) -> str:
     """Локализовать реальный `requiredSkill` обычной брони."""
+    strings = locale_strings(locale)
     skill = str(mod.get("requiredSkill") or "")
-    titles = {
-        "REPAIR": "Ремонт",
-        "SCIENCE": "Наука",
-        "SURVIVAL": "Выживание",
-    }
-    return titles.get(skill.upper(), skill) or "—"
+    return strings.skills.get(skill.upper(), skill) or strings.text["dash"]
 
 
 def armor_effect_text(book: Book, mod: dict) -> str:
@@ -1397,20 +1584,16 @@ def armor_effect_text(book: Book, mod: dict) -> str:
     асбестовая подкладка даёт и +3 ЭНРГ. СУ). В общем справочнике показываем
     оба подтверждённых источника данных, чтобы назначение мода было ясным.
     """
-    labels = {
-        "physicalDamageRating": "ФИЗ. СУ",
-        "energyDamageRating": "ЭНРГ. СУ",
-        "radiationDamageRating": "РАД. СУ",
-        "hp": "прочности",
-    }
+    labels = book.strings.effect_stat_labels
+    connector = "к" if book.locale == "ru-RU" else "to"
     numeric: list[str] = []
     modifiers = mod.get("statModifiers") or {}
     for key, label in labels.items():
         modifier = modifiers.get(key) or {}
         if modifier.get("value", 0):
-            numeric.append(f"{mod_stat_text(mod, key)} к {label}")
+            numeric.append(f"{mod_stat_text(mod, key)} {connector} {label}")
     description = mod_effect_text(book, mod)
-    return "; ".join([*numeric, *([description] if description else [])]) or "—"
+    return "; ".join([*numeric, *([description] if description else [])]) or book.strings.text["dash"]
 
 
 def armor_detail_rows(book: Book, mods: list[dict]) -> list[dict]:
@@ -1420,11 +1603,11 @@ def armor_detail_rows(book: Book, mods: list[dict]) -> list[dict]:
         values = [
             book.mod_names.get(mod["id"], mod["id"]),
             armor_effect_text(book, mod),
-            armor_area_text(mod),
+            armor_area_text(mod, book.locale),
             mod_offset_text(mod, "weightModifier"),
             mod_offset_text(mod, "costModifier"),
-            mod.get("requiredPerk") or "—",
-            armor_skill_text(mod),
+            book.perk_text(mod.get("requiredPerk")) or book.strings.text["dash"],
+            armor_skill_text(mod, book.locale),
         ]
         cells = [fitted_cell(value, width, PA_DETAIL_FONT, PA_DETAIL_PAD,
                              FONT if index != 0 else FONT_B)
@@ -1456,8 +1639,8 @@ def clothes_detail_rows(book: Book, mods: list[dict]) -> list[dict]:
             clothes_effect_text(book, mod),
             mod_offset_text(mod, "weightModifier"),
             mod_offset_text(mod, "costModifier"),
-            mod.get("requiredPerk") or "—",
-            armor_skill_text(mod),
+            book.perk_text(mod.get("requiredPerk")) or book.strings.text["dash"],
+            armor_skill_text(mod, book.locale),
         ]
         cells = [fitted_cell(value, width, PA_DETAIL_FONT, PA_DETAIL_PAD,
                              FONT if index != 0 else FONT_B)
@@ -1473,8 +1656,9 @@ def pa_area_text(book: Book, mod: dict) -> str:
     """Человеческая подпись совместимой детали для подробной таблицы."""
     areas = book.pa_compatible_areas(mod)
     if set(areas) == set(PA_AREA_ORDER):
-        return "Все детали"
-    return " / ".join(PA_AREA_DETAIL_TITLES.get(area, area) for area in areas) or "—"
+        return book.strings.text["all_parts"]
+    return " / ".join(book.strings.pa_area_detail_titles.get(area, area)
+                      for area in areas) or book.strings.text["dash"]
 
 
 def pa_effect_text(book: Book, mod: dict) -> str:
@@ -1482,29 +1666,25 @@ def pa_effect_text(book: Book, mod: dict) -> str:
     description = mod_effect_text(book, mod)
     if description:
         return description
-    labels = {
-        "physicalDamageRating": "ФИЗ. СУ",
-        "energyDamageRating": "ЭНРГ. СУ",
-        "radiationDamageRating": "РАД. СУ",
-        "hp": "прочности",
-    }
+    labels = book.strings.effect_stat_labels
     modifiers = mod.get("statModifiers") or {}
-    values = [f"{mod_stat_text(mod, key)} к {label}"
+    connector = "к" if book.locale == "ru-RU" else "to"
+    values = [f"{mod_stat_text(mod, key)} {connector} {label}"
               for key, label in labels.items() if key in modifiers]
-    return "; ".join(values) or "—"
+    return "; ".join(values) or book.strings.text["dash"]
 
 
-def pa_skill_text(mod: dict) -> str:
+def pa_skill_text(book: Book, mod: dict) -> str:
     """Навык выводится отдельно от перка, как в пользовательском референсе."""
-    perk = mod.get("requiredPerk") or ""
+    perk = str(mod.get("requiredPerk") or "")
     skills: list[str] = []
-    if "Наука" in perk:
-        skills.append("Наука")
-    # В присланной таблице «Бронник» использует «Ремонт»; тот же навык
-    # относится и к «Кузнецу», который встречается у наручей.
-    if "Бронник" in perk or "Кузнец" in perk:
-        skills.append("Ремонт")
-    return " / ".join(skills) or "—"
+    if "Наука" in perk or "Science" in perk:
+        skills.append(book.strings.skills["SCIENCE"])
+    # «Бронник» и «Кузнец» используют Repair; проверяем и переведённые
+    # варианты, чтобы метод оставался устойчивым к будущим данным i18n.
+    if any(name in perk for name in ("Бронник", "Кузнец", "Armorer", "Blacksmith")):
+        skills.append(book.strings.skills["REPAIR"])
+    return " / ".join(skills) or book.strings.text["dash"]
 
 
 def pa_detail_rows(book: Book, mods: list[dict]) -> list[dict]:
@@ -1518,8 +1698,8 @@ def pa_detail_rows(book: Book, mods: list[dict]) -> list[dict]:
             pa_area_text(book, mod),
             mod_offset_text(mod, "weightModifier"),
             mod_offset_text(mod, "costModifier"),
-            mod.get("requiredPerk") or "—",
-            pa_skill_text(mod),
+            book.perk_text(mod.get("requiredPerk")) or book.strings.text["dash"],
+            pa_skill_text(book, mod),
         ]
         cells = [fitted_cell(value, width, PA_DETAIL_FONT, PA_DETAIL_PAD,
                              FONT if index != 0 else FONT_B)
@@ -1638,20 +1818,23 @@ def armor_common_catalog_pages(book: Book) -> list[list[tuple[str, list[dict]]]]
     rows = armor_detail_rows(book, book.armor_common_mods())
     pages: list[list[tuple[str, list[dict]]]] = []
     for index, chunk in enumerate(split_pa_detail_rows(rows)):
-        suffix = "" if index == 0 else " · ПРОДОЛЖЕНИЕ"
-        pages.append([("СТАНДАРТНЫЕ МОДИФИКАЦИИ" + suffix, chunk)])
+        suffix = "" if index == 0 else book.strings.text["continuation"]
+        pages.append([(book.strings.text["standard_modifications"] + suffix, chunk)])
     return pages
 
 
-def draw_armor_common_catalog_page(c, tables: list[tuple[str, list[dict]]]) -> float:
+def draw_armor_common_catalog_page(c, book: Book,
+                                   tables: list[tuple[str, list[dict]]]) -> float:
     """Одна страница общего каталога модов обычной брони."""
-    draw_page_title(c, "Модификации брони")
-    draw_section_label(c, MARGIN_L + CONTENT_W / 2.0, 116.63, "Общий справочник")
+    draw_page_title(c, book.strings.text["armor_modifications"])
+    draw_section_label(c, MARGIN_L + CONTENT_W / 2.0, 116.63,
+                       book.strings.text["common_reference"])
     top = PA_DETAIL_TOP
     for index, (section, rows) in enumerate(tables):
         if index:
             top += PA_DETAIL_STACK_GAP
-        top = draw_pa_detail_table(c, rows, section, top)
+        top = draw_pa_detail_table(c, rows, section, top,
+                                   headers=book.strings.pa_detail_headers)
     return top
 
 
@@ -1667,7 +1850,7 @@ def clothes_common_catalog_pages(book: Book) -> list[list[tuple[str, list[dict]]
     for label, mods in book.clothes_common_mod_groups():
         rows = clothes_detail_rows(book, mods)
         for index, chunk in enumerate(split_pa_detail_rows(rows)):
-            suffix = "" if index == 0 else " · ПРОДОЛЖЕНИЕ"
+            suffix = "" if index == 0 else book.strings.text["continuation"]
             table = (label + suffix, chunk)
             if pages and pa_catalog_table_fits(pages[-1], chunk):
                 pages[-1].append(table)
@@ -1676,17 +1859,19 @@ def clothes_common_catalog_pages(book: Book) -> list[list[tuple[str, list[dict]]
     return pages
 
 
-def draw_clothes_common_catalog_page(c, tables: list[tuple[str, list[dict]]]) -> float:
+def draw_clothes_common_catalog_page(c, book: Book,
+                                     tables: list[tuple[str, list[dict]]]) -> float:
     """Одна страница общего каталога модификаций одежды."""
-    draw_page_title(c, "Модификации одежды")
-    draw_section_label(c, MARGIN_L + CONTENT_W / 2.0, 116.63, "Общий справочник")
+    draw_page_title(c, book.strings.text["clothing_modifications"])
+    draw_section_label(c, MARGIN_L + CONTENT_W / 2.0, 116.63,
+                       book.strings.text["common_reference"])
     top = PA_DETAIL_TOP
     for index, (section, rows) in enumerate(tables):
         if index:
             top += PA_DETAIL_STACK_GAP
         top = draw_pa_detail_table(c, rows, section, top,
                                    columns=CLOTHES_DETAIL_COLS,
-                                   headers=CLOTHES_DETAIL_HEADERS)
+                                   headers=book.strings.clothes_detail_headers)
     return top
 
 
@@ -1699,11 +1884,11 @@ def pa_common_catalog_pages(book: Book) -> list[list[tuple[str, list[dict]]]]:
     страница с повторённым заголовком книги.
     """
     pages: list[list[tuple[str, list[dict]]]] = []
-    for slot, label in PA_MOD_ROWS:
+    for slot, label in book.strings.pa_mod_rows:
         rows = pa_detail_rows(book, [mod for mod in book.pa_common_mods()
                                      if mod.get("modSlot") == slot])
         for index, chunk in enumerate(split_pa_detail_rows(rows)):
-            suffix = "" if index == 0 else " · ПРОДОЛЖЕНИЕ"
+            suffix = "" if index == 0 else book.strings.text["continuation"]
             table = (label + suffix, chunk)
             if pages and pa_catalog_table_fits(pages[-1], chunk):
                 pages[-1].append(table)
@@ -1712,22 +1897,26 @@ def pa_common_catalog_pages(book: Book) -> list[list[tuple[str, list[dict]]]]:
     return pages
 
 
-def draw_pa_common_catalog_page(c, tables: list[tuple[str, list[dict]]]) -> float:
+def draw_pa_common_catalog_page(c, book: Book,
+                                tables: list[tuple[str, list[dict]]]) -> float:
     """Одна страница общего каталога с одной или несколькими таблицами."""
-    draw_page_title(c, "Модификации силовой брони")
-    draw_section_label(c, MARGIN_L + CONTENT_W / 2.0, 116.63, "Общий справочник")
+    draw_page_title(c, book.strings.text["power_armor_modifications"])
+    draw_section_label(c, MARGIN_L + CONTENT_W / 2.0, 116.63,
+                       book.strings.text["common_reference"])
     top = PA_DETAIL_TOP
     for index, (section, rows) in enumerate(tables):
         if index:
             top += PA_DETAIL_STACK_GAP
-        top = draw_pa_detail_table(c, rows, section, top)
+        top = draw_pa_detail_table(c, rows, section, top,
+                                   headers=book.strings.pa_detail_headers)
     return top
 
 
-def pa_modifier_text(mod: dict, key: str) -> str:
+def pa_modifier_text(mod: dict, key: str,
+                     locale: str = DEFAULT_LOCALE) -> str:
     """Знак модификатора или тире, если этот стат улучшение не меняет."""
     if key not in (mod.get("statModifiers") or {}):
-        return "—"
+        return locale_strings(locale).text["dash"]
     return mod_stat_text(mod, key)
 
 
@@ -1738,14 +1927,14 @@ def pa_unique_rows(book: Book, mods: list[dict]) -> list[dict]:
         name = book.mod_names.get(mod["id"], mod["id"]).replace(" · ", " ")
         values = [
             name,
-            pa_modifier_text(mod, "physicalDamageRating"),
-            pa_modifier_text(mod, "energyDamageRating"),
-            pa_modifier_text(mod, "radiationDamageRating"),
-            pa_modifier_text(mod, "hp"),
+            pa_modifier_text(mod, "physicalDamageRating", book.locale),
+            pa_modifier_text(mod, "energyDamageRating", book.locale),
+            pa_modifier_text(mod, "radiationDamageRating", book.locale),
+            pa_modifier_text(mod, "hp", book.locale),
             pa_area_text(book, mod),
             mod_offset_text(mod, "weightModifier"),
             mod_offset_text(mod, "costModifier"),
-            mod.get("requiredPerk") or "—",
+            book.perk_text(mod.get("requiredPerk")) or book.strings.text["dash"],
         ]
         cells = [fitted_cell(value, width, PA_UNIQUE_FONT, PA_UNIQUE_PAD,
                              FONT if index else FONT_B)
@@ -1764,10 +1953,12 @@ def pa_unique_edges() -> list[float]:
     return edges
 
 
-def draw_pa_unique_table(c, rows: list[dict], top: float = PA_UNIQUE_TOP) -> float:
+def draw_pa_unique_table(c, rows: list[dict], top: float = PA_UNIQUE_TOP,
+                         locale: str = DEFAULT_LOCALE) -> float:
     """Подробная числовая таблица улучшений: строка на реальную деталь."""
     edges = pa_unique_edges()
-    for index, (width, lines) in enumerate(zip(PA_UNIQUE_COLS, PA_UNIQUE_HEADERS)):
+    headers = locale_strings(locale).pa_unique_headers
+    for index, (width, lines) in enumerate(zip(PA_UNIQUE_COLS, headers)):
         x = edges[index]
         rect(c, x, top, x + width, top + PA_UNIQUE_HEADER_H, fill=BLACK)
         rect(c, x, top, x + width, top + PA_UNIQUE_HEADER_H, stroke=BLACK)
@@ -1798,14 +1989,14 @@ def draw_pa_unique_table(c, rows: list[dict], top: float = PA_UNIQUE_TOP) -> flo
 
 def draw_pa_modifications_page(c, book: Book, spec: "Spec", title: str) -> None:
     """Подробности только уникальных модов конкретной модели силовой брони."""
-    draw_page_title(c, "Уникальные модификации")
+    draw_page_title(c, book.strings.text["unique_modifications"])
     draw_section_label(c, MARGIN_L + CONTENT_W / 2.0, 116.63, title)
 
     upgrades = book.pa_upgrade_mods(spec.set)
     y = PA_UNIQUE_TOP
     if upgrades:
-        draw_heading(c, "Улучшения деталей", 141.0, 15.0)
-        y = draw_pa_unique_table(c, pa_unique_rows(book, upgrades), y)
+        draw_heading(c, book.strings.text["part_upgrades"], 141.0, 15.0)
+        y = draw_pa_unique_table(c, pa_unique_rows(book, upgrades), y, book.locale)
 
     other = [mod for mod in book.pa_unique_mods_for_set(spec.set)
              if mod.get("modSlot") != "amelioration"]
@@ -1814,15 +2005,16 @@ def draw_pa_modifications_page(c, book: Book, spec: "Spec", title: str) -> None:
     # У рейдерской брони это «Вваренная арматура», у X-01 — особая ЭМИ-защита.
     # Компактная таблица с эффектом помещается после лестницы улучшений.
     heading_top = y + 10.0
-    label = "УНИКАЛЬНЫЕ МОДИФИКАЦИИ"
+    label = book.strings.text["unique_modifications"].upper()
     slots = {mod.get("modSlot") for mod in other}
     if slots == {"systeme"}:
-        label = "УНИКАЛЬНЫЕ СИСТЕМЫ"
+        label = book.strings.text["unique_systems"]
     elif slots == {"blindage"}:
-        label = "УНИКАЛЬНАЯ ОБШИВКА"
+        label = book.strings.text["unique_plating"]
     draw_heading(c, label, heading_top, 13.0)
     draw_pa_detail_table(c, pa_detail_rows(book, other), label,
-                         top=heading_top + 19.0)
+                         top=heading_top + 19.0,
+                         headers=book.strings.pa_detail_headers)
 
 
 # -- страница 2: матрицы тиров ----------------------------------------------
@@ -1866,7 +2058,8 @@ def bounded_tier_columns(x: float, widths: tuple[float, ...],
 
 
 def tier_matrix(c, x: float, y_top: float, pieces: list[dict],
-                widths: tuple[float, ...], side: str = "left") -> float:
+                widths: tuple[float, ...], side: str = "left",
+                locale: str = DEFAULT_LOCALE) -> float:
     """Матрица тира: шапка — названия деталей (белый на чёрном),
     строки — характеристики (метка белым на чёрном, значение кремовое).
     Возвращает y низа матрицы."""
@@ -1881,14 +2074,14 @@ def tier_matrix(c, x: float, y_top: float, pieces: list[dict],
     cx = x + label_w
     for piece, width in zip(pieces, col_widths):
         rect(c, cx, y_top, cx + width, y_top + TIER_HEADER_H, stroke=BLACK)
-        header = area_title(piece)
+        header = area_title(piece, locale)
         header_size = fit_size(header, FONT_B, TIER_FONT, width - 2.0)
         draw_top(c, cx + width / 2.0,
                  vcenter_top(y_top, y_top + TIER_HEADER_H, header_size),
                  header, FONT_B, header_size, align="center", color=WHITE)
         cx += width
 
-    rows = stat_fields(pieces[0]) if pieces else []
+    rows = stat_fields(pieces[0], locale) if pieces else []
     y = y_top + TIER_HEADER_H
     for key, label in rows:
         rect(c, x, y, x + label_w, y + TIER_ROW_H, fill=BLACK)
@@ -1909,7 +2102,8 @@ def tier_matrix(c, x: float, y_top: float, pieces: list[dict],
     return y
 
 
-def draw_tiers(c, tiers: dict[str, list[dict]]) -> float:
+def draw_tiers(c, tiers: dict[str, list[dict]],
+               locale: str = DEFAULT_LOCALE) -> float:
     """Матрицы тиров рядом: УКРЕПЛЁННАЯ и ТЯЖЁЛАЯ.
 
     Тиров может быть меньше (у «Брони охранника Волт-Тек» только
@@ -1922,10 +2116,11 @@ def draw_tiers(c, tiers: dict[str, list[dict]]) -> float:
              (TIER_RIGHT_X, TIER_COL_SETS["right"])]
     bottom = 0.0
     for (tier, pieces), (x, widths) in zip(extra, cells):
-        label = TIER_TITLES.get(tier, tier)
+        label = locale_strings(locale).tier_titles.get(tier, tier)
         matrix_w = sum(bounded_tier_columns(x, widths, len(pieces)))
         draw_section_label(c, x + matrix_w / 2.0, TIER_LABEL_TOP, label)
-        bottom = max(bottom, tier_matrix(c, x, TIER_GRID_TOP, pieces, widths))
+        bottom = max(bottom, tier_matrix(c, x, TIER_GRID_TOP, pieces, widths,
+                                         locale=locale))
     return bottom
 
 
@@ -1974,7 +2169,7 @@ def unique_mods_table(c, book: Book, mods: list[dict], y_top: float) -> float:
     for i in range(len(UNIQ_COLS)):
         rect(c, edges[i], y_top, edges[i + 1], y_top + UNIQ_HEADER_H, fill=BLACK)
         rect(c, edges[i], y_top, edges[i + 1], y_top + UNIQ_HEADER_H, stroke=BLACK)
-        header = UNIQ_HEADERS[i]
+        header = book.strings.uniq_headers[i]
         if header:
             draw_top(c, edges[i] + UNIQ_COLS[i] / 2.0,
                      vcenter_top(y_top, y_top + UNIQ_HEADER_H, UNIQ_FONT),
@@ -1983,7 +2178,7 @@ def unique_mods_table(c, book: Book, mods: list[dict], y_top: float) -> float:
 
     for index, mod in enumerate(mods):
         fill = BEIGE if index % 2 == 0 else ORANGE
-        perk = (mod.get("requiredPerk") or "").upper()
+        perk = book.perk_text(mod.get("requiredPerk")).upper()
         cells = [
             fitted_cell(book.mod_names.get(mod["id"], mod["id"]).upper(),
                         UNIQ_COLS[0], UNIQ_FONT, UNIQ_PAD, FONT_B),
@@ -2049,23 +2244,28 @@ class Spec:
     _slug: str = ""
 
 
-def spec_from_page_json(raw: dict) -> Spec:
-    """Описание из `data/armor-pages/*.json` (тот же формат, что у armor2page)."""
+def spec_from_page_json(raw: dict, locale: str = DEFAULT_LOCALE) -> Spec:
+    """Описание из `data/armor-pages/*.json` с локальным title/intro."""
     image = raw.get("image")
     if isinstance(image, dict):
         image = image.get("src", "")
+    translated = (raw.get("translations") or {}).get(locale, {})
+    # У нерусской локали не подставляем русский prose как скрытый fallback:
+    # название сета при необходимости возьмётся из Companion i18n.
+    title = raw.get("title", "") if locale == DEFAULT_LOCALE else translated.get("title", "")
+    intro = raw.get("intro") if locale == DEFAULT_LOCALE else translated.get("intro")
     return Spec(
         collection=raw.get("collection", "armor"),
         set=raw.get("set", ""),
-        title=raw.get("title", ""),
+        title=title,
         item=raw.get("item", ""),
-        intro=[p for p in (raw.get("intro") or []) if p],
+        intro=[p for p in (intro or []) if p],
         image=image or "",
         _slug=raw.get("slug", ""),
     )
 
 
-def load_specs(pages_dir: Path) -> list[Spec]:
+def load_specs(pages_dir: Path, locale: str = DEFAULT_LOCALE) -> list[Spec]:
     """Описания сетов из `data/armor-pages/*.json`.
 
     Файл `book.json` — это конфиг самой книги (титул/подзаголовок), а не сет:
@@ -2077,13 +2277,19 @@ def load_specs(pages_dir: Path) -> list[Spec]:
     for path in sorted(pages_dir.glob("*.json")):
         if path.stem == BOOK_CONFIG_STEM:
             continue
-        specs.append(spec_from_page_json(read_json(path)))
+        specs.append(spec_from_page_json(read_json(path), locale))
     return specs
 
 
-def load_config(pages_dir: Path) -> dict:
+def load_config(pages_dir: Path, locale: str = DEFAULT_LOCALE) -> dict:
     path = pages_dir / f"{BOOK_CONFIG_STEM}.json"
-    return read_json(path) if path.exists() else {}
+    if not path.exists():
+        return {}
+    config = read_json(path)
+    translations = config.pop("translations", {})
+    if locale != DEFAULT_LOCALE:
+        config.update(translations.get(locale, {}))
+    return config
 
 
 BOOK_CONFIG_STEM = "book"
@@ -2148,8 +2354,9 @@ def draw_first_page(c, book: Book, spec: Spec, title: str) -> list[dict]:
         # Заголовок относится к правой внешней col-6, которая содержит
         # вложенную сетку четырёх таблиц, а не ко всей ширине страницы.
         center = CHAR_GRID_X + CHAR_OUTER_COL_W / 2.0
-        draw_section_label(c, center, CHAR_SECTION_TOP, "Стандартный комплект")
-        grid_bottom = draw_char_grid(c, pieces)["bottom"]
+        draw_section_label(c, center, CHAR_SECTION_TOP,
+                           book.strings.text["standard_set"])
+        grid_bottom = draw_char_grid(c, pieces, book.locale)["bottom"]
     # Левая внешняя col-6 остаётся независимой областью иллюстрации.
     image = resolve_image(spec)
     if image:
@@ -2164,15 +2371,23 @@ def draw_first_page(c, book: Book, spec: Spec, title: str) -> list[dict]:
         layout = fit_mods_grid(rows)
         draw_mods_grid(c, rows, layout=layout)
         heading_top = mods_heading_top(layout)
-        heading = ("Общие модификации" if spec.collection == "powerArmor"
-                   else "Поддерживаемые модификации")
+        heading = (book.strings.text["common_modifications"]
+                   if spec.collection == "powerArmor"
+                   else book.strings.text["supported_modifications"])
         draw_heading(c, heading, heading_top, MODS_HEADING_SIZE)
 
     # описание занимает то, что осталось между таблицами и заголовком модов
     desc_top = max(DESC_TOP, grid_bottom + MODS_LINE_H * 2)
     if desc_top < heading_top:
+        # English prose is longer than the compact Russian source text.  The
+        # supplied layout reserves the left outer col-6 below the illustration,
+        # so use it when rendering English to avoid the last words being
+        # reduced to a vertical stack at the right edge of the paper.
+        desc_width = (CHAR_OUTER_COL_W - 2 * DESC_INDENT
+                      if book.locale != DEFAULT_LOCALE
+                      else CONTENT_W - 2 * DESC_INDENT)
         draw_description(c, spec.intro, top=desc_top,
-                         max_bottom=heading_top - 12.0)
+                         max_bottom=heading_top - 12.0, width=desc_width)
     return []
 
 
@@ -2195,13 +2410,13 @@ ITEM_BOTTOM = MODS_GRID_BOTTOM                   # ниже — только н�
 
 
 def draw_item_char_table(c, item: dict, x: float, top: float,
-                         label_w: float) -> float:
+                         label_w: float, locale: str = DEFAULT_LOCALE) -> float:
     """Таблица характеристик предмета одежды. Возвращает y низа таблицы.
 
     Та же раскраска, что у таблицы детали брони: подпись белым на чёрном,
     значение кремовым. Строка «ПРОЧНОСТЬ» есть только если в данных есть hp.
     """
-    rows = stat_fields(item)
+    rows = stat_fields(item, locale)
     total_w = label_w + CLOTHES_ITEM_VALUE_W
     for index, (key, label) in enumerate(rows):
         y = top + index * CHAR_ROW_H
@@ -2249,7 +2464,7 @@ def draw_clothes_item_page(c, book: Book, spec: Spec, title: str) -> None:
              align="center")
     table_bottom = draw_item_char_table(c, item, CLOTHES_TABLE_X,
                                        CLOTHES_ITEM_TABLE_TOP,
-                                       CLOTHES_TABLE_LABEL_W)
+                                       CLOTHES_TABLE_LABEL_W, book.locale)
     image = resolve_image(spec)
     if image:
         draw_image(c, image)
@@ -2261,7 +2476,7 @@ def draw_clothes_item_page(c, book: Book, spec: Spec, title: str) -> None:
         layout = fit_mods_grid(rows)
         mods_top = layout["top"]
         heading_top = mods_heading_top(layout)
-        draw_heading(c, "Поддерживаемые модификации", heading_top,
+        draw_heading(c, book.strings.text["supported_modifications"], heading_top,
                      MODS_HEADING_SIZE)
         draw_mods_grid(c, rows, layout=layout)
     # описание — между таблицами и заголовком модов; если текста в данных
@@ -2308,13 +2523,13 @@ def draw_second_page(c, book: Book, spec: Spec, title: str) -> None:
         return
     tiers = book.tiers(spec.collection, spec.set)
     _, uniq = second_page_parts(book, spec)
-    draw_page_title(c, "Варианты")
-    tiers_bottom = draw_tiers(c, tiers)
+    draw_page_title(c, book.strings.text["variants"])
+    tiers_bottom = draw_tiers(c, tiers, book.locale)
     if uniq:
         # без матриц тиров блок уникальных модов поднимается выше
         heading_top = UNIQ_HEADING_TOP if tiers_bottom else TIER_LABEL_TOP
         grid_top = UNIQ_GRID_TOP if tiers_bottom else TIER_GRID_TOP + 20.0
-        draw_heading(c, "Уникальные модификации", heading_top,
+        draw_heading(c, book.strings.text["unique_modifications"], heading_top,
                      UNIQ_HEADING_SIZE)
         # вторая строка заголовка — название сета (как «КОЖАНАЯ БРОНЯ»)
         draw_top(c, MARGIN_L + CONTENT_W / 2.0,
@@ -2326,17 +2541,15 @@ def draw_second_page(c, book: Book, spec: Spec, title: str) -> None:
 # -- титул и разделы --------------------------------------------------------
 
 
-COLLECTION_TITLES = {
-    "armor": ("БРОНЯ", "Стандартные комплекты, варианты и модификации."),
-    "powerArmor": ("СИЛОВАЯ БРОНЯ",
-                   "Каркас, рейдерская и все модели — Т-45, Т-51, Т-60, X-01."),
-    "clothes": ("ОДЕЖДА", "Костюмы, обмундирование и головные уборы."),
-}
+# Ключи коллекций намеренно стабильны: это значения --collection и данные
+# Companion. Видимые заголовки берутся из LocaleStrings.collections.
+COLLECTION_KEYS = ("armor", "powerArmor", "clothes")
 
 
-def draw_cover(c, config: dict) -> None:
-    title = (config.get("title") or "СПРАВОЧНИК БРОНИ").upper()
-    subtitle = config.get("subtitle") or AUTO_TITLES["armor"]
+def draw_cover(c, config: dict, locale: str = DEFAULT_LOCALE) -> None:
+    strings = locale_strings(locale)
+    title = (config.get("title") or strings.text["armor_reference"]).upper()
+    subtitle = config.get("subtitle") or strings.auto_titles["armor"]
     draw_top(c, PAGE_W / 2.0, 250.0, title, FONT_B, 34.0, align="center")
     x0 = PAGE_W / 2.0 - TITLE_RULE_W / 2.0
     rect(c, x0, 300.0, x0 + TITLE_RULE_W, 302.2, fill=BLACK)
@@ -2359,9 +2572,9 @@ def build_book(specs: list[Spec], book: Book, out_path: Path,
     config = config or {}
     register_fonts()
     c = canvas.Canvas(str(out_path), pagesize=(PAGE_W, PAGE_H))
-    c.setTitle(config.get("title") or "Справочник брони")
+    c.setTitle(config.get("title") or book.strings.text["armor_reference"])
     c.setAuthor(config.get("author") or "fallout-2d20.ru")
-    c.setSubject(config.get("subtitle") or AUTO_TITLES["armor"])
+    c.setSubject(config.get("subtitle") or book.strings.auto_titles["armor"])
 
     page = 1
     stats = {"pages": 0, "sets": 0, "skipped": []}
@@ -2377,14 +2590,14 @@ def build_book(specs: list[Spec], book: Book, out_path: Path,
             # Титул должен появиться до общего каталога даже при --no-sections.
             if cover and not have_cover:
                 w.draw_paper(c)
-                draw_cover(c, config)
+                draw_cover(c, config, book.locale)
                 c.showPage()
                 page += 1
                 stats["pages"] += 1
                 have_cover = True
             if sections:
-                name, note = COLLECTION_TITLES.get(spec.collection,
-                                                   (spec.collection, ""))
+                name, note = book.strings.collections.get(spec.collection,
+                                                          (spec.collection, ""))
                 w.draw_paper(c)
                 draw_section(c, name, note)
                 draw_page_number(c, page)
@@ -2401,7 +2614,7 @@ def build_book(specs: list[Spec], book: Book, out_path: Path,
             if current == "armor" and sections:
                 for tables in armor_common_catalog_pages(book):
                     w.draw_paper(c)
-                    draw_armor_common_catalog_page(c, tables)
+                    draw_armor_common_catalog_page(c, book, tables)
                     draw_page_number(c, page)
                     c.showPage()
                     page += 1
@@ -2409,7 +2622,7 @@ def build_book(specs: list[Spec], book: Book, out_path: Path,
             elif current == "powerArmor":
                 for tables in pa_common_catalog_pages(book):
                     w.draw_paper(c)
-                    draw_pa_common_catalog_page(c, tables)
+                    draw_pa_common_catalog_page(c, book, tables)
                     draw_page_number(c, page)
                     c.showPage()
                     page += 1
@@ -2417,7 +2630,7 @@ def build_book(specs: list[Spec], book: Book, out_path: Path,
             elif current == "clothes" and sections:
                 for tables in clothes_common_catalog_pages(book):
                     w.draw_paper(c)
-                    draw_clothes_common_catalog_page(c, tables)
+                    draw_clothes_common_catalog_page(c, book, tables)
                     draw_page_number(c, page)
                     c.showPage()
                     page += 1
@@ -2452,12 +2665,14 @@ def main(argv: list[str] | None = None) -> int:
     )
     ap.add_argument("--data", default=str(ROOT / "data" / "companion"),
                     help="каталог данных Companion")
+    ap.add_argument("--locale", choices=SUPPORTED_LOCALES, default=DEFAULT_LOCALE,
+                    help="язык книги: ru-RU (по умолчанию) или en-EN")
     ap.add_argument("--pages", default=str(ROOT / "data" / "armor-pages"),
                     help="каталог описаний сетов (JSON)")
     ap.add_argument("--out", required=True, help="куда сохранить PDF")
     ap.add_argument("--config", help="JSON с титулом книги (title/subtitle)")
     ap.add_argument("--collection", action="append",
-                    choices=list(COLLECTION_TITLES),
+                    choices=list(COLLECTION_KEYS),
                     help="какие коллекции включить (по умолчанию все)")
     ap.add_argument("--set", action="append", dest="only", metavar="KEY",
                     help="только эти наборы (ключ данных)")
@@ -2466,10 +2681,10 @@ def main(argv: list[str] | None = None) -> int:
                     help="без разделителей коллекций")
     args = ap.parse_args(argv)
 
-    book = Book(Path(args.data))
-    collections = args.collection or list(COLLECTION_TITLES)
+    book = Book(Path(args.data), locale=args.locale)
+    collections = args.collection or list(COLLECTION_KEYS)
 
-    described = load_specs(Path(args.pages))
+    described = load_specs(Path(args.pages), args.locale)
     specs: list[Spec] = []
     for collection in collections:
         known = [s for s in described if s.collection == collection]
@@ -2493,7 +2708,7 @@ def main(argv: list[str] | None = None) -> int:
         for key in sorted(missing):
             print(f"нет такого набора: {key}", file=sys.stderr)
 
-    config = load_config(Path(args.pages))
+    config = load_config(Path(args.pages), args.locale)
     if args.config:
         config.update(read_json(Path(args.config)))
     out = Path(args.out)
