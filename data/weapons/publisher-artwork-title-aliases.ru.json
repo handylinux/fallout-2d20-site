@@ -1,0 +1,11 @@
+{
+  "schema": "fallout-2d20.publisher-artwork-title-aliases/v1",
+  "aliases": [
+    {
+      "title": "ПИСТОЛЕТ-ИНЪЕКТОР",
+      "weapon_id": "weapon_pistol_injector",
+      "source_page": 47,
+      "reason": "В рабочей копии Companion для weapon_pistol_injector нет русской строки name; заголовок и характеристики страницы 47 исходного Publisher PDF идентифицируют предмет."
+    }
+  ]
+}

@@ -392,6 +392,28 @@ class RenderTests(unittest.TestCase):
         self.assertEqual(text.count("НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ"), 1)
         self.assertNotIn("ПОДДЕРЖИВАЕМЫЕ МОДИФИКАЦИИ", text)
 
+    def test_no_mods_notice_moves_down_instead_of_truncating_prose(self):
+        card = base_card()
+        card["mods"] = []
+        card["description"] = (
+            "Подробное описание устройства " * 24 + "финальныймаркер")
+        self.assertGreater(
+            len(w.wrap_text(card["description"], "Carlito", w.DESC_SIZE,
+                            w.DESC_RIGHT - w.DESC_LEFT)), 4)
+        page = self.render(card)[0]
+        text = page.get_text()
+        self.assertIn("финальныймаркер", text)
+        self.assertNotIn("…", text)
+        heading_top = min(
+            span["bbox"][1]
+            for block in page.get_text("dict")["blocks"]
+            for line in block.get("lines", [])
+            for span in line["spans"]
+            if "НЕТ ПОДДЕРЖИВАЕМЫХ" in span["text"])
+        marker = page.search_for("финальныймаркер")[0]
+        self.assertGreater(heading_top, w.MODS_HEADING_TOP)
+        self.assertGreater(heading_top, marker.y1 + 10)
+
     def test_one_mod_table_sits_on_the_bottom_rule(self):
         card = base_card()
         card["mods"] = [{"slot": "РЕСИВЕР", "items": ["Укреплённый"]}]

@@ -1,0 +1,1061 @@
+{
+  "schema": "fallout-2d20.weapon-catalog-artwork-coverage/v1",
+  "enabled": true,
+  "manifest": {
+    "file": "artwork-manifest.json",
+    "sha256": "8182ff1ae5fa6cc3dc2a82cc24b80f3c02fbb601451fcdc15def03256a651370",
+    "source": {
+      "file": "Справочник оружия.pdf",
+      "sha256": "48c85e12c5eca695e0c4a4fc3a8bf9276d4fb1d1715b6a62f4b0f9c26ffdbd35",
+      "page_count": 106,
+      "metadata": {
+        "format": "PDF 1.7",
+        "author": "Pinki",
+        "creator": "Microsoft® Publisher для Microsoft 365",
+        "producer": "Microsoft® Publisher для Microsoft 365",
+        "creationDate": "D:20260324205051+04'00'",
+        "modDate": "D:20260324205051+04'00'"
+      }
+    }
+  },
+  "counts": {
+    "manifest-page-without-exported-artwork": 9,
+    "no-manifest-page": 61,
+    "replayed": 73
+  },
+  "weapons": {
+    "unarmed_human": {
+      "status": "no-manifest-page"
+    },
+    "weapon_10mm_pistol": {
+      "status": "replayed",
+      "source_page": 14,
+      "placements": [
+        {
+          "xref": 265,
+          "asset": "10mm-pistol.png",
+          "draw_order": 4
+        }
+      ]
+    },
+    "weapon_10mm_smg": {
+      "status": "no-manifest-page"
+    },
+    "weapon_12_7mm_pistol": {
+      "status": "replayed",
+      "source_page": 31,
+      "placements": [
+        {
+          "xref": 572,
+          "asset": "12-7mm-pistol.png",
+          "draw_order": 4
+        }
+      ]
+    },
+    "weapon_12_7mm_smg": {
+      "status": "replayed",
+      "source_page": 32,
+      "placements": [
+        {
+          "xref": 596,
+          "asset": "12-7mm-smg.png",
+          "draw_order": 4
+        }
+      ]
+    },
+    "weapon_25mm_grenade_apw": {
+      "status": "replayed",
+      "source_page": 33,
+      "placements": [
+        {
+          "xref": 612,
+          "asset": "25mm-grenade-apw.png",
+          "draw_order": 4
+        }
+      ]
+    },
+    "weapon_357_magnum_revolver": {
+      "status": "replayed",
+      "source_page": 30,
+      "placements": [
+        {
+          "xref": 562,
+          "asset": "357-magnum-revolver.png",
+          "draw_order": 4
+        }
+      ]
+    },
+    "weapon_44_pistol": {
+      "status": "replayed",
+      "source_page": 15,
+      "placements": [
+        {
+          "xref": 296,
+          "asset": "44-pistol.png",
+          "draw_order": 4
+        }
+      ]
+    },
+    "weapon_50_cal_machine_gun": {
+      "status": "replayed",
+      "source_page": 65,
+      "placements": [
+        {
+          "xref": 1190,
+          "asset": "50-cal-machine-gun.png",
+          "draw_order": 15
+        }
+      ]
+    },
+    "weapon_9mm_pistol": {
+      "status": "replayed",
+      "source_page": 34,
+      "placements": [
+        {
+          "xref": 642,
+          "asset": "9mm-pistol.png",
+          "draw_order": 4
+        }
+      ]
+    },
+    "weapon_acid_soaker": {
+      "status": "replayed",
+      "source_page": 88,
+      "placements": [
+        {
+          "xref": 1523,
+          "asset": "acid-soaker.png",
+          "draw_order": 15
+        }
+      ]
+    },
+    "weapon_alien_atomizer": {
+      "status": "replayed",
+      "source_page": 89,
+      "placements": [
+        {
+          "xref": 1535,
+          "asset": "alien-atomizer.png",
+          "draw_order": 15
+        }
+      ]
+    },
+    "weapon_alien_blaster": {
+      "status": "replayed",
+      "source_page": 91,
+      "placements": [
+        {
+          "xref": 1573,
+          "asset": "alien-blaster.png",
+          "draw_order": 15
+        }
+      ]
+    },
+    "weapon_alien_disintegrator": {
+      "status": "replayed",
+      "source_page": 90,
+      "placements": [
+        {
+          "xref": 1555,
+          "asset": "alien-disintegrator.png",
+          "draw_order": 15
+        }
+      ]
+    },
+    "weapon_anti_materiel_rifle": {
+      "status": "manifest-page-without-exported-artwork",
+      "source_page": 35
+    },
+    "weapon_arc_welder": {
+      "status": "replayed",
+      "source_page": 93,
+      "placements": [
+        {
+          "xref": 1609,
+          "asset": "arc-welder.png",
+          "draw_order": 15
+        }
+      ]
+    },
+    "weapon_assault_rifle": {
+      "status": "replayed",
+      "source_page": 17,
+      "placements": [
+        {
+          "xref": 348,
+          "asset": "assault-rifle.png",
+          "draw_order": 4
+        }
+      ]
+    },
+    "weapon_assaultron_blade": {
+      "status": "no-manifest-page"
+    },
+    "weapon_assaultron_head_laser": {
+      "status": "replayed",
+      "source_page": 94,
+      "placements": [
+        {
+          "xref": 1623,
+          "asset": "assaultron-head-laser.png",
+          "draw_order": 16
+        }
+      ]
+    },
+    "weapon_atom_staff": {
+      "status": "no-manifest-page"
+    },
+    "weapon_auto_axe": {
+      "status": "no-manifest-page"
+    },
+    "weapon_auto_grenade_launcher": {
+      "status": "replayed",
+      "source_page": 66,
+      "placements": [
+        {
+          "xref": 1210,
+          "asset": "auto-grenade-launcher.png",
+          "draw_order": 16
+        }
+      ]
+    },
+    "weapon_ballistic_fist": {
+      "status": "no-manifest-page"
+    },
+    "weapon_baseball_bat": {
+      "status": "no-manifest-page"
+    },
+    "weapon_baseball_bat_aluminum": {
+      "status": "no-manifest-page"
+    },
+    "weapon_baseball_grenade": {
+      "status": "no-manifest-page"
+    },
+    "weapon_baton": {
+      "status": "no-manifest-page"
+    },
+    "weapon_battle_rifle": {
+      "status": "replayed",
+      "source_page": 36,
+      "placements": [
+        {
+          "xref": 694,
+          "asset": "battle-rifle.png",
+          "draw_order": 4
+        }
+      ]
+    },
+    "weapon_black_powder_blunderbuss": {
+      "status": "replayed",
+      "source_page": 37,
+      "placements": [
+        {
+          "xref": 716,
+          "asset": "black-powder-blunderbuss.png",
+          "draw_order": 4
+        }
+      ]
+    },
+    "weapon_black_powder_pistol": {
+      "status": "replayed",
+      "source_page": 39,
+      "placements": [
+        {
+          "xref": 752,
+          "asset": "black-powder-pistol.png",
+          "draw_order": 4
+        }
+      ]
+    },
+    "weapon_black_powder_rifle": {
+      "status": "manifest-page-without-exported-artwork",
+      "source_page": 38
+    },
+    "weapon_board": {
+      "status": "no-manifest-page"
+    },
+    "weapon_boarding_pistol": {
+      "status": "replayed",
+      "source_page": 51,
+      "placements": [
+        {
+          "xref": 960,
+          "asset": "boarding-pistol.png",
+          "draw_order": 15
+        }
+      ]
+    },
+    "weapon_bottlecap_mine": {
+      "status": "no-manifest-page"
+    },
+    "weapon_bow": {
+      "status": "replayed",
+      "source_page": 56,
+      "placements": [
+        {
+          "xref": 1045,
+          "asset": "bow.png",
+          "draw_order": 17
+        }
+      ]
+    },
+    "weapon_boxing_glove": {
+      "status": "no-manifest-page"
+    },
+    "weapon_broadsider": {
+      "status": "replayed",
+      "source_page": 67,
+      "placements": [
+        {
+          "xref": 1224,
+          "asset": "broadsider.png",
+          "draw_order": 16
+        }
+      ]
+    },
+    "weapon_bumper_sword": {
+      "status": "no-manifest-page"
+    },
+    "weapon_cattle_prod": {
+      "status": "no-manifest-page"
+    },
+    "weapon_chainsaw": {
+      "status": "no-manifest-page"
+    },
+    "weapon_chinese_assault_rifle": {
+      "status": "replayed",
+      "source_page": 54,
+      "placements": [
+        {
+          "xref": 1000,
+          "asset": "chinese-assault-rifle.png",
+          "draw_order": 15
+        }
+      ]
+    },
+    "weapon_combat_knife": {
+      "status": "manifest-page-without-exported-artwork",
+      "source_page": 97
+    },
+    "weapon_combat_rifle": {
+      "status": "replayed",
+      "source_page": 18,
+      "placements": [
+        {
+          "xref": 378,
+          "asset": "combat-rifle.png",
+          "draw_order": 15
+        }
+      ]
+    },
+    "weapon_combat_shotgun": {
+      "status": "replayed",
+      "source_page": 19,
+      "placements": [
+        {
+          "xref": 398,
+          "asset": "combat-shotgun.png",
+          "draw_order": 15
+        }
+      ]
+    },
+    "weapon_crossbow": {
+      "status": "replayed",
+      "source_page": 55,
+      "placements": [
+        {
+          "xref": 1020,
+          "asset": "crossbow.png",
+          "draw_order": 16
+        }
+      ]
+    },
+    "weapon_cryo_mine": {
+      "status": "no-manifest-page"
+    },
+    "weapon_cryogenic_grenade": {
+      "status": "no-manifest-page"
+    },
+    "weapon_cryolator": {
+      "status": "replayed",
+      "source_page": 70,
+      "placements": [
+        {
+          "xref": 1266,
+          "asset": "cryolator.png",
+          "draw_order": 17
+        }
+      ]
+    },
+    "weapon_death_tambo": {
+      "status": "no-manifest-page"
+    },
+    "weapon_deathclaw_gauntlet": {
+      "status": "no-manifest-page"
+    },
+    "weapon_detonator": {
+      "status": "no-manifest-page"
+    },
+    "weapon_displacer_glove": {
+      "status": "no-manifest-page"
+    },
+    "weapon_double_barrel_shotgun": {
+      "status": "replayed",
+      "source_page": 24,
+      "placements": [
+        {
+          "xref": 468,
+          "asset": "double-barrel-shotgun.png",
+          "draw_order": 4
+        }
+      ]
+    },
+    "weapon_drone_cannon": {
+      "status": "replayed",
+      "source_page": 72,
+      "placements": [
+        {
+          "xref": 1290,
+          "asset": "drone-cannon.png",
+          "draw_order": 15
+        }
+      ]
+    },
+    "weapon_dynamite": {
+      "status": "no-manifest-page"
+    },
+    "weapon_dynamite_bundle": {
+      "status": "no-manifest-page"
+    },
+    "weapon_eugene": {
+      "status": "replayed",
+      "source_page": 75,
+      "placements": [
+        {
+          "xref": 1336,
+          "asset": "eugene.png",
+          "draw_order": 15
+        }
+      ]
+    },
+    "weapon_fat_man": {
+      "status": "replayed",
+      "source_page": 58,
+      "placements": [
+        {
+          "xref": 1054,
+          "asset": "fat-man.png",
+          "draw_order": 3
+        }
+      ]
+    },
+    "weapon_flamer": {
+      "status": "replayed",
+      "source_page": 59,
+      "placements": [
+        {
+          "xref": 1078,
+          "asset": "flamer.png",
+          "draw_order": 14
+        }
+      ]
+    },
+    "weapon_flare_gun": {
+      "status": "replayed",
+      "source_page": 16,
+      "placements": [
+        {
+          "xref": 322,
+          "asset": "flare-gun.png",
+          "draw_order": 4
+        }
+      ]
+    },
+    "weapon_flash_bang": {
+      "status": "no-manifest-page"
+    },
+    "weapon_frag_grenade": {
+      "status": "no-manifest-page"
+    },
+    "weapon_frag_grenade_mirv": {
+      "status": "no-manifest-page"
+    },
+    "weapon_frag_mine": {
+      "status": "no-manifest-page"
+    },
+    "weapon_gamma_gun": {
+      "status": "replayed",
+      "source_page": 84,
+      "placements": [
+        {
+          "xref": 1473,
+          "asset": "gamma-gun.png",
+          "draw_order": 17
+        }
+      ]
+    },
+    "weapon_gatling_gun": {
+      "status": "replayed",
+      "source_page": 68,
+      "placements": [
+        {
+          "xref": 1234,
+          "asset": "gatling-gun.png",
+          "draw_order": 16
+        }
+      ]
+    },
+    "weapon_gatling_laser": {
+      "status": "replayed",
+      "source_page": 60,
+      "placements": [
+        {
+          "xref": 1102,
+          "asset": "gatling-laser.png",
+          "draw_order": 16
+        }
+      ]
+    },
+    "weapon_gatling_plasma": {
+      "status": "no-manifest-page"
+    },
+    "weapon_gauss_minigun": {
+      "status": "replayed",
+      "source_page": 69,
+      "placements": [
+        {
+          "xref": 1250,
+          "asset": "gauss-minigun.png",
+          "draw_order": 16
+        }
+      ]
+    },
+    "weapon_gauss_pistol": {
+      "status": "replayed",
+      "source_page": 21,
+      "placements": [
+        {
+          "xref": 418,
+          "asset": "gauss-pistol.png",
+          "draw_order": 4
+        },
+        {
+          "xref": 414,
+          "asset": "gauss-rifle.png",
+          "draw_order": 5
+        }
+      ]
+    },
+    "weapon_gauss_rifle": {
+      "status": "replayed",
+      "source_page": 20,
+      "placements": [
+        {
+          "xref": 414,
+          "asset": "gauss-rifle.png",
+          "draw_order": 15
+        }
+      ]
+    },
+    "weapon_gauss_shotgun": {
+      "status": "replayed",
+      "source_page": 40,
+      "placements": [
+        {
+          "xref": 762,
+          "asset": "gauss-shotgun.png",
+          "draw_order": 13
+        }
+      ]
+    },
+    "weapon_ghoul_pistol": {
+      "status": "replayed",
+      "source_page": 49,
+      "placements": [
+        {
+          "xref": 904,
+          "asset": "ghoul-rifle.png",
+          "draw_order": 15
+        }
+      ]
+    },
+    "weapon_ghoul_rifle": {
+      "status": "replayed",
+      "source_page": 48,
+      "placements": [
+        {
+          "xref": 902,
+          "asset": "ghoul-rifle-2.png",
+          "draw_order": 14
+        },
+        {
+          "xref": 904,
+          "asset": "ghoul-rifle.png",
+          "draw_order": 15
+        }
+      ]
+    },
+    "weapon_guitar_sword": {
+      "status": "no-manifest-page"
+    },
+    "weapon_harpoon_gun": {
+      "status": "replayed",
+      "source_page": 73,
+      "placements": [
+        {
+          "xref": 1306,
+          "asset": "harpoon-gun.png",
+          "draw_order": 15
+        }
+      ]
+    },
+    "weapon_heavy_incinerator": {
+      "status": "replayed",
+      "source_page": 61,
+      "placements": [
+        {
+          "xref": 1118,
+          "asset": "heavy-incinerator.png",
+          "draw_order": 15
+        }
+      ]
+    },
+    "weapon_hunting_rifle": {
+      "status": "replayed",
+      "source_page": 22,
+      "placements": [
+        {
+          "xref": 438,
+          "asset": "hunting-rifle.png",
+          "draw_order": 4
+        }
+      ]
+    },
+    "weapon_institute_laser": {
+      "status": "no-manifest-page"
+    },
+    "weapon_javelin": {
+      "status": "no-manifest-page"
+    },
+    "weapon_junk_jet": {
+      "status": "replayed",
+      "source_page": 62,
+      "placements": [
+        {
+          "xref": 1122,
+          "asset": "junk-jet.png",
+          "draw_order": 3
+        }
+      ]
+    },
+    "weapon_knuckles": {
+      "status": "no-manifest-page"
+    },
+    "weapon_laser_gun": {
+      "status": "replayed",
+      "source_page": 82,
+      "placements": [
+        {
+          "xref": 1445,
+          "asset": "laser-gun.png",
+          "draw_order": 14
+        }
+      ]
+    },
+    "weapon_laser_musket": {
+      "status": "replayed",
+      "source_page": 81,
+      "placements": [
+        {
+          "xref": 1429,
+          "asset": "laser-musket.png",
+          "draw_order": 17
+        }
+      ]
+    },
+    "weapon_lead_pipe": {
+      "status": "no-manifest-page"
+    },
+    "weapon_lever_action_rifle": {
+      "status": "replayed",
+      "source_page": 41,
+      "placements": [
+        {
+          "xref": 788,
+          "asset": "lever-action-rifle.png",
+          "draw_order": 15
+        }
+      ]
+    },
+    "weapon_light_machine_gun": {
+      "status": "replayed",
+      "source_page": 42,
+      "placements": [
+        {
+          "xref": 812,
+          "asset": "light-machine-gun.png",
+          "draw_order": 14
+        }
+      ]
+    },
+    "weapon_m79_grenade_launcher": {
+      "status": "replayed",
+      "source_page": 46,
+      "placements": [
+        {
+          "xref": 868,
+          "asset": "m79-grenade-launcher.png",
+          "draw_order": 16
+        }
+      ]
+    },
+    "weapon_machete": {
+      "status": "manifest-page-without-exported-artwork",
+      "source_page": 98
+    },
+    "weapon_magnum_monicon": {
+      "status": "replayed",
+      "source_page": 52,
+      "placements": [
+        {
+          "xref": 974,
+          "asset": "magnum-monicon.png",
+          "draw_order": 15
+        }
+      ]
+    },
+    "weapon_mesmetron": {
+      "status": "replayed",
+      "source_page": 85,
+      "placements": [
+        {
+          "xref": 1481,
+          "asset": "mesmetron.png",
+          "draw_order": 15
+        }
+      ]
+    },
+    "weapon_microwave_emitter": {
+      "status": "replayed",
+      "source_page": 92,
+      "placements": [
+        {
+          "xref": 1481,
+          "asset": "mesmetron.png",
+          "draw_order": 16
+        }
+      ]
+    },
+    "weapon_minigun": {
+      "status": "replayed",
+      "source_page": 63,
+      "placements": [
+        {
+          "xref": 1154,
+          "asset": "minigun.png",
+          "draw_order": 15
+        }
+      ]
+    },
+    "weapon_mining_drill": {
+      "status": "no-manifest-page"
+    },
+    "weapon_missile_launcher": {
+      "status": "replayed",
+      "source_page": 64,
+      "placements": [
+        {
+          "xref": 1172,
+          "asset": "missile-launcher.png",
+          "draw_order": 15
+        }
+      ]
+    },
+    "weapon_molotov": {
+      "status": "no-manifest-page"
+    },
+    "weapon_mr_handy_buzz_blade": {
+      "status": "no-manifest-page"
+    },
+    "weapon_multi_purpose_axe": {
+      "status": "no-manifest-page"
+    },
+    "weapon_nuka_grenade": {
+      "status": "no-manifest-page"
+    },
+    "weapon_nuke_mine": {
+      "status": "no-manifest-page"
+    },
+    "weapon_pipe_bolt_action": {
+      "status": "replayed",
+      "source_page": 25,
+      "placements": [
+        {
+          "xref": 482,
+          "asset": "pipe-bolt-action.png",
+          "draw_order": 4
+        }
+      ]
+    },
+    "weapon_pipe_gun": {
+      "status": "replayed",
+      "source_page": 26,
+      "placements": [
+        {
+          "xref": 500,
+          "asset": "pipe-gun.png",
+          "draw_order": 4
+        }
+      ]
+    },
+    "weapon_pipe_revolver": {
+      "status": "replayed",
+      "source_page": 27,
+      "placements": [
+        {
+          "xref": 520,
+          "asset": "pipe-revolver.png",
+          "draw_order": 4
+        }
+      ]
+    },
+    "weapon_pipe_wrench": {
+      "status": "no-manifest-page"
+    },
+    "weapon_pistol_injector": {
+      "status": "replayed",
+      "source_page": 47,
+      "placements": [
+        {
+          "xref": 886,
+          "asset": "pistol-injector.png",
+          "draw_order": 17
+        }
+      ]
+    },
+    "weapon_plasma_caster": {
+      "status": "replayed",
+      "source_page": 76,
+      "placements": [
+        {
+          "xref": 1352,
+          "asset": "plasma-caster.png",
+          "draw_order": 15
+        }
+      ]
+    },
+    "weapon_plasma_grenade": {
+      "status": "no-manifest-page"
+    },
+    "weapon_plasma_gun": {
+      "status": "replayed",
+      "source_page": 83,
+      "placements": [
+        {
+          "xref": 1457,
+          "asset": "plasma-gun.png",
+          "draw_order": 14
+        }
+      ]
+    },
+    "weapon_plasma_mine": {
+      "status": "no-manifest-page"
+    },
+    "weapon_plastic_explosives": {
+      "status": "no-manifest-page"
+    },
+    "weapon_pool_cue": {
+      "status": "no-manifest-page"
+    },
+    "weapon_powder_charge": {
+      "status": "no-manifest-page"
+    },
+    "weapon_power_fist": {
+      "status": "no-manifest-page"
+    },
+    "weapon_proton_axe": {
+      "status": "no-manifest-page"
+    },
+    "weapon_pulse_grenade": {
+      "status": "no-manifest-page"
+    },
+    "weapon_pulse_mine": {
+      "status": "no-manifest-page"
+    },
+    "weapon_pump_action_shotgun": {
+      "status": "replayed",
+      "source_page": 43,
+      "placements": [
+        {
+          "xref": 824,
+          "asset": "pump-action-shotgun.png",
+          "draw_order": 14
+        }
+      ]
+    },
+    "weapon_radium_rifle": {
+      "status": "replayed",
+      "source_page": 44,
+      "placements": [
+        {
+          "xref": 836,
+          "asset": "radium-rifle.png",
+          "draw_order": 14
+        }
+      ]
+    },
+    "weapon_railway_rifle": {
+      "status": "replayed",
+      "source_page": 28,
+      "placements": [
+        {
+          "xref": 530,
+          "asset": "railway-rifle.png",
+          "draw_order": 4
+        }
+      ]
+    },
+    "weapon_ripper": {
+      "status": "manifest-page-without-exported-artwork",
+      "source_page": 99
+    },
+    "weapon_rock": {
+      "status": "no-manifest-page"
+    },
+    "weapon_rolling_pin": {
+      "status": "no-manifest-page"
+    },
+    "weapon_shishkebab": {
+      "status": "manifest-page-without-exported-artwork",
+      "source_page": 101
+    },
+    "weapon_sledgehammer": {
+      "status": "no-manifest-page"
+    },
+    "weapon_smoke_grenade": {
+      "status": "no-manifest-page"
+    },
+    "weapon_sniper_rifle": {
+      "status": "manifest-page-without-exported-artwork",
+      "source_page": 45
+    },
+    "weapon_sten": {
+      "status": "replayed",
+      "source_page": 50,
+      "placements": [
+        {
+          "xref": 938,
+          "asset": "sten.png",
+          "draw_order": 14
+        }
+      ]
+    },
+    "weapon_sten_injector": {
+      "status": "no-manifest-page"
+    },
+    "weapon_submachine_gun": {
+      "status": "replayed",
+      "source_page": 23,
+      "placements": [
+        {
+          "xref": 454,
+          "asset": "submachine-gun.png",
+          "draw_order": 4
+        }
+      ]
+    },
+    "weapon_super_sledge": {
+      "status": "no-manifest-page"
+    },
+    "weapon_switchblade": {
+      "status": "manifest-page-without-exported-artwork",
+      "source_page": 100
+    },
+    "weapon_sword": {
+      "status": "manifest-page-without-exported-artwork",
+      "source_page": 96
+    },
+    "weapon_syringer": {
+      "status": "replayed",
+      "source_page": 29,
+      "placements": [
+        {
+          "xref": 542,
+          "asset": "syringer.png",
+          "draw_order": 4
+        }
+      ]
+    },
+    "weapon_tear_gas_launcher": {
+      "status": "replayed",
+      "source_page": 74,
+      "placements": [
+        {
+          "xref": 1324,
+          "asset": "tear-gas-launcher.png",
+          "draw_order": 16
+        }
+      ]
+    },
+    "weapon_tesla_cannon": {
+      "status": "replayed",
+      "source_page": 71,
+      "placements": [
+        {
+          "xref": 1280,
+          "asset": "tesla-cannon.png",
+          "draw_order": 15
+        }
+      ]
+    },
+    "weapon_tesla_rifle": {
+      "status": "replayed",
+      "source_page": 87,
+      "placements": [
+        {
+          "xref": 1511,
+          "asset": "tesla-rifle.png",
+          "draw_order": 15
+        }
+      ]
+    },
+    "weapon_throwing_knife": {
+      "status": "no-manifest-page"
+    },
+    "weapon_tire_iron": {
+      "status": "no-manifest-page"
+    },
+    "weapon_tomahawk": {
+      "status": "no-manifest-page"
+    },
+    "weapon_underwater_gun": {
+      "status": "replayed",
+      "source_page": 53,
+      "placements": [
+        {
+          "xref": 984,
+          "asset": "underwater-gun.png",
+          "draw_order": 15
+        }
+      ]
+    },
+    "weapon_walking_cane": {
+      "status": "no-manifest-page"
+    },
+    "weapon_war_drum": {
+      "status": "no-manifest-page"
+    },
+    "weapon_wattz_2000": {
+      "status": "replayed",
+      "source_page": 86,
+      "placements": [
+        {
+          "xref": 1493,
+          "asset": "wattz-2000.png",
+          "draw_order": 16
+        }
+      ]
+    }
+  },
+  "policy": "Artwork is replayed only for an exact manifest weapon_id match; there is no final-page fallback or substitute illustration."
+}

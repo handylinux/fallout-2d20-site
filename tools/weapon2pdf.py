@@ -87,12 +87,15 @@ MODS_HEADING_SIZE = 18.0
 
 MODS_TOP = 533.65
 MODS_BOTTOM = 803.35
-MODS_LEFT = 36.44
+# Keep the visible 0.6pt grid stroke inside the content column.  The
+# Publisher centres a stroke on the coordinate, so the geometric table edge is
+# inset by half a stroke rather than allowed to bleed past the margins.
+MODS_LEFT = MARGIN_L + 0.3
 MODS_LABEL_RIGHT = 86.54
-MODS_RIGHT = 559.71
+MODS_RIGHT = CONTENT_R - 0.3
 MODS_MAX_COLS = 6
-# six-column grid from the Publisher pages (kept for reference/tests)
-MODS_EDGES = [36.44, 86.54, 167.80, 244.00, 326.04, 404.58, 481.17, 559.71]
+# Six-column reference grid; its outer edges follow the stroke-safe bounds.
+MODS_EDGES = [MODS_LEFT, 86.54, 167.80, 244.00, 326.04, 404.58, 481.17, MODS_RIGHT]
 MODS_LABEL_W = MODS_LABEL_RIGHT - MODS_LEFT
 MODS_FONT_SIZE = 9.0
 MODS_LEADING = 13.08
@@ -104,6 +107,12 @@ MODS_LABEL_SIZE = 9.96
 
 PAGE_NUMBER_TOP = 810.91
 PAGE_NUMBER_SIZE = 9.96
+
+# Cards without a mods table have ample blank space below their description.
+# Keep the original heading position for short copy, but move the explicit
+# no-mods notice down when necessary instead of omitting the end of prose.
+NO_MODS_DESC_GAP = 20.0
+NO_MODS_HEADING_MAX_TOP = PAGE_NUMBER_TOP - MODS_HEADING_SIZE - 12.0
 
 BEIGE = Color(1.0, 0.922, 0.804)  # #FFEBCD
 ORANGE = Color(1.0, 0.776, 0.455)  # #FFC674
@@ -808,32 +817,62 @@ def description_bottom(card) -> float:
     return description_bottom_from(mods_block(card))
 
 
-def draw_description(c, card, max_bottom=None) -> None:
+def description_layout(card, max_bottom=None):
+    """Return complete fitted description lines, or fail before losing text.
+
+    Weapon rules prose is source content, so an ellipsis is not an acceptable
+    overflow treatment.  Callers may provide a different bottom edge for
+    layouts that place a custom table below the description.
+    """
     text = (card.get("description") or "").strip()
     if not text:
-        return
+        return [], DESC_SIZE, DESC_LEADING
     width = DESC_RIGHT - DESC_LEFT
     size, leading = DESC_SIZE, DESC_LEADING
-    lines = wrap_text(text, "Carlito", size, width)
-    # the description may use all the room above the mods block; shrink only
-    # when even that is not enough
     if max_bottom is None:
         max_bottom = description_bottom(card)
-    while len(lines) * leading + DESC_TOP > max_bottom and size > 10:
+    lines = wrap_text(text, "Carlito", size, width)
+    # The description may use all the room above the mods block; reduce type
+    # only when that room cannot contain the complete source copy.
+    while ((len(lines) * leading + DESC_TOP > max_bottom
+            or any(sw(line, "Carlito", size) > width for line in lines))
+           and size > 10):
         size -= 0.5
         leading -= 0.6
         lines = wrap_text(text, "Carlito", size, width)
     max_lines = max(1, int((max_bottom - DESC_TOP) // leading))
-    if len(lines) > max_lines:
-        print(f"warning: description of {card.get('id')} does not fit "
-              f"({len(lines)} lines, max {max_lines})", file=sys.stderr)
-        lines = lines[:max_lines]
-        last = lines[-1].rstrip(" .,;:")
-        while last and sw(last + "…", "Carlito", size) > width:
-            last = last.rsplit(" ", 1)[0] if " " in last else last[:-1]
-        lines[-1] = last.rstrip(" .,;:") + "…"
-    draw_justified(c, DESC_LEFT, width, DESC_TOP, lines, "Carlito", size,
-                   leading)
+    if (len(lines) > max_lines
+            or any(sw(line, "Carlito", size) > width for line in lines)):
+        raise ValueError(
+            f"description of {card.get('id')} does not fit "
+            f"({len(lines)} lines, max {max_lines})")
+    return lines, size, leading
+
+
+def description_render_bottom(layout) -> float:
+    """Conservative lower edge of a ``description_layout`` block."""
+    lines, _size, leading = layout
+    return DESC_TOP + len(lines) * leading
+
+
+def no_mods_description_layout(card):
+    """Lay out no-mods prose and a notice without sacrificing its ending."""
+    layout = description_layout(
+        card, max_bottom=NO_MODS_HEADING_MAX_TOP - NO_MODS_DESC_GAP)
+    heading_top = max(MODS_HEADING_TOP,
+                      description_render_bottom(layout) + NO_MODS_DESC_GAP)
+    return layout, heading_top
+
+
+def draw_description(c, card, max_bottom=None, layout=None):
+    if layout is None:
+        layout = description_layout(card, max_bottom=max_bottom)
+    lines, size, leading = layout
+    if not lines:
+        return layout
+    draw_justified(c, DESC_LEFT, DESC_RIGHT - DESC_LEFT, DESC_TOP, lines,
+                   "Carlito", size, leading)
+    return layout
 
 
 def mods_edges(ncols: int) -> list[float]:
@@ -889,13 +928,14 @@ def mods_layout(card) -> tuple[list[dict], float, int]:
     return rows, sum(r["h"] for r in rows), ncols
 
 
-def draw_mods(c, card, block=None) -> None:
+def draw_mods(c, card, block=None, no_mods_heading_top=None) -> None:
     mods = card.get("mods") or []
 
     if block is None:
         block = mods_block(card)
     if block is None:
-        draw_center_line(c, MODS_HEADING_TOP, "НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ",
+        draw_center_line(c, no_mods_heading_top or MODS_HEADING_TOP,
+                         "НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ",
                          "Carlito-Bold", MODS_HEADING_SIZE)
         return
 
@@ -1005,8 +1045,13 @@ def render_card(card, out_path: str,
     draw_title(c, card)
     draw_stats(c, card)
     block = mods_block(card)
-    draw_description(c, card, max_bottom=description_bottom_from(block))
-    draw_mods(c, card, block)
+    if block is None:
+        layout, no_mods_heading_top = no_mods_description_layout(card)
+        draw_description(c, card, layout=layout)
+        draw_mods(c, card, block, no_mods_heading_top=no_mods_heading_top)
+    else:
+        draw_description(c, card, max_bottom=description_bottom_from(block))
+        draw_mods(c, card, block)
     draw_page_number(c, int(card.get("page") or 0))
     c.showPage()
     c.save()

@@ -407,6 +407,41 @@ python3 tools/weapon2pdf.py data/weapons/cards/plasma-gun.json \
     --out docs/render/out/plasma-gun.pdf
 ```
 
+### Полная русская книга оружия
+
+`tools/build_weapon_catalog.py` соединяет все оружейные разделы в
+176-страничную книгу (кратно 4 для печати) с печатным оглавлением на
+страницах 4–5. Данные полного каталога находятся в
+`data/weapon-book/companion/`, порядок, текстовые и модификационные поправки
+— в `data/weapons/`. В отличие от единичной карточки, сборщик принимает
+artwork только при точном `weapon_id` в manifest: итоговый номер страницы
+никогда не используется как fallback. Поэтому иллюстрация соседа не может
+попасть на карточку после вставки оглавления.
+
+```bash
+# Создать assets и manifest из ровно того Publisher PDF, который будет source.
+python3 tools/extract_pdf_images.py "Справочник оружия.pdf" \
+  --out docs/render/pdf-extract/publisher-art --min-size 300
+
+# Полный PDF и небольшой audit-файл, оба предназначены для GitHub.
+python3 tools/build_weapon_catalog.py "Справочник оружия.pdf" \
+  --out docs/render/samples/book-weapon-catalog.pdf \
+  --report docs/render/out/book-weapon-catalog-report.md \
+  --artwork-manifest docs/render/pdf-extract/publisher-art/artwork-manifest.json \
+  --artwork-root docs/render/pdf-extract/publisher-art \
+  --artwork-coverage docs/render/samples/book-weapon-catalog-artwork-coverage.json
+```
+
+Сборщик сравнивает SHA-256 source PDF, записанный в manifest, и прекращает
+работу при несовпадении, отсутствующем asset или неподдерживаемом graphics
+state. Coverage JSON фиксирует точные source page/xref/asset воспроизведённых
+layers и явные статусы остальных карточек. Описание правила никогда не
+заменяется многоточием: у карточки без таблицы модов уведомление сдвигается
+ниже полного текста, а невозможное даже при 10 pt переполнение останавливает
+сборку. В актуальном исходнике воспроизводятся 73 artwork layers; девять
+исходных страниц без экспортируемого raster placement и 61 карточка без
+manifest page остаются без заменяющей иллюстрации.
+
 Тесты (`tools/test_weapon2pdf.py`) проверяют перенос строк, разбиение
 категории на строки по 6 модов, растяжение таблицы до нижнего поля, номер
 страницы на внешнем поле и рендер PDF (если установлен PyMuPDF).

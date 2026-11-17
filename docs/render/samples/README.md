@@ -2,6 +2,8 @@
 
 | Файл | Что это |
 |---|---|
+| `book-weapon-catalog.pdf` | полный русский справочник оружия: 176 страниц (кратно 4 для печати), печатное оглавление на стр. 4–5 после разворота PLEASE STAND BY, 143 оружейные карточки. 73 слоя иллюстраций Publisher воспроизведены по manifest с исходными matrix/crop/alpha; чужие иллюстрации не подставляются. |
+| `book-weapon-catalog-artwork-coverage.json` | проверяемая карта artwork для полной книги: исходный SHA-256, source page, xref и placement каждой из 73 воспроизведённых иллюстраций, а также явные причины отсутствия art у остальных карточек. |
 | `sample-3.pdf` | три страницы подряд: 10-мм пистолет (лёгкое), Гатлинг (тяжёлое), Криолятор (энерго) |
 | `sample-3.png` | те же три страницы одним листом для быстрого просмотра |
 | `10mm-pistol.pdf`, `gatling-gun.pdf`, `cryolator.pdf` | те же страницы по отдельности |
@@ -25,6 +27,39 @@
 python3 tools/weapon2pdf.py data/weapons/cards/10mm-pistol.json \
     --out docs/render/samples/10mm-pistol.pdf
 ```
+
+### Полная книга оружия
+
+Полная книга использует отдельную рабочую копию данных Companion в
+`data/weapon-book/`, порядок и проверенные поправки в `data/weapons/` и
+исходный Publisher PDF. Сначала надо извлечь artwork из **того же** исходного
+PDF: сборщик сверяет SHA-256, поэтому не сможет незаметно смешать другой
+экспорт и старый manifest.
+
+```bash
+python3 tools/extract_pdf_images.py "Справочник оружия.pdf" \
+  --out docs/render/pdf-extract/publisher-art --min-size 300
+
+python3 tools/build_weapon_catalog.py "Справочник оружия.pdf" \
+  --out docs/render/samples/book-weapon-catalog.pdf \
+  --report docs/render/out/book-weapon-catalog-report.md \
+  --artwork-manifest docs/render/pdf-extract/publisher-art/artwork-manifest.json \
+  --artwork-root docs/render/pdf-extract/publisher-art \
+  --artwork-coverage docs/render/samples/book-weapon-catalog-artwork-coverage.json
+```
+
+Вторая команда делает холст, таблицы и текст из JSON, но для карточки берёт
+рисунок только при точном `weapon_id` в manifest. Позиция в готовой книге не
+используется как fallback: это исключает заимствование art соседнего оружия
+после вставки оглавления. Описание оружия печатается целиком: если у карточки
+нет таблицы модов, уведомление о её отсутствии сдвигается ниже текста, а
+переполнение, которое нельзя решить кеглем до 10 pt, завершает сборку с
+ошибкой вместо многоточия. В текущем исходнике 73 карточки имеют
+экспортируемый Publisher artwork; у девяти исходных страниц artwork не
+является экспортируемым растровым placement, а у 61
+добавленной/неидентифицированной карточки в исходнике соответствующего слоя
+нет. Все 70 таких случаев явно записаны в coverage JSON, без подстановки
+другого изображения.
 
 ## Книга брони
 

@@ -44,10 +44,12 @@ except ImportError:  # pragma: no cover - dependency hint
     raise SystemExit(2)
 
 
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WEAPONS_JSON = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-    "data", "companion", "i18n", "ru-RU", "data", "equipment", "weapons",
+    ROOT, "data", "companion", "i18n", "ru-RU", "data", "equipment", "weapons",
     "weapons.json")
+TITLE_ALIASES_JSON = os.path.join(ROOT, "data", "weapons",
+                                  "publisher-artwork-title-aliases.ru.json")
 
 
 def normalize_name(text: str) -> str:
@@ -55,6 +57,57 @@ def normalize_name(text: str) -> str:
     text = (text or "").casefold().replace("ё", "е")
     text = re.sub(r"[^0-9a-zа-я]+", " ", text)
     return " ".join(text.split())
+
+
+def compact_name(text: str) -> str:
+    """A title key resilient to Publisher's intra-word line-break spaces.
+
+    The Publisher PDF sometimes extracts ``ДРОБОВИ К`` or ``25 - М М`` as
+    separate text spans.  Collapsing *all* normalized separators lets those
+    headings match their Companion names without guessing from page numbers.
+    """
+    return re.sub(r"\s+", "", normalize_name(text))
+
+
+def match_weapon_title(title: str, weapons: dict[str, str]) -> str:
+    """Return one unambiguous weapon ID for a Publisher page heading.
+
+    Exact normalized spelling remains preferred.  The compact fallback is
+    deliberately accepted only when it identifies one ID, so it cannot turn a
+    broken heading into a silent arbitrary artwork assignment.
+    """
+    normalized = normalize_name(title)
+    direct = weapons.get(normalized)
+    if direct:
+        return direct
+    compact = compact_name(title)
+    candidates = {weapon_id for name, weapon_id in weapons.items()
+                  if compact_name(name) == compact}
+    return next(iter(candidates)) if len(candidates) == 1 else ""
+
+
+def load_title_aliases(path: str | None) -> dict[str, str]:
+    """Read explicitly audited page-title aliases, if a file was supplied."""
+    if not path or not os.path.exists(path):
+        return {}
+    with open(path, encoding="utf-8") as fh:
+        data = json.load(fh)
+    aliases = data.get("aliases", []) if isinstance(data, dict) else []
+    if not isinstance(aliases, list):
+        raise ValueError("title aliases должен содержать массив aliases")
+    result = {}
+    for item in aliases:
+        if not isinstance(item, dict):
+            raise ValueError("некорректная запись title alias")
+        title, weapon_id = item.get("title"), item.get("weapon_id")
+        if not isinstance(title, str) or not isinstance(weapon_id, str) or not weapon_id:
+            raise ValueError("title alias должен содержать title и weapon_id")
+        key = normalize_name(title)
+        previous = result.get(key)
+        if previous and previous != weapon_id:
+            raise ValueError(f"неоднозначный title alias: {title!r}")
+        result[key] = weapon_id
+    return result
 
 
 def slug_of(weapon_id: str) -> str:
@@ -636,7 +689,7 @@ def artwork_manifest(pdf: str, rows: list[dict], pages: list[int] | None,
         all_pages.append({
             "number": pno + 1,
             "title": title,
-            "weapon_id": weapons.get(normalize_name(title), ""),
+            "weapon_id": match_weapon_title(title, weapons),
             "size_points": [_round_number(page.rect.width), _round_number(page.rect.height)],
             "media_box_pdf": page_box_pdf(doc, page, "MediaBox"),
             "crop_box_pdf": page_box_pdf(doc, page, "CropBox"),
@@ -792,7 +845,7 @@ def extract(pdf: str, out_dir: str, min_size: int, share: float,
             continue
         page = doc[pno]
         title = page_title(page) if name_from_page else ""
-        weapon_id = weapons.get(normalize_name(title), "")
+        weapon_id = match_weapon_title(title, weapons)
         base = slug_of(weapon_id) if weapon_id else f"p{pno + 1:03d}"
 
         background = background_xrefs(page)
@@ -881,6 +934,8 @@ def main(argv=None) -> int:
                     help="не выкидывать повторяющиеся картинки")
     ap.add_argument("--weapons", default=WEAPONS_JSON,
                     help="weapons.json компаньона для имён по названию страницы")
+    ap.add_argument("--title-aliases", default=TITLE_ALIASES_JSON,
+                    help="JSON с явно проверенными aliases заголовков Publisher")
     ap.add_argument("--no-page-names", action="store_true",
                     help="не читать название со страницы, оставить pNNN-01.png")
     ap.add_argument("--manifest", metavar="PATH",
@@ -902,6 +957,8 @@ def main(argv=None) -> int:
                 pages.append(int(chunk))
 
     weapons = {} if args.no_page_names else load_weapons(args.weapons)
+    if not args.no_page_names:
+        weapons.update(load_title_aliases(args.title_aliases))
     if not args.no_page_names and not weapons:
         print("weapons.json не найден — имена будут вида p018-01.png",
               file=sys.stderr)

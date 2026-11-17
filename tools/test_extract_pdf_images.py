@@ -225,6 +225,20 @@ class PageNameTests(unittest.TestCase):
                          ex.normalize_name("10 мм пистолет"))
         self.assertEqual(ex.normalize_name("Ёж"), "еж")
 
+    def test_broken_publisher_title_matches_only_one_compact_name(self):
+        weapons = {ex.normalize_name("Двуствольный дробовик"):
+                   "weapon_double_barrel_shotgun"}
+        self.assertEqual(ex.match_weapon_title("ДВУСТВОЛЬНЫЙ ДРОБОВИ К", weapons),
+                         "weapon_double_barrel_shotgun")
+        # A compact collision remains unresolved instead of picking arbitrarily.
+        ambiguous = {"а б в": "weapon_one", "аб в": "weapon_two"}
+        self.assertEqual(ex.match_weapon_title("А БВ", ambiguous), "")
+
+    def test_explicit_title_alias_covers_missing_companion_name(self):
+        aliases = ex.load_title_aliases(ex.TITLE_ALIASES_JSON)
+        self.assertEqual(ex.match_weapon_title("ПИСТОЛЕТ-ИНЪЕКТОР", aliases),
+                         "weapon_pistol_injector")
+
     def test_slug_of(self):
         self.assertEqual(ex.slug_of("weapon_10mm_pistol"), "10mm-pistol")
 

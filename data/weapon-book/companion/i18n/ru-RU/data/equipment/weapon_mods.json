@@ -1,0 +1,658 @@
+[
+  {
+    "id": "mod_10mm_receiver",
+    "name": "10-мм"
+  },
+  {
+    "id": "mod_25mm_receiver",
+    "name": "25-мм гранатометный"
+  },
+  {
+    "id": "mod_308_receiver",
+    "name": ".308"
+  },
+  {
+    "id": "mod_357_receiver",
+    "name": ".357"
+  },
+  {
+    "id": "mod_38_receiver",
+    "name": ".38"
+  },
+  {
+    "id": "mod_3_charge_camera",
+    "name": "3-зарядная камера"
+  },
+  {
+    "id": "mod_45_receiver",
+    "name": ".45"
+  },
+  {
+    "id": "mod_50_receiver",
+    "name": ".50"
+  },
+  {
+    "id": "mod_6_charge_camera",
+    "name": "6-зарядная камера"
+  },
+  {
+    "id": "mod_9mm_receiver",
+    "name": "9-мм"
+  },
+  {
+    "id": "mod_accelerated_barrel",
+    "name": "Ускоренный"
+  },
+  {
+    "id": "mod_advanced",
+    "name": "Продвинутый"
+  },
+  {
+    "id": "mod_aerodynamic_barrel",
+    "name": "Аэродинамический"
+  },
+  {
+    "id": "mod_armor_piercing",
+    "name": "Бронебойный"
+  },
+  {
+    "id": "mod_armor_piercing_automatic",
+    "name": "Автоматический бронебойный"
+  },
+  {
+    "id": "mod_armor_piercing_receiver",
+    "name": "Бронебойный ресивер"
+  },
+  {
+    "id": "mod_automatic",
+    "name": "Для автоогня"
+  },
+  {
+    "id": "mod_automatic_barrel",
+    "name": "Автоматический ствол"
+  },
+  {
+    "id": "mod_automatic_piston",
+    "name": "Пистонный ресивер с автоогнём"
+  },
+  {
+    "id": "mod_balanced_stock",
+    "name": "Сбалансированная"
+  },
+  {
+    "id": "mod_barbed",
+    "name": "Колючая"
+  },
+  {
+    "id": "mod_barbed_harpoon",
+    "name": "Зазубренный гарпун"
+  },
+  {
+    "id": "mod_bayonet",
+    "name": "Штык"
+  },
+  {
+    "id": "mod_beam_focuser_institute_laser",
+    "name": "Фокусировщик луча"
+  },
+  {
+    "id": "mod_beam_focuser_minigun",
+    "name": "Фокусировщик луча"
+  },
+  {
+    "id": "mod_beam_splitter",
+    "name": "Разделитель луча"
+  },
+  {
+    "id": "mod_beta_wave_tuner",
+    "name": "Тюнер бета-волн"
+  },
+  {
+    "id": "mod_bladed",
+    "name": "Лезвия"
+  },
+  {
+    "id": "mod_block_frame",
+    "name": "Блочная"
+  },
+  {
+    "id": "mod_boosted_capacitor",
+    "name": "Усиленный конденсатор"
+  },
+  {
+    "id": "mod_bracketed_short_barrel",
+    "name": "Короткий ствол с кронштейном"
+  },
+  {
+    "id": "mod_bull_barrel",
+    "name": "Толстостенный"
+  },
+  {
+    "id": "mod_burning_blade",
+    "name": "Горящее лезвие"
+  },
+  {
+    "id": "mod_calibrated",
+    "name": "Калиброванный"
+  },
+  {
+    "id": "mod_calibrated_capacitor_pc",
+    "name": "Калиброванный конденсатор"
+  },
+  {
+    "id": "mod_calibrated_powerful",
+    "name": "Калиброванный Усиленный"
+  },
+  {
+    "id": "mod_capacitor_boosting_coil",
+    "name": "Усиливающая катушка конденсатора"
+  },
+  {
+    "id": "mod_capacitor_mk_iii",
+    "name": "MK III"
+  },
+  {
+    "id": "mod_capacitor_mk_iv",
+    "name": "MK IV"
+  },
+  {
+    "id": "mod_capacitor_mk_v",
+    "name": "MK V"
+  },
+  {
+    "id": "mod_capacitor_mk_vi",
+    "name": "MK VI"
+  },
+  {
+    "id": "mod_caustic",
+    "name": "Едкий"
+  },
+  {
+    "id": "mod_chain_wrapped",
+    "name": "Обмотанная цепью"
+  },
+  {
+    "id": "mod_charging_barrels",
+    "name": "Заряжающиеся стволы"
+  },
+  {
+    "id": "mod_comfort_grip",
+    "name": "Удобная"
+  },
+  {
+    "id": "mod_compensator",
+    "name": "Компенсатор"
+  },
+  {
+    "id": "mod_compression_nozzle",
+    "name": "Компрессионное"
+  },
+  {
+    "id": "mod_crystallizing_barrel",
+    "name": "Кристаллизирующий ствол"
+  },
+  {
+    "id": "mod_curved_blade",
+    "name": "Потрошитель: Изогнутое лезвие"
+  },
+  {
+    "id": "mod_curved_chain",
+    "name": "Изогнутая шина"
+  },
+  {
+    "id": "mod_deep_dish",
+    "name": "Глубокая антенна"
+  },
+  {
+    "id": "mod_double_chain",
+    "name": "Двойная шина"
+  },
+  {
+    "id": "mod_electric_signal_carrier_antennae",
+    "name": "Электросигнальные антенны"
+  },
+  {
+    "id": "mod_electrification_module",
+    "name": "Модуль электризации"
+  },
+  {
+    "id": "mod_electrified",
+    "name": "Дубинка: Электризованная"
+  },
+  {
+    "id": "mod_electrified_blade",
+    "name": "Электризованное"
+  },
+  {
+    "id": "mod_electrified_blade_aa",
+    "name": "Электризованное лезвие"
+  },
+  {
+    "id": "mod_electrified_blade_ab",
+    "name": "Электризованное лезвие"
+  },
+  {
+    "id": "mod_electrified_serrated_blade",
+    "name": "Электризованное зазубренное"
+  },
+  {
+    "id": "mod_extended_blade",
+    "name": "Потрошитель: Удлиненное лезвие"
+  },
+  {
+    "id": "mod_extended_curved_chain",
+    "name": "Удлинённая изогнутая шина"
+  },
+  {
+    "id": "mod_extra_claw",
+    "name": "Перчатка когтя смерти: Дополнительный коготь"
+  },
+  {
+    "id": "mod_extra_flame_jets",
+    "name": "Дополнительные воспламенительные форсунки"
+  },
+  {
+    "id": "mod_extra_heavy",
+    "name": "Разводной ключ: Сверхтяжелый"
+  },
+  {
+    "id": "mod_extra_large_magazine",
+    "name": "Очень большой магазин"
+  },
+  {
+    "id": "mod_finned",
+    "name": "Ребристый"
+  },
+  {
+    "id": "mod_five_crank_capacitor",
+    "name": "5-зарядный"
+  },
+  {
+    "id": "mod_flamer_barrel",
+    "name": "Огнемётный ствол"
+  },
+  {
+    "id": "mod_flamer_chain",
+    "name": "Огнемет"
+  },
+  {
+    "id": "mod_flechette_darts",
+    "name": "Игольчатые дротики"
+  },
+  {
+    "id": "mod_folding_stock",
+    "name": "Откидной"
+  },
+  {
+    "id": "mod_four_crank_capacitor",
+    "name": "4-зарядный"
+  },
+  {
+    "id": "mod_front_sight_ring",
+    "name": "Переднее прицельное кольцо"
+  },
+  {
+    "id": "mod_full_capacitors",
+    "name": "Конденсаторы полной емкости"
+  },
+  {
+    "id": "mod_full_stock",
+    "name": "Полная"
+  },
+  {
+    "id": "mod_fusion_mag",
+    "name": "Термоядерный магазин"
+  },
+  {
+    "id": "mod_gunner_sight",
+    "name": "Прицел стрелка"
+  },
+  {
+    "id": "mod_gyro_compensating_lens",
+    "name": "Линза с гирокомпенсацией"
+  },
+  {
+    "id": "mod_hair_trigger",
+    "name": "Чувствительный"
+  },
+  {
+    "id": "mod_hardened",
+    "name": "Укреплённый"
+  },
+  {
+    "id": "mod_hardened_automatic",
+    "name": "Автоматический укреплённый"
+  },
+  {
+    "id": "mod_hardened_piercing_auto",
+    "name": "Укреплённый проникающий автоматический"
+  },
+  {
+    "id": "mod_heating_coil",
+    "name": "Нагревательная спираль"
+  },
+  {
+    "id": "mod_heavy",
+    "name": "Свинцовая труба: Утяжеленная"
+  },
+  {
+    "id": "mod_heavy_barrel",
+    "name": "Тяжелый"
+  },
+  {
+    "id": "mod_high_speed_electrode",
+    "name": "Высокоскоростной электрод"
+  },
+  {
+    "id": "mod_hooked",
+    "name": "Разводной ключ: Крюк"
+  },
+  {
+    "id": "mod_huge_tank",
+    "name": "Огромный"
+  },
+  {
+    "id": "mod_ignition_module",
+    "name": "Модуль зажигания"
+  },
+  {
+    "id": "mod_illuminated_sight",
+    "name": "С подсветкой"
+  },
+  {
+    "id": "mod_improved_barrel",
+    "name": "Улучшенный ствол"
+  },
+  {
+    "id": "mod_improved_receiver",
+    "name": "Улучшенный"
+  },
+  {
+    "id": "mod_incendiary_barrel",
+    "name": "Зажигательный ствол"
+  },
+  {
+    "id": "mod_iron_sight",
+    "name": "Железный"
+  },
+  {
+    "id": "mod_large_ampoule",
+    "name": "Большая ампула"
+  },
+  {
+    "id": "mod_large_bayonet",
+    "name": "Большой штык"
+  },
+  {
+    "id": "mod_large_magazine",
+    "name": "Большой магазин"
+  },
+  {
+    "id": "mod_large_quick_eject_mag",
+    "name": "Большой быстросъёмный"
+  },
+  {
+    "id": "mod_large_tank",
+    "name": "Большой"
+  },
+  {
+    "id": "mod_large_vial",
+    "name": "Большой флакон"
+  },
+  {
+    "id": "mod_lead_lining",
+    "name": "Боксерская перчатка: Свинцовая подкладка"
+  },
+  {
+    "id": "mod_light_barrel",
+    "name": "Лёгкий ствол"
+  },
+  {
+    "id": "mod_long",
+    "name": "Длинный"
+  },
+  {
+    "id": "mod_long_barrel",
+    "name": "Длинный ствол"
+  },
+  {
+    "id": "mod_long_night_vision_scope",
+    "name": "Длинный оптический ночного видения"
+  },
+  {
+    "id": "mod_long_scope",
+    "name": "Длинный оптический"
+  },
+  {
+    "id": "mod_m79_launcher",
+    "name": "Пусковая установка M79"
+  },
+  {
+    "id": "mod_marksmans_stock",
+    "name": "Ложа стрелка"
+  },
+  {
+    "id": "mod_multi_shot_canister",
+    "name": "Многозарядная камора"
+  },
+  {
+    "id": "mod_muzzle_break",
+    "name": "Дульный тормоз"
+  },
+  {
+    "id": "mod_napalm_fuel",
+    "name": "Напалм"
+  },
+  {
+    "id": "mod_night_vision_scope",
+    "name": "Оптический ночного видения"
+  },
+  {
+    "id": "mod_photon_agitator",
+    "name": "Фотонная мешалка"
+  },
+  {
+    "id": "mod_photon_exciter",
+    "name": "Возбудитель фотонов"
+  },
+  {
+    "id": "mod_poison_blade",
+    "name": "Ядовитое лезвие"
+  },
+  {
+    "id": "mod_ported",
+    "name": "Портированный"
+  },
+  {
+    "id": "mod_powerful",
+    "name": "Усиленный"
+  },
+  {
+    "id": "mod_powerful_automatic",
+    "name": "Автоматический усиленный"
+  },
+  {
+    "id": "mod_protected_winch",
+    "name": "Защищенная"
+  },
+  {
+    "id": "mod_pulse_capacitor",
+    "name": "Пульсовый конденсатор"
+  },
+  {
+    "id": "mod_puncturing",
+    "name": "Прокалывающий"
+  },
+  {
+    "id": "mod_quad_barrel",
+    "name": "Четырёхствольный"
+  },
+  {
+    "id": "mod_quantum_gyro_lens",
+    "name": "Квантовая гиростабилизирующая линза"
+  },
+  {
+    "id": "mod_quick_eject_mag",
+    "name": "Быстросъёмный"
+  },
+  {
+    "id": "mod_rapid",
+    "name": "Скорострельный"
+  },
+  {
+    "id": "mod_rapid_automatic",
+    "name": "Скорострельный автоматический"
+  },
+  {
+    "id": "mod_recoil_compensating",
+    "name": "Ложа с компенсатором отдачи"
+  },
+  {
+    "id": "mod_recoil_compensating_stock",
+    "name": "С компенсатором отдачи"
+  },
+  {
+    "id": "mod_recon_scope",
+    "name": "Прицел разведчика"
+  },
+  {
+    "id": "mod_reflex_sight",
+    "name": "Коллиматорный"
+  },
+  {
+    "id": "mod_reflex_tactical",
+    "name": "Тактический коллиматорный"
+  },
+  {
+    "id": "mod_reinforced_winch",
+    "name": "Усиленная"
+  },
+  {
+    "id": "mod_sawed_off",
+    "name": "Сверхкороткий"
+  },
+  {
+    "id": "mod_scope",
+    "name": "Оптический"
+  },
+  {
+    "id": "mod_serrated_blade",
+    "name": "Зазубренное"
+  },
+  {
+    "id": "mod_sharp",
+    "name": "Заостренная"
+  },
+  {
+    "id": "mod_sharpshooters_grip",
+    "name": "Тактическая"
+  },
+  {
+    "id": "mod_shielded_barrel",
+    "name": "Экранированный"
+  },
+  {
+    "id": "mod_shocking_coils",
+    "name": "Шокирующие катушки"
+  },
+  {
+    "id": "mod_short_night_vision_scope",
+    "name": "Короткий оптический ночного видения"
+  },
+  {
+    "id": "mod_short_scope",
+    "name": "Короткий оптический"
+  },
+  {
+    "id": "mod_shredder",
+    "name": "Измельчитель"
+  },
+  {
+    "id": "mod_signal_repeater",
+    "name": "Повторитель сигнала"
+  },
+  {
+    "id": "mod_six_crank_capacitor",
+    "name": "6-зарядный"
+  },
+  {
+    "id": "mod_sniper_barrel",
+    "name": "Снайперский"
+  },
+  {
+    "id": "mod_snubnose",
+    "name": "Укороченный"
+  },
+  {
+    "id": "mod_speedy_receiver",
+    "name": "Скоростной"
+  },
+  {
+    "id": "mod_spiked",
+    "name": "Шипастая"
+  },
+  {
+    "id": "mod_splitter",
+    "name": "Расщепитель"
+  },
+  {
+    "id": "mod_stabilizer",
+    "name": "Стабилизатор"
+  },
+  {
+    "id": "mod_standard_stock",
+    "name": "Стандартная ложа"
+  },
+  {
+    "id": "mod_stealth_blade",
+    "name": "Скрытое"
+  },
+  {
+    "id": "mod_stun_pack",
+    "name": "Электрошокер"
+  },
+  {
+    "id": "mod_suppressor",
+    "name": "Глушитель"
+  },
+  {
+    "id": "mod_targeting_computer",
+    "name": "Компьютер наведения"
+  },
+  {
+    "id": "mod_tesla_coil_capacitor",
+    "name": "Конденсатор катушки Теслы"
+  },
+  {
+    "id": "mod_tesla_coil_dynamo",
+    "name": "Динамо катушки Теслы"
+  },
+  {
+    "id": "mod_three_crank_capacitor",
+    "name": "3-зарядный"
+  },
+  {
+    "id": "mod_tri_barrel",
+    "name": "Пятиствольный"
+  },
+  {
+    "id": "mod_triple_barrel",
+    "name": "Тройной ствол"
+  },
+  {
+    "id": "mod_tuned",
+    "name": "Настроенный"
+  },
+  {
+    "id": "mod_turbo",
+    "name": "Турбо"
+  },
+  {
+    "id": "mod_vaporization_nozzle",
+    "name": "Испарительное"
+  },
+  {
+    "id": "mod_vented",
+    "name": "Вентилируемый"
+  }
+]
