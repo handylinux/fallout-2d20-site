@@ -12,6 +12,7 @@
 | `plasma-gun.pdf` | «Плазменный пистолет» — энергооружие со своей категорией «КОНДЕНСАТОР» |
 | `revolver-44.pdf` | «Револьвер калибра .44» без картинки (карточка из `data/weapons/cards/`) |
 | `combat-shotgun.pdf`, `tesla-rifle.pdf`, `fat-man.pdf` | те же страницы по отдельности |
+| `weapons-manifest-ru-preview.pdf` | контрольный 10-страничный набор оружейных карточек: таблицы/заголовки на русском, а иллюстрации вставлены по `artwork-manifest.json` с исходными affine-матрицами, crop и alpha из Publisher. Не включает «Бейсбольную биту»: для неё нет корректного соответствия source-page → artwork. |
 
 `plasma-gun.pdf` собран из Companion JSON (страница 21), остальные карточки —
 из `data/weapons/cards/`. Во всех образцах картинка оружия — заглушка `assets/pdf/weapons/combat-rifle.png`
