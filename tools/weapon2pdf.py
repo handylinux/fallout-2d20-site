@@ -392,7 +392,17 @@ def artwork_page_for_card(manifest: dict[str, Any], card: dict[str, Any],
     if card_page is not None:
         matches = [page for page in pages if _manifest_page_number(page) == card_page]
         if len(matches) == 1:
-            return matches[0]
+            candidate = matches[0]
+            candidate_id = candidate.get("weapon_id")
+            # A stale fixture page must not silently borrow a different
+            # weapon's art. Explicit --artwork-page remains available for a
+            # deliberately cross-page placement or an unrecognised title.
+            if weapon_id and candidate_id and candidate_id != weapon_id:
+                raise ArtworkManifestError(
+                    f"страница {card_page} manifest относится к {candidate_id!r}, "
+                    f"а не к {weapon_id!r}; укажите --artwork-page только "
+                    "если это намеренное размещение")
+            return candidate
 
     detail = f"weapon_id {weapon_id!r}" if weapon_id else "без weapon_id"
     raise ArtworkManifestError(

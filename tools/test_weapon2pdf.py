@@ -217,6 +217,22 @@ class ArtworkManifestTests(unittest.TestCase):
                                      page_number=24)
         self.assertEqual(layer.page["number"], 24)
 
+    def test_stale_card_page_cannot_silently_borrow_another_weapons_art(self):
+        self.manifest["pages"].append({
+            "number": 26,
+            "weapon_id": "weapon_pipe_gun",
+            "placements": [],
+        })
+        self.write_manifest()
+        with self.assertRaisesRegex(w.ArtworkManifestError, "weapon_pipe_gun"):
+            w.load_artwork_layer(self.path,
+                                 {"id": "weapon_baseball_bat", "page": 26})
+        # Explicit selection remains available for an intentional exception.
+        layer = w.load_artwork_layer(self.path,
+                                     {"id": "weapon_baseball_bat", "page": 26},
+                                     page_number=26)
+        self.assertEqual(layer.page["weapon_id"], "weapon_pipe_gun")
+
     def test_schema_and_missing_asset_fail_loudly(self):
         self.manifest["schema"] = "not-a-schema"
         self.write_manifest()
