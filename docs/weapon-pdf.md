@@ -196,6 +196,39 @@ Companion печатаются целиком.
   мода занимает 2–3 строки. Свободное место до нижнего поля делится между
   строками, поэтому таблица всегда заканчивается на 803.35 pt.
 
+## Художественный слой из Publisher
+
+Обычный режим вставляет `card.image` в стандартный `IMAGE_BOX`. Для
+контрольной пересборки Publisher-страницы используйте манифест, созданный
+`tools/extract_pdf_images.py`. Опция `--artwork-manifest` выбирает страницу
+сначала по `weapon_id` и идентификатору карточки, затем по номеру `page`.
+`--artwork-page N` нужен только для ручного выбора.
+
+```bash
+# 1. PNG + artwork-manifest.json из исходного Publisher PDF
+python3 tools/extract_pdf_images.py "Справочник оружия.pdf" \
+    --out docs/render/pdf-extract/publisher-art --min-size 300
+
+# 2. Векторный текст и таблицы — от генератора, иллюстрации — из manifest
+python3 tools/weapon2pdf.py data/weapons/cards/combat-rifle.json \
+    --out docs/render/out/combat-rifle-manifest.pdf \
+    --artwork-manifest docs/render/pdf-extract/publisher-art/artwork-manifest.json
+```
+
+Рендерер не пересчитывает положение рисунка из видимого bbox: он применяет
+исходную `matrix_pdf` к единичному изображению, все `clip_paths`, `fill_alpha`
+и blend mode в исходном `draw_order`. Размер страницы также берётся из
+`size_points` манифеста, поэтому Publisher A4 595.32×841.92 pt не округляется
+до номинального ReportLab A4. Каждый placement рисуется отдельно: повторное
+использование одного PNG и частично видимое изображение с соседней страницы
+сохраняются.
+
+Image `/SMask` уже запечён в экспортированном RGBA PNG и передаётся ReportLab
+через `mask="auto"`. В schema v1 отдельный ExtGState `/SMask` хранится только
+как xref без pixel payload; такой случай рендерер намеренно останавливает с
+понятной ошибкой, а не подменяет эффект. В проверенном Publisher-исходнике
+художественные placement используют image SMask и unit ExtGState alpha.
+
 ## Запуск
 
 ```bash

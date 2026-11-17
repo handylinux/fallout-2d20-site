@@ -5,6 +5,8 @@ import os
 import tempfile
 import unittest
 
+from PIL import Image
+
 import weapon2pdf as w
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -125,6 +127,209 @@ class ModsLayoutTests(unittest.TestCase):
         rows, total, _ = w.mods_layout(card)
         self.assertAlmostEqual(rows[0]["h"], w.MODS_MIN_ROW, places=2)
         self.assertLess(total, w.MODS_BOTTOM - w.MODS_TOP)
+
+
+class ArtworkManifestTests(unittest.TestCase):
+    """Publisher placement data is selected and replayed, never approximated."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.asset = os.path.join(self.tmp.name, "art.png")
+        Image.new("RGBA", (20, 10), (180, 40, 20, 255)).save(self.asset)
+        self.path = os.path.join(self.tmp.name, "artwork-manifest.json")
+        self.manifest = {
+            "schema": w.ARTWORK_MANIFEST_SCHEMA,
+            "coordinate_system": {"unit": "point", "origin": "bottom-left"},
+            "pages": [{
+                "number": 18,
+                "weapon_id": "weapon_combat_rifle",
+                "placements": [{
+                    "resource": "ArtLater",
+                    "xref": 9,
+                    "draw_order": 7,
+                    "matrix_pdf": [100, -20, 10, 80, 40, 500],
+                    "clip_paths": [{
+                        "rule": "even-odd",
+                        "commands": [
+                            {"op": "move_to", "points": [50, 580]},
+                            {"op": "line_to", "points": [140, 560]},
+                            {"op": "line_to", "points": [130, 490]},
+                            {"op": "line_to", "points": [40, 510]},
+                            {"op": "close_path"},
+                        ],
+                    }],
+                    "graphics_state": {
+                        "fill_alpha": 0.5,
+                        "stroke_alpha": 1.0,
+                        "blend_mode": "Multiply",
+                        "soft_mask": None,
+                        "transfer_function": None,
+                    },
+                    "asset": "art.png",
+                }, {
+                    "resource": "ArtEarlier",
+                    "xref": 9,
+                    "draw_order": 2,
+                    "matrix_pdf": [30, 0, 0, 20, 20, 700],
+                    "clip_paths": [],
+                    "graphics_state": {
+                        "fill_alpha": 1.0,
+                        "stroke_alpha": 1.0,
+                        "blend_mode": "Normal",
+                        "soft_mask": None,
+                        "transfer_function": None,
+                    },
+                    "asset": "art.png",
+                }, {
+                    "resource": "Unexported",
+                    "xref": 10,
+                    "draw_order": 1,
+                    "matrix_pdf": [1, 0, 0, 1, 0, 0],
+                    "asset": None,
+                }],
+            }],
+        }
+        self.write_manifest()
+
+    def write_manifest(self):
+        with open(self.path, "w", encoding="utf-8") as fh:
+            json.dump(self.manifest, fh)
+
+    def test_layer_selects_card_id_and_preserves_repeated_asset_placements(self):
+        card = {"id": "weapon_combat_rifle", "page": 999}
+        layer = w.load_artwork_layer(self.path, card)
+        self.assertEqual(layer.page["number"], 18)
+        self.assertEqual(layer.asset_root, self.tmp.name)
+        self.assertEqual([item["resource"] for item in w.artwork_placements(layer.page)],
+                         ["ArtEarlier", "ArtLater"])
+        self.assertEqual(w._manifest_asset_path(layer, layer.page["placements"][0]),
+                         self.asset)
+
+    def test_explicit_manifest_page_overrides_card_identity(self):
+        self.manifest["pages"].append({
+            "number": 24,
+            "weapon_id": "",
+            "placements": [],
+        })
+        self.write_manifest()
+        layer = w.load_artwork_layer(self.path, {"id": "unknown", "page": 1},
+                                     page_number=24)
+        self.assertEqual(layer.page["number"], 24)
+
+    def test_schema_and_missing_asset_fail_loudly(self):
+        self.manifest["schema"] = "not-a-schema"
+        self.write_manifest()
+        with self.assertRaises(w.ArtworkManifestError):
+            w.load_artwork_layer(self.path, {"id": "weapon_combat_rifle"})
+
+        self.manifest["schema"] = w.ARTWORK_MANIFEST_SCHEMA
+        self.write_manifest()
+        layer = w.load_artwork_layer(self.path, {"id": "weapon_combat_rifle"})
+        os.unlink(self.asset)
+        with self.assertRaises(w.ArtworkManifestError):
+            w._manifest_asset_path(layer, layer.page["placements"][0])
+
+
+class ArtworkManifestRenderTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        try:
+            import pymupdf
+        except ImportError:  # pragma: no cover - dev dependency
+            raise unittest.SkipTest("pymupdf is not installed")
+        cls.fitz = pymupdf
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.asset = os.path.join(self.tmp.name, "art.png")
+        Image.new("RGBA", (20, 10), (180, 40, 20, 255)).save(self.asset)
+        self.path = os.path.join(self.tmp.name, "artwork-manifest.json")
+        self.matrix = [100, -20, 10, 80, 40, 500]
+        manifest = {
+            "schema": w.ARTWORK_MANIFEST_SCHEMA,
+            "coordinate_system": {"unit": "point", "origin": "bottom-left"},
+            "pages": [{
+                "number": 18,
+                "weapon_id": "weapon_combat_rifle",
+                "size_points": [600, 850],
+                "placements": [{
+                    "resource": "Art",
+                    "xref": 9,
+                    "draw_order": 7,
+                    "matrix_pdf": self.matrix,
+                    "clip_paths": [{
+                        "rule": "even-odd",
+                        "commands": [
+                            {"op": "move_to", "points": [50, 580]},
+                            {"op": "line_to", "points": [140, 560]},
+                            {"op": "line_to", "points": [130, 490]},
+                            {"op": "line_to", "points": [40, 510]},
+                            {"op": "close_path"},
+                        ],
+                    }],
+                    "graphics_state": {
+                        "fill_alpha": 0.5,
+                        "stroke_alpha": 1.0,
+                        "blend_mode": "Multiply",
+                        "soft_mask": None,
+                        "transfer_function": None,
+                    },
+                    "asset": "art.png",
+                }, {
+                    # Same exported PNG, deliberately a second use of it.
+                    "resource": "ArtRepeat",
+                    "xref": 9,
+                    "draw_order": 2,
+                    "matrix_pdf": [30, 0, 0, 20, 20, 700],
+                    "clip_paths": [],
+                    "graphics_state": {
+                        "fill_alpha": 1.0,
+                        "stroke_alpha": 1.0,
+                        "blend_mode": "Normal",
+                        "soft_mask": None,
+                        "transfer_function": None,
+                    },
+                    "asset": "art.png",
+                }],
+            }],
+        }
+        with open(self.path, "w", encoding="utf-8") as fh:
+            json.dump(manifest, fh)
+
+    def test_renderer_replays_matrix_clip_and_extgstate(self):
+        layer = w.load_artwork_layer(self.path,
+                                     {"id": "weapon_combat_rifle", "page": 18})
+        output = os.path.join(self.tmp.name, "card.pdf")
+        w.render_card(base_card(), output, artwork=layer)
+        doc = self.fitz.open(output)
+        page = doc[0]
+        art_images = [item for item in page.get_image_info(xrefs=True)
+                      if item["width"] == 20 and item["height"] == 10]
+        # The repeated use of one asset remains two PDF draws, in draw_order.
+        self.assertEqual(len(art_images), 2)
+        # ``card.image`` is not fitted into IMAGE_BOX as a second approximation.
+        self.assertFalse(any(item["width"] == 1119 and item["height"] == 439
+                             for item in page.get_image_info(xrefs=True)))
+        info = next(item for item in art_images
+                    if abs(item["transform"][0] - self.matrix[0]) < 0.01)
+        a, b, c, d, e, f = self.matrix
+        transform = info["transform"]
+        # PyMuPDF reports a top-left space; this is the exact coordinate
+        # conversion of the bottom-left PDF matrix retained in the manifest.
+        expected = (a, -b, -c, d, e + c, 850 - f - d)
+        self.assertAlmostEqual(page.rect.width, 600, places=3)
+        self.assertAlmostEqual(page.rect.height, 850, places=3)
+        for actual, wanted in zip(transform, expected):
+            self.assertAlmostEqual(actual, wanted, places=3)
+        self.assertIn(b"W*", page.read_contents())
+        extgstates = "\n".join(
+            doc.xref_object(xref, compressed=False)
+            for xref in range(1, doc.xref_length())
+        )
+        self.assertIn("/BM /Multiply", extgstates)
+        self.assertIn("/ca .5", extgstates)
 
 
 class RenderTests(unittest.TestCase):

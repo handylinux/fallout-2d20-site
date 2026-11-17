@@ -373,7 +373,24 @@ RGBA; в `report.csv` его контракт не менялся.
 metadata, чтобы повторная отрисовка могла убедиться, что работает с тем же
 экспортом Publisher.
 
+Повторная сборка карточки читает этот слой напрямую: `weapon2pdf.py` выбирает
+страницу сначала по `card.id` (`weapon_id` в manifest), затем по `card.page`.
+Он рисует все exported placements строго в `draw_order`, применяя исходные
+`matrix_pdf`, clipping path, opacity и blend mode; PNG с `/SMask` остаётся
+RGBA. Поэтому картинка не вписывается заново в общий `IMAGE_BOX` и не теряет
+поворот, skew или частичное появление с соседней страницы.
+
 ```bash
+# контрольная пересборка страницы 18 с исходным художественным слоем Publisher
+python3 tools/weapon2pdf.py data/weapons/cards/combat-rifle.json \
+    --out docs/render/out/combat-rifle-manifest.pdf \
+    --artwork-manifest art/artwork-manifest.json
+
+# если PNG перенесли в другой каталог или нужно выбрать страницу вручную
+python3 tools/weapon2pdf.py data/weapons/cards/combat-rifle.json \
+    --out docs/render/out/combat-rifle-manifest.pdf \
+    --artwork-manifest art/artwork-manifest.json \
+    --artwork-root assets/pdf/weapons --artwork-page 18
 
 # карточка из данных компаньона (описание — английское flavour)
 python3 tools/weapons2cards.py weapon_10mm_pistol --page 18 \

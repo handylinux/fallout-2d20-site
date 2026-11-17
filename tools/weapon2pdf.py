@@ -21,6 +21,11 @@ steps apart means the same card can later feed the web catalog.
 Usage:
     python3 tools/weapon2pdf.py data/weapons/cards/combat-rifle.json \
         --out docs/render/out/combat-rifle.pdf
+
+    # Replay the Publisher artwork layer emitted by extract_pdf_images.py.
+    python3 tools/weapon2pdf.py data/weapons/cards/combat-rifle.json \
+        --out docs/render/out/combat-rifle-manifest.pdf \
+        --artwork-manifest docs/render/pdf-extract/publisher-art/artwork-manifest.json
 """
 
 from __future__ import annotations
@@ -31,6 +36,8 @@ import json
 import math
 import os
 import sys
+from dataclasses import dataclass
+from typing import Any
 
 from reportlab.lib.colors import Color
 from reportlab.lib.pagesizes import A4
@@ -119,6 +126,23 @@ ASCENT = 0.75
 
 PAPER = os.path.join(ROOT, "assets", "pdf", "paper.jpg")
 DAMAGE_ICON = os.path.join(ROOT, "assets", "pdf", "damage-icon.png")
+
+# Schema written by tools/extract_pdf_images.py. Keep the reader independent
+# from PyMuPDF so rendering a card needs only the normal PDF requirements.
+ARTWORK_MANIFEST_SCHEMA = "fallout-2d20.artwork-manifest/v1"
+
+
+class ArtworkManifestError(ValueError):
+    """A manifest cannot be used safely to reconstruct an artwork layer."""
+
+
+@dataclass(frozen=True)
+class ArtworkLayer:
+    """One source-PDF page and the directory containing its exported assets."""
+
+    manifest_path: str
+    asset_root: str
+    page: dict[str, Any]
 
 
 def register_fonts() -> None:
@@ -283,6 +307,297 @@ def _image_reader(img, quality=90):
     return ImageReader(buf)
 
 
+# --- Publisher artwork manifest -------------------------------------------
+#
+# The ordinary card image is deliberately simple: it is stretched into a
+# fixed box.  A Publisher export is not simple: the original author can rotate
+# or skew artwork, clip it to a polygon, re-use it in a second partial
+# placement, and change alpha through ExtGState.  These helpers replay that
+# layer in native PDF point coordinates, which ReportLab shares with the
+# manifest (bottom-left origin).
+
+
+def load_artwork_manifest(path: str) -> dict[str, Any]:
+    """Read and validate the stable artwork-manifest/v1 envelope."""
+    full_path = os.path.abspath(path)
+    try:
+        with open(full_path, encoding="utf-8") as fh:
+            manifest = json.load(fh)
+    except OSError as exc:
+        raise ArtworkManifestError(f"не удалось открыть artwork manifest: {path}: {exc}") from exc
+    except json.JSONDecodeError as exc:
+        raise ArtworkManifestError(f"некорректный JSON artwork manifest: {path}: {exc}") from exc
+    if not isinstance(manifest, dict):
+        raise ArtworkManifestError("artwork manifest должен быть JSON-объектом")
+    if manifest.get("schema") != ARTWORK_MANIFEST_SCHEMA:
+        raise ArtworkManifestError(
+            "неподдерживаемая schema artwork manifest: "
+            f"{manifest.get('schema')!r} (ожидается {ARTWORK_MANIFEST_SCHEMA!r})")
+    coordinates = manifest.get("coordinate_system") or {}
+    if coordinates.get("origin") != "bottom-left" or coordinates.get("unit") != "point":
+        raise ArtworkManifestError(
+            "artwork manifest должен использовать PDF points с началом внизу слева")
+    if not isinstance(manifest.get("pages"), list):
+        raise ArtworkManifestError("в artwork manifest отсутствует массив pages")
+    return manifest
+
+
+def _manifest_page_number(page: dict[str, Any]) -> int | None:
+    try:
+        return int(page.get("number"))
+    except (TypeError, ValueError):
+        return None
+
+
+def artwork_page_for_card(manifest: dict[str, Any], card: dict[str, Any],
+                          page_number: int | None = None) -> dict[str, Any]:
+    """Select a source page by explicit page, weapon id, then card page.
+
+    A card's ``id`` is preferred over an old or manually changed page number;
+    ``--artwork-page`` remains an escape hatch for a card without a Companion
+    id or a source page whose title could not be matched during extraction.
+    """
+    pages = [page for page in manifest.get("pages", []) if isinstance(page, dict)]
+    if page_number is not None:
+        matches = [page for page in pages
+                   if _manifest_page_number(page) == int(page_number)]
+        if len(matches) == 1:
+            return matches[0]
+        if not matches:
+            raise ArtworkManifestError(
+                f"в artwork manifest нет страницы {page_number}")
+        raise ArtworkManifestError(
+            f"artwork manifest содержит несколько записей страницы {page_number}")
+
+    weapon_id = card.get("id")
+    if weapon_id:
+        matches = [page for page in pages if page.get("weapon_id") == weapon_id]
+        if len(matches) == 1:
+            return matches[0]
+        if len(matches) > 1:
+            # Reused titles are rare, but the card's page disambiguates them.
+            card_page = card.get("page")
+            by_number = [page for page in matches
+                         if _manifest_page_number(page) == card_page]
+            if len(by_number) == 1:
+                return by_number[0]
+            raise ArtworkManifestError(
+                f"weapon_id {weapon_id!r} найден на нескольких страницах; "
+                "укажите --artwork-page")
+
+    try:
+        card_page = int(card.get("page"))
+    except (TypeError, ValueError):
+        card_page = None
+    if card_page is not None:
+        matches = [page for page in pages if _manifest_page_number(page) == card_page]
+        if len(matches) == 1:
+            return matches[0]
+
+    detail = f"weapon_id {weapon_id!r}" if weapon_id else "без weapon_id"
+    raise ArtworkManifestError(
+        f"не найдена страница artwork manifest для карточки ({detail}); "
+        "укажите --artwork-page")
+
+
+def load_artwork_layer(manifest_path: str, card: dict[str, Any],
+                       page_number: int | None = None,
+                       asset_root: str | None = None) -> ArtworkLayer:
+    """Load the source page and choose where its extracted assets live."""
+    full_path = os.path.abspath(manifest_path)
+    manifest = load_artwork_manifest(full_path)
+    page = artwork_page_for_card(manifest, card, page_number)
+    root = os.path.abspath(asset_root or os.path.dirname(full_path))
+    return ArtworkLayer(manifest_path=full_path, asset_root=root, page=page)
+
+
+def artwork_page_size(layer: ArtworkLayer) -> tuple[float, float]:
+    """Use the source PDF page size when the manifest records one.
+
+    Publisher's A4 export is 595.32 × 841.92 pt rather than ReportLab's
+    nominal 595.2756 × 841.8898. The difference is tiny, but retaining it
+    prevents the top-left representation of an otherwise exact affine matrix
+    from drifting by 0.03 pt during a control re-render.
+    """
+    size = layer.page.get("size_points")
+    if size is None:
+        return PAGE_W, PAGE_H
+    if not isinstance(size, (list, tuple)) or len(size) != 2:
+        raise ArtworkManifestError(
+            "size_points страницы artwork manifest должен содержать width и height")
+    try:
+        width, height = float(size[0]), float(size[1])
+    except (TypeError, ValueError) as exc:
+        raise ArtworkManifestError(
+            "size_points страницы artwork manifest содержит нечисловое значение") from exc
+    if width <= 0 or height <= 0:
+        raise ArtworkManifestError(
+            "size_points страницы artwork manifest должен быть положительным")
+    return width, height
+
+
+def artwork_placements(page: dict[str, Any]) -> list[dict[str, Any]]:
+    """Exported image placements in their original painter's order.
+
+    The manifest also describes background textures and tiny rasterized text
+    snippets.  Those entries intentionally have no exported ``asset`` and are
+    rendered by the normal PDF builder instead.  Every exported placement is
+    retained, including repeated uses of the same PNG.
+    """
+    found: list[tuple[int, int, dict[str, Any]]] = []
+    for index, placement in enumerate(page.get("placements") or []):
+        if not isinstance(placement, dict) or not placement.get("asset"):
+            continue
+        try:
+            draw_order = int(placement.get("draw_order", index))
+        except (TypeError, ValueError):
+            draw_order = index
+        found.append((draw_order, index, placement))
+    return [placement for _order, _index, placement in sorted(found)]
+
+
+def _manifest_asset_path(layer: ArtworkLayer,
+                         placement: dict[str, Any]) -> str:
+    asset = placement.get("asset")
+    if not isinstance(asset, str) or not asset:
+        raise ArtworkManifestError("placement не содержит имени экспортированного asset")
+    candidates = [asset] if os.path.isabs(asset) else [
+        os.path.join(layer.asset_root, asset),
+        os.path.join(os.path.dirname(layer.manifest_path), asset),
+    ]
+    for candidate in candidates:
+        if os.path.isfile(candidate):
+            return candidate
+    raise ArtworkManifestError(
+        f"не найден artwork asset {asset!r} для страницы {layer.page.get('number')} "
+        f"(искали в {layer.asset_root})")
+
+
+def _manifest_point(value: Any, label: str) -> tuple[float, float]:
+    if not isinstance(value, (list, tuple)) or len(value) != 2:
+        raise ArtworkManifestError(f"некорректная точка {label} в clip path")
+    try:
+        return float(value[0]), float(value[1])
+    except (TypeError, ValueError) as exc:
+        raise ArtworkManifestError(f"некорректная точка {label} в clip path") from exc
+
+
+def _clip_manifest_path(c, clipping: dict[str, Any]) -> None:
+    """Intersect the ReportLab clipping region with one manifest clip path."""
+    commands = clipping.get("commands")
+    if not isinstance(commands, list):
+        raise ArtworkManifestError("clip path не содержит commands")
+    path = c.beginPath()
+    have_geometry = False
+    for command in commands:
+        if not isinstance(command, dict):
+            raise ArtworkManifestError("некорректная команда clip path")
+        operator = command.get("op")
+        if operator == "move_to":
+            x, y = _manifest_point(command.get("points"), "move_to")
+            path.moveTo(x, y)
+            have_geometry = True
+        elif operator == "line_to":
+            x, y = _manifest_point(command.get("points"), "line_to")
+            path.lineTo(x, y)
+            have_geometry = True
+        elif operator == "curve_to":
+            points = command.get("points")
+            if not isinstance(points, (list, tuple)) or len(points) != 3:
+                raise ArtworkManifestError("curve_to должен содержать три точки")
+            p1 = _manifest_point(points[0], "curve_to[0]")
+            p2 = _manifest_point(points[1], "curve_to[1]")
+            p3 = _manifest_point(points[2], "curve_to[2]")
+            path.curveTo(*p1, *p2, *p3)
+            have_geometry = True
+        elif operator == "close_path":
+            path.close()
+        else:
+            raise ArtworkManifestError(f"неподдерживаемая команда clip path: {operator!r}")
+    if not have_geometry:
+        raise ArtworkManifestError("пустой clip path нельзя применить")
+    fill_mode = (canvas.FILL_EVEN_ODD if clipping.get("rule") == "even-odd"
+                 else canvas.FILL_NON_ZERO)
+    c.clipPath(path, stroke=0, fill=0, fillMode=fill_mode)
+
+
+def _manifest_matrix(placement: dict[str, Any]) -> tuple[float, float, float,
+                                                            float, float, float]:
+    matrix = placement.get("matrix_pdf")
+    if not isinstance(matrix, (list, tuple)) or len(matrix) != 6:
+        raise ArtworkManifestError("placement не содержит matrix_pdf из шести чисел")
+    try:
+        return tuple(float(value) for value in matrix)  # type: ignore[return-value]
+    except (TypeError, ValueError) as exc:
+        raise ArtworkManifestError("matrix_pdf содержит нечисловое значение") from exc
+
+
+def _apply_manifest_graphics_state(c, placement: dict[str, Any]) -> None:
+    """Apply ExtGState values that ReportLab can faithfully recreate."""
+    state = placement.get("graphics_state") or {}
+    if not isinstance(state, dict):
+        raise ArtworkManifestError("graphics_state placement должен быть объектом")
+    for key, setter in (("fill_alpha", c.setFillAlpha),
+                        ("stroke_alpha", c.setStrokeAlpha)):
+        value = state.get(key)
+        if value is None:
+            continue
+        try:
+            alpha = float(value)
+        except (TypeError, ValueError) as exc:
+            raise ArtworkManifestError(f"{key} должен быть числом") from exc
+        if not 0.0 <= alpha <= 1.0:
+            raise ArtworkManifestError(f"{key} вне диапазона 0…1")
+        setter(alpha)
+    blend_mode = state.get("blend_mode")
+    if blend_mode:
+        try:
+            c.setBlendMode(str(blend_mode))
+        except Exception as exc:  # ReportLab validates its supported PDF names.
+            raise ArtworkManifestError(
+                f"неподдерживаемый blend mode {blend_mode!r}") from exc
+    if state.get("soft_mask"):
+        # Image /SMask is already retained in the exported RGBA asset. A
+        # graphics-state soft mask is a separate transparency group and has no
+        # pixel payload in v1, so silently pretending to reproduce it is worse
+        # than making the limitation visible to the caller.
+        raise ArtworkManifestError(
+            "graphics-state SMask требует отдельного mask asset; "
+            "schema artwork-manifest/v1 хранит только его xref")
+    if state.get("transfer_function"):
+        raise ArtworkManifestError(
+            "transfer function не может быть воспроизведена из schema "
+            "artwork-manifest/v1 без исходного PDF")
+
+
+def draw_artwork_layer(c, layer: ArtworkLayer) -> int:
+    """Replay exported artwork on *c* with matrix, clip, alpha and order.
+
+    ``canvas.transform`` and ``drawImage(..., 0, 0, 1, 1)`` are intentional:
+    ReportLab writes the same PDF affine concatenation as the Publisher CTM.
+    The paths are installed before that transform because manifest points are
+    already expressed in page coordinates.
+    """
+    placements = artwork_placements(layer.page)
+    if not placements:
+        raise ArtworkManifestError(
+            f"на странице {layer.page.get('number')} нет экспортированных artwork placements")
+    for placement in placements:
+        asset = _manifest_asset_path(layer, placement)
+        c.saveState()
+        try:
+            for clipping in placement.get("clip_paths") or []:
+                if not isinstance(clipping, dict):
+                    raise ArtworkManifestError("некорректная запись clip_paths")
+                _clip_manifest_path(c, clipping)
+            _apply_manifest_graphics_state(c, placement)
+            c.transform(*_manifest_matrix(placement))
+            c.drawImage(ImageReader(asset), 0, 0, 1, 1, mask="auto")
+        finally:
+            c.restoreState()
+    return len(placements)
+
+
 def place_image(c, path, box, fit="contain") -> None:
     """Draw *path* contained in *box* (top-down coords), alpha over paper."""
     if not path:
@@ -298,7 +613,11 @@ def place_image(c, path, box, fit="contain") -> None:
                 mask=None)
 
 
-def draw_image(c, card) -> None:
+def draw_image(c, card, artwork: ArtworkLayer | None = None) -> None:
+    """Draw either the ordinary card image or an exact Publisher artwork layer."""
+    if artwork is not None:
+        draw_artwork_layer(c, artwork)
+        return
     place_image(c, card.get("image") or "", IMAGE_BOX, fit="stretch")
 
 
@@ -662,12 +981,17 @@ def draw_page_number(c, page: int, total_pages: int | None = None) -> None:
                  PAGE_NUMBER_SIZE, align="right")
 
 
-def render_card(card, out_path: str) -> None:
-    c = canvas.Canvas(out_path, pagesize=(PAGE_W, PAGE_H))
+def render_card(card, out_path: str,
+                artwork: ArtworkLayer | None = None) -> None:
+    c = canvas.Canvas(out_path, pagesize=(artwork_page_size(artwork)
+                                          if artwork is not None
+                                          else (PAGE_W, PAGE_H)))
     c.setTitle(f"{card.get('title', '')} — справочник оружия")
     c.setAuthor("fallout-2d20.ru")
     draw_paper(c)
-    draw_image(c, card)   # opaque paper copy: must stay behind the text
+    # The Publisher artwork layer, like the ordinary flattened image, stays
+    # behind titles, stats and tables.
+    draw_image(c, card, artwork)
     draw_title(c, card)
     draw_stats(c, card)
     block = mods_block(card)
@@ -682,13 +1006,30 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("card", help="card JSON")
     ap.add_argument("--out", required=True, help="output PDF")
+    ap.add_argument("--artwork-manifest", metavar="PATH",
+                    help="artwork-manifest.json из extract_pdf_images.py")
+    ap.add_argument("--artwork-root", metavar="DIR",
+                    help="каталог PNG из manifest (по умолчанию рядом с ним)")
+    ap.add_argument("--artwork-page", type=int, metavar="N",
+                    help="явно выбрать страницу manifest вместо card id/page")
     args = ap.parse_args(argv)
 
     register_fonts()
     with open(args.card, encoding="utf-8") as fh:
         card = json.load(fh)
+    artwork = None
+    if args.artwork_manifest:
+        try:
+            artwork = load_artwork_layer(args.artwork_manifest, card,
+                                         args.artwork_page, args.artwork_root)
+        except ArtworkManifestError as exc:
+            ap.error(str(exc))
     os.makedirs(os.path.dirname(os.path.abspath(args.out)) or ".", exist_ok=True)
-    render_card(card, args.out)
+    render_card(card, args.out, artwork=artwork)
+    if artwork is not None:
+        print("artwork manifest: "
+              f"страница {artwork.page.get('number')}, "
+              f"размещений: {len(artwork_placements(artwork.page))}")
     print(args.out)
     return 0
 

@@ -135,6 +135,7 @@ class ExtractTests(unittest.TestCase):
         self.assertTrue(rows[0]["smask"])
         with Image.open(os.path.join(self.out(), rows[0]["file"])) as image:
             self.assertIn("A", image.getbands())
+            self.assertLess(image.getchannel("A").getextrema()[0], 255)
 
 
 class GeometryManifestTest(unittest.TestCase):

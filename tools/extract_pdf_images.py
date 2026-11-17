@@ -721,22 +721,47 @@ def page_title(page) -> str:
     return " ".join(text for size, text in best if size >= top - 0.5).strip()
 
 
+def _pixmap_alpha_matches_mask(pix, mask) -> bool:
+    """Whether PyMuPDF has actually copied *mask* into ``pix``'s alpha plane.
+
+    Some PyMuPDF builds report an alpha channel on an image with ``/SMask``
+    while filling that channel with opaque 255 values.  Treating ``pix.alpha``
+    as sufficient in that case silently turns transparent Publisher artwork
+    into a black rectangle.  Comparing the planes lets us retain versions
+    which already combined the mask without attempting the invalid
+    ``Pixmap(rgba, mask)`` constructor call.
+    """
+    if not pix.alpha or pix.width != mask.width or pix.height != mask.height:
+        return False
+    if mask.n != 1:
+        return False
+    samples = pix.samples
+    alpha = samples[pix.n - 1::pix.n]
+    return alpha == mask.samples
+
+
 def image_pixmap(doc, xref: int, smask: int = 0):
     """Return a PNG-safe pixmap without discarding a PDF SoftMask.
 
-    Current PyMuPDF versions already apply an image XObject's ``/SMask`` when
-    opening ``Pixmap(doc, xref)``. Older versions may not, so attach it only
-    when the result still has no alpha channel.  CMYK is converted to RGB while
-    preserving alpha; the old extractor accidentally flattened such artwork.
+    PyMuPDF versions differ: some already combine an image XObject's
+    ``/SMask`` into the alpha plane, while others expose an all-opaque alpha
+    channel.  In the latter case we first remove that alpha plane and only
+    then attach the real grayscale mask; attaching it directly to RGBA raises
+    ``color pixmap must not have an alpha channel``.  CMYK is converted to RGB
+    while preserving the final alpha channel.
     """
     pix = pymupdf.Pixmap(doc, xref)
     if pix.colorspace is None:
         return None
     if pix.colorspace.n not in (1, 3):
         pix = pymupdf.Pixmap(pymupdf.csRGB, pix)
-    if smask and not pix.alpha:
+    if smask:
         mask = pymupdf.Pixmap(doc, smask)
-        pix = pymupdf.Pixmap(pix, mask)
+        if not _pixmap_alpha_matches_mask(pix, mask):
+            # ``Pixmap(pix, 0)`` deliberately removes PyMuPDF's synthetic or
+            # stale alpha plane so the actual /SMask can be attached safely.
+            color = pymupdf.Pixmap(pix, 0) if pix.alpha else pix
+            pix = pymupdf.Pixmap(color, mask)
     return pix
 
 
