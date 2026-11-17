@@ -1,6 +1,7 @@
 """Tests for tools/extract_pdf_images.py."""
 
 import csv
+import json
 import os
 import tempfile
 import unittest
@@ -82,7 +83,7 @@ class ExtractTests(unittest.TestCase):
         rows = ex.extract(self.pdf, self.out(), 300, 0.9, [2], False)
         self.assertEqual([r["page"] for r in rows], [2])
 
-    def test_main_writes_report_and_contact_sheet(self):
+    def test_main_writes_report_contact_sheet_and_manifest(self):
         code = ex.main([self.pdf, "--out", self.out(), "--min-size", "300",
                         "--share", "0.9"])
         self.assertEqual(code, 0)
@@ -95,6 +96,76 @@ class ExtractTests(unittest.TestCase):
             html = fh.read()
         self.assertIn("p001.png", html)
         self.assertIn("p002.png", html)
+        with open(os.path.join(self.out(), "artwork-manifest.json"), encoding="utf-8") as fh:
+            manifest = json.load(fh)
+        self.assertEqual(manifest["schema"], ex.MANIFEST_SCHEMA)
+        self.assertEqual(manifest["audit"]["image_placements"], 4)
+
+    def test_manifest_keeps_every_placement_and_asset_link(self):
+        rows = ex.extract(self.pdf, self.out(), 300, 0.9, None, False,
+                          {}, False)
+        manifest = ex.artwork_manifest(self.pdf, rows, None, {}, False)
+        self.assertEqual(len(manifest["pages"]), 2)
+        self.assertEqual(manifest["audit"]["image_placements"], 4)
+        self.assertEqual(manifest["audit"]["exported_asset_placements"], 2)
+        first = manifest["pages"][0]
+        self.assertAlmostEqual(first["size_points"][0], 595.2756, places=3)
+        self.assertAlmostEqual(first["size_points"][1], 841.8898, places=3)
+        self.assertEqual(first["media_box_pdf"], [0.0, 0.0, 595.2756, 841.8898])
+        self.assertIsNone(first["crop_box_pdf"])
+        self.assertEqual(len(first["placements"]), 2)
+        art = next(item for item in first["placements"]
+                   if item["xref"] == rows[0]["xref"])
+        self.assertEqual(art["asset"], rows[0]["file"])
+        self.assertEqual(art["matrix_pdf"], [400.0, 0.0, 0.0, 300.0, 40.0, 400.0])
+        self.assertEqual(art["bbox_pdf"], [40.0, 400.0, 440.0, 700.0])
+        self.assertEqual(art["clip_paths"], [])
+
+    def test_soft_mask_is_preserved_in_extracted_png(self):
+        source = os.path.join(self.dir, "transparent.png")
+        Image.new("RGBA", (600, 600), (200, 0, 0, 96)).save(source)
+        pdf = os.path.join(self.dir, "transparent.pdf")
+        c = canvas.Canvas(pdf)
+        c.drawImage(ImageReader(source), 40, 400, width=400, height=300,
+                    mask="auto")
+        c.showPage()
+        c.save()
+        rows = ex.extract(pdf, self.out(), 300, 0.9, None, False, {}, False)
+        self.assertEqual(len(rows), 1)
+        self.assertTrue(rows[0]["smask"])
+        with Image.open(os.path.join(self.out(), rows[0]["file"])) as image:
+            self.assertIn("A", image.getbands())
+
+
+class GeometryManifestTest(unittest.TestCase):
+    def test_parser_preserves_affine_crop_and_graphics_state(self):
+        content = b"""q
+/Fade gs
+10 20 m 110 20 l 100 80 l 10 20 l h W* n
+3 -1 0.5 4 100 200 cm
+/Art Do
+Q
+"""
+        placements = ex.parse_image_placements(
+            content,
+            {"Art": {"xref": 7, "width": 600, "height": 400,
+                      "bpc": 8, "colorspace": "DeviceRGB",
+                      "filter": "DCTDecode", "smask_xref": 8}},
+            {"Fade": {"fill_alpha": 0.45, "stroke_alpha": None,
+                       "blend_mode": "Multiply", "soft_mask": None}},
+        )
+        self.assertEqual(len(placements), 1)
+        art = placements[0]
+        self.assertEqual(art["matrix_pdf"], [3.0, -1.0, 0.5, 4.0, 100.0, 200.0])
+        self.assertEqual(art["bbox_pdf"], [100.0, 199.0, 103.5, 204.0])
+        self.assertEqual(art["graphics_state"]["fill_alpha"], 0.45)
+        self.assertEqual(art["graphics_state"]["blend_mode"], "Multiply")
+        self.assertEqual(art["image"]["smask_xref"], 8)
+        clip = art["clip_paths"]
+        self.assertEqual(clip[0]["rule"], "even-odd")
+        self.assertEqual(clip[0]["commands"][0],
+                         {"op": "move_to", "points": [10.0, 20.0]})
+        self.assertEqual(clip[0]["commands"][-1], {"op": "close_path"})
 
 
 class PageNameTests(unittest.TestCase):

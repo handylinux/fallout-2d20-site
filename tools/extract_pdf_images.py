@@ -1,17 +1,25 @@
 #!/usr/bin/env python3
-"""Вытащить картинки из PDF (например, из книги, собранной в Publisher).
+"""Извлечь иллюстрации и их PDF-геометрию из книги Publisher.
 
     python3 tools/extract_pdf_images.py book.pdf --out art/
 
 Что делает:
-  * проходит по страницам и достаёт все встроенные изображения;
-  * выкидывает мелочь (иконки), повторяющуюся текстуру бумаги и дубликаты;
-  * сохраняет PNG (CMYK-картинки конвертируются в RGB, альфа-канал
-    приклеивается из SMask);
+  * проходит по страницам и достаёт встроенные изображения;
+  * выкидывает из набора ассетов мелочь (иконки), повторяющуюся бумажную
+    текстуру и дубликаты, но сохраняет *все* появления изображений в
+    манифесте;
+  * сохраняет PNG, включая alpha-канал /SoftMask, если он есть;
   * имена вида p018-02.png — страница и порядковый номер на странице;
-  * рядом кладёт index.html — контактный лист с номерами страниц, чтобы
-    быстро понять, где какое оружие;
-  * report.csv — страница, xref, размеры, фильтр, имя файла.
+  * рядом кладёт index.html — контактный лист с номерами страниц;
+  * report.csv — обратносуместимый короткий список извлечённых ассетов;
+  * artwork-manifest.json — координаты, affine-матрицы, clipping paths,
+    SoftMask и graphics state каждого появления картинки на странице.
+
+Манифест использует исходную PDF-систему координат: points, начало в левом
+нижнем углу страницы. ``matrix_pdf`` — PDF CTM ``[a, b, c, d, e, f]``:
+``(x, y) -> (a*x + c*y + e, b*x + d*y + f)``. Он нужен генератору, чтобы
+сохранить заданные в Publisher размер, поворот, crop и прозрачность
+иллюстраций, не расставляя их вручную.
 
 Зависимости: pymupdf, pillow (pip install pymupdf pillow).
 """
@@ -19,12 +27,15 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import csv
+import hashlib
 import html
 import json
 import os
 import re
 import sys
+from typing import Any, Iterator
 
 try:
     import pymupdf
@@ -62,6 +73,622 @@ def load_weapons(path: str | None) -> dict[str, str]:
             for item in data if item.get("name")}
 
 
+MANIFEST_SCHEMA = "fallout-2d20.artwork-manifest/v1"
+IDENTITY_MATRIX = (1.0, 0.0, 0.0, 1.0, 0.0, 0.0)
+_PDF_WS = b"\x00\t\n\f\r "
+_PDF_DELIMITERS = b"()<>[]{}/%"
+_PDF_NUMBER = re.compile(r"^[+-]?(?:\d+\.\d*|\.\d+|\d+)(?:[Ee][+-]?\d+)?$")
+_PATH_END_OPERATORS = {"n", "S", "s", "f", "F", "f*", "B", "B*", "b", "b*"}
+
+
+def pdf_matrix_multiply(left: tuple[float, float, float, float, float, float],
+                        right: tuple[float, float, float, float, float, float]
+                        ) -> tuple[float, float, float, float, float, float]:
+    """Return the PDF concatenation ``left * right`` of two affine CTMs."""
+    a1, b1, c1, d1, e1, f1 = left
+    a2, b2, c2, d2, e2, f2 = right
+    return (
+        a1 * a2 + c1 * b2,
+        b1 * a2 + d1 * b2,
+        a1 * c2 + c1 * d2,
+        b1 * c2 + d1 * d2,
+        a1 * e2 + c1 * f2 + e1,
+        b1 * e2 + d1 * f2 + f1,
+    )
+
+
+def pdf_matrix_point(matrix: tuple[float, float, float, float, float, float],
+                     x: float, y: float) -> list[float]:
+    """Transform a point from image/path space into PDF page coordinates."""
+    a, b, c, d, e, f = matrix
+    return [a * x + c * y + e, b * x + d * y + f]
+
+
+def _round_number(value: float, digits: int = 6) -> float:
+    """Stable manifest numbers without meaningless PDF floating-point noise."""
+    rounded = round(float(value), digits)
+    return 0.0 if rounded == -0.0 else rounded
+
+
+def _round_values(value: Any) -> Any:
+    if isinstance(value, float):
+        return _round_number(value)
+    if isinstance(value, tuple):
+        return [_round_values(item) for item in value]
+    if isinstance(value, list):
+        return [_round_values(item) for item in value]
+    if isinstance(value, dict):
+        return {key: _round_values(item) for key, item in value.items()}
+    return value
+
+
+def _skip_pdf_literal(data: bytes, pos: int) -> int:
+    """Skip a PDF literal string, including escaped and nested parentheses."""
+    depth = 1
+    pos += 1
+    while pos < len(data) and depth:
+        char = data[pos]
+        if char == ord("\\"):
+            pos += 2
+            continue
+        if char == ord("("):
+            depth += 1
+        elif char == ord(")"):
+            depth -= 1
+        pos += 1
+    return pos
+
+
+def _skip_pdf_hex(data: bytes, pos: int) -> int:
+    """Skip a hexadecimal string (``<...>``; dictionaries are handled apart)."""
+    end = data.find(b">", pos + 1)
+    return len(data) if end < 0 else end + 1
+
+
+def _skip_pdf_array(data: bytes, pos: int) -> int:
+    """Skip an array while respecting strings, nested arrays and dictionaries."""
+    depth = 1
+    pos += 1
+    while pos < len(data) and depth:
+        if data[pos] == ord("("):
+            pos = _skip_pdf_literal(data, pos)
+        elif data.startswith(b"<<", pos):
+            pos = _skip_pdf_dictionary(data, pos)
+        elif data[pos] == ord("["):
+            depth += 1
+            pos += 1
+        elif data[pos] == ord("]"):
+            depth -= 1
+            pos += 1
+        elif data[pos] == ord("<"):
+            pos = _skip_pdf_hex(data, pos)
+        else:
+            pos += 1
+    return pos
+
+
+def _skip_pdf_dictionary(data: bytes, pos: int) -> int:
+    """Skip a ``<< ... >>`` dictionary in a page content stream."""
+    depth = 1
+    pos += 2
+    while pos < len(data) and depth:
+        if data[pos] == ord("("):
+            pos = _skip_pdf_literal(data, pos)
+        elif data.startswith(b"<<", pos):
+            depth += 1
+            pos += 2
+        elif data.startswith(b">>", pos):
+            depth -= 1
+            pos += 2
+        elif data[pos] == ord("["):
+            pos = _skip_pdf_array(data, pos)
+        elif data[pos] == ord("<"):
+            pos = _skip_pdf_hex(data, pos)
+        else:
+            pos += 1
+    return pos
+
+
+def pdf_content_tokens(data: bytes) -> Iterator[str | None]:
+    """Yield top-level PDF content tokens without interpreting text payloads.
+
+    A full PDF parser is unnecessary here: Publisher writes image placements as
+    regular ``q … cm /Image Do Q`` blocks.  This small tokenizer deliberately
+    treats strings, arrays and dictionaries as opaque operands, so text content
+    cannot be mistaken for drawing operators.
+    """
+    pos = 0
+    size = len(data)
+    while pos < size:
+        while pos < size and data[pos] in _PDF_WS:
+            pos += 1
+        if pos >= size:
+            break
+        if data[pos] == ord("%"):
+            while pos < size and data[pos] not in b"\r\n":
+                pos += 1
+            continue
+        if data[pos] == ord("("):
+            pos = _skip_pdf_literal(data, pos)
+            yield None
+            continue
+        if data.startswith(b"<<", pos):
+            pos = _skip_pdf_dictionary(data, pos)
+            yield None
+            continue
+        if data[pos] == ord("["):
+            pos = _skip_pdf_array(data, pos)
+            yield None
+            continue
+        if data[pos] == ord("<"):
+            pos = _skip_pdf_hex(data, pos)
+            yield None
+            continue
+        start = pos
+        if data[pos] == ord("/"):
+            pos += 1
+        while pos < size and data[pos] not in _PDF_WS + _PDF_DELIMITERS:
+            pos += 1
+        # A slash is a delimiter, so advance through a complete PDF name.
+        if data[start] == ord("/") and pos == start + 1:
+            while pos < size and data[pos] not in _PDF_WS + _PDF_DELIMITERS:
+                pos += 1
+        token = data[start:pos].decode("latin1", "replace")
+        if not token:
+            pos += 1
+            continue
+        # Inline images are not resources that can be reliably re-used. Skip
+        # their binary payload instead of letting its bytes corrupt the token
+        # stream. Publisher pages under consideration use XObject images.
+        if token == "BI":
+            yield token
+            match = re.search(rb"(?:^|\s)ID\s", data[pos:])
+            if match:
+                image_start = pos + match.end()
+                end = re.search(rb"\sEI(?:\s|$)", data[image_start:])
+                pos = image_start + end.end() if end else size
+            continue
+        yield token
+
+
+def _as_number(token: str | None) -> float | None:
+    if token is None or not _PDF_NUMBER.fullmatch(token):
+        return None
+    return float(token)
+
+
+def _last_numbers(values: list[str | None], count: int) -> list[float] | None:
+    if len(values) < count:
+        return None
+    numbers = [_as_number(value) for value in values[-count:]]
+    return None if any(value is None for value in numbers) else numbers  # type: ignore[return-value]
+
+
+def _last_name(values: list[str | None]) -> str | None:
+    for value in reversed(values):
+        if isinstance(value, str) and value.startswith("/"):
+            return value[1:]
+    return None
+
+
+def _path_point(matrix: tuple[float, float, float, float, float, float],
+                x: float, y: float) -> list[float]:
+    return [_round_number(value) for value in pdf_matrix_point(matrix, x, y)]
+
+
+def _append_path_command(path: list[dict], operator: str, values: list[float],
+                         matrix: tuple[float, float, float, float, float, float]) -> None:
+    if operator == "m":
+        path.append({"op": "move_to", "points": _path_point(matrix, values[0], values[1])})
+    elif operator == "l":
+        path.append({"op": "line_to", "points": _path_point(matrix, values[0], values[1])})
+    elif operator == "c":
+        path.append({
+            "op": "curve_to",
+            "points": [
+                _path_point(matrix, values[0], values[1]),
+                _path_point(matrix, values[2], values[3]),
+                _path_point(matrix, values[4], values[5]),
+            ],
+        })
+    elif operator == "re":
+        x, y, width, height = values
+        path.extend([
+            {"op": "move_to", "points": _path_point(matrix, x, y)},
+            {"op": "line_to", "points": _path_point(matrix, x + width, y)},
+            {"op": "line_to", "points": _path_point(matrix, x + width, y + height)},
+            {"op": "line_to", "points": _path_point(matrix, x, y + height)},
+            {"op": "close_path"},
+        ])
+
+
+def _matrix_bbox(matrix: tuple[float, float, float, float, float, float]) -> list[float]:
+    """Axis-aligned page-space bounds of the transformed unit image square."""
+    corners = [pdf_matrix_point(matrix, x, y)
+               for x, y in ((0.0, 0.0), (1.0, 0.0), (0.0, 1.0), (1.0, 1.0))]
+    return [_round_number(min(point[0] for point in corners)),
+            _round_number(min(point[1] for point in corners)),
+            _round_number(max(point[0] for point in corners)),
+            _round_number(max(point[1] for point in corners))]
+
+
+def _clip_path_bounds(path: dict) -> list[float] | None:
+    """Return bounds for a recorded clipping path, if it has point commands."""
+    points: list[list[float]] = []
+    for command in path.get("commands", []):
+        value = command.get("points")
+        if not value:
+            continue
+        # move_to / line_to hold one point; curve_to holds three.
+        if isinstance(value[0], (int, float)):
+            points.append(value)
+        else:
+            points.extend(value)
+    if not points:
+        return None
+    return [min(point[0] for point in points), min(point[1] for point in points),
+            max(point[0] for point in points), max(point[1] for point in points)]
+
+
+def _is_page_clip(path: dict, width: float, height: float,
+                  tolerance: float = 0.75) -> bool:
+    """Whether a clipping path is merely Publisher's full-page safety clip."""
+    bounds = _clip_path_bounds(path)
+    if bounds is None:
+        return False
+    return (bounds[0] <= tolerance and bounds[1] <= tolerance
+            and bounds[2] >= width - tolerance and bounds[3] >= height - tolerance)
+
+
+def _default_graphics_state() -> dict[str, Any]:
+    return {
+        "resource": None,
+        "fill_alpha": 1.0,
+        "stroke_alpha": 1.0,
+        "blend_mode": "Normal",
+        "soft_mask": None,
+        "transfer_function": None,
+    }
+
+
+def _copy_state(state: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "ctm": tuple(state["ctm"]),
+        "clip_paths": copy.deepcopy(state["clip_paths"]),
+        "graphics_state": dict(state["graphics_state"]),
+    }
+
+
+def parse_image_placements(content: bytes, image_resources: dict[str, dict],
+                           graphics_states: dict[str, dict] | None = None) -> list[dict]:
+    """Parse Publisher-style image operations from one page content stream.
+
+    Each result retains the raw PDF CTM and every active clipping path in
+    PDF page coordinates.  The parser accepts ordinary PDF graphics operators;
+    unknown operators simply terminate their operand list, which is enough for
+    a mixed text/vector/page stream.
+    """
+    graphics_states = graphics_states or {}
+    state: dict[str, Any] = {
+        "ctm": IDENTITY_MATRIX,
+        "clip_paths": [],
+        "graphics_state": _default_graphics_state(),
+    }
+    stack: list[dict[str, Any]] = []
+    operands: list[str | None] = []
+    path: list[dict] = []
+    pending_clip: str | None = None
+    draw_order = 0
+    placements: list[dict] = []
+
+    def finish_path() -> None:
+        nonlocal path, pending_clip
+        if pending_clip and path:
+            state["clip_paths"].append({
+                "rule": pending_clip,
+                "commands": copy.deepcopy(path),
+            })
+        path = []
+        pending_clip = None
+
+    for token in pdf_content_tokens(content):
+        if token is None or token.startswith("/") or _as_number(token) is not None:
+            operands.append(token)
+            continue
+        operator = token
+        values = operands
+        operands = []
+
+        if operator == "q":
+            stack.append(_copy_state(state))
+            continue
+        if operator == "Q":
+            if stack:
+                state = stack.pop()
+            continue
+        if operator == "cm":
+            numbers = _last_numbers(values, 6)
+            if numbers:
+                state["ctm"] = pdf_matrix_multiply(state["ctm"], tuple(numbers))
+            continue
+        if operator == "gs":
+            name = _last_name(values)
+            if name:
+                change = graphics_states.get(name, {})
+                state["graphics_state"]["resource"] = name
+                state["graphics_state"].update({
+                    key: value for key, value in change.items() if value is not None
+                })
+            continue
+        command_sizes = {"m": 2, "l": 2, "c": 6, "re": 4}
+        if operator in command_sizes:
+            numbers = _last_numbers(values, command_sizes[operator])
+            if numbers:
+                _append_path_command(path, operator, numbers, state["ctm"])
+            continue
+        if operator == "h":
+            path.append({"op": "close_path"})
+            continue
+        if operator == "W":
+            pending_clip = "nonzero"
+            continue
+        if operator == "W*":
+            pending_clip = "even-odd"
+            continue
+        if operator == "Do":
+            draw_order += 1
+            name = _last_name(values)
+            image = image_resources.get(name or "")
+            if image:
+                matrix = tuple(state["ctm"])
+                placement = {
+                    "resource": name,
+                    "xref": image["xref"],
+                    "draw_order": draw_order,
+                    "matrix_pdf": [_round_number(value) for value in matrix],
+                    "bbox_pdf": _matrix_bbox(matrix),
+                    "clip_paths": copy.deepcopy(state["clip_paths"]),
+                    "graphics_state": _round_values(state["graphics_state"]),
+                    "image": {
+                        key: image[key] for key in ("width", "height", "bpc", "colorspace",
+                                                     "filter", "smask_xref", "decode_array") if key in image
+                    },
+                }
+                placements.append(placement)
+            continue
+        if operator in _PATH_END_OPERATORS:
+            finish_path()
+    return placements
+
+
+def image_resource_map(page, doc=None) -> dict[str, dict]:
+    """Map PDF XObject resource names to image metadata for a page.
+
+    ``/Decode`` is recorded as an audit flag. It may remap raw sample values,
+    unlike Publisher's UI brightness/contrast controls, which are normally
+    already baked into the embedded raster at export time.
+    """
+    resources: dict[str, dict] = {}
+    for item in page.get_images(full=True):
+        xref, smask, width, height, bpc = item[:5]
+        colorspace = item[5]
+        name = item[7]
+        image_filter = item[8]
+        image_object = doc.xref_object(xref, compressed=False) if doc else ""
+        resources[name] = {
+            "xref": xref,
+            "width": width,
+            "height": height,
+            "bpc": bpc,
+            "colorspace": colorspace,
+            "filter": image_filter,
+            "smask_xref": smask or None,
+            "decode_array": "/Decode" in image_object,
+        }
+    return resources
+
+
+def _dictionary_after(text: str, name: str) -> str:
+    """Return the direct ``<<...>>`` dictionary after a resource name."""
+    start = text.find(f"/{name}")
+    if start < 0:
+        return ""
+    start = text.find("<<", start)
+    if start < 0:
+        return ""
+    depth = 1
+    pos = start + 2
+    while pos < len(text) and depth:
+        if text.startswith("<<", pos):
+            depth += 1
+            pos += 2
+        elif text.startswith(">>", pos):
+            depth -= 1
+            pos += 2
+        else:
+            pos += 1
+    return text[start + 2:pos - 2] if depth == 0 else ""
+
+
+def _resource_object(doc, page) -> str:
+    page_object = doc.xref_object(page.xref, compressed=False)
+    indirect = re.search(r"/Resources\s+(\d+)\s+\d+\s+R", page_object)
+    if indirect:
+        return doc.xref_object(int(indirect.group(1)), compressed=False)
+    return page_object
+
+
+def page_box_pdf(doc, page, name: str) -> list[float] | None:
+    """Read a MediaBox / CropBox in inherited raw PDF page coordinates."""
+    xref = page.xref
+    seen: set[int] = set()
+    while xref and xref not in seen:
+        seen.add(xref)
+        text = doc.xref_object(xref, compressed=False)
+        match = re.search(
+            rf"/{name}\s*\[\s*([+-]?(?:\d+\.\d*|\.\d+|\d+))\s+"
+            rf"([+-]?(?:\d+\.\d*|\.\d+|\d+))\s+"
+            rf"([+-]?(?:\d+\.\d*|\.\d+|\d+))\s+"
+            rf"([+-]?(?:\d+\.\d*|\.\d+|\d+))\s*\]", text)
+        if match:
+            return [_round_number(float(value)) for value in match.groups()]
+        parent = re.search(r"/Parent\s+(\d+)\s+\d+\s+R", text)
+        xref = int(parent.group(1)) if parent else 0
+    return None
+
+
+def _graphics_state_values(doc, xref: int) -> dict[str, Any]:
+    text = doc.xref_object(xref, compressed=False)
+
+    def number(key: str) -> float | None:
+        match = re.search(rf"/{key}\s+([+-]?(?:\d+\.\d*|\.\d+|\d+))\b", text)
+        return float(match.group(1)) if match else None
+
+    blend = re.search(r"/BM\s*/([^\s/<>()\[\]]+)", text)
+    soft_mask = re.search(r"/SMask\s+(\d+)\s+\d+\s+R", text)
+    transfer = re.search(r"/(TR2?)\s+([^\s]+)", text)
+    return {
+        "fill_alpha": number("ca"),
+        "stroke_alpha": number("CA"),
+        "blend_mode": blend.group(1) if blend else None,
+        "soft_mask": int(soft_mask.group(1)) if soft_mask else None,
+        "transfer_function": transfer.group(2) if transfer else None,
+    }
+
+
+def graphics_state_map(doc, page) -> dict[str, dict]:
+    """Resolve a page's ExtGState names into useful transparency metadata."""
+    resources = _dictionary_after(_resource_object(doc, page), "ExtGState")
+    out: dict[str, dict] = {}
+    for name, xref in re.findall(r"/([^\s/]+)\s+(\d+)\s+\d+\s+R", resources):
+        out[name] = _graphics_state_values(doc, int(xref))
+    return out
+
+
+def _sha256(path: str) -> str:
+    digest = hashlib.sha256()
+    with open(path, "rb") as fh:
+        for chunk in iter(lambda: fh.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _selected_page_ids(doc, pages: list[int] | None) -> list[int]:
+    wanted = [page - 1 for page in pages] if pages else list(range(doc.page_count))
+    return [page for page in wanted if 0 <= page < doc.page_count]
+
+
+def artwork_manifest(pdf: str, rows: list[dict], pages: list[int] | None,
+                     weapons: dict[str, str] | None = None,
+                     name_from_page: bool = True) -> dict:
+    """Build a per-*appearance* image geometry manifest for a source PDF.
+
+    ``extract()`` deduplicates exported image assets for convenience. This
+    function intentionally does not: the same XObject may be placed on several
+    pages with different crop, rotation or scale, and every placement matters
+    to a faithful rebuild.
+    """
+    doc = pymupdf.open(pdf)
+    weapons = weapons or {}
+    assets = {int(row["xref"]): row["file"] for row in rows}
+    selected = _selected_page_ids(doc, pages)
+    all_pages: list[dict] = []
+    totals = {
+        "image_placements": 0,
+        "exported_asset_placements": 0,
+        "cropped_placements": 0,
+        "rotated_placements": 0,
+        "soft_mask_placements": 0,
+        "transfer_function_placements": 0,
+        "decode_array_placements": 0,
+        "transfer_function_tokens": 0,
+    }
+    for pno in selected:
+        page = doc[pno]
+        title = page_title(page) if name_from_page else ""
+        content = b"".join(doc.xref_stream(xref) for xref in page.get_contents())
+        placements = parse_image_placements(content, image_resource_map(page, doc),
+                                            graphics_state_map(doc, page))
+        for placement in placements:
+            asset = assets.get(int(placement["xref"]))
+            placement["asset"] = asset or None
+            placement["exported"] = bool(asset)
+            placement["classification"] = "art" if asset else "unexported"
+            placement["crop_paths"] = [
+                path for path in placement["clip_paths"]
+                if not _is_page_clip(path, page.rect.width, page.rect.height)
+            ]
+            placement["has_custom_crop"] = bool(placement["crop_paths"])
+            totals["image_placements"] += 1
+            totals["exported_asset_placements"] += int(bool(asset))
+            totals["cropped_placements"] += int(placement["has_custom_crop"])
+            matrix = placement["matrix_pdf"]
+            totals["rotated_placements"] += int(
+                abs(matrix[1]) > 1e-6 or abs(matrix[2]) > 1e-6)
+            totals["soft_mask_placements"] += int(
+                bool(placement["image"].get("smask_xref"))
+                or bool(placement["graphics_state"].get("soft_mask")))
+            totals["transfer_function_placements"] += int(
+                bool(placement["graphics_state"].get("transfer_function")))
+            totals["decode_array_placements"] += int(
+                bool(placement["image"].get("decode_array")))
+        totals["transfer_function_tokens"] += content.count(b"/TR ") + content.count(b"/TR2 ")
+        all_pages.append({
+            "number": pno + 1,
+            "title": title,
+            "weapon_id": weapons.get(normalize_name(title), ""),
+            "size_points": [_round_number(page.rect.width), _round_number(page.rect.height)],
+            "media_box_pdf": page_box_pdf(doc, page, "MediaBox"),
+            "crop_box_pdf": page_box_pdf(doc, page, "CropBox"),
+            "rotation": page.rotation,
+            "placements": placements,
+        })
+    metadata = {key: value for key, value in doc.metadata.items() if value}
+    manifest = {
+        "schema": MANIFEST_SCHEMA,
+        "coordinate_system": {
+            "unit": "point",
+            "origin": "bottom-left",
+            "matrix_pdf": "[a, b, c, d, e, f]; (x, y) -> (a*x + c*y + e, b*x + d*y + f)",
+            "clip_paths": "Commands are already in PDF page coordinates.",
+        },
+        "source": {
+            "file": os.path.basename(pdf),
+            "sha256": _sha256(pdf),
+            "page_count": doc.page_count,
+            "metadata": metadata,
+        },
+        "assets": [{
+            "xref": int(row["xref"]),
+            "file": row["file"],
+            "source_page": row["page"],
+            "width": row["width"],
+            "height": row["height"],
+            "smask_xref": int(row["smask"]) if row.get("smask") else None,
+        } for row in rows],
+        "pages": all_pages,
+        "audit": {
+            **totals,
+            "brightness_contrast": (
+                "PDF has no standard brightness/contrast slider. If no transfer "
+                "function is recorded, Publisher baked that adjustment into pixels."
+            ),
+        },
+    }
+    doc.close()
+    return _round_values(manifest)
+
+
+def write_artwork_manifest(manifest: dict, path: str) -> None:
+    """Write a human-reviewable, stable UTF-8 artwork placement manifest."""
+    parent = os.path.dirname(path)
+    if parent:
+        os.makedirs(parent, exist_ok=True)
+    with open(path, "w", encoding="utf-8") as fh:
+        json.dump(manifest, fh, ensure_ascii=False, indent=2)
+        fh.write("\n")
+
+
 def background_xrefs(page) -> set[int]:
     """Картинки, растянутые на всю страницу (текстура бумаги)."""
     out = set()
@@ -94,13 +721,22 @@ def page_title(page) -> str:
     return " ".join(text for size, text in best if size >= top - 0.5).strip()
 
 
-def image_pixmap(doc, xref: int):
-    """CMYK/Gray/alpha-safe pixmap for an image xref."""
+def image_pixmap(doc, xref: int, smask: int = 0):
+    """Return a PNG-safe pixmap without discarding a PDF SoftMask.
+
+    Current PyMuPDF versions already apply an image XObject's ``/SMask`` when
+    opening ``Pixmap(doc, xref)``. Older versions may not, so attach it only
+    when the result still has no alpha channel.  CMYK is converted to RGB while
+    preserving alpha; the old extractor accidentally flattened such artwork.
+    """
     pix = pymupdf.Pixmap(doc, xref)
     if pix.colorspace is None:
         return None
-    if pix.colorspace.n not in (1, 3) or pix.alpha:
-        pix = pymupdf.Pixmap(pymupdf.csRGB, pix)  # drops alpha, converts CMYK
+    if pix.colorspace.n not in (1, 3):
+        pix = pymupdf.Pixmap(pymupdf.csRGB, pix)
+    if smask and not pix.alpha:
+        mask = pymupdf.Pixmap(doc, smask)
+        pix = pymupdf.Pixmap(pix, mask)
     return pix
 
 
@@ -119,7 +755,7 @@ def extract(pdf: str, out_dir: str, min_size: int, share: float,
             weapons: dict[str, str] | None = None,
             name_from_page: bool = True) -> list[dict]:
     doc = pymupdf.open(pdf)
-    page_ids = [p - 1 for p in pages] if pages else list(range(doc.page_count))
+    page_ids = _selected_page_ids(doc, pages)
     skip = set() if keep_repeated else repeated_xrefs(doc, page_ids, share)
     weapons = weapons or {}
     os.makedirs(out_dir, exist_ok=True)
@@ -152,7 +788,7 @@ def extract(pdf: str, out_dir: str, min_size: int, share: float,
         # as <slug>-2.png, <slug>-3.png
         candidates.sort(reverse=True)
         for index, (_, xref, smask, width, height) in enumerate(candidates, 1):
-            pix = image_pixmap(doc, xref)
+            pix = image_pixmap(doc, xref, smask)
             if pix is None:
                 done.add(xref)
                 continue
@@ -171,6 +807,7 @@ def extract(pdf: str, out_dir: str, min_size: int, share: float,
                 "smask": smask or "",
             })
             print(f"  p{pno + 1:03d} {width}x{height} -> {name}")
+    doc.close()
     return rows
 
 
@@ -221,6 +858,10 @@ def main(argv=None) -> int:
                     help="weapons.json компаньона для имён по названию страницы")
     ap.add_argument("--no-page-names", action="store_true",
                     help="не читать название со страницы, оставить pNNN-01.png")
+    ap.add_argument("--manifest", metavar="PATH",
+                    help="куда записать artwork-manifest.json (по умолчанию в --out)")
+    ap.add_argument("--no-manifest", action="store_true",
+                    help="не создавать манифест расположения изображений")
     ap.add_argument("--no-html", action="store_true")
     args = ap.parse_args(argv)
 
@@ -248,6 +889,17 @@ def main(argv=None) -> int:
                                                 "height", "smask"])
         writer.writeheader()
         writer.writerows(rows)
+    if not args.no_manifest:
+        manifest_path = args.manifest or os.path.join(args.out, "artwork-manifest.json")
+        manifest = artwork_manifest(args.pdf, rows, pages, weapons,
+                                    not args.no_page_names)
+        write_artwork_manifest(manifest, manifest_path)
+        audit = manifest["audit"]
+        print("манифест: "
+              f"{manifest_path} — размещений: {audit['image_placements']}, "
+              f"crop: {audit['cropped_placements']}, "
+              f"поворотов: {audit['rotated_placements']}, "
+              f"SoftMask: {audit['soft_mask_placements']}")
     if not args.no_html:
         contact_sheet(rows, args.out)
     print(f"готово: {len(rows)} картинок в {args.out}/")
