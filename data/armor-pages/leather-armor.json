@@ -13,8 +13,8 @@
     "alt": "Кожаная броня"
   },
   "intro": [
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+    "Кожаная броня — практичная и доступная защита пустошей: лёгкая, не сковывает движений и проста в ремонте. Она не сравнится с металлической или энергетической броней по стойкости, но для выживания в повседневных походах и перестрелок вполне достаточно.",
+    "Комплект состоит из нагрудника, поножей и наруча. Кожу можно укрепить дублением, прошивкой или клёпками, а для защиты от холода и осколков использовать подкладку — каждое улучшение сказывается на характеристиках."
   ],
   "tier_titles": {
     "standard": "Стандартная",
@@ -49,5 +49,37 @@
         "leatherUniqueMods"
       ]
     }
-  ]
+  ],
+  "translations": {
+    "en-EN": {
+      "title": "Leather Armor",
+      "intro": [
+        "Leather armor is practical, affordable protection for the wasteland: light, easy to move in, and simple to repair. It cannot match metal or energy armor for durability, but it is more than sufficient for everyday expeditions and firefights.",
+        "The set consists of a chest piece, leg, and arm pieces. The leather can be reinforced with tanning, stitching, or rivets, while lining offers protection from cold and shrapnel; every upgrade changes its statistics."
+      ],
+      "tier_titles": {
+        "standard": "Standard",
+        "sturdy": "Sturdy",
+        "heavy": "Heavy"
+      },
+      "tabs_title": "Categories and Modifications",
+      "tabs": [
+        {
+          "type": "tiers",
+          "title": "Categories",
+          "tiers": ["sturdy", "heavy"]
+        },
+        {
+          "type": "mods",
+          "title": "Armor Modifications",
+          "categories": ["standardMods"]
+        },
+        {
+          "type": "mods",
+          "title": "Upgrades",
+          "categories": ["leatherUniqueMods"]
+        }
+      ]
+    }
+  }
 }

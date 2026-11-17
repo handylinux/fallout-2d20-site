@@ -1,0 +1,687 @@
+[
+  {
+    "id": "pa_systeme_epurateurradiations",
+    "name": "Радиационный скруббер",
+    "specialEffects": [
+      {
+        "id": "effect_pa_radiationPurifier",
+        "description": "Игнорируйте радиационный урон от облучённой еды и напитков, потреблённых, пока броня под питанием."
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_detecteur",
+    "name": "Датчик",
+    "specialEffects": [
+      {
+        "id": "effect_pa_sensor",
+        "description": "Пока броня под питанием, вы можете перебрасывать 1d20 во всех проверках ВОС."
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_athvisee",
+    "name": "Прицельный HUD",
+    "specialEffects": [
+      {
+        "id": "effect_pa_targetingHud",
+        "description": "Малое действие «Прицеливание» позволяет совершить второе малое действие за 0 ОД, пока броня под питанием."
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_basedonnees",
+    "name": "Внутренняя база данных",
+    "specialEffects": [
+      {
+        "id": "effect_pa_internalDatabase",
+        "description": "Пока броня под питанием, вы можете перебрасывать 1d20 во всех проверках ИНТ."
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_barrearmature",
+    "name": "Вваренная арматура",
+    "specialEffects": [
+      {
+        "id": "effect_pa_weldenRebar",
+        "description": "Противник, атаковавший вас в ближнем бою и получивший осложнение, получает 2 БК урона."
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_noyaureacteur",
+    "name": "Реакторный узел",
+    "specialEffects": [
+      {
+        "id": "effect_pa_reactorCore",
+        "description": "Пока броня под питанием: если в начале вашего хода пул ОД группы пуст, добавьте в него +1 ОД."
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_purificateursanguin",
+    "name": "Очиститель крови",
+    "specialEffects": [
+      {
+        "id": "effect_pa_bloodCleanser",
+        "description": "Пока броня под питанием, вы можете перебросить бросок привыкания от вызывающих зависимость препаратов."
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_protocolesurgence",
+    "name": "Протоколы ЧС",
+    "specialEffects": [
+      {
+        "id": "effect_pa_emergencyProtocols",
+        "description": "Пока броня под питанием и ваш ОЗ ниже четверти максимума, получите +1 к Защите и +3 ко всем сопротивлениям урону."
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_servomoteursassiste",
+    "name": "Сервоприводы движения",
+    "specialEffects": [
+      {
+        "id": "effect_pa_motionAssistServos",
+        "description": "Пока броня под питанием, СИЛ каркаса становится 13."
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_dynamocinetique",
+    "name": "Кинетическое динамо",
+    "specialEffects": [
+      {
+        "id": "effect_pa_kineticDynamo",
+        "description": "Пока броня под питанием, получив урон (после снижения СУ), добавьте +1 ОД в пул группы."
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_pompemedicale",
+    "name": "Медицинский насос",
+    "specialEffects": [
+      {
+        "id": "effect_pa_medicalPump",
+        "description": "Пока броня под питанием, когда ваш ОЗ падает ниже половины, вы сразу используете стимулятор: 3 ОЗ или 1 рана."
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_plaquesreactives",
+    "name": "Реактивные пластины",
+    "specialEffects": [
+      {
+        "id": "effect_pa_reactivePlates",
+        "description": "Пока броня под питанием, получив урон от ближней атаки, вы наносите нападающему половину выпавшего урона (физический)."
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_bobinestesla",
+    "name": "Катушки Теслы",
+    "specialEffects": [
+      {
+        "id": "effect_pa_teslaCoils",
+        "description": "Пока броня под питанием, каждый противник, атаковавший вас в ближнем бою, получает 4 БК энергетического урона."
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_stealthboy",
+    "name": "Стелс-бой",
+    "specialEffects": [
+      {
+        "id": "effect_pa_stealthBoy",
+        "description": "Вы можете активировать стелс-бой раз за сцену, потратив 1 заряд."
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_jetpack",
+    "name": "Реактивный ранец",
+    "specialEffects": [
+      {
+        "id": "effect_pa_jetpack",
+        "description": "Перемещаясь, вы можете потратить 1 заряд ранца и пройти на 1 зону больше (по горизонтали или вертикали)."
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_poingrouille",
+    "name": "Ржавые кулаки",
+    "specialEffects": [
+      {
+        "id": "effect_pa_pa_systeme_poingrouille_quality",
+        "description": "Атаки получают качество «Постоянный»."
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_braceletshydrauliques",
+    "name": "Гидравлические наручи",
+    "specialEffects": [
+      {
+        "id": "effect_pa_hydraulicBracers",
+        "description": "Пока броня под питанием, ваши безоружные атаки наносят +2 БК урона."
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_braceletsoptimises",
+    "name": "Оптимизированные наручи",
+    "specialEffects": [
+      {
+        "id": "effect_pa_optimizedBracers",
+        "description": "Пока броня под питанием, вы можете потратить до 4 ОД как бонусный урон в ближнем бою."
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_braceletstesla",
+    "name": "Тесловы наручи",
+    "specialEffects": [
+      {
+        "id": "effect_pa_teslaBracers",
+        "description": "Пока броня под питанием, безоружные атаки наносят +2 БК урона, и этот урон энергетический."
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_amortisseurscalibres",
+    "name": "Калиброванные амортизаторы",
+    "specialEffects": [
+      {
+        "id": "effect_pa_pa_systeme_amortisseurscalibres_carry",
+        "description": "+25 к максимальному весу."
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_eventexplosion",
+    "name": "Взрывной клапан",
+    "specialEffects": [
+      {
+        "id": "effect_pa_explosionVent",
+        "description": "Пока броня под питанием, приземляясь с высоты, вы наносите 4 БК урона всем существам и объектам на близкой дистанции."
+      }
+    ]
+  },
+  {
+    "id": "pa_systeme_servomoteursvitesse",
+    "name": "Форсированные сервоприводы",
+    "specialEffects": [
+      {
+        "id": "effect_pa_overdriveServos",
+        "description": "Пока броня под питанием, при беге вы можете потратить +2 ОД и пройти на 1 зону больше."
+      }
+    ]
+  },
+  {
+    "id": "pa_blindage_titane",
+    "name": "Титановая обшивка",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_blindage_plomb",
+    "name": "Свинцовая обшивка",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_blindage_photovoltaique",
+    "name": "Фотоэлектрическое покрытие",
+    "specialEffects": [
+      {
+        "id": "effect_pa_photovoltaic",
+        "description": "+1 ОД в начале сцены, если вы под прямым солнечным светом (срабатывает один раз)."
+      }
+    ]
+  },
+  {
+    "id": "pa_blindage_antigel",
+    "name": "Антифризное покрытие",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_blindage_prismatique",
+    "name": "Призматическая обшивка",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_blindage_antiexplosion",
+    "name": "Противоосколочная обшивка",
+    "specialEffects": [
+      {
+        "id": "effect_pa_blastResist2",
+        "description": "+2 ко всем сопротивлениям урону от взрывного оружия."
+      }
+    ]
+  },
+  {
+    "id": "pa_amelioration_raider2_casque",
+    "name": "Рейдер II · шлем",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_raider2_plastron",
+    "name": "Рейдер II · нагрудник",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_raider2_brassard",
+    "name": "Рейдер II · наручи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_raider2_jambiere",
+    "name": "Рейдер II · поножи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45b_casque",
+    "name": "Т-45b · шлем",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45b_plastron",
+    "name": "Т-45b · нагрудник",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45b_brassard",
+    "name": "Т-45b · наручи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45b_jambiere",
+    "name": "Т-45b · поножи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45c_casque",
+    "name": "Т-45c · шлем",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45c_plastron",
+    "name": "Т-45c · нагрудник",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45c_brassard",
+    "name": "Т-45c · наручи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45c_jambiere",
+    "name": "Т-45c · поножи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45d_casque",
+    "name": "Т-45d · шлем",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45d_plastron",
+    "name": "Т-45d · нагрудник",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45d_brassard",
+    "name": "Т-45d · наручи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45d_jambiere",
+    "name": "Т-45d · поножи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45e_casque",
+    "name": "Т-45e · шлем",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45e_plastron",
+    "name": "Т-45e · нагрудник",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45e_brassard",
+    "name": "Т-45e · наручи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45e_jambiere",
+    "name": "Т-45e · поножи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45f_casque",
+    "name": "Т-45f · шлем",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45f_plastron",
+    "name": "Т-45f · нагрудник",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45f_brassard",
+    "name": "Т-45f · наручи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t45f_jambiere",
+    "name": "Т-45f · поножи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51b_casque",
+    "name": "Т-51b · шлем",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51b_plastron",
+    "name": "Т-51b · нагрудник",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51b_brassard",
+    "name": "Т-51b · наручи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51b_jambiere",
+    "name": "Т-51b · поножи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51c_casque",
+    "name": "Т-51c · шлем",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51c_plastron",
+    "name": "Т-51c · нагрудник",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51c_brassard",
+    "name": "Т-51c · наручи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51c_jambiere",
+    "name": "Т-51c · поножи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51d_casque",
+    "name": "Т-51d · шлем",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51d_plastron",
+    "name": "Т-51d · нагрудник",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51d_brassard",
+    "name": "Т-51d · наручи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51d_jambiere",
+    "name": "Т-51d · поножи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51e_casque",
+    "name": "Т-51e · шлем",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51e_plastron",
+    "name": "Т-51e · нагрудник",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51e_brassard",
+    "name": "Т-51e · наручи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51e_jambiere",
+    "name": "Т-51e · поножи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51f_casque",
+    "name": "Т-51f · шлем",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51f_plastron",
+    "name": "Т-51f · нагрудник",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51f_brassard",
+    "name": "Т-51f · наручи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t51f_jambiere",
+    "name": "Т-51f · поножи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60b_casque",
+    "name": "Т-60b · шлем",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60b_plastron",
+    "name": "Т-60b · нагрудник",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60b_brassard",
+    "name": "Т-60b · наручи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60b_jambiere",
+    "name": "Т-60b · поножи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60c_casque",
+    "name": "Т-60c · шлем",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60c_plastron",
+    "name": "Т-60c · нагрудник",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60c_brassard",
+    "name": "Т-60c · наручи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60c_jambiere",
+    "name": "Т-60c · поножи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60d_casque",
+    "name": "Т-60d · шлем",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60d_plastron",
+    "name": "Т-60d · нагрудник",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60d_brassard",
+    "name": "Т-60d · наручи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60d_jambiere",
+    "name": "Т-60d · поножи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60e_casque",
+    "name": "Т-60e · шлем",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60e_plastron",
+    "name": "Т-60e · нагрудник",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60e_brassard",
+    "name": "Т-60e · наручи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60e_jambiere",
+    "name": "Т-60e · поножи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60f_casque",
+    "name": "Т-60f · шлем",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60f_plastron",
+    "name": "Т-60f · нагрудник",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60f_brassard",
+    "name": "Т-60f · наручи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_t60f_jambiere",
+    "name": "Т-60f · поножи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk2_casque",
+    "name": "Mk II · шлем",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk2_plastron",
+    "name": "Mk II · нагрудник",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk2_brassard",
+    "name": "Mk II · наручи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk2_jambiere",
+    "name": "Mk II · поножи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk3_casque",
+    "name": "Mk III · шлем",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk3_plastron",
+    "name": "Mk III · нагрудник",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk3_brassard",
+    "name": "Mk III · наручи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk3_jambiere",
+    "name": "Mk III · поножи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk4_casque",
+    "name": "Mk IV · шлем",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk4_plastron",
+    "name": "Mk IV · нагрудник",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk4_brassard",
+    "name": "Mk IV · наручи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk4_jambiere",
+    "name": "Mk IV · поножи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk5_casque",
+    "name": "Mk V · шлем",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk5_plastron",
+    "name": "Mk V · нагрудник",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk5_brassard",
+    "name": "Mk V · наручи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk5_jambiere",
+    "name": "Mk V · поножи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk6_casque",
+    "name": "Mk VI · шлем",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk6_plastron",
+    "name": "Mk VI · нагрудник",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk6_brassard",
+    "name": "Mk VI · наручи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_amelioration_mk6_jambiere",
+    "name": "Mk VI · поножи",
+    "specialEffects": []
+  },
+  {
+    "id": "pa_blindage_protectioniem",
+    "name": "ЭМИ-защита",
+    "specialEffects": []
+  }
+]

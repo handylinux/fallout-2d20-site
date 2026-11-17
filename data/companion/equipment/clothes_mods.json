@@ -1,0 +1,90 @@
+{
+  "clothing_military_fatigues": {
+    "ТКАНЕВАЯ ОСНОВА": [
+      "uniq_weave_ballistic",
+      "uniq_weave_ballistic_mk2",
+      "uniq_weave_ballistic_mk3",
+      "uniq_weave_ballistic_mk4",
+      "uniq_weave_ballistic_mk5"
+    ]
+  },
+  "clothing_casual_clothes": {
+    "ТКАНЕВАЯ ОСНОВА": [
+      "uniq_weave_ballistic",
+      "uniq_weave_ballistic_mk2",
+      "uniq_weave_ballistic_mk3",
+      "uniq_weave_ballistic_mk4",
+      "uniq_weave_ballistic_mk5"
+    ]
+  },
+  "clothing_sturdy_clothes": {
+    "ТКАНЕВАЯ ОСНОВА": [
+      "uniq_weave_ballistic",
+      "uniq_weave_ballistic_mk2",
+      "uniq_weave_ballistic_mk3",
+      "uniq_weave_ballistic_mk4",
+      "uniq_weave_ballistic_mk5"
+    ]
+  },
+  "clothing_road_leathers": {
+    "ТКАНЕВАЯ ОСНОВА": [
+      "uniq_weave_ballistic",
+      "uniq_weave_ballistic_mk2",
+      "uniq_weave_ballistic_mk3",
+      "uniq_weave_ballistic_mk4",
+      "uniq_weave_ballistic_mk5"
+    ]
+  },
+  "clothing_bos_uniform": {
+    "ТКАНЕВАЯ ОСНОВА": [
+      "uniq_weave_ballistic",
+      "uniq_weave_ballistic_mk2",
+      "uniq_weave_ballistic_mk3",
+      "uniq_weave_ballistic_mk4",
+      "uniq_weave_ballistic_mk5"
+    ]
+  },
+  "clothing_fancy_clothes": {
+    "ТКАНЕВАЯ ОСНОВА": [
+      "uniq_weave_ballistic",
+      "uniq_weave_ballistic_mk2",
+      "uniq_weave_ballistic_mk3",
+      "uniq_weave_ballistic_mk4",
+      "uniq_weave_ballistic_mk5"
+    ]
+  },
+  "headwear_casual_hat": {
+    "ТКАНЕВАЯ ОСНОВА": [
+      "uniq_weave_ballistic",
+      "uniq_weave_ballistic_mk2",
+      "uniq_weave_ballistic_mk3",
+      "uniq_weave_ballistic_mk4",
+      "uniq_weave_ballistic_mk5"
+    ]
+  },
+  "headwear_fancy_hat": {
+    "ТКАНЕВАЯ ОСНОВА": [
+      "uniq_weave_ballistic",
+      "uniq_weave_ballistic_mk2",
+      "uniq_weave_ballistic_mk3",
+      "uniq_weave_ballistic_mk4",
+      "uniq_weave_ballistic_mk5"
+    ]
+  },
+  "clothing_vault_jumpsuit": {
+    "ПОДКЛАДКА КОМБИНЕЗОНА": [
+      "uniq_vaultsuit_insulated",
+      "uniq_vaultsuit_processed",
+      "uniq_vaultsuit_sturdy",
+      "uniq_vaultsuit_protective",
+      "uniq_vaultsuit_shielded"
+    ],
+    "ТКАНЕВАЯ ОСНОВА": [
+      "uniq_weave_ballistic",
+      "uniq_weave_ballistic_mk2",
+      "uniq_weave_ballistic_mk3",
+      "uniq_weave_ballistic_mk4",
+      "uniq_weave_ballistic_mk5"
+    ]
+  }
+}

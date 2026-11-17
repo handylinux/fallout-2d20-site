@@ -1,0 +1,3518 @@
+[
+  {
+    "id": "pa_systeme_epurateurradiations",
+    "modType": "powerArmor",
+    "modSlot": "systeme",
+    "modSlotRu": "Система",
+    "protectedAreas": [
+      "Body",
+      "Hand",
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 100
+    },
+    "requiredPerk": "Наука 2",
+    "statModifiers": {},
+    "helperKey": "systeme.epurateurRadiations",
+    "helperName": "Épurateur de radiations"
+  },
+  {
+    "id": "pa_systeme_detecteur",
+    "modType": "powerArmor",
+    "modSlot": "systeme",
+    "modSlotRu": "Система",
+    "protectedAreas": [
+      "Body",
+      "Hand",
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 100
+    },
+    "requiredPerk": "Наука 3",
+    "statModifiers": {},
+    "helperKey": "systeme.detecteur",
+    "helperName": "Détecteur"
+  },
+  {
+    "id": "pa_systeme_athvisee",
+    "modType": "powerArmor",
+    "modSlot": "systeme",
+    "modSlotRu": "Система",
+    "protectedAreas": [
+      "Body",
+      "Hand",
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 100
+    },
+    "requiredPerk": "Наука 3",
+    "statModifiers": {},
+    "helperKey": "systeme.athVisee",
+    "helperName": "ATH de visée"
+  },
+  {
+    "id": "pa_systeme_basedonnees",
+    "modType": "powerArmor",
+    "modSlot": "systeme",
+    "modSlotRu": "Система",
+    "protectedAreas": [
+      "Body",
+      "Hand",
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 100
+    },
+    "requiredPerk": "Наука 2",
+    "statModifiers": {},
+    "helperKey": "systeme.baseDonnees",
+    "helperName": "Base de données interne"
+  },
+  {
+    "id": "pa_systeme_barrearmature",
+    "modType": "powerArmor",
+    "modSlot": "systeme",
+    "modSlotRu": "Система",
+    "protectedAreas": [
+      "Body",
+      "Hand",
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 25
+    },
+    "requiredPerk": "Бронник 1",
+    "statModifiers": {},
+    "helperKey": "systeme.barreArmature",
+    "helperName": "Barre d'armature soudée"
+  },
+  {
+    "id": "pa_systeme_noyaureacteur",
+    "modType": "powerArmor",
+    "modSlot": "systeme",
+    "modSlotRu": "Система",
+    "protectedAreas": [
+      "Body",
+      "Hand",
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 100
+    },
+    "requiredPerk": "Наука 3",
+    "statModifiers": {},
+    "helperKey": "systeme.noyauReacteur",
+    "helperName": "Noyau de réacteur"
+  },
+  {
+    "id": "pa_systeme_purificateursanguin",
+    "modType": "powerArmor",
+    "modSlot": "systeme",
+    "modSlotRu": "Система",
+    "protectedAreas": [
+      "Body",
+      "Hand",
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 100
+    },
+    "requiredPerk": "Наука 1",
+    "statModifiers": {},
+    "helperKey": "systeme.purificateurSanguin",
+    "helperName": "Purificateur sanguin"
+  },
+  {
+    "id": "pa_systeme_protocolesurgence",
+    "modType": "powerArmor",
+    "modSlot": "systeme",
+    "modSlotRu": "Система",
+    "protectedAreas": [
+      "Body",
+      "Hand",
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 100
+    },
+    "requiredPerk": "Наука 4",
+    "statModifiers": {},
+    "helperKey": "systeme.protocolesUrgence",
+    "helperName": "Protocoles d'urgence"
+  },
+  {
+    "id": "pa_systeme_servomoteursassiste",
+    "modType": "powerArmor",
+    "modSlot": "systeme",
+    "modSlotRu": "Система",
+    "protectedAreas": [
+      "Body",
+      "Hand",
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 100
+    },
+    "requiredPerk": "Наука 3",
+    "statModifiers": {},
+    "helperKey": "systeme.servomoteursAssiste",
+    "helperName": "Servomoteurs de déplacement assisté"
+  },
+  {
+    "id": "pa_systeme_dynamocinetique",
+    "modType": "powerArmor",
+    "modSlot": "systeme",
+    "modSlotRu": "Система",
+    "protectedAreas": [
+      "Body",
+      "Hand",
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 100
+    },
+    "requiredPerk": "Наука 4",
+    "statModifiers": {},
+    "helperKey": "systeme.dynamoCinetique",
+    "helperName": "Dynamo cinétique"
+  },
+  {
+    "id": "pa_systeme_pompemedicale",
+    "modType": "powerArmor",
+    "modSlot": "systeme",
+    "modSlotRu": "Система",
+    "protectedAreas": [
+      "Body",
+      "Hand",
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 100
+    },
+    "requiredPerk": "Наука 4",
+    "statModifiers": {},
+    "helperKey": "systeme.pompeMedicale",
+    "helperName": "Pompe médicale"
+  },
+  {
+    "id": "pa_systeme_plaquesreactives",
+    "modType": "powerArmor",
+    "modSlot": "systeme",
+    "modSlotRu": "Система",
+    "protectedAreas": [
+      "Body",
+      "Hand",
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 100
+    },
+    "requiredPerk": "Бронник 4",
+    "statModifiers": {},
+    "helperKey": "systeme.plaquesReactives",
+    "helperName": "Plaques réactives"
+  },
+  {
+    "id": "pa_systeme_bobinestesla",
+    "modType": "powerArmor",
+    "modSlot": "systeme",
+    "modSlotRu": "Система",
+    "protectedAreas": [
+      "Body",
+      "Hand",
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 100
+    },
+    "requiredPerk": "Наука 3",
+    "statModifiers": {},
+    "helperKey": "systeme.bobinesTesla",
+    "helperName": "Bobines Tesla"
+  },
+  {
+    "id": "pa_systeme_stealthboy",
+    "modType": "powerArmor",
+    "modSlot": "systeme",
+    "modSlotRu": "Система",
+    "protectedAreas": [
+      "Body",
+      "Hand",
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 100
+    },
+    "requiredPerk": "Наука 4",
+    "statModifiers": {},
+    "helperKey": "systeme.stealthBoy",
+    "helperName": "Stealth Boy"
+  },
+  {
+    "id": "pa_systeme_jetpack",
+    "modType": "powerArmor",
+    "modSlot": "systeme",
+    "modSlotRu": "Система",
+    "protectedAreas": [
+      "Body",
+      "Hand",
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 500
+    },
+    "requiredPerk": "Бронник 4 / Наука 4",
+    "statModifiers": {},
+    "helperKey": "systeme.jetpack",
+    "helperName": "Jetpack"
+  },
+  {
+    "id": "pa_systeme_poingrouille",
+    "modType": "powerArmor",
+    "modSlot": "systeme",
+    "modSlotRu": "Система",
+    "protectedAreas": [
+      "Body",
+      "Hand",
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 50
+    },
+    "requiredPerk": "Кузнец 1",
+    "statModifiers": {},
+    "helperKey": "systeme.poingRouille",
+    "helperName": "Poing rouillé"
+  },
+  {
+    "id": "pa_systeme_braceletshydrauliques",
+    "modType": "powerArmor",
+    "modSlot": "systeme",
+    "modSlotRu": "Система",
+    "protectedAreas": [
+      "Body",
+      "Hand",
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 100
+    },
+    "requiredPerk": "Кузнец 3",
+    "statModifiers": {},
+    "helperKey": "systeme.braceletsHydrauliques",
+    "helperName": "Bracelets hydrauliques"
+  },
+  {
+    "id": "pa_systeme_braceletsoptimises",
+    "modType": "powerArmor",
+    "modSlot": "systeme",
+    "modSlotRu": "Система",
+    "protectedAreas": [
+      "Body",
+      "Hand",
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 100
+    },
+    "requiredPerk": "Кузнец 1",
+    "statModifiers": {},
+    "helperKey": "systeme.braceletsOptimises",
+    "helperName": "Bracelets optimisés"
+  },
+  {
+    "id": "pa_systeme_braceletstesla",
+    "modType": "powerArmor",
+    "modSlot": "systeme",
+    "modSlotRu": "Система",
+    "protectedAreas": [
+      "Body",
+      "Hand",
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 150
+    },
+    "requiredPerk": "Кузнец 3 / Наука 1",
+    "statModifiers": {},
+    "helperKey": "systeme.braceletsTesla",
+    "helperName": "Bracelets Tesla"
+  },
+  {
+    "id": "pa_systeme_amortisseurscalibres",
+    "modType": "powerArmor",
+    "modSlot": "systeme",
+    "modSlotRu": "Система",
+    "protectedAreas": [
+      "Body",
+      "Hand",
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 100
+    },
+    "requiredPerk": "Наука 2",
+    "statModifiers": {},
+    "helperKey": "systeme.amortisseursCalibres",
+    "helperName": "Amortisseurs calibrés"
+  },
+  {
+    "id": "pa_systeme_eventexplosion",
+    "modType": "powerArmor",
+    "modSlot": "systeme",
+    "modSlotRu": "Система",
+    "protectedAreas": [
+      "Body",
+      "Hand",
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 100
+    },
+    "requiredPerk": "Наука 3",
+    "statModifiers": {},
+    "helperKey": "systeme.eventExplosion",
+    "helperName": "Évent d'explosion"
+  },
+  {
+    "id": "pa_systeme_servomoteursvitesse",
+    "modType": "powerArmor",
+    "modSlot": "systeme",
+    "modSlotRu": "Система",
+    "protectedAreas": [
+      "Body",
+      "Hand",
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 100
+    },
+    "requiredPerk": "Наука 3",
+    "statModifiers": {},
+    "helperKey": "systeme.servomoteursVitesse",
+    "helperName": "Servomoteurs à vitesse surmultipliée"
+  },
+  {
+    "id": "pa_blindage_titane",
+    "modType": "powerArmor",
+    "modSlot": "blindage",
+    "modSlotRu": "Обшивка",
+    "protectedAreas": [
+      "Body",
+      "Hand",
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 10
+    },
+    "requiredPerk": "Бронник 3",
+    "statModifiers": {
+      "hp": {
+        "op": "+",
+        "value": 1
+      }
+    },
+    "helperKey": "blindage.titane",
+    "helperName": "Blindage en titane"
+  },
+  {
+    "id": "pa_blindage_plomb",
+    "modType": "powerArmor",
+    "modSlot": "blindage",
+    "modSlotRu": "Обшивка",
+    "protectedAreas": [
+      "Body",
+      "Hand",
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 10
+    },
+    "requiredPerk": "Бронник 1",
+    "statModifiers": {
+      "radiationDamageRating": {
+        "op": "+",
+        "value": 2
+      }
+    },
+    "helperKey": "blindage.plomb",
+    "helperName": "Blindage en plomb"
+  },
+  {
+    "id": "pa_blindage_photovoltaique",
+    "modType": "powerArmor",
+    "modSlot": "blindage",
+    "modSlotRu": "Обшивка",
+    "protectedAreas": [
+      "Body",
+      "Hand",
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 10
+    },
+    "requiredPerk": "Наука 3",
+    "statModifiers": {},
+    "helperKey": "blindage.photovoltaique",
+    "helperName": "Revêtement photovoltaïque"
+  },
+  {
+    "id": "pa_blindage_antigel",
+    "modType": "powerArmor",
+    "modSlot": "blindage",
+    "modSlotRu": "Обшивка",
+    "protectedAreas": [
+      "Body",
+      "Hand",
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 10
+    },
+    "requiredPerk": "Бронник 1",
+    "statModifiers": {
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      }
+    },
+    "helperKey": "blindage.antigel",
+    "helperName": "Revêtement antigel"
+  },
+  {
+    "id": "pa_blindage_prismatique",
+    "modType": "powerArmor",
+    "modSlot": "blindage",
+    "modSlotRu": "Обшивка",
+    "protectedAreas": [
+      "Body",
+      "Hand",
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 10
+    },
+    "requiredPerk": "Наука 2",
+    "statModifiers": {
+      "energyDamageRating": {
+        "op": "+",
+        "value": 3
+      }
+    },
+    "helperKey": "blindage.prismatique",
+    "helperName": "Blindage prismatique"
+  },
+  {
+    "id": "pa_blindage_antiexplosion",
+    "modType": "powerArmor",
+    "modSlot": "blindage",
+    "modSlotRu": "Обшивка",
+    "protectedAreas": [
+      "Body",
+      "Hand",
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 10
+    },
+    "requiredPerk": "Наука 1",
+    "statModifiers": {},
+    "helperKey": "blindage.antiexplosion",
+    "helperName": "Blindage antiexplosion"
+  },
+  {
+    "id": "pa_amelioration_raider2_casque",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Head"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 5
+    },
+    "requiredPerk": "Бронник 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 3
+      }
+    },
+    "helperKey": "amelioration.raider2.casque",
+    "helperName": "Casque Raider II",
+    "upgradeGroup": "raider2"
+  },
+  {
+    "id": "pa_amelioration_raider2_plastron",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Body"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 10
+    },
+    "requiredPerk": "Бронник 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 4
+      }
+    },
+    "helperKey": "amelioration.raider2.plastron",
+    "helperName": "Plastron Raider II",
+    "upgradeGroup": "raider2"
+  },
+  {
+    "id": "pa_amelioration_raider2_brassard",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Hand"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 7
+    },
+    "requiredPerk": "Бронник 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 3
+      }
+    },
+    "helperKey": "amelioration.raider2.brassard",
+    "helperName": "Brassard Raider II",
+    "upgradeGroup": "raider2"
+  },
+  {
+    "id": "pa_amelioration_raider2_jambiere",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 7
+    },
+    "requiredPerk": "Бронник 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 3
+      }
+    },
+    "helperKey": "amelioration.raider2.jambiere",
+    "helperName": "Jambière Raider II",
+    "upgradeGroup": "raider2"
+  },
+  {
+    "id": "pa_amelioration_t45b_casque",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Head"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 3
+    },
+    "requiredPerk": "Бронник 1",
+    "statModifiers": {
+      "hp": {
+        "op": "+",
+        "value": 1
+      }
+    },
+    "helperKey": "amelioration.t45b.casque",
+    "helperName": "Casque T-45b",
+    "upgradeGroup": "t45b"
+  },
+  {
+    "id": "pa_amelioration_t45b_plastron",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Body"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 7
+    },
+    "requiredPerk": "Бронник 1",
+    "statModifiers": {
+      "hp": {
+        "op": "+",
+        "value": 1
+      }
+    },
+    "helperKey": "amelioration.t45b.plastron",
+    "helperName": "Plastron T-45b",
+    "upgradeGroup": "t45b"
+  },
+  {
+    "id": "pa_amelioration_t45b_brassard",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Hand"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 7
+    },
+    "requiredPerk": "Бронник 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 1
+      }
+    },
+    "helperKey": "amelioration.t45b.brassard",
+    "helperName": "Brassard T-45b",
+    "upgradeGroup": "t45b"
+  },
+  {
+    "id": "pa_amelioration_t45b_jambiere",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 7
+    },
+    "requiredPerk": "Бронник 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 1
+      }
+    },
+    "helperKey": "amelioration.t45b.jambiere",
+    "helperName": "Jambière T-45b",
+    "upgradeGroup": "t45b"
+  },
+  {
+    "id": "pa_amelioration_t45c_casque",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Head"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 6
+    },
+    "requiredPerk": "Бронник 2",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 2
+      }
+    },
+    "helperKey": "amelioration.t45c.casque",
+    "helperName": "Casque T-45c",
+    "upgradeGroup": "t45c"
+  },
+  {
+    "id": "pa_amelioration_t45c_plastron",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Body"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 14
+    },
+    "requiredPerk": "Бронник 2",
+    "statModifiers": {
+      "hp": {
+        "op": "+",
+        "value": 4
+      }
+    },
+    "helperKey": "amelioration.t45c.plastron",
+    "helperName": "Plastron T-45c",
+    "upgradeGroup": "t45c"
+  },
+  {
+    "id": "pa_amelioration_t45c_brassard",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Hand"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 10
+    },
+    "requiredPerk": "Бронник 2",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "hp": {
+        "op": "+",
+        "value": 2
+      }
+    },
+    "helperKey": "amelioration.t45c.brassard",
+    "helperName": "Brassard T-45c",
+    "upgradeGroup": "t45c"
+  },
+  {
+    "id": "pa_amelioration_t45c_jambiere",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 10
+    },
+    "requiredPerk": "Бронник 2",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "hp": {
+        "op": "+",
+        "value": 2
+      }
+    },
+    "helperKey": "amelioration.t45c.jambiere",
+    "helperName": "Jambière T-45c",
+    "upgradeGroup": "t45c"
+  },
+  {
+    "id": "pa_amelioration_t45d_casque",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Head"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 9
+    },
+    "requiredPerk": "Бронник 2 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 3
+      }
+    },
+    "helperKey": "amelioration.t45d.casque",
+    "helperName": "Casque T-45d",
+    "upgradeGroup": "t45d"
+  },
+  {
+    "id": "pa_amelioration_t45d_plastron",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Body"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 21
+    },
+    "requiredPerk": "Бронник 2 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 5
+      }
+    },
+    "helperKey": "amelioration.t45d.plastron",
+    "helperName": "Plastron T-45d",
+    "upgradeGroup": "t45d"
+  },
+  {
+    "id": "pa_amelioration_t45d_brassard",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Hand"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 15
+    },
+    "requiredPerk": "Бронник 2 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 3
+      },
+      "hp": {
+        "op": "+",
+        "value": 3
+      }
+    },
+    "helperKey": "amelioration.t45d.brassard",
+    "helperName": "Brassard T-45d",
+    "upgradeGroup": "t45d"
+  },
+  {
+    "id": "pa_amelioration_t45d_jambiere",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 15
+    },
+    "requiredPerk": "Бронник 2 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 3
+      },
+      "hp": {
+        "op": "+",
+        "value": 3
+      }
+    },
+    "helperKey": "amelioration.t45d.jambiere",
+    "helperName": "Jambière T-45d",
+    "upgradeGroup": "t45d"
+  },
+  {
+    "id": "pa_amelioration_t45e_casque",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Head"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 12
+    },
+    "requiredPerk": "Бронник 3 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "hp": {
+        "op": "+",
+        "value": 3
+      }
+    },
+    "helperKey": "amelioration.t45e.casque",
+    "helperName": "Casque T-45e",
+    "upgradeGroup": "t45e"
+  },
+  {
+    "id": "pa_amelioration_t45e_plastron",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Body"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 2.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 28
+    },
+    "requiredPerk": "Бронник 3 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 7
+      }
+    },
+    "helperKey": "amelioration.t45e.plastron",
+    "helperName": "Plastron T-45e",
+    "upgradeGroup": "t45e"
+  },
+  {
+    "id": "pa_amelioration_t45e_brassard",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Hand"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 20
+    },
+    "requiredPerk": "Бронник 3 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 3
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 3
+      },
+      "hp": {
+        "op": "+",
+        "value": 3
+      }
+    },
+    "helperKey": "amelioration.t45e.brassard",
+    "helperName": "Brassard T-45e",
+    "upgradeGroup": "t45e"
+  },
+  {
+    "id": "pa_amelioration_t45e_jambiere",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 20
+    },
+    "requiredPerk": "Бронник 3 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 3
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 3
+      },
+      "hp": {
+        "op": "+",
+        "value": 3
+      }
+    },
+    "helperKey": "amelioration.t45e.jambiere",
+    "helperName": "Jambière T-45e",
+    "upgradeGroup": "t45e"
+  },
+  {
+    "id": "pa_amelioration_t45f_casque",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Head"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 15
+    },
+    "requiredPerk": "Бронник 3 / Наука 2",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "hp": {
+        "op": "+",
+        "value": 4
+      }
+    },
+    "helperKey": "amelioration.t45f.casque",
+    "helperName": "Casque T-45f",
+    "upgradeGroup": "t45f"
+  },
+  {
+    "id": "pa_amelioration_t45f_plastron",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Body"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 2.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 35
+    },
+    "requiredPerk": "Бронник 3 / Наука 2",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 8
+      }
+    },
+    "helperKey": "amelioration.t45f.plastron",
+    "helperName": "Plastron T-45f",
+    "upgradeGroup": "t45f"
+  },
+  {
+    "id": "pa_amelioration_t45f_brassard",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Hand"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 2.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 25
+    },
+    "requiredPerk": "Бронник 3 / Наука 2",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 3
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 4
+      },
+      "hp": {
+        "op": "+",
+        "value": 4
+      }
+    },
+    "helperKey": "amelioration.t45f.brassard",
+    "helperName": "Brassard T-45f",
+    "upgradeGroup": "t45f"
+  },
+  {
+    "id": "pa_amelioration_t45f_jambiere",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 2.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 25
+    },
+    "requiredPerk": "Бронник 3 / Наука 2",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 3
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 4
+      },
+      "hp": {
+        "op": "+",
+        "value": 4
+      }
+    },
+    "helperKey": "amelioration.t45f.jambiere",
+    "helperName": "Jambière T-45f",
+    "upgradeGroup": "t45f"
+  },
+  {
+    "id": "pa_amelioration_t51b_casque",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Head"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 4
+    },
+    "requiredPerk": "Бронник 1",
+    "statModifiers": {
+      "hp": {
+        "op": "+",
+        "value": 1
+      }
+    },
+    "helperKey": "amelioration.t51b.casque",
+    "helperName": "Casque T-51b",
+    "upgradeGroup": "t51b"
+  },
+  {
+    "id": "pa_amelioration_t51b_plastron",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Body"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 9
+    },
+    "requiredPerk": "Бронник 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 1
+      }
+    },
+    "helperKey": "amelioration.t51b.plastron",
+    "helperName": "Plastron T-51b",
+    "upgradeGroup": "t51b"
+  },
+  {
+    "id": "pa_amelioration_t51b_brassard",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Hand"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 6
+    },
+    "requiredPerk": "Бронник 1",
+    "statModifiers": {
+      "hp": {
+        "op": "+",
+        "value": 1
+      }
+    },
+    "helperKey": "amelioration.t51b.brassard",
+    "helperName": "Brassard T-51b",
+    "upgradeGroup": "t51b"
+  },
+  {
+    "id": "pa_amelioration_t51b_jambiere",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 6
+    },
+    "requiredPerk": "Бронник 1",
+    "statModifiers": {
+      "hp": {
+        "op": "+",
+        "value": 1
+      }
+    },
+    "helperKey": "amelioration.t51b.jambiere",
+    "helperName": "Jambière T-51b",
+    "upgradeGroup": "t51b"
+  },
+  {
+    "id": "pa_amelioration_t51c_casque",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Head"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 8
+    },
+    "requiredPerk": "Бронник 2",
+    "statModifiers": {
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 1
+      }
+    },
+    "helperKey": "amelioration.t51c.casque",
+    "helperName": "Casque T-51c",
+    "upgradeGroup": "t51c"
+  },
+  {
+    "id": "pa_amelioration_t51c_plastron",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Body"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 18
+    },
+    "requiredPerk": "Бронник 2",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 3
+      }
+    },
+    "helperKey": "amelioration.t51c.plastron",
+    "helperName": "Plastron T-51c",
+    "upgradeGroup": "t51c"
+  },
+  {
+    "id": "pa_amelioration_t51c_brassard",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Hand"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 13
+    },
+    "requiredPerk": "Бронник 2",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 1
+      }
+    },
+    "helperKey": "amelioration.t51c.brassard",
+    "helperName": "Brassard T-51c",
+    "upgradeGroup": "t51c"
+  },
+  {
+    "id": "pa_amelioration_t51c_jambiere",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 13
+    },
+    "requiredPerk": "Бронник 2",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 1
+      }
+    },
+    "helperKey": "amelioration.t51c.jambiere",
+    "helperName": "Jambière T-51c",
+    "upgradeGroup": "t51c"
+  },
+  {
+    "id": "pa_amelioration_t51d_casque",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Head"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 12
+    },
+    "requiredPerk": "Бронник 2 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 2
+      }
+    },
+    "helperKey": "amelioration.t51d.casque",
+    "helperName": "Casque T-51d",
+    "upgradeGroup": "t51d"
+  },
+  {
+    "id": "pa_amelioration_t51d_plastron",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Body"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 27
+    },
+    "requiredPerk": "Бронник 2 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 4
+      }
+    },
+    "helperKey": "amelioration.t51d.plastron",
+    "helperName": "Plastron T-51d",
+    "upgradeGroup": "t51d"
+  },
+  {
+    "id": "pa_amelioration_t51d_brassard",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Hand"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 19
+    },
+    "requiredPerk": "Бронник 2 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 2
+      }
+    },
+    "helperKey": "amelioration.t51d.brassard",
+    "helperName": "Brassard T-51d",
+    "upgradeGroup": "t51d"
+  },
+  {
+    "id": "pa_amelioration_t51d_jambiere",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 19
+    },
+    "requiredPerk": "Бронник 2 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 2
+      }
+    },
+    "helperKey": "amelioration.t51d.jambiere",
+    "helperName": "Jambière T-51d",
+    "upgradeGroup": "t51d"
+  },
+  {
+    "id": "pa_amelioration_t51e_casque",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Head"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 16
+    },
+    "requiredPerk": "Бронник 3 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 3
+      }
+    },
+    "helperKey": "amelioration.t51e.casque",
+    "helperName": "Casque T-51e",
+    "upgradeGroup": "t51e"
+  },
+  {
+    "id": "pa_amelioration_t51e_plastron",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Body"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 2.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 36
+    },
+    "requiredPerk": "Бронник 3 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 6
+      }
+    },
+    "helperKey": "amelioration.t51e.plastron",
+    "helperName": "Plastron T-51e",
+    "upgradeGroup": "t51e"
+  },
+  {
+    "id": "pa_amelioration_t51e_brassard",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Hand"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 26
+    },
+    "requiredPerk": "Бронник 3 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "hp": {
+        "op": "+",
+        "value": 3
+      }
+    },
+    "helperKey": "amelioration.t51e.brassard",
+    "helperName": "Brassard T-51e",
+    "upgradeGroup": "t51e"
+  },
+  {
+    "id": "pa_amelioration_t51e_jambiere",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 26
+    },
+    "requiredPerk": "Бронник 3 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "hp": {
+        "op": "+",
+        "value": 3
+      }
+    },
+    "helperKey": "amelioration.t51e.jambiere",
+    "helperName": "Jambière T-51e",
+    "upgradeGroup": "t51e"
+  },
+  {
+    "id": "pa_amelioration_t51f_casque",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Head"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 20
+    },
+    "requiredPerk": "Бронник 3 / Наука 2",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "hp": {
+        "op": "+",
+        "value": 3
+      }
+    },
+    "helperKey": "amelioration.t51f.casque",
+    "helperName": "Casque T-51f",
+    "upgradeGroup": "t51f"
+  },
+  {
+    "id": "pa_amelioration_t51f_plastron",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Body"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 2.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 45
+    },
+    "requiredPerk": "Бронник 3 / Наука 2",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "hp": {
+        "op": "+",
+        "value": 7
+      }
+    },
+    "helperKey": "amelioration.t51f.plastron",
+    "helperName": "Plastron T-51f",
+    "upgradeGroup": "t51f"
+  },
+  {
+    "id": "pa_amelioration_t51f_brassard",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Hand"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 2.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 32
+    },
+    "requiredPerk": "Бронник 3 / Наука 2",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "hp": {
+        "op": "+",
+        "value": 3
+      }
+    },
+    "helperKey": "amelioration.t51f.brassard",
+    "helperName": "Brassard T-51f",
+    "upgradeGroup": "t51f"
+  },
+  {
+    "id": "pa_amelioration_t51f_jambiere",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 2.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 32
+    },
+    "requiredPerk": "Бронник 3 / Наука 2",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "hp": {
+        "op": "+",
+        "value": 3
+      }
+    },
+    "helperKey": "amelioration.t51f.jambiere",
+    "helperName": "Jambière T-51f",
+    "upgradeGroup": "t51f"
+  },
+  {
+    "id": "pa_amelioration_t60b_casque",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Head"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 32
+    },
+    "requiredPerk": "",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 1
+      }
+    },
+    "helperKey": "amelioration.t60b.casque",
+    "helperName": "Casque T-60b",
+    "upgradeGroup": "t60b"
+  },
+  {
+    "id": "pa_amelioration_t60b_plastron",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Body"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 37
+    },
+    "requiredPerk": "",
+    "statModifiers": {
+      "hp": {
+        "op": "+",
+        "value": 2
+      }
+    },
+    "helperKey": "amelioration.t60b.plastron",
+    "helperName": "Plastron T-60b",
+    "upgradeGroup": "t60b"
+  },
+  {
+    "id": "pa_amelioration_t60b_brassard",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Hand"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 35
+    },
+    "requiredPerk": "",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 1
+      }
+    },
+    "helperKey": "amelioration.t60b.brassard",
+    "helperName": "Brassard T-60b",
+    "upgradeGroup": "t60b"
+  },
+  {
+    "id": "pa_amelioration_t60b_jambiere",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 35
+    },
+    "requiredPerk": "",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 1
+      }
+    },
+    "helperKey": "amelioration.t60b.jambiere",
+    "helperName": "Jambière T-60b",
+    "upgradeGroup": "t60b"
+  },
+  {
+    "id": "pa_amelioration_t60c_casque",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Head"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 64
+    },
+    "requiredPerk": "Бронник 1 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 2
+      }
+    },
+    "helperKey": "amelioration.t60c.casque",
+    "helperName": "Casque T-60c",
+    "upgradeGroup": "t60c"
+  },
+  {
+    "id": "pa_amelioration_t60c_plastron",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Body"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 74
+    },
+    "requiredPerk": "Бронник 1 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 3
+      }
+    },
+    "helperKey": "amelioration.t60c.plastron",
+    "helperName": "Plastron T-60c",
+    "upgradeGroup": "t60c"
+  },
+  {
+    "id": "pa_amelioration_t60c_brassard",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Hand"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 70
+    },
+    "requiredPerk": "Бронник 1 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 2
+      }
+    },
+    "helperKey": "amelioration.t60c.brassard",
+    "helperName": "Brassard T-60c",
+    "upgradeGroup": "t60c"
+  },
+  {
+    "id": "pa_amelioration_t60c_jambiere",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 70
+    },
+    "requiredPerk": "Бронник 1 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 2
+      }
+    },
+    "helperKey": "amelioration.t60c.jambiere",
+    "helperName": "Jambière T-60c",
+    "upgradeGroup": "t60c"
+  },
+  {
+    "id": "pa_amelioration_t60d_casque",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Head"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 96
+    },
+    "requiredPerk": "Бронник 2 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "hp": {
+        "op": "+",
+        "value": 2
+      }
+    },
+    "helperKey": "amelioration.t60d.casque",
+    "helperName": "Casque T-60d",
+    "upgradeGroup": "t60d"
+  },
+  {
+    "id": "pa_amelioration_t60d_plastron",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Body"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 111
+    },
+    "requiredPerk": "Бронник 2 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 5
+      }
+    },
+    "helperKey": "amelioration.t60d.plastron",
+    "helperName": "Plastron T-60d",
+    "upgradeGroup": "t60d"
+  },
+  {
+    "id": "pa_amelioration_t60d_brassard",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Hand"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 105
+    },
+    "requiredPerk": "Бронник 2 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "hp": {
+        "op": "+",
+        "value": 2
+      }
+    },
+    "helperKey": "amelioration.t60d.brassard",
+    "helperName": "Brassard T-60d",
+    "upgradeGroup": "t60d"
+  },
+  {
+    "id": "pa_amelioration_t60d_jambiere",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 105
+    },
+    "requiredPerk": "Бронник 2 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "hp": {
+        "op": "+",
+        "value": 2
+      }
+    },
+    "helperKey": "amelioration.t60d.jambiere",
+    "helperName": "Jambière T-60d",
+    "upgradeGroup": "t60d"
+  },
+  {
+    "id": "pa_amelioration_t60e_casque",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Head"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 128
+    },
+    "requiredPerk": "Бронник 3 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "hp": {
+        "op": "+",
+        "value": 3
+      }
+    },
+    "helperKey": "amelioration.t60e.casque",
+    "helperName": "Casque T-60e",
+    "upgradeGroup": "t60e"
+  },
+  {
+    "id": "pa_amelioration_t60e_plastron",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Body"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 2.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 148
+    },
+    "requiredPerk": "Бронник 3 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 7
+      }
+    },
+    "helperKey": "amelioration.t60e.plastron",
+    "helperName": "Plastron T-60e",
+    "upgradeGroup": "t60e"
+  },
+  {
+    "id": "pa_amelioration_t60e_brassard",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Hand"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 140
+    },
+    "requiredPerk": "Бронник 3 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "hp": {
+        "op": "+",
+        "value": 3
+      }
+    },
+    "helperKey": "amelioration.t60e.brassard",
+    "helperName": "Brassard T-60e",
+    "upgradeGroup": "t60e"
+  },
+  {
+    "id": "pa_amelioration_t60e_jambiere",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 140
+    },
+    "requiredPerk": "Бронник 3 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "hp": {
+        "op": "+",
+        "value": 3
+      }
+    },
+    "helperKey": "amelioration.t60e.jambiere",
+    "helperName": "Jambière T-60e",
+    "upgradeGroup": "t60e"
+  },
+  {
+    "id": "pa_amelioration_t60f_casque",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Head"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 160
+    },
+    "requiredPerk": "Бронник 3 / Наука 2",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 3
+      },
+      "hp": {
+        "op": "+",
+        "value": 4
+      }
+    },
+    "helperKey": "amelioration.t60f.casque",
+    "helperName": "Casque T-60f",
+    "upgradeGroup": "t60f"
+  },
+  {
+    "id": "pa_amelioration_t60f_plastron",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Body"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 2.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 185
+    },
+    "requiredPerk": "Бронник 3 / Наука 2",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 8
+      }
+    },
+    "helperKey": "amelioration.t60f.plastron",
+    "helperName": "Plastron T-60f",
+    "upgradeGroup": "t60f"
+  },
+  {
+    "id": "pa_amelioration_t60f_brassard",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Hand"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 2.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 175
+    },
+    "requiredPerk": "Бронник 3 / Наука 2",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 3
+      },
+      "hp": {
+        "op": "+",
+        "value": 4
+      }
+    },
+    "helperKey": "amelioration.t60f.brassard",
+    "helperName": "Brassard T-60f",
+    "upgradeGroup": "t60f"
+  },
+  {
+    "id": "pa_amelioration_t60f_jambiere",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 2.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 175
+    },
+    "requiredPerk": "Бронник 3 / Наука 2",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 3
+      },
+      "hp": {
+        "op": "+",
+        "value": 4
+      }
+    },
+    "helperKey": "amelioration.t60f.jambiere",
+    "helperName": "Jambière T-60f",
+    "upgradeGroup": "t60f"
+  },
+  {
+    "id": "pa_amelioration_mk2_casque",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Head"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 7
+    },
+    "requiredPerk": "",
+    "statModifiers": {
+      "hp": {
+        "op": "+",
+        "value": 1
+      }
+    },
+    "helperKey": "amelioration.mk2.casque",
+    "helperName": "Casque Mk II",
+    "upgradeGroup": "mk2"
+  },
+  {
+    "id": "pa_amelioration_mk2_plastron",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Body"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 14
+    },
+    "requiredPerk": "",
+    "statModifiers": {
+      "hp": {
+        "op": "+",
+        "value": 1
+      }
+    },
+    "helperKey": "amelioration.mk2.plastron",
+    "helperName": "Plastron Mk II",
+    "upgradeGroup": "mk2"
+  },
+  {
+    "id": "pa_amelioration_mk2_brassard",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Hand"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 10
+    },
+    "requiredPerk": "",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      }
+    },
+    "helperKey": "amelioration.mk2.brassard",
+    "helperName": "Brassard Mk II",
+    "upgradeGroup": "mk2"
+  },
+  {
+    "id": "pa_amelioration_mk2_jambiere",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 10
+    },
+    "requiredPerk": "",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      }
+    },
+    "helperKey": "amelioration.mk2.jambiere",
+    "helperName": "Jambière Mk II",
+    "upgradeGroup": "mk2"
+  },
+  {
+    "id": "pa_amelioration_mk3_casque",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Head"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 14
+    },
+    "requiredPerk": "Бронник 1 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 1
+      }
+    },
+    "helperKey": "amelioration.mk3.casque",
+    "helperName": "Casque Mk III",
+    "upgradeGroup": "mk3"
+  },
+  {
+    "id": "pa_amelioration_mk3_plastron",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Body"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 28
+    },
+    "requiredPerk": "Бронник 1 / Наука 1",
+    "statModifiers": {
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 2
+      }
+    },
+    "helperKey": "amelioration.mk3.plastron",
+    "helperName": "Plastron Mk III",
+    "upgradeGroup": "mk3"
+  },
+  {
+    "id": "pa_amelioration_mk3_brassard",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Hand"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 20
+    },
+    "requiredPerk": "Бронник 1 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 1
+      }
+    },
+    "helperKey": "amelioration.mk3.brassard",
+    "helperName": "Brassard Mk III",
+    "upgradeGroup": "mk3"
+  },
+  {
+    "id": "pa_amelioration_mk3_jambiere",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 20
+    },
+    "requiredPerk": "Бронник 1 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 1
+      }
+    },
+    "helperKey": "amelioration.mk3.jambiere",
+    "helperName": "Jambière Mk III",
+    "upgradeGroup": "mk3"
+  },
+  {
+    "id": "pa_amelioration_mk4_casque",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Head"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 21
+    },
+    "requiredPerk": "Бронник 2 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 2
+      }
+    },
+    "helperKey": "amelioration.mk4.casque",
+    "helperName": "Casque Mk IV",
+    "upgradeGroup": "mk4"
+  },
+  {
+    "id": "pa_amelioration_mk4_plastron",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Body"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 42
+    },
+    "requiredPerk": "Бронник 2 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 3
+      }
+    },
+    "helperKey": "amelioration.mk4.plastron",
+    "helperName": "Plastron Mk IV",
+    "upgradeGroup": "mk4"
+  },
+  {
+    "id": "pa_amelioration_mk4_brassard",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Hand"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 30
+    },
+    "requiredPerk": "Бронник 2 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 2
+      }
+    },
+    "helperKey": "amelioration.mk4.brassard",
+    "helperName": "Brassard Mk IV",
+    "upgradeGroup": "mk4"
+  },
+  {
+    "id": "pa_amelioration_mk4_jambiere",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 30
+    },
+    "requiredPerk": "Бронник 2 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 2
+      }
+    },
+    "helperKey": "amelioration.mk4.jambiere",
+    "helperName": "Jambière Mk IV",
+    "upgradeGroup": "mk4"
+  },
+  {
+    "id": "pa_amelioration_mk5_casque",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Head"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 28
+    },
+    "requiredPerk": "Бронник 3 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "hp": {
+        "op": "+",
+        "value": 2
+      }
+    },
+    "helperKey": "amelioration.mk5.casque",
+    "helperName": "Casque Mk V",
+    "upgradeGroup": "mk5"
+  },
+  {
+    "id": "pa_amelioration_mk5_plastron",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Body"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 2.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 56
+    },
+    "requiredPerk": "Бронник 3 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 1
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "hp": {
+        "op": "+",
+        "value": 4
+      }
+    },
+    "helperKey": "amelioration.mk5.plastron",
+    "helperName": "Plastron Mk V",
+    "upgradeGroup": "mk5"
+  },
+  {
+    "id": "pa_amelioration_mk5_brassard",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Hand"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 40
+    },
+    "requiredPerk": "Бронник 3 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "hp": {
+        "op": "+",
+        "value": 2
+      }
+    },
+    "helperKey": "amelioration.mk5.brassard",
+    "helperName": "Brassard Mk V",
+    "upgradeGroup": "mk5"
+  },
+  {
+    "id": "pa_amelioration_mk5_jambiere",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 40
+    },
+    "requiredPerk": "Бронник 3 / Наука 1",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "hp": {
+        "op": "+",
+        "value": 2
+      }
+    },
+    "helperKey": "amelioration.mk5.jambiere",
+    "helperName": "Jambière Mk V",
+    "upgradeGroup": "mk5"
+  },
+  {
+    "id": "pa_amelioration_mk6_casque",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Head"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 1.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 35
+    },
+    "requiredPerk": "Бронник 3 / Наука 2",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "hp": {
+        "op": "+",
+        "value": 3
+      }
+    },
+    "helperKey": "amelioration.mk6.casque",
+    "helperName": "Casque Mk VI",
+    "upgradeGroup": "mk6"
+  },
+  {
+    "id": "pa_amelioration_mk6_plastron",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Body"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 2.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 70
+    },
+    "requiredPerk": "Бронник 3 / Наука 2",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "hp": {
+        "op": "+",
+        "value": 5
+      }
+    },
+    "helperKey": "amelioration.mk6.plastron",
+    "helperName": "Plastron Mk VI",
+    "upgradeGroup": "mk6"
+  },
+  {
+    "id": "pa_amelioration_mk6_brassard",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Hand"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 2.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 50
+    },
+    "requiredPerk": "Бронник 3 / Наука 2",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 3
+      },
+      "hp": {
+        "op": "+",
+        "value": 4
+      }
+    },
+    "helperKey": "amelioration.mk6.brassard",
+    "helperName": "Brassard Mk VI",
+    "upgradeGroup": "mk6"
+  },
+  {
+    "id": "pa_amelioration_mk6_jambiere",
+    "modType": "powerArmor",
+    "modSlot": "amelioration",
+    "modSlotRu": "Улучшение",
+    "protectedAreas": [
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 2.0
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 50
+    },
+    "requiredPerk": "Бронник 3 / Наука 2",
+    "statModifiers": {
+      "physicalDamageRating": {
+        "op": "+",
+        "value": 2
+      },
+      "energyDamageRating": {
+        "op": "+",
+        "value": 3
+      },
+      "hp": {
+        "op": "+",
+        "value": 4
+      }
+    },
+    "helperKey": "amelioration.mk6.jambiere",
+    "helperName": "Jambière Mk VI",
+    "upgradeGroup": "mk6"
+  },
+  {
+    "id": "pa_blindage_protectioniem",
+    "modType": "powerArmor",
+    "modSlot": "blindage",
+    "modSlotRu": "Обшивка",
+    "protectedAreas": [
+      "Body",
+      "Hand",
+      "Leg"
+    ],
+    "weightModifier": {
+      "op": "+",
+      "value": 0.5
+    },
+    "costModifier": {
+      "op": "+",
+      "value": 20
+    },
+    "requiredPerk": "Бронник 1",
+    "statModifiers": {
+      "energyDamageRating": {
+        "op": "+",
+        "value": 2
+      }
+    },
+    "helperKey": "blindage.protectionIem",
+    "helperName": "Protection IEM"
+  }
+]

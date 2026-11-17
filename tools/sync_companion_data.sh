@@ -9,15 +9,21 @@ src=${1:?укажите путь к клонированному Fallout-2d20-co
 root=$(cd "$(dirname "$0")/.." && pwd)
 dst="$root/data/companion"
 
-mkdir -p "$dst/equipment" "$dst/i18n/ru-RU/data/equipment/armor"
+mkdir -p "$dst/equipment" \
+  "$dst/i18n/ru-RU/data/equipment/armor" \
+  "$dst/i18n/en-EN/data/equipment/armor"
 
-for file in armor.json powerArmor.json armor_mods.json uniq_armor_mods.json armor_effects.json categories.json; do
+for file in armor.json powerArmor.json clothes.json armor_mods.json \
+            uniq_armor_mods.json armor_effects.json categories.json; do
   cp "$src/modules/fallout/data/equipment/$file" "$dst/equipment/$file"
 done
 
-for file in armor.json powerArmor.json armor_mods.json uniq_armor_mods.json armor_effects.json; do
-  cp "$src/modules/fallout/i18n/ru-RU/data/equipment/armor/$file" \
-     "$dst/i18n/ru-RU/data/equipment/armor/$file"
+for locale in ru-RU en-EN; do
+  for file in armor.json powerArmor.json clothes.json armor_mods.json \
+              uniq_armor_mods.json armor_effects.json; do
+    cp "$src/modules/fallout/i18n/$locale/data/equipment/armor/$file" \
+       "$dst/i18n/$locale/data/equipment/armor/$file"
+  done
 done
 
-echo "обновлено: $dst"
+echo "обновлено: $dst (ru-RU, en-EN)"
