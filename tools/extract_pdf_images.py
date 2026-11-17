@@ -758,6 +758,33 @@ def background_xrefs(page) -> set[int]:
     return out
 
 
+# Publisher exports several legitimate horizontal weapon illustrations with a
+# 258–279 px short side.  Testing both native dimensions against ``min_size``
+# silently drops them, even though they occupy a large card area.  The native
+# longest side still filters UI icons; rendered coverage filters decorative
+# rules such as a 6×822 px vertical strip.
+MIN_RENDERED_ART_SHARE = 0.05
+
+
+def is_artwork_candidate(page, xref: int, width: int, height: int,
+                         min_size: int) -> bool:
+    """Whether an image is large enough *and* visibly substantial on a page.
+
+    ``min_size`` applies to the longer native edge.  The placement must cover
+    at least five percent of the page, which admits wide Publisher weapon art
+    while excluding thin ornaments whose long edge happens to be large.
+    """
+    if max(width, height) < min_size:
+        return False
+    try:
+        placements = page.get_image_rects(xref)
+    except Exception:  # pragma: no cover - compatibility fallback
+        return min(width, height) >= min_size
+    page_area = page.rect.width * page.rect.height
+    return any(rect.width * rect.height >= page_area * MIN_RENDERED_ART_SHARE
+               for rect in placements)
+
+
 def page_title(page) -> str:
     """Самая крупная надпись в верхней части страницы — название оружия."""
     best: list[tuple[float, str]] = []
@@ -858,7 +885,7 @@ def extract(pdf: str, out_dir: str, min_size: int, share: float,
             if xref in background and not keep_repeated:
                 done.add(xref)
                 continue
-            if width < min_size or height < min_size:
+            if not is_artwork_candidate(page, xref, width, height, min_size):
                 done.add(xref)
                 continue
             candidates.append((width * height, xref, smask, width, height))
@@ -927,7 +954,7 @@ def main(argv=None) -> int:
     ap.add_argument("--out", default="pdf-images")
     ap.add_argument("--pages", help="страницы через запятую или 12-40")
     ap.add_argument("--min-size", type=int, default=300,
-                    help="минимальная сторона картинки в пикселях (300)")
+                    help="минимальная длинная сторона artwork в пикселях (300)")
     ap.add_argument("--share", type=float, default=0.5,
                     help="доля страниц, с которой картинка считается текстурой")
     ap.add_argument("--keep-repeated", action="store_true",

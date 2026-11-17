@@ -3,7 +3,7 @@
   "enabled": true,
   "manifest": {
     "file": "artwork-manifest.json",
-    "sha256": "8182ff1ae5fa6cc3dc2a82cc24b80f3c02fbb601451fcdc15def03256a651370",
+    "sha256": "77e8ef9a4a8097ee7a6248d97373a5368e895648d1d5af1c33de752dab9df1a2",
     "source": {
       "file": "Справочник оружия.pdf",
       "sha256": "48c85e12c5eca695e0c4a4fc3a8bf9276d4fb1d1715b6a62f4b0f9c26ffdbd35",
@@ -19,9 +19,9 @@
     }
   },
   "counts": {
-    "manifest-page-without-exported-artwork": 9,
-    "no-manifest-page": 61,
-    "replayed": 73
+    "manifest-page-without-exported-artwork": 6,
+    "no-manifest-page": 60,
+    "replayed": 77
   },
   "weapons": {
     "unarmed_human": {
@@ -163,8 +163,15 @@
       ]
     },
     "weapon_anti_materiel_rifle": {
-      "status": "manifest-page-without-exported-artwork",
-      "source_page": 35
+      "status": "replayed",
+      "source_page": 35,
+      "placements": [
+        {
+          "xref": 668,
+          "asset": "anti-materiel-rifle.png",
+          "draw_order": 4
+        }
+      ]
     },
     "weapon_arc_welder": {
       "status": "replayed",
@@ -268,8 +275,15 @@
       ]
     },
     "weapon_black_powder_rifle": {
-      "status": "manifest-page-without-exported-artwork",
-      "source_page": 38
+      "status": "replayed",
+      "source_page": 38,
+      "placements": [
+        {
+          "xref": 740,
+          "asset": "black-powder-rifle.png",
+          "draw_order": 4
+        }
+      ]
     },
     "weapon_board": {
       "status": "no-manifest-page"
@@ -936,8 +950,15 @@
       "status": "no-manifest-page"
     },
     "weapon_sniper_rifle": {
-      "status": "manifest-page-without-exported-artwork",
-      "source_page": 45
+      "status": "replayed",
+      "source_page": 45,
+      "placements": [
+        {
+          "xref": 852,
+          "asset": "sniper-rifle.png",
+          "draw_order": 14
+        }
+      ]
     },
     "weapon_sten": {
       "status": "replayed",
@@ -951,7 +972,15 @@
       ]
     },
     "weapon_sten_injector": {
-      "status": "no-manifest-page"
+      "status": "replayed",
+      "source_page": 77,
+      "placements": [
+        {
+          "xref": 1374,
+          "asset": "sten-injector.png",
+          "draw_order": 17
+        }
+      ]
     },
     "weapon_submachine_gun": {
       "status": "replayed",

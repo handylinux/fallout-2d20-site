@@ -6,6 +6,12 @@
       "weapon_id": "weapon_pistol_injector",
       "source_page": 47,
       "reason": "В рабочей копии Companion для weapon_pistol_injector нет русской строки name; заголовок и характеристики страницы 47 исходного Publisher PDF идентифицируют предмет."
+    },
+    {
+      "title": "СТЕН - ИНЪЕКТОР",
+      "weapon_id": "weapon_sten_injector",
+      "source_page": 77,
+      "reason": "Publisher пишет «инъектор», а рабочая русская локализация Companion — «инжектор»; название, характеристики и отдельная иллюстрация на странице 77 исходного PDF однозначно идентифицируют weapon_sten_injector."
     }
   ]
 }

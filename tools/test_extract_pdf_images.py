@@ -21,7 +21,9 @@ pdfmetrics.registerFont(TTFont("Carlito-Bold",
 
 
 def make_image(path, size, color):
-    Image.new("RGB", (size, size), color).save(path)
+    if isinstance(size, int):
+        size = (size, size)
+    Image.new("RGB", size, color).save(path)
 
 
 def make_pdf(path, images):
@@ -66,6 +68,21 @@ class ExtractTests(unittest.TestCase):
     def test_small_images_are_skipped(self):
         rows = ex.extract(self.pdf, self.out(), 300, 0.9, None, False)
         self.assertEqual(len(rows), 2)
+
+    def test_wide_short_page_art_is_kept_but_a_thin_ornament_is_not(self):
+        # Publisher's sniper rifle and Sten-injector art are 1116×279 and
+        # 1093×273 px: visually large artwork with one side just below 300.
+        # A longest-edge-only rule would also accept a 6×822 px rule, so the
+        # rendered-page coverage guard must reject that ornament.
+        wide = os.path.join(self.dir, "wide.png")
+        rule = os.path.join(self.dir, "rule.png")
+        make_image(wide, (1100, 275), "#c00")
+        make_image(rule, (6, 822), "#0c0")
+        pdf = os.path.join(self.dir, "wide-art.pdf")
+        make_pdf(pdf, [[(wide, 500, 130), (rule, 5, 700)]])
+        rows = ex.extract(pdf, self.out(), 300, 0.9, None, False, {}, False)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual((rows[0]["width"], rows[0]["height"]), (1100, 275))
 
     def test_same_image_on_every_page_is_treated_as_texture(self):
         pdf = os.path.join(self.dir, "texture.pdf")
@@ -136,6 +153,35 @@ class ExtractTests(unittest.TestCase):
         with Image.open(os.path.join(self.out(), rows[0]["file"])) as image:
             self.assertIn("A", image.getbands())
             self.assertLess(image.getchannel("A").getextrema()[0], 255)
+
+
+PUBLISHER_SOURCE = os.path.join(ROOT, "Справочник оружия.pdf")
+
+
+@unittest.skipUnless(os.path.exists(PUBLISHER_SOURCE),
+                     "Publisher source PDF not present")
+class PublisherWideArtworkRegressionTests(unittest.TestCase):
+    """Wide source illustrations must not disappear at the 300 px cutoff."""
+
+    def test_source_wide_art_and_sten_injector_alias_are_exported(self):
+        with tempfile.TemporaryDirectory() as temp:
+            aliases = ex.load_title_aliases(ex.TITLE_ALIASES_JSON)
+            weapons = ex.load_weapons(ex.WEAPONS_JSON)
+            weapons.update(aliases)
+            rows = ex.extract(PUBLISHER_SOURCE, os.path.join(temp, "art"),
+                              300, 0.5, [35, 38, 45, 77], False,
+                              weapons, True)
+        actual = {
+            row["page"]: (row["weapon_id"], row["file"],
+                          row["width"], row["height"])
+            for row in rows
+        }
+        self.assertEqual(actual, {
+            35: ("weapon_anti_materiel_rifle", "anti-materiel-rifle.png", 1070, 267),
+            38: ("weapon_black_powder_rifle", "black-powder-rifle.png", 1031, 258),
+            45: ("weapon_sniper_rifle", "sniper-rifle.png", 1116, 279),
+            77: ("weapon_sten_injector", "sten-injector.png", 1093, 273),
+        })
 
 
 class GeometryManifestTest(unittest.TestCase):
@@ -238,6 +284,10 @@ class PageNameTests(unittest.TestCase):
         aliases = ex.load_title_aliases(ex.TITLE_ALIASES_JSON)
         self.assertEqual(ex.match_weapon_title("ПИСТОЛЕТ-ИНЪЕКТОР", aliases),
                          "weapon_pistol_injector")
+        # Source Publisher uses «инъектор», but the Companion localisation
+        # calls this same, page-77 weapon «Стен-инжектор».
+        self.assertEqual(ex.match_weapon_title("СТЕН - ИНЪЕКТОР", aliases),
+                         "weapon_sten_injector")
 
     def test_slug_of(self):
         self.assertEqual(ex.slug_of("weapon_10mm_pistol"), "10mm-pistol")
