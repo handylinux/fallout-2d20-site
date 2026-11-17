@@ -22,7 +22,7 @@ class CompleteWorkingCatalogTest(unittest.TestCase):
             with pymupdf.open(output) as doc:
                 text = lambda n: doc[n-1].get_text()
                 # Printed TOC sits on pages 4-5, right after the STAND BY spread
-                toc_pages = [n for n in range(1, len(doc) + 1) if 'ОГОЛОВЛЕНИЕ' in doc[n-1].get_text()]
+                toc_pages = [n for n in range(1, len(doc) + 1) if 'ОГЛАВЛЕНИЕ' in doc[n-1].get_text()]
                 self.assertEqual(toc_pages, [4, 5])
                 toc_text = ''.join(doc[n-1].get_text() for n in toc_pages)
                 weapon_entries = [(t, p) for lvl, t, p in info['toc']

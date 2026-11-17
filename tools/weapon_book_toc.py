@@ -13,7 +13,7 @@ from reportlab.pdfgen import canvas
 import weapon2pdf as w
 
 TOC_TITLE_EN = 'TABLE OF CONTENTS'
-TOC_TITLE_RU = 'ОГОЛОВЛЕНИЕ'
+TOC_TITLE_RU = 'ОГЛАВЛЕНИЕ'
 TOC_GUTTER = 22.0
 TOC_L1_SIZE = 10.5
 TOC_L2_SIZE = 9.2

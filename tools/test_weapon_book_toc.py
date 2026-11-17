@@ -39,7 +39,7 @@ class WeaponBookTocTests(unittest.TestCase):
             self.assertEqual(pages, 1)
             with pymupdf.open(out) as doc:
                 text = doc[0].get_text()
-                self.assertIn('ОГОЛОВЛЕНИЕ', text)
+                self.assertIn('ОГЛАВЛЕНИЕ', text)
                 for _lvl, title, page in entries:
                     self.assertIn(title, text)
                 self.assertIn('16', text)
