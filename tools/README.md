@@ -343,13 +343,37 @@ python3 tools/weapon2pdf.py data/weapons/cards/combat-rifle.json \
 python3 tools/weapon2pdf.py data/weapons/cards/revolver-44.json \
     --out docs/render/out/revolver-44.pdf
 
-# вытащить все картинки оружия из книги (~75 МБ PDF из Publisher)
+# вытащить все картинки оружия из книги Publisher
 python3 tools/extract_pdf_images.py "Справочник оружия.pdf" --out art/ \
     --min-size 300
 # имена берутся с самой страницы: заголовок «БОЕВОЙ КАРАБИН» → weapon_combat_rifle
 # → art/combat-rifle.png (тот же слаг, что у карточки); если заголовок не
 # совпал с weapons.json — art/p018.png, а в report.csv пустой weapon_id
-# art/index.html — контактный лист со страницами, art/report.csv — таблица
+# art/index.html — контактный лист; art/report.csv — прежняя короткая таблица
+# извлечённых PNG; art/artwork-manifest.json — полный слой размещений.
+
+# сохранить manifest отдельно или выключить его для прежнего короткого flow
+python3 tools/extract_pdf_images.py "Справочник оружия.pdf" --out art/ \
+    --manifest docs/render/artwork-manifest.json
+python3 tools/extract_pdf_images.py "Справочник оружия.pdf" --out art/ --no-manifest
+```
+
+`artwork-manifest.json` — воспроизводимый снимок **каждого** вызова изображения
+на выбранных страницах, а не только PNG, прошедших фильтр размера. Координаты
+даны в исходной PDF-системе (pt, начало внизу слева). Для каждой отрисовки он
+хранит `draw_order`, точную affine-матрицу `matrix_pdf`, bbox, весь активный
+`clip_paths` и выделенные `crop_paths`, ExtGState (opacity, blend mode и
+SMask), а также сведения об image SMask. Поэтому один и тот же embedded asset,
+использованный несколько раз, остаётся несколькими placement-записями с
+собственными поворотом, skew, масштабом и обрезкой. PNG с SMask сохраняется
+RGBA; в `report.csv` его контракт не менялся.
+
+Путь к манифесту можно задать через `--manifest PATH`; без параметра это
+`<out>/artwork-manifest.json`. Рядом с исходником записаны SHA-256 и PDF
+metadata, чтобы повторная отрисовка могла убедиться, что работает с тем же
+экспортом Publisher.
+
+```bash
 
 # карточка из данных компаньона (описание — английское flavour)
 python3 tools/weapons2cards.py weapon_10mm_pistol --page 18 \
