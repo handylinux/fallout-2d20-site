@@ -44,15 +44,24 @@ class EnglishCompanionTests(unittest.TestCase):
         ])
         self.assertIn("10mm pistol", card["description"])
 
+    def test_catalog_excludes_only_confirmed_non_weapons(self):
+        cards_in_order = cards.ordered_cards(self.companion)
+        card_ids = {card["id"] for card in cards_in_order}
+        self.assertEqual(set(self.companion.weapons) - card_ids,
+                         cards.CATALOG_EXCLUDED_IDS)
+        self.assertNotIn("weapon_assaultron_head", card_ids)
+        self.assertNotIn("weapon_straight_razor", card_ids)
+        self.assertIn("weapon_assaultron_head_laser", card_ids)
+        self.assertIn("weapon_unarmed_attack", card_ids)
+
     def test_order_is_stable_and_numbers_every_page(self):
         cards_in_order = cards.ordered_cards(self.companion)
-        self.assertEqual(len(cards_in_order), 146)
+        self.assertEqual(len(cards_in_order), 144)
         self.assertEqual([card["page"] for card in cards_in_order],
-                         list(range(1, 147)))
+                         list(range(1, 145)))
         self.assertEqual(cards_in_order[0]["category"], "Light Weapons")
-        # Cards without a recognised Companion weaponType are deliberately
-        # retained at the end instead of being silently dropped.
-        self.assertEqual(cards_in_order[-1]["category"], "Other Weapons")
+        # Straight Razor was the only Other card and is intentionally absent.
+        self.assertEqual(cards_in_order[-1]["category"], "Unarmed Weapons")
 
 
 if __name__ == "__main__":

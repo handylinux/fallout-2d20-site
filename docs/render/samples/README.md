@@ -5,9 +5,9 @@
 | `book-weapon-catalog.pdf` | основной полный русский справочник оружия: 176 страниц (кратно 4 для печати), печатное оглавление на стр. 4–5 после разворота PLEASE STAND BY, 144 оружейные карточки. Включена отдельная карточка «Рукопашная атака»; Головной лазер Штурмотрона остаётся оружием исходного раздела. «Голова ассаултрона» не является отдельным оружием, а «Опасная бритва» намеренно исключена как ссылка на другое оружие. Artwork Publisher воспроизведён для 77 карточек по manifest с исходными matrix/crop/alpha; чужие иллюстрации не подставляются. Обложка намеренно сведена в один непрозрачный RGB JPEG 300 DPI с качеством 92, остальные страницы сохраняют свою векторную/слойную структуру. |
 | `book-weapon-catalog-mobile-raster.pdf` | дополнительная мобильная версия тех же 176 страниц. После корректной сборки основной книги каждая целая страница отрендерена в один RGB JPEG 200 DPI: нет текстовых блоков, шрифтов, векторных объектов, alpha-масок и отдельных слоёв оружия. Это **не** замена прозрачных PNG оружия: их прозрачность сначала правильно скомпонована с фоном страницы. Выбирайте этот файл только для viewer, который неправильно композитит слои; в нём нельзя искать/выделять текст, а качество печати ниже, чем у основной версии. |
 | `book-weapon-catalog-artwork-coverage.json` | проверяемая карта artwork для основной книги: исходный SHA-256, source page, xref и placement 77 карточек с воспроизведённым artwork, а также явные причины отсутствия art у остальных карточек. |
-| `book-weapon-catalog-en.pdf` | полный английский справочник оружия: 180 страниц, включая локализованную иллюстрированную обложку, разворот PLEASE STAND BY, печатное английское оглавление, справочники эффектов/качеств/164 модификаций, разделители и все 146 оружейных карточек. Для 77 карточек повторены те же exact Publisher artwork layers, что и в русской книге; неподтверждённые изображения не подставляются. |
-| `book-weapon-catalog-en-mobile-raster.pdf` | дополнительная mobile-совместимая английская версия тех же 180 страниц: каждая страница — один непрозрачный RGB JPEG после полного рендеринга векторной страницы. |
-| `book-weapon-catalog-en-artwork-coverage.json` | audit exact-ID artwork для английской книги: 77 replayed, 6 известных исходных страниц без recoverable exported artwork и 63 карточки без manifest page. Шесть явно сохранённых пустыми карточек: Sword, Combat Knife, Machete, Ripper, Switchblade и Shishkebab. |
+| `book-weapon-catalog-en.pdf` | полный английский справочник оружия: 176 страниц, включая локализованную иллюстрированную обложку, разворот PLEASE STAND BY, печатное английское оглавление, справочники эффектов/качеств/164 модификаций, разделители и 144 подтверждённые оружейные карточки. `Unarmed Attack` и `Assaultron Head Laser` сохранены; `Assaultron Head` и `Straight Razor` намеренно исключены. Для 77 карточек повторены те же exact Publisher artwork layers, что и в русской книге; неподтверждённые изображения не подставляются. |
+| `book-weapon-catalog-en-mobile-raster.pdf` | дополнительная mobile-совместимая английская версия тех же 176 страниц: каждая страница — один непрозрачный RGB JPEG после полного рендеринга векторной страницы. |
+| `book-weapon-catalog-en-artwork-coverage.json` | audit exact-ID artwork для английской книги: 77 replayed, 6 известных исходных страниц без recoverable exported artwork и 61 карточка без manifest page. Шесть явно сохранённых пустыми карточек: Sword, Combat Knife, Machete, Ripper, Switchblade и Shishkebab. |
 | `sample-3.pdf` | три страницы подряд: 10-мм пистолет (лёгкое), Гатлинг (тяжёлое), Криолятор (энерго) |
 | `sample-3.png` | те же три страницы одним листом для быстрого просмотра |
 | `10mm-pistol.pdf`, `gatling-gun.pdf`, `cryolator.pdf` | те же страницы по отдельности |
@@ -97,12 +97,15 @@ python3 tools/rasterize_pdf.py docs/render/samples/book-weapon-catalog.pdf \
 Английский каталог строится из checked-in English Companion localisation и
 тех же числовых правил `data/weapon-book/companion/`, но не использует
 статические изображения из `art/`, другой ветки или соседних страниц. Это
-**полная 180-страничная книга**, а не отдельная колода карточек: локализованная
+**полная 176-страничная книга**, а не отдельная колода карточек: локализованная
 обложка сохраняет иллюстрацию Publisher, за ней идут разворот PLEASE STAND BY,
 двухстраничное печатное `TABLE OF CONTENTS`, English reference для damage
 effects и weapon qualities, редактируемый список всех 164 weapon
-modifications, иллюстрированные Publisher-разделители и 146 карточек. PDF
-outline повторяет это оглавление и восемь категорий. Названия эффектов,
+modifications, иллюстрированные Publisher-разделители и 144 подтверждённые
+карточки. PDF outline повторяет это оглавление и семь непустых категорий.
+`Unarmed Attack` остаётся отдельной карточкой, как и `Assaultron Head Laser`;
+`Assaultron Head` и `Straight Razor` не входят в подтверждённый инвентарь.
+Названия эффектов,
 качеств, оружия, боеприпасов, модов и слотов берутся из vendored English
 Companion; английские префиксы модов — из `data/weapon-book/mod-prefixes.en.json`.
 Текстовые правила reference находятся в
@@ -117,9 +120,10 @@ Artwork допускается только по точному совпаден
 alpha и draw order. Нет fallback по конечному номеру страницы, source-page
 или названию. Шесть source pages без recoverable exported artwork — `Sword`,
 `Combat Knife`, `Machete`, `Ripper`, `Switchblade` и `Shishkebab` — остаются
-без substitute illustration и явно записаны в English coverage. Ещё 63
-добавленные/непредставленные в исходнике карточки имеют статус
-`no-manifest-page`.
+без substitute illustration и явно записаны в English coverage. Ещё 61
+добавленная/непредставленная в исходнике карточка имеет статус
+`no-manifest-page`; в частности, `Institute Laser` остаётся без подменной
+иллюстрации.
 
 ```bash
 # Exact Publisher extraction; this ignored working directory is not published.

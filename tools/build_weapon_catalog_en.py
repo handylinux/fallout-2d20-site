@@ -4,8 +4,8 @@
 The English edition is a full print book rather than a stack of cards: it
 contains an illustrated localised cover, opening spread, printed contents,
 damage-effect and weapon-quality references, an editable English modification
-reference, illustrated Publisher section dividers, all 146 English cards, and
-the source closing sequence.  Weapon artwork is intentionally stricter than
+reference, illustrated Publisher section dividers, all 144 confirmed English
+cards, and the source closing sequence. Weapon artwork is intentionally stricter than
 all other page decoration: a card can replay a Publisher layer only when the
 exact same ``weapon_id`` appears in the supplied extraction manifest.
 """
@@ -14,7 +14,6 @@ from __future__ import annotations
 import argparse
 import json
 import tempfile
-from collections import Counter
 from pathlib import Path
 from typing import Any
 
@@ -27,7 +26,7 @@ import weapon2pdf as w
 import weapon_book_toc as toc_render
 import weapon_mods_table_unicode as mod_tables
 from weapon_catalog_artwork import ArtworkResolver
-from weapons2cards_en import Companion, ordered_cards
+from weapons2cards_en import CATALOG_EXCLUDED_IDS, Companion, ordered_cards
 
 ROOT = Path(__file__).resolve().parent.parent
 REFERENCE_DATA = ROOT / "data" / "weapon-book" / "catalog-en-reference.json"
@@ -384,6 +383,7 @@ def _append_generated_divider(result: pymupdf.Document, title: str, temp: Path) 
 
 
 def _category_cards(cards: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
+    """Group cards while omitting an otherwise empty presentation category."""
     grouped: dict[str, list[dict[str, Any]]] = {
         category: [] for category in CATEGORY_PRESENTATION
     }
@@ -391,15 +391,12 @@ def _category_cards(cards: list[dict[str, Any]]) -> dict[str, list[dict[str, Any
         category = str(card["category"])
         if category not in CATEGORY_PRESENTATION:
             raise EnglishCatalogError(f"No English category presentation for {category}")
-        grouped.setdefault(category, []).append(card)
-    expected = set(CATEGORY_PRESENTATION)
-    actual = Counter(card["category"] for card in cards)
-    if set(actual) != expected:
-        raise EnglishCatalogError(f"Unexpected English card category set: {sorted(actual)}")
-    # `expected` deliberately makes each known category mandatory, including
-    # the single Other card.
-    if any(not grouped.get(category) for category in expected):
-        raise EnglishCatalogError("A declared English category is empty")
+        grouped[category].append(card)
+    if not cards:
+        raise EnglishCatalogError("English catalogue has no cards")
+    # `Other Weapons` was represented only by Straight Razor. Once that
+    # confirmed non-weapon is excluded, do not emit an empty divider or TOC
+    # entry merely because Companion retains the raw record.
     return grouped
 
 
@@ -476,6 +473,8 @@ def _assemble(source: Path, output: Path, companion: Companion,
                 entries.append([2, title, mod_pages[title]])
 
             for category in CATEGORY_PRESENTATION:
+                if not grouped[category]:
+                    continue
                 configuration = CATEGORY_PRESENTATION[category]
                 title = str(configuration["title"])
                 source_page = configuration.get("source_page")
@@ -564,8 +563,13 @@ def build(
 
     companion = Companion()
     cards = ordered_cards(companion)
-    if len(cards) != 146 or len({str(card["id"]) for card in cards}) != len(cards):
-        raise EnglishCatalogError("English Companion cards must contain 146 unique weapons")
+    card_ids = {str(card["id"]) for card in cards}
+    expected_ids = set(companion.weapons) - CATALOG_EXCLUDED_IDS
+    if card_ids != expected_ids or len(cards) != 144:
+        raise EnglishCatalogError(
+            "English catalogue must contain 144 unique confirmed weapons; "
+            f"missing={sorted(expected_ids - card_ids)} extra={sorted(card_ids - expected_ids)}"
+        )
     if any(_has_cyrillic(str(value)) for card in cards
            for value in (card["title"], card["description"], card["range"])):
         raise EnglishCatalogError("English card adapter emitted Cyrillic visible text")

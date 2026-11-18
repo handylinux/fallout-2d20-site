@@ -64,30 +64,44 @@ class EnglishCatalogBuildTests(unittest.TestCase):
             coverage = root / "coverage.json"
             result = catalog.build(source, output, artwork_manifest=manifest,
                                    artwork_root=root, artwork_coverage=coverage)
-            self.assertEqual(result["pages"], 180)
+            self.assertEqual(result["pages"], 176)
             self.assertEqual(result["pages"] % 4, 0)
-            self.assertEqual(result["cards"], 146)
+            self.assertEqual(result["cards"], 144)
             self.assertEqual(result["toc_pages"], 2)
-            self.assertEqual(result["outline_entries"], 178)
+            self.assertEqual(result["outline_entries"], 175)
             self.assertEqual(result["artwork"]["counts"], {
-                "no-manifest-page": 145, "replayed": 1,
+                "no-manifest-page": 143, "replayed": 1,
             })
             self.assertTrue(coverage.is_file())
             self.assertEqual(len(result["references"]["damage_effects"]), 2)
             self.assertEqual(len(result["references"]["weapon_qualities"]), 3)
             self.assertEqual(len(result["modifications"]), 20)
-            self.assertEqual(len(result["categories"]), 8)
-            self.assertEqual(len(result["card_pages"]), 146)
+            self.assertEqual(len(result["categories"]), 7)
+            self.assertNotIn("Other Weapons", result["categories"])
+            self.assertEqual(len(result["card_pages"]), 144)
+            self.assertNotIn("weapon_assaultron_head", result["card_pages"])
+            self.assertNotIn("weapon_straight_razor", result["card_pages"])
+            self.assertIn("weapon_assaultron_head_laser", result["card_pages"])
+            self.assertIn("weapon_unarmed_attack", result["card_pages"])
+            self.assertEqual(result["closing"], [171, 172, 173, 174, 176])
 
             with pymupdf.open(output) as document:
-                self.assertEqual(document.page_count, 180)
+                self.assertEqual(document.page_count, 176)
                 outline = document.get_toc(simple=True)
                 self.assertEqual(outline[0], [1, "DAMAGE EFFECTS", 6])
                 self.assertIn([1, "WEAPON MODIFICATIONS", 12], outline)
                 self.assertIn([1, "SMALL GUNS", 20], outline)
                 self.assertIn([2, "10mm Pistol", result["card_pages"]["weapon_10mm_pistol"]],
                               outline)
-                self.assertEqual(len(outline), 178)
+                self.assertIn([2, "Assaultron Head Laser",
+                               result["card_pages"]["weapon_assaultron_head_laser"]], outline)
+                self.assertIn([2, "Unarmed Attack",
+                               result["card_pages"]["weapon_unarmed_attack"]], outline)
+                outline_titles = [title for _level, title, _page in outline]
+                self.assertNotIn("Assaultron Head", outline_titles)
+                self.assertNotIn("Straight Razor", outline_titles)
+                self.assertNotIn("OTHER WEAPONS", outline_titles)
+                self.assertEqual(len(outline), 175)
 
                 cover = document[0].get_text()
                 self.assertIn("BROTHERHOOD FIELD GUIDE", cover)

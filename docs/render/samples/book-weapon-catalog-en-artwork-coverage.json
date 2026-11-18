@@ -20,7 +20,7 @@
   },
   "counts": {
     "manifest-page-without-exported-artwork": 6,
-    "no-manifest-page": 63,
+    "no-manifest-page": 61,
     "replayed": 77
   },
   "weapons": {
@@ -196,9 +196,6 @@
       ]
     },
     "weapon_assaultron_blade": {
-      "status": "no-manifest-page"
-    },
-    "weapon_assaultron_head": {
       "status": "no-manifest-page"
     },
     "weapon_assaultron_head_laser": {
@@ -984,9 +981,6 @@
           "draw_order": 17
         }
       ]
-    },
-    "weapon_straight_razor": {
-      "status": "no-manifest-page"
     },
     "weapon_submachine_gun": {
       "status": "replayed",

@@ -34,6 +34,14 @@ CATEGORY_TITLES = {
     "Unarmed": "Unarmed Weapons",
     "Other": "Other Weapons",
 }
+
+# The Companion snapshot models these records as weapons, but Assaultron Head
+# is not a standalone weapon and Straight Razor only references another weapon.
+# Keep Unarmed Attack and Assaultron Head Laser: they are independent cards.
+CATALOG_EXCLUDED_IDS = frozenset({
+    "weapon_assaultron_head",
+    "weapon_straight_razor",
+})
 LABELS = {
     "weight": "Weight",
     "cost": "Cost",
@@ -204,10 +212,11 @@ class Companion:
 
 
 def ordered_cards(companion: Companion | None = None) -> list[dict[str, Any]]:
-    """Return the stable 146-card English catalogue order."""
+    """Return the stable confirmed 144-card English catalogue order."""
     companion = companion or Companion()
     rank = {category: index for index, category in enumerate(CATEGORY_ORDER)}
-    cards = [companion.card(weapon_id) for weapon_id in companion.weapons]
+    cards = [companion.card(weapon_id) for weapon_id in companion.weapons
+             if weapon_id not in CATALOG_EXCLUDED_IDS]
     cards.sort(key=lambda card: (
         rank.get(str((companion.weapons[card["id"]].get("weaponType") or "Other")), 99),
         str(card["title"]).casefold(),
