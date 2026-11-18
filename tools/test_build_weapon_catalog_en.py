@@ -87,6 +87,9 @@ class EnglishCatalogBuildTests(unittest.TestCase):
 
             with pymupdf.open(output) as document:
                 self.assertEqual(document.page_count, 176)
+                # The release builder suppresses PyMuPDF's random trailer IDs
+                # so an unchanged catalogue can be reproduced byte-for-byte.
+                self.assertNotIn("/ID", document.pdf_trailer())
                 outline = document.get_toc(simple=True)
                 self.assertEqual(outline[0], [1, "DAMAGE EFFECTS", 6])
                 self.assertIn([1, "WEAPON MODIFICATIONS", 12], outline)

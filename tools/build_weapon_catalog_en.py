@@ -523,7 +523,11 @@ def _assemble(source: Path, output: Path, companion: Companion,
                 "producer": "PyMuPDF",
             })
             output.parent.mkdir(parents=True, exist_ok=True)
-            result.save(str(output), garbage=4, deflate=True, use_objstms=1)
+            # A release build must be byte-reproducible.  A new PyMuPDF
+            # document otherwise receives random trailer IDs even when all
+            # source data, layout and artwork are unchanged.
+            result.save(str(output), garbage=4, deflate=True, use_objstms=1,
+                        no_new_id=True)
             total = len(result)
 
     if toc_pdf is None:

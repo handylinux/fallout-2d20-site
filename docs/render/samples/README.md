@@ -32,116 +32,70 @@ python3 tools/weapon2pdf.py data/weapons/cards/10mm-pistol.json \
     --out docs/render/samples/10mm-pistol.pdf
 ```
 
-### Полная книга оружия
+### Полная книга оружия — единая каноническая сборка RU и EN
 
-Полная книга использует отдельную рабочую копию данных Companion в
-`data/weapon-book/`, порядок и проверенные поправки в `data/weapons/` и
-исходный Publisher PDF. Сначала надо извлечь artwork из **того же** исходного
-PDF: сборщик сверяет SHA-256, поэтому не сможет незаметно смешать другой
-экспорт и старый manifest.
-
-```bash
-python3 tools/extract_pdf_images.py "Справочник оружия.pdf" \
-  --out docs/render/pdf-extract/publisher-art --min-size 300
-
-python3 tools/build_weapon_catalog.py "Справочник оружия.pdf" \
-  --out docs/render/samples/book-weapon-catalog.pdf \
-  --report docs/render/out/book-weapon-catalog-report.md \
-  --artwork-manifest docs/render/pdf-extract/publisher-art/artwork-manifest.json \
-  --artwork-root docs/render/pdf-extract/publisher-art \
-  --artwork-coverage docs/render/samples/book-weapon-catalog-artwork-coverage.json \
-  --rasterize-cover --cover-dpi 300 --cover-jpeg-quality 92
-```
-
-Вторая команда делает холст, таблицы и текст из JSON, но для карточки берёт
-рисунок только при точном `weapon_id` в manifest. Позиция в готовой книге не
-используется как fallback: это исключает заимствование art соседнего оружия
-после вставки оглавления. При извлечении порог 300 px относится к большей
-native-стороне изображения; для узких artwork дополнительно нужна площадь
-placement не менее 5% страницы, поэтому крупные горизонтальные рисунки
-сохраняются, а тонкие декоративные полосы не попадают в manifest. Описание
-оружия печатается целиком: если у карточки нет таблицы модов, уведомление о её
-отсутствии сдвигается ниже текста, а переполнение, которое нельзя решить
-кеглем до 10 pt, завершает сборку с ошибкой вместо многоточия. В текущем
-исходнике 77 карточек имеют экспортируемый Publisher artwork; у шести
-исходных страниц artwork не является экспортируемым растровым placement, а у
-61 добавленной/неидентифицированной карточки в исходнике соответствующего
-слоя нет. Все 67 таких случаев явно записаны в coverage JSON, без подстановки
-другого изображения. В частности, у «Лазерного пистолета института» нет
-exact-ID Publisher layer: карточка намеренно остаётся без иллюстрации со
-статусом `no-manifest-page`, а не получает art обычного лазерного пистолета.
-
-Для данного релиза завершающий шаг `--rasterize-cover` после всей вёрстки
-сводит **только** обложку в один непрозрачный RGB JPEG (300 DPI, quality 92).
-Это устраняет раздельные Publisher-слои на обложке; остальные 175 страниц
-основного PDF не растрируются.
-
-Если конкретный мобильный PDF viewer ошибочно отображает отдельные
-прозрачные слои, соберите **только дополнительную** растровую версию из уже
-проверенной основной книги:
+Для публикации обеих версий **не запускайте** отдельно извлечение artwork,
+русский/английский сборщик или rasterizer. Нужны только Python-зависимости из
+`tools/requirements-pdf.txt` (однократно: `python3 -m pip install -r tools/requirements-pdf.txt`,
+если их ещё нет); затем из корня репозитория достаточно одной команды:
 
 ```bash
-python3 tools/rasterize_pdf.py docs/render/samples/book-weapon-catalog.pdf \
-  --out docs/render/samples/book-weapon-catalog-mobile-raster.pdf \
-  --dpi 200 --jpeg-quality 85
+python3 tools/build_weapon_catalogs.py
 ```
 
-Скрипт сначала рендерит страницу целиком, а затем кладёт в новый PDF ровно
-один непрозрачный RGB JPEG на страницу. Поэтому все прозрачные PNG оружия и
-их Publisher matrix/crop уже применены к фону до растеризации, но в резервном
-файле отсутствуют выбор текста, шрифты, векторные объекты и самостоятельные
-слои. Перед публикацией скрипт проверяет это свойство у каждой страницы.
+`tools/build_weapon_catalogs.py` — единственная каноническая точка сборки
+пары. Он принимает только утверждённый `Справочник оружия.pdf`: до любой
+записи SHA-256 сравнивается с
+`48c85e12c5eca695e0c4a4fc3a8bf9276d4fb1d1715b6a62f4b0f9c26ffdbd35`.
+Поэтому другой экспорт Publisher нельзя незаметно смешать с прежними
+результатами.
 
-### English weapon catalogue
+Команда последовательно выполняет весь релизный контракт в отдельной
+временной рабочей папке:
 
-Английский каталог строится из checked-in English Companion localisation и
-тех же числовых правил `data/weapon-book/companion/`, но не использует
-статические изображения из `art/`, другой ветки или соседних страниц. Это
-**полная 176-страничная книга**, а не отдельная колода карточек: локализованная
-обложка сохраняет иллюстрацию Publisher, за ней идут разворот PLEASE STAND BY,
-двухстраничное печатное `TABLE OF CONTENTS`, English reference для damage
-effects и weapon qualities, редактируемый список всех 164 weapon
-modifications, иллюстрированные Publisher-разделители и 144 подтверждённые
-карточки. PDF outline повторяет это оглавление и семь непустых категорий.
-`Unarmed Attack` остаётся отдельной карточкой, как и `Assaultron Head Laser`;
-`Assaultron Head` и `Straight Razor` не входят в подтверждённый инвентарь.
-Названия эффектов,
-качеств, оружия, боеприпасов, модов и слотов берутся из vendored English
-Companion; английские префиксы модов — из `data/weapon-book/mod-prefixes.en.json`.
-Текстовые правила reference находятся в
-`data/weapon-book/catalog-en-reference.json`: названия синхронизированы с
-Companion, а единственное отсутствующее там `Fuel X` переведено с поставленной
-страницы Publisher и явно отмечено в вводном тексте качества.
+1. заново извлекает из этого PDF ровно 81 PNG asset и строгий
+   `artwork-manifest.json`; его утверждённый SHA-256 и все source/placement
+   данные проверяются;
+2. собирает русскую 176-страничную книгу и её coverage audit, записывает
+   диагностический отчёт в `docs/render/out/book-weapon-catalog-report.md` и
+   сводит **только** русскую обложку в один непрозрачный RGB JPEG 300 DPI,
+   quality 92;
+3. собирает английскую 176-страничную книгу с её локализованной векторной
+   обложкой и coverage audit — обложка EN намеренно не растрируется;
+4. создаёт обе mobile-версии из уже собранных canonical PDF: по одному
+   непрозрачному RGB JPEG 200 DPI, quality 85 на страницу; для English
+   передаётся `metadata-locale en`;
+5. проверяет 144 общих карточки, exact-ID artwork coverage (77 replayed,
+   6 `manifest-page-without-exported-artwork`, 61 `no-manifest-page`),
+   растровую русскую обложку, English outline/cover и raster-only структуру
+   обоих mobile PDF. Только после этого заменяет все шесть public artifacts.
 
-Artwork допускается только по точному совпадению `weapon_id` с manifest,
-извлечённым из данного `Справочник оружия.pdf` (SHA-256
-`48c85e12c5eca695e0c4a4fc3a8bf9276d4fb1d1715b6a62f4b0f9c26ffdbd35`). Для
-каждого из 77 доступных слоёв сохраняются matrix, crop/clip, rotation,
-alpha и draw order. Нет fallback по конечному номеру страницы, source-page
-или названию. Шесть source pages без recoverable exported artwork — `Sword`,
-`Combat Knife`, `Machete`, `Ripper`, `Switchblade` и `Shishkebab` — остаются
-без substitute illustration и явно записаны в English coverage. Ещё 61
-добавленная/непредставленная в исходнике карточка имеет статус
-`no-manifest-page`; в частности, `Institute Laser` остаётся без подменной
-иллюстрации.
+То есть русская и английская публикации не могут обновиться по отдельности.
+Обе сохраняют подтверждённый inventory: `Unarmed Attack` / «Рукопашная
+атака» и `Assaultron Head Laser` / «Головной лазер Штурмотрона» остаются
+самостоятельными карточками; `Assaultron Head` / «Голова ассаултрона» и
+`Straight Razor` / «Опасная бритва» исключены. `Institute Laser` / «Лазерный
+пистолет института» остаётся пустым при отсутствии exact-ID Publisher layer;
+арт обычного лазерного пистолета для него не заимствуется.
 
-```bash
-# Exact Publisher extraction; this ignored working directory is not published.
-python3 tools/extract_pdf_images.py "Справочник оружия.pdf" \
-  --out docs/render/pdf-extract/publisher-art --min-size 300
+В `docs/render/samples/` команда публикует одновременно:
 
-# Canonical English vector catalogue and its compact provenance audit.
-python3 tools/build_weapon_catalog_en.py "Справочник оружия.pdf" \
-  --out docs/render/samples/book-weapon-catalog-en.pdf \
-  --artwork-manifest docs/render/pdf-extract/publisher-art/artwork-manifest.json \
-  --artwork-root docs/render/pdf-extract/publisher-art \
-  --artwork-coverage docs/render/samples/book-weapon-catalog-en-artwork-coverage.json
+- `book-weapon-catalog.pdf` и
+  `book-weapon-catalog-artwork-coverage.json`;
+- `book-weapon-catalog-mobile-raster.pdf`;
+- `book-weapon-catalog-en.pdf` и
+  `book-weapon-catalog-en-artwork-coverage.json`;
+- `book-weapon-catalog-en-mobile-raster.pdf`.
 
-# Optional viewer-compatibility edition, made only from the verified vector PDF.
-python3 tools/rasterize_pdf.py docs/render/samples/book-weapon-catalog-en.pdf \
-  --out docs/render/samples/book-weapon-catalog-en-mobile-raster.pdf \
-  --dpi 200 --jpeg-quality 85 --metadata-locale en
-```
+Временные PNG/manifest не публикуются и не нужно заранее создавать
+`docs/render/pdf-extract/`: launcher воспроизводит их сам для обеих локалей.
+Если нужно только проверить уже опубликованный набор без пересборки, используйте
+`python3 tools/build_weapon_catalogs.py --check`.
+
+Низкоуровневые `extract_pdf_images.py`, `build_weapon_catalog.py`,
+`build_weapon_catalog_en.py` и `rasterize_pdf.py` остаются тестируемыми
+составляющими launcher и пригодны для локальной диагностики, но не являются
+инструкцией для выпуска одной локали.
 
 ## Книга брони
 
