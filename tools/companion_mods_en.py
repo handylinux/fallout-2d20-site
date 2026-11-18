@@ -13,6 +13,7 @@ import json
 from pathlib import Path
 from typing import Any
 
+import weapon_mod_policy as mod_policy
 from weapons2cards_en import Companion
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -198,15 +199,18 @@ def perks_text(mod: dict[str, Any]) -> str:
 
 def make_mod_data(companion: Companion | None = None,
                   prefixes: dict[str, str] | None = None) -> tuple[dict[str, Any], list[str]]:
-    """Return editable English table data for every known Companion modification.
+    """Return editable English table data for every published modification.
 
+    Raw Companion records are passed through the shared publication policy
+    before row selection, so an audited suppression applies in both books.
     The second return value contains only non-fatal diagnostics.  The builder
     treats an absent localisation, prefix, or slot title as fatal instead of
     inventing a visible English substitute.
     """
     companion = companion or Companion()
     prefixes = prefixes or load_prefixes()
-    mods = companion.base_mods
+    mods = {mod_id: mod for mod_id, mod in companion.base_mods.items()
+            if mod_id not in mod_policy.CATALOG_EXCLUDED_MOD_IDS}
     missing_names = sorted(mod_id for mod_id in mods
                            if not isinstance((companion.mods_en.get(mod_id) or {}).get("name"), str)
                            or not (companion.mods_en.get(mod_id) or {}).get("name"))

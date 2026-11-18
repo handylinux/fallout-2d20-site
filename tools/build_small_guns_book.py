@@ -40,7 +40,7 @@ def make_mod_data(comp, weapon_ids, prefixes, allowed=None,
     problems = []
     for wid in weapon_ids:
         for slot, ids in (comp.slots.get(wid) or {}).items():
-            for mid in ids:
+            for mid in policy.catalog_mod_ids(ids):
                 if allowed is not None and (slot, mid) not in allowed:
                     continue
                 slots.setdefault(slot, {})[mid] = None
@@ -139,7 +139,8 @@ def build(source, output, report=None, toc_pdf=None, toc=None, artwork=None):
             else:
                 detailed[wid] = specific
     all_pairs = {(slot, mid) for wid in reference_ids
-                 for slot, mids in (comp.slots.get(wid) or {}).items() for mid in mids}
+                 for slot, mids in (comp.slots.get(wid) or {}).items()
+                 for mid in policy.catalog_mod_ids(mids)}
     excluded = set().union(*detailed.values()) if detailed else set()
     data, problems = make_mod_data(comp, reference_ids, prefixes, allowed=all_pairs - excluded)
     # Keep the final frame category on page 13, as in the approved four-page reference.

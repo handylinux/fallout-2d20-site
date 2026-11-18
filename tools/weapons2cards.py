@@ -25,6 +25,8 @@ import os
 import re
 import sys
 
+import weapon_mod_policy as mod_policy
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 COMP = os.path.join(ROOT, "data", "weapon-book", "companion")
 RU = os.path.join(COMP, "i18n", "ru-RU", "data")
@@ -82,6 +84,7 @@ class Companion:
             "mod_heavy": "Утяжелённая",
             "mod_hooked": "Крюк",
             "mod_lead_lining": "Свинцовая подкладка",
+            **mod_policy.CATALOG_RUSSIAN_MOD_NAMES,
         }.items():
             if mod_id in self.mods_ru:
                 self.mods_ru[mod_id]["name"] = name
@@ -168,12 +171,13 @@ class Companion:
 
     def mod_rows(self, wid):
         slots = self.slots.get(wid) or {}
-        order = [s for s in SLOT_ORDER if slots.get(s)]
-        order += sorted(s for s in slots if s not in SLOT_ORDER and slots[s])
+        order = [s for s in SLOT_ORDER if mod_policy.catalog_mod_ids(slots.get(s) or [])]
+        order += sorted(s for s in slots if s not in SLOT_ORDER
+                        and mod_policy.catalog_mod_ids(slots[s]))
         rows = []
         for slot in order:
             items = []
-            for mid in slots[slot]:
+            for mid in mod_policy.catalog_mod_ids(slots[slot]):
                 name = (self.mods_ru.get(mid) or {}).get("name")
                 if name:
                     items.append(name)

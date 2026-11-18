@@ -7,6 +7,7 @@ from unittest.mock import patch
 import pymupdf
 import build_small_guns_book as book
 import companion_mods_receiver as conv
+import weapon_mod_policy as policy
 from weapons2cards import Companion
 
 
@@ -20,10 +21,39 @@ class SmallGunsBookTests(unittest.TestCase):
         comp = Companion()
         ids = json.loads(book.ORDER.read_text(encoding='utf-8'))
         data, problems = book.make_mod_data(comp, ids, conv.load(conv.PREFIXES))
-        expected = {(slot, mid) for wid in ids for slot, mods in (comp.slots.get(wid) or {}).items() for mid in mods}
+        expected = {(slot, mid) for wid in ids
+                    for slot, mods in (comp.slots.get(wid) or {}).items()
+                    for mid in policy.catalog_mod_ids(mods)}
         self.assertEqual(sum(len(section['rows']) for section in data['sections']), len(expected))
         self.assertTrue(any(section['category'] == 'МОДИФИКАЦИИ ЛЕБЁДКИ' for section in data['sections']))
         self.assertFalse(any('нет записи мода' in x for x in problems))
+
+    def test_shared_table_omits_suppressed_recoil_duplicate_and_keeps_canonical_effects(self):
+        comp = Companion()
+        data, _ = book.make_mod_data(
+            comp,
+            ['weapon_gauss_rifle', 'weapon_light_machine_gun', 'weapon_pump_action_shotgun'],
+            conv.load(conv.PREFIXES),
+        )
+        stock = next(section['rows'] for section in data['sections']
+                     if section['category'] == 'МОДИФИКАЦИИ ЛОЖИ')
+        names = [row[0] for row in stock]
+        effects = [row[2] for row in stock]
+        self.assertEqual(names.count('Ложа с компенсатором отдачи'), 1)
+        self.assertNotIn('С компенсатором отдачи', names)
+        legacy_effect = conv.effect_text(
+            comp.mods['mod_recoil_compensating'],
+            {key: value.get('name', key) for key, value in comp.effects.items()},
+            {key: value.get('name', key) for key, value in comp.qualities.items()},
+            {key: value.get('name', key) for key, value in comp.ammo.items()},
+            comp.damage_types,
+        )
+        self.assertNotIn(legacy_effect, effects)
+        self.assertFalse(any('Вплотную' in effect for effect in effects))
+        canonical = next(row for row in stock if row[0] == 'Ложа с компенсатором отдачи')
+        self.assertIn('Скорость стрельбы: +1', canonical[2])
+        self.assertIn('Добавить качество «Двуручное»', canonical[2])
+        self.assertIn('Убрать качество «Неточное»', canonical[2])
 
     def test_small_reference_uses_skill_not_book_position(self):
         comp = Companion()

@@ -64,6 +64,15 @@ class CompanionTests(unittest.TestCase):
                                         "Автоматический бронебойный",
                                         "Для автоогня"])
 
+    def test_recoil_compensating_stock_is_canonical_on_overlap_weapons(self):
+        for weapon_id in ('weapon_gauss_rifle', 'weapon_light_machine_gun',
+                          'weapon_pump_action_shotgun'):
+            card = cards.build_card(self.comp, weapon_id)
+            stock = next(row['items'] for row in card['mods'] if row['slot'] == 'ЛОЖА')
+            self.assertEqual(stock.count('Ложа с компенсатором отдачи'), 1)
+            self.assertNotIn('С компенсатором отдачи', stock)
+            self.assertNotIn('mod_recoil_compensating', stock)
+
     def test_mod_names_do_not_repeat_the_weapon_name(self):
         ripper = cards.build_card(self.comp, 'weapon_ripper')
         self.assertEqual(ripper['mods'][0]['items'][:2],

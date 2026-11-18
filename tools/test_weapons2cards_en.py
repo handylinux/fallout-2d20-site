@@ -34,6 +34,14 @@ class EnglishCompanionTests(unittest.TestCase):
         actual_names = [name for row in card["mods"] for name in row["items"]]
         self.assertCountEqual(actual_names, expected_names)
 
+    def test_recoil_compensating_stock_is_the_only_overlap_stock(self):
+        for weapon_id in ('weapon_gauss_rifle', 'weapon_light_machine_gun',
+                          'weapon_pump_action_shotgun'):
+            card = self.companion.card(weapon_id)
+            stock = next(row['items'] for row in card['mods'] if row['slot'] == 'STOCK')
+            self.assertEqual(stock.count('Recoil Compensating Stock'), 1)
+            self.assertNotIn('Recoil Compensating', stock)
+
     def test_english_labels_and_description_are_used(self):
         card = self.companion.card("weapon_10mm_pistol")
         self.assertEqual(card["title"], "10mm Pistol")

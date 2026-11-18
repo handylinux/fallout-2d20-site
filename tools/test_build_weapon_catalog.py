@@ -52,6 +52,23 @@ class CompleteWorkingCatalogTest(unittest.TestCase):
                 self.assertIn('МУГНУМНОМИКОН', mugnum)
                 self.assertNotIn('Магнумномикон', toc_text)
 
+                # The three overlapping Companion slot lists publish only the
+                # Publisher-backed canonical recoil-compensating stock.
+                small_mod_start = toc_lookup['МОДИФИКАЦИИ СТРЕЛКОВОГО ОРУЖИЯ']
+                small_mods = ' '.join(
+                    ' '.join(text(small_mod_start + offset).split()) for offset in range(4)
+                )
+                self.assertEqual(small_mods.count('Ложа с компенсатором отдачи'), 1)
+                self.assertIn('Скорость стрельбы: +1; Добавить качество «Двуручное»; '
+                              'Убрать качество «Неточное»', small_mods)
+                self.assertNotIn('Дистанция: увеличить на 1 зону; Добавить качество «Двуручное»; '
+                                 'Убрать качество «Неточное»; Добавить качество «Вплотную»',
+                                 small_mods)
+                for title in ('Карабин Гаусса', 'Лёгкий пулемёт', 'Помповый дробовик'):
+                    stock_card = ' '.join(text(toc_lookup[title]).split())
+                    self.assertEqual(stock_card.count('Ложа с компенсатором отдачи'), 1)
+                    self.assertNotIn('Вплотную', stock_card)
+
                 self.assertEqual(len(info['weapons']['energy']), 1)
                 self.assertIn('ЛАЗЕРНЫЙ ПИСТОЛЕТ ИНСТИТУТА', text(info['weapons']['energy'][0]))
                 energy_first = text(info['references']['energy'][0])

@@ -14,6 +14,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+import weapon_mod_policy as mod_policy
+
 ROOT = Path(__file__).resolve().parent.parent
 COMP = ROOT / "data" / "weapon-book" / "companion"
 EN = COMP / "i18n" / "en-EN"
@@ -157,12 +159,14 @@ class Companion:
 
     def mod_rows(self, weapon_id: str) -> list[dict[str, Any]]:
         slot_map = self.slots.get(weapon_id) or {}
-        order = [slot for slot in SLOT_ORDER if slot_map.get(slot)]
-        order.extend(sorted(slot for slot in slot_map if slot not in SLOT_ORDER and slot_map[slot]))
+        order = [slot for slot in SLOT_ORDER
+                 if mod_policy.catalog_mod_ids(slot_map.get(slot) or [])]
+        order.extend(sorted(slot for slot in slot_map if slot not in SLOT_ORDER
+                            and mod_policy.catalog_mod_ids(slot_map[slot])))
         rows = []
         for slot in order:
             names = []
-            for mod_id in slot_map[slot]:
+            for mod_id in mod_policy.catalog_mod_ids(slot_map[slot]):
                 if mod_id not in self.base_mods:
                     raise ValueError(f"Unknown mod {mod_id} for {weapon_id} ({slot})")
                 name = (self.mods_en.get(mod_id) or {}).get("name")

@@ -34,10 +34,12 @@ ORDER = ['Fuel', 'Receiver', 'Capacitor', 'Barrel', 'Tank', 'Grip', 'Stock', 'Ma
 
 def build_rows(comp, wid, prefixes):
     slots = comp.slots.get(wid) or {}
-    order = [s for s in ORDER if slots.get(s)] + sorted(s for s in slots if s not in ORDER and slots[s])
+    order = ([s for s in ORDER if policy.catalog_mod_ids(slots.get(s) or [])]
+             + sorted(s for s in slots if s not in ORDER
+                      and policy.catalog_mod_ids(slots[s])))
     result = []
     for slot in order:
-        for mid in slots[slot]:
+        for mid in policy.catalog_mod_ids(slots[slot]):
             mod = comp.mods.get(mid)
             ru = comp.mods_ru.get(mid) or {}
             name = ru.get('name') or f'[{mid}]'
@@ -121,7 +123,8 @@ def render_heavy(comp, wid, page_num, prefixes, out, extra_description='', card_
         return {'mode': 'none', 'font_size': None, 'mod_count': 0}
     if len(rows) > MAX_DETAILED_MODS:
         if not custom_rows and site_mod_rows is None:
-            missing = [mid for ids in (comp.slots.get(wid) or {}).values() for mid in ids
+            missing = [mid for ids in (comp.slots.get(wid) or {}).values()
+                       for mid in policy.catalog_mod_ids(ids)
                        if not (comp.mods_ru.get(mid) or {}).get('name')]
             if missing:
                 raise ValueError(f'{wid}: нет названий модов: {", ".join(missing)}')
@@ -138,8 +141,11 @@ def render_heavy(comp, wid, page_num, prefixes, out, extra_description='', card_
             paths.append(path)
 
         unique_mods = set(unique_mods)
-        ordered_slots = comp.slots.get(wid) or {}
-        slot_order = [s for s in ORDER if ordered_slots.get(s)] + sorted(s for s in ordered_slots if s not in ORDER and ordered_slots[s])
+        ordered_slots = {slot: policy.catalog_mod_ids(ids)
+                         for slot, ids in (comp.slots.get(wid) or {}).items()}
+        slot_order = ([slot for slot in ORDER if ordered_slots.get(slot)]
+                      + sorted(slot for slot in ordered_slots if slot not in ORDER
+                               and ordered_slots[slot]))
         ids_in_order = ([(item['slot'], item['id']) for item in site_mod_rows] if site_mod_rows is not None
                         else [(slot, mid) for slot in slot_order for mid in ordered_slots[slot]])
         valid_fields = {'name': 0, 'prefix': 1, 'effects': 2, 'weight': 3, 'cost': 4, 'perks': 5}

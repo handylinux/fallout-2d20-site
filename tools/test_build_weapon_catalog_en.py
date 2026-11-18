@@ -124,6 +124,28 @@ class EnglishCatalogBuildTests(unittest.TestCase):
                 self.assertIn("MODIFICATION", mods)
                 self.assertIn(".308 Receiver", mods)
 
+                stock_mods = " ".join(document[
+                    result["modifications"]["STOCK MODIFICATIONS"] - 1
+                ].get_text().split())
+                self.assertIn(
+                    "Recoil Compensating Stock Recoil-Compensated Fire Rate: +1; "
+                    "Add Quality: Two-Handed; Remove Quality: Inaccurate",
+                    stock_mods,
+                )
+                self.assertNotIn("Recoil-Compensating", stock_mods)
+                self.assertNotIn(
+                    "Range: +1 zone; Add Quality: Two-Handed; Remove Quality: Inaccurate; "
+                    "Add Quality: Close Quarters",
+                    stock_mods,
+                )
+                for weapon_id in ("weapon_gauss_rifle", "weapon_light_machine_gun",
+                                  "weapon_pump_action_shotgun"):
+                    stock_card = " ".join(document[result["card_pages"][weapon_id] - 1]
+                                          .get_text().split())
+                    self.assertEqual(stock_card.count("Recoil Compensating"), 1)
+                    self.assertIn("Recoil Compensating Stock", stock_card)
+                    self.assertNotIn("Close Quarters", stock_card)
+
                 # The exact-ID match retains its manifest matrix. An earlier
                 # card must remain artless rather than borrowing it by position.
                 no_art_page = result["card_pages"]["weapon_357_magnum_revolver"] - 1

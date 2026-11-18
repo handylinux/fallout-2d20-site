@@ -60,7 +60,8 @@ def _run_chain(source, output, toc, toc_pdf, report, artwork=None):
                 # The plasma mine's "heavy barrel" is inconsistent with the
                 # item type even though both Companion cross-links agree.
                 pairs = {(slot, mid) for wid in ids if wid != 'weapon_plasma_mine'
-                         for slot, mids in (comp.slots.get(wid) or {}).items() for mid in mids}
+                         for slot, mids in (comp.slots.get(wid) or {}).items()
+                         for mid in policy.catalog_mod_ids(mids)}
                 allowed = pairs - (set().union(*specific.values()) if specific else set())
                 if allowed and group != 'unarmed':
                     data, warnings = small.make_mod_data(comp, ids, prefixes, allowed=allowed,
