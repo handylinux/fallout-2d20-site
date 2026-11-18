@@ -129,6 +129,13 @@ HEADERS = [
     "ЭФФЕКТЫ",
     "КАЧЕСТВА",
 ]
+DEFAULT_LABELS = {
+    "weight": "Вес",
+    "cost": "Цена",
+    "rarity": "Редкость",
+    "mods_heading": MODS_HEADING,
+    "no_mods": "НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ",
+}
 
 # Calibri/Carlito typographic ascent; PyMuPDF measures text boxes with it.
 ASCENT = 0.75
@@ -640,6 +647,28 @@ def draw_image(c, card, artwork: ArtworkLayer | None = None) -> None:
     place_image(c, card.get("image") or "", IMAGE_BOX, fit="stretch")
 
 
+def card_label(card, key: str, default: str) -> str:
+    """Return a safe per-card UI label, falling back to the Russian template."""
+    labels = card.get("labels")
+    value = labels.get(key) if isinstance(labels, dict) else None
+    return value if isinstance(value, str) and value else default
+
+
+def card_display_value(value: Any, fallback: str = "-") -> str:
+    """Show a missing rule value as a dash while retaining numeric zero."""
+    return fallback if value is None or value == "" else str(value)
+
+
+def card_stat_headers(card) -> list[str]:
+    """Return seven localised stat headers or the Publisher Russian defaults."""
+    labels = card.get("labels")
+    headers = labels.get("headers") if isinstance(labels, dict) else None
+    if (isinstance(headers, (list, tuple)) and len(headers) == len(HEADERS)
+            and all(isinstance(item, str) and item for item in headers)):
+        return list(headers)
+    return HEADERS
+
+
 def draw_title(c, card) -> None:
     title = card["title"].upper()
     size = TITLE_SIZE
@@ -654,7 +683,14 @@ def draw_title(c, card) -> None:
         RULE_W, -RULE_H, stroke=0, fill=1,
     )
 
-    subtitle = "Вес: {weight}, Цена: {cost}, Редкость: {rarity}".format(**card)
+    subtitle = "{weight_label}: {weight}, {cost_label}: {cost}, {rarity_label}: {rarity}".format(
+        weight_label=card_label(card, "weight", DEFAULT_LABELS["weight"]),
+        cost_label=card_label(card, "cost", DEFAULT_LABELS["cost"]),
+        rarity_label=card_label(card, "rarity", DEFAULT_LABELS["rarity"]),
+        weight=card_display_value(card.get("weight")),
+        cost=card_display_value(card.get("cost")),
+        rarity=card_display_value(card.get("rarity")),
+    )
     draw_center_line(c, SUBTITLE_TOP, subtitle, "Carlito", SUBTITLE_SIZE)
 
 
@@ -688,10 +724,12 @@ def draw_fitted_cell(c, x, y_top, w, h, text, max_lines=2,
         lines = wrap_text(text, "Carlito", size, avail)
     if len(lines) > max_lines:
         lines = lines[:max_lines]
-        last = lines[-1]
-        while last and sw(last + "…", "Carlito", size) > avail:
-            last = last.rsplit(" ", 1)[0] if " " in last else last[:-1]
-        lines[-1] = last.rstrip(" .,;:") + "…"
+        # Never trim a word character-by-character merely to fit an ellipsis:
+        # cells may omit trailing content, but every visible word stays whole.
+        words = lines[-1].split()
+        while words and sw(" ".join(words).rstrip(" .,;:") + "…", "Carlito", size) > avail:
+            words.pop()
+        lines[-1] = (" ".join(words).rstrip(" .,;:") + "…") if words else "…"
     leading = size * 1.25
     block_h = size + (len(lines) - 1) * leading
     start_y = y_top + (h - block_h) / 2.0 + dy
@@ -717,20 +755,22 @@ def draw_stats(c, card) -> None:
         card.get("ammo") or "-",
         card.get("damageType") or "-",
         None,  # damage is drawn with the icon
-        str(card.get("fireRate", "-")),
+        card_display_value(card.get("fireRate")),
         card.get("range") or "-",
         ", ".join(card.get("effects") or []) or "-",
         ", ".join(card.get("qualities") or []) or "-",
     ]
 
-    # header labels
-    for i, label in enumerate(HEADERS):
+    # Header labels may be localised per card. The Russian source's fire-rate
+    # heading has no newline in its data, so retain its measured two-line form.
+    for i, label in enumerate(card_stat_headers(card)):
         x0, x1 = STATS_COLS[i], STATS_COLS[i + 1]
-        size = STATS_HEADER_SIZE
-        if i == 3:
-            size = STATS_HEADER_TIGHT_SIZE
+        lines = label.split("\n")
+        if i == 3 and len(lines) == 1 and label == HEADERS[3]:
             lines = ["СКОРОСТЬ", "СТРЕЛЬБЫ"]
-            leading = 15.48
+        if len(lines) > 1:
+            size = STATS_HEADER_TIGHT_SIZE if i == 3 else STATS_HEADER_SIZE
+            leading = 15.48 if i == 3 else size * 1.2
             block_h = size + (len(lines) - 1) * leading
             start = top + (STATS_HEADER_H - block_h) / 2.0 + 1.5
             c.setFillColor(WHITE)
@@ -744,7 +784,7 @@ def draw_stats(c, card) -> None:
         else:
             draw_cell_text(
                 c, x0, top, x1 - x0, STATS_HEADER_H, label,
-                "Carlito-Bold", size, color=WHITE, dy=1.5,
+                "Carlito-Bold", STATS_HEADER_SIZE, color=WHITE, dy=1.5,
             )
 
     # body labels
@@ -756,7 +796,7 @@ def draw_stats(c, card) -> None:
 
     # damage + CD icon, as one centred group
     x0, x1 = STATS_COLS[2], STATS_COLS[3]
-    damage = str(card.get("damage", "-"))
+    damage = card_display_value(card.get("damage"))
     dmg_w = sw(damage, "Carlito", STATS_BODY_SIZE)
     icon = 19.9
     gap = 1.4
@@ -935,16 +975,17 @@ def draw_mods(c, card, block=None, no_mods_heading_top=None) -> None:
         block = mods_block(card)
     if block is None:
         draw_center_line(c, no_mods_heading_top or MODS_HEADING_TOP,
-                         "НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ",
+                         card_label(card, "no_mods", DEFAULT_LABELS["no_mods"]),
                          "Carlito-Bold", MODS_HEADING_SIZE)
         return
 
     rows, top, ncols = block
     edges = mods_edges(ncols)
     bottom = MODS_BOTTOM
-    # the heading follows the table, so short tables do not leave a hole
-    draw_center_line(c, top - MODS_HEADING_GAP, MODS_HEADING, "Carlito-Bold",
-                     MODS_HEADING_SIZE)
+    # The heading follows the table, so short tables do not leave a hole.
+    draw_center_line(c, top - MODS_HEADING_GAP,
+                     card_label(card, "mods_heading", DEFAULT_LABELS["mods_heading"]),
+                     "Carlito-Bold", MODS_HEADING_SIZE)
 
     # category fills
     y = top

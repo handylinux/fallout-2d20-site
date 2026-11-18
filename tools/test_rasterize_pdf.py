@@ -43,17 +43,21 @@ class RasterizePdfTests(unittest.TestCase):
 
     def test_complete_pages_become_single_opaque_jpegs(self):
         stats = rasterize_pdf.rasterize_pdf(
-            self.source, self.output, dpi=144, jpeg_quality=88
+            self.source, self.output, dpi=144, jpeg_quality=88, metadata_locale="en"
         )
         self.assertEqual(stats["pages"], 2)
         self.assertEqual(stats["dpi"], 144)
         self.assertEqual(stats["jpeg_quality"], 88)
+        self.assertEqual(stats["metadata_locale"], "en")
         self.assertTrue(stats["source_sha256"])
         self.assertTrue(stats["output_sha256"])
         self.assertGreater(stats["output_bytes"], 1_000)
         self.assertEqual(rasterize_pdf.assert_raster_only(self.output), 2)
 
         with pymupdf.open(self.source) as source, pymupdf.open(self.output) as output:
+            self.assertEqual(output.metadata["title"],
+                             "Fallout 2d20 Weapon Catalog — Mobile Raster Edition")
+            self.assertNotIn("оружия", output.metadata["title"])
             self.assertEqual(source.page_count, output.page_count)
             for source_page, output_page in zip(source, output):
                 self.assertAlmostEqual(source_page.rect.width, output_page.rect.width, places=3)
@@ -80,6 +84,8 @@ class RasterizePdfTests(unittest.TestCase):
             rasterize_pdf.rasterize_pdf(self.source, self.output, dpi=71)
         with self.assertRaisesRegex(rasterize_pdf.RasterPdfError, "JPEG"):
             rasterize_pdf.rasterize_pdf(self.source, self.output, jpeg_quality=101)
+        with self.assertRaisesRegex(rasterize_pdf.RasterPdfError, "Локаль"):
+            rasterize_pdf.rasterize_pdf(self.source, self.output, metadata_locale="de")
 
 
 if __name__ == "__main__":

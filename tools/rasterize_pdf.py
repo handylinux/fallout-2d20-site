@@ -27,6 +27,7 @@ import pymupdf
 
 DEFAULT_DPI = 200
 DEFAULT_JPEG_QUALITY = 85
+METADATA_LOCALES = {"ru", "en"}
 
 
 class RasterPdfError(ValueError):
@@ -42,11 +43,41 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
-def _validate_settings(dpi: int, jpeg_quality: int) -> None:
+def _validate_settings(dpi: int, jpeg_quality: int, metadata_locale: str) -> None:
     if dpi < 72:
         raise RasterPdfError("DPI должен быть не меньше 72")
     if not 1 <= jpeg_quality <= 100:
         raise RasterPdfError("Качество JPEG должно быть от 1 до 100")
+    if metadata_locale not in METADATA_LOCALES:
+        raise RasterPdfError(
+            "Локаль metadata должна быть одной из: " + ", ".join(sorted(METADATA_LOCALES))
+        )
+
+
+def _metadata(dpi: int, jpeg_quality: int, metadata_locale: str) -> dict[str, str]:
+    """Return viewer-facing metadata without changing page-content semantics."""
+    if metadata_locale == "en":
+        return {
+            "title": "Fallout 2d20 Weapon Catalog — Mobile Raster Edition",
+            "author": "handylinux/fallout-2d20-site",
+            "subject": (
+                f"One opaque RGB JPEG per page; {dpi} DPI, JPEG quality {jpeg_quality}"
+            ),
+            "keywords": "Fallout 2d20, weapons, English, mobile compatibility, raster",
+            "creator": "tools/rasterize_pdf.py",
+            "producer": "PyMuPDF",
+        }
+    return {
+        "title": "Справочник оружия — мобильная растровая версия",
+        "author": "handylinux/fallout-2d20-site",
+        "subject": (
+            f"Одна непрозрачная RGB JPEG-страница на лист; {dpi} DPI, "
+            f"JPEG quality {jpeg_quality}"
+        ),
+        "keywords": "Fallout 2d20, оружие, мобильная совместимость, raster",
+        "creator": "tools/rasterize_pdf.py",
+        "producer": "PyMuPDF",
+    }
 
 
 def assert_raster_only(path: Path) -> int:
@@ -102,6 +133,7 @@ def rasterize_pdf(
     *,
     dpi: int = DEFAULT_DPI,
     jpeg_quality: int = DEFAULT_JPEG_QUALITY,
+    metadata_locale: str = "ru",
 ) -> dict[str, Any]:
     """Render every source page into one opaque JPEG in a new PDF.
 
@@ -111,7 +143,7 @@ def rasterize_pdf(
     """
     source = Path(source)
     output = Path(output)
-    _validate_settings(dpi, jpeg_quality)
+    _validate_settings(dpi, jpeg_quality, metadata_locale)
     if not source.is_file():
         raise RasterPdfError(f"Не найден исходный PDF: {source}")
     if source.resolve() == output.resolve():
@@ -148,17 +180,7 @@ def rasterize_pdf(
                     )
                     page.insert_image(page.rect, stream=jpeg, keep_proportion=False)
                 raster_document.set_metadata(
-                    {
-                        "title": "Справочник оружия — мобильная растровая версия",
-                        "author": "handylinux/fallout-2d20-site",
-                        "subject": (
-                            f"Одна непрозрачная RGB JPEG-страница на лист; {dpi} DPI, "
-                            f"JPEG quality {jpeg_quality}"
-                        ),
-                        "keywords": "Fallout 2d20, оружие, мобильная совместимость, raster",
-                        "creator": "tools/rasterize_pdf.py",
-                        "producer": "PyMuPDF",
-                    }
+                    _metadata(dpi, jpeg_quality, metadata_locale)
                 )
                 raster_document.save(
                     temp_path,
@@ -182,6 +204,7 @@ def rasterize_pdf(
         "pages": pages,
         "dpi": dpi,
         "jpeg_quality": jpeg_quality,
+        "metadata_locale": metadata_locale,
         "source": str(source),
         "source_sha256": source_sha256,
         "output": str(output),
@@ -198,9 +221,12 @@ def main() -> None:
                         help=f"разрешение рендеринга (по умолчанию {DEFAULT_DPI})")
     parser.add_argument("--jpeg-quality", type=int, default=DEFAULT_JPEG_QUALITY,
                         help=f"качество JPEG от 1 до 100 (по умолчанию {DEFAULT_JPEG_QUALITY})")
+    parser.add_argument("--metadata-locale", choices=sorted(METADATA_LOCALES), default="ru",
+                        help="язык title/subject/keywords PDF (по умолчанию ru)")
     args = parser.parse_args()
     print(json.dumps(
-        rasterize_pdf(args.source, args.out, dpi=args.dpi, jpeg_quality=args.jpeg_quality),
+        rasterize_pdf(args.source, args.out, dpi=args.dpi, jpeg_quality=args.jpeg_quality,
+                      metadata_locale=args.metadata_locale),
         ensure_ascii=False,
         indent=2,
     ))

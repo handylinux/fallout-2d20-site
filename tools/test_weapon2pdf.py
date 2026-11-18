@@ -376,6 +376,29 @@ class RenderTests(unittest.TestCase):
         self.assertIn("Вес: 11, Цена: 117, Редкость: 2", text)
         self.assertIn("\n18", text)
 
+    def test_localised_labels_and_missing_values_are_rendered_safely(self):
+        card = base_card()
+        card.update({
+            "title": "English Fixture",
+            "weight": "", "cost": None, "rarity": "",
+            "damage": "", "fireRate": "", "mods": [],
+            "labels": {
+                "weight": "Weight", "cost": "Cost", "rarity": "Rarity",
+                "mods_heading": "SUPPORTED MODIFICATIONS",
+                "no_mods": "NO SUPPORTED MODIFICATIONS",
+                "headers": ["AMMO", "DAMAGE\\nTYPE", "DAMAGE", "FIRE\\nRATE",
+                            "RANGE", "EFFECTS", "QUALITIES"],
+            },
+        })
+        page = self.render(card)[0]
+        text = page.get_text()
+        self.assertIn("Weight: -, Cost: -, Rarity: -", text)
+        self.assertIn("NO SUPPORTED MODIFICATIONS", text)
+        self.assertIn("DAMAGE", text)
+        self.assertIn("FIRE", text)
+        self.assertNotIn("НЕТ ПОДДЕРЖИВАЕМЫХ", text)
+        self.assertEqual(w.card_display_value(0), "0")
+
     def test_mods_table_reaches_bottom_margin(self):
         page = self.render(base_card())[0]
         lines = [it["rect"] for it in page.get_drawings()

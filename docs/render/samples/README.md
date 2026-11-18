@@ -5,6 +5,9 @@
 | `book-weapon-catalog.pdf` | основной полный русский справочник оружия: 176 страниц (кратно 4 для печати), печатное оглавление на стр. 4–5 после разворота PLEASE STAND BY, 143 оружейные карточки. Artwork Publisher воспроизведён для 77 карточек по manifest с исходными matrix/crop/alpha; чужие иллюстрации не подставляются. |
 | `book-weapon-catalog-mobile-raster.pdf` | дополнительная мобильная версия тех же 176 страниц. После корректной сборки основной книги каждая целая страница отрендерена в один RGB JPEG 200 DPI: нет текстовых блоков, шрифтов, векторных объектов, alpha-масок и отдельных слоёв оружия. Это **не** замена прозрачных PNG оружия: их прозрачность сначала правильно скомпонована с фоном страницы. Выбирайте этот файл только для viewer, который неправильно композитит слои; в нём нельзя искать/выделять текст, а качество печати ниже, чем у основной версии. |
 | `book-weapon-catalog-artwork-coverage.json` | проверяемая карта artwork для основной книги: исходный SHA-256, source page, xref и placement 77 карточек с воспроизведённым artwork, а также явные причины отсутствия art у остальных карточек. |
+| `book-weapon-catalog-en.pdf` | полный английский справочник: 146 оружейных карточек и иерархические PDF bookmarks по категориям. Для 77 карточек повторены те же exact Publisher artwork layers, что и в русской книге; неподтверждённые изображения не подставляются. |
+| `book-weapon-catalog-en-mobile-raster.pdf` | дополнительная mobile-совместимая английская версия тех же 146 страниц: каждая страница — один непрозрачный RGB JPEG после полного рендеринга векторной страницы. |
+| `book-weapon-catalog-en-artwork-coverage.json` | audit exact-ID artwork для английской книги: 77 replayed, 6 известных исходных страниц без recoverable exported artwork и 63 карточки без manifest page. |
 | `sample-3.pdf` | три страницы подряд: 10-мм пистолет (лёгкое), Гатлинг (тяжёлое), Криолятор (энерго) |
 | `sample-3.png` | те же три страницы одним листом для быстрого просмотра |
 | `10mm-pistol.pdf`, `gatling-gun.pdf`, `cryolator.pdf` | те же страницы по отдельности |
@@ -80,6 +83,43 @@ python3 tools/rasterize_pdf.py docs/render/samples/book-weapon-catalog.pdf \
 их Publisher matrix/crop уже применены к фону до растеризации, но в резервном
 файле отсутствуют выбор текста, шрифты, векторные объекты и самостоятельные
 слои. Перед публикацией скрипт проверяет это свойство у каждой страницы.
+
+### English weapon catalogue
+
+Английский каталог строится из checked-in English Companion localisation и
+тех же числовых правил `data/weapon-book/companion/`, но не использует
+статические изображения из `art/`, другой ветки или соседних страниц. У
+каждой из 146 карточек есть English title, subtitles, stat headers, mod
+labels and description; PDF outline группирует их по восьми категориям.
+
+Artwork допускается только по точному совпадению `weapon_id` с manifest,
+извлечённым из данного `Справочник оружия.pdf` (SHA-256
+`48c85e12c5eca695e0c4a4fc3a8bf9276d4fb1d1715b6a62f4b0f9c26ffdbd35`). Для
+каждого из 77 доступных слоёв сохраняются matrix, crop/clip, rotation,
+alpha и draw order. Нет fallback по конечному номеру страницы, source-page
+или названию. Шесть source pages без recoverable exported artwork — `Sword`,
+`Combat Knife`, `Machete`, `Ripper`, `Switchblade` и `Shishkebab` — остаются
+без substitute illustration и явно записаны в English coverage. Ещё 63
+добавленные/непредставленные в исходнике карточки имеют статус
+`no-manifest-page`.
+
+```bash
+# Exact Publisher extraction; this ignored working directory is not published.
+python3 tools/extract_pdf_images.py "Справочник оружия.pdf" \
+  --out docs/render/pdf-extract/publisher-art --min-size 300
+
+# Canonical English vector catalogue and its compact provenance audit.
+python3 tools/build_weapon_catalog_en.py "Справочник оружия.pdf" \
+  --out docs/render/samples/book-weapon-catalog-en.pdf \
+  --artwork-manifest docs/render/pdf-extract/publisher-art/artwork-manifest.json \
+  --artwork-root docs/render/pdf-extract/publisher-art \
+  --artwork-coverage docs/render/samples/book-weapon-catalog-en-artwork-coverage.json
+
+# Optional viewer-compatibility edition, made only from the verified vector PDF.
+python3 tools/rasterize_pdf.py docs/render/samples/book-weapon-catalog-en.pdf \
+  --out docs/render/samples/book-weapon-catalog-en-mobile-raster.pdf \
+  --dpi 200 --jpeg-quality 85 --metadata-locale en
+```
 
 ## Книга брони
 
