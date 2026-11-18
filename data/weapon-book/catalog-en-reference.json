@@ -1,0 +1,191 @@
+{
+  "damage_effects": {
+    "title": "DAMAGE EFFECTS",
+    "intro": "Damage effects are special weapon properties. Whenever one or more Effect symbols are rolled when determining damage, every damage effect listed for that weapon is triggered. Some effects depend on the number of Effect symbols rolled; those details are given below.",
+    "entries": [
+      {
+        "id": "effect_burst",
+        "text": "For each Effect rolled, the attack may hit one additional target within Close range of the primary target. Each additional target costs one additional shot from the weapon."
+      },
+      {
+        "id": "effect_breaking",
+        "text": "For each Effect rolled, permanently reduce a target's cover dice by 1. If the target has no cover, reduce the damage resistance of the hit location by 1 for the weapon's damage type instead."
+      },
+      {
+        "id": "effect_persistent",
+        "text": "If one or more Effects are rolled, the target suffers the damage rolled at the end of its next turn and each later turn for a number of rounds equal to the number of Effects rolled. The target may spend a Major Action to attempt to end the effect; the GM chooses the Attribute + Skill, at a difficulty equal to the remaining rounds."
+      },
+      {
+        "id": "effect_piercing_x",
+        "text": "For each Effect rolled, ignore X points of the target's damage resistance, where X is the rating of this effect."
+      },
+      {
+        "id": "effect_radioactive",
+        "text": "For each Effect rolled, the target suffers 1 point of radiation damage. Apply this radiation damage separately after the normal damage from the attack."
+      },
+      {
+        "id": "effect_spread",
+        "text": "For each Effect rolled, the attack inflicts one additional hit on the target. Each additional hit deals half the damage inflicted, rounded down, and strikes a random body location."
+      },
+      {
+        "id": "effect_stun",
+        "text": "If one or more Effects are rolled, the target cannot take actions on its next turn, though it may still spend AP to buy actions."
+      },
+      {
+        "id": "effect_vicious",
+        "text": "The attack inflicts +1 damage for each Effect rolled."
+      },
+      {
+        "id": "effect_arc",
+        "page_break_before": true,
+        "text": "Each Effect rolled automatically hits one additional target within Close range of the primary target. Each additional target suffers half the damage rolled. Unlike Burst, Arc requires no additional ammunition."
+      },
+      {
+        "id": "effect_freeze",
+        "text": "Targets hit by the attack are frozen if the number of Effects rolled equals or exceeds half their END, or half their BODY for creatures. A frozen creature cannot take actions on its next turn."
+      }
+    ]
+  },
+  "weapon_qualities": {
+    "title": "WEAPON QUALITIES",
+    "intro": "Weapon qualities describe how a weapon operates and distinguish it from other weapon types. Names match the vendored English Companion localization wherever it provides one; Fuel X is translated from the supplied Publisher page because that localization has no matching entry.",
+    "entries": [
+      {
+        "id": "quality_accurate",
+        "text": "After taking the Aim minor action before attacking with an Accurate weapon, you may spend up to 3 AP to add +1 Combat Die to the damage roll for each AP spent. If you gain damage this way, you cannot spend ammunition for additional damage. A weapon cannot be both Accurate and Inaccurate."
+      },
+      {
+        "id": "quality_blast",
+        "text": "When attacking with a Blast weapon, choose a zone you can see rather than a single opponent and make the appropriate attack test at base difficulty 2, adjusted for range as normal. On a success, every creature and other damageable target in that zone suffers the damage rolled. On a failure, roll only half the normal Combat Dice for damage and ignore the weapon's other damage effects."
+      },
+      {
+        "id": "quality_close_quarters",
+        "text": "Using a Close Quarters weapon at arm's reach of an opponent does not increase the attack's difficulty."
+      },
+      {
+        "id": "quality_concealed",
+        "text": "A Concealed weapon is small or easy to hide. Enemies do not notice it unless it is in your hands, or they carefully search you and succeed at a PER + Survival test with difficulty 2."
+      },
+      {
+        "id": "quality_debilitating",
+        "text": "Increase the difficulty of any test to treat injuries caused by a Debilitating weapon by +1."
+      },
+      {
+        "id": "quality_gatling",
+        "text": "A Gatling weapon consumes ammunition ten times faster than normal: whenever it would spend one round, it spends a burst of 10 rounds instead. When spending ammunition to increase damage, add +2 Combat Dice per 10-round burst rather than +1 per round; the maximum number of bursts equals the weapon's Fire Rate."
+      },
+      {
+        "id": "quality_inaccurate",
+        "text": "You gain no benefit from the Aim minor action when attacking with an Inaccurate weapon. A weapon cannot be both Accurate and Inaccurate."
+      },
+      {
+        "id": "quality_mine",
+        "text": "Once a Mine is placed on a surface and primed, it becomes a hazard that damages anyone at arm's reach, plus additional targets if it also has the Blast quality."
+      },
+      {
+        "id": "quality_night_vision",
+        "page_break_before": true,
+        "text": "When you Aim with a weapon that has Night Vision, ignore any increase in attack difficulty caused by darkness."
+      },
+      {
+        "id": "quality_parry",
+        "text": "When an opponent attempts to attack you in melee while you wield a Parry weapon, you may spend 1 AP to add +1 to your Defence against that attack."
+      },
+      {
+        "id": "quality_recon",
+        "text": "When you Aim with a Recon weapon, you may mark the target you aimed at. The next ally to attack that target may reroll one d20 during their attack."
+      },
+      {
+        "id": "quality_reliable",
+        "text": "During each combat encounter, a Reliable weapon ignores the first Complication rolled while using that weapon. A weapon cannot be both Reliable and Unreliable."
+      },
+      {
+        "id": "quality_suppressed",
+        "text": "If an enemy cannot see you when you attack with a Suppressed weapon, they do not notice the attack until they become its target or succeed at a PER + Survival test with difficulty 2."
+      },
+      {
+        "id": "quality_two-handed",
+        "text": "A Two-Handed weapon must be held in both hands to be used effectively. Attempting to attack with it in one hand increases the difficulty by +2."
+      },
+      {
+        "id": "quality_unreliable",
+        "text": "When attacking with an Unreliable weapon, increase the attack's Complication range by 1. A weapon cannot be both Reliable and Unreliable."
+      },
+      {
+        "id": "quality_slow_load",
+        "text": "The weapon reloads especially slowly. After firing, you must spend a minor action to reload before you can fire it again."
+      },
+      {
+        "id": "quality_ammo-hungry_x",
+        "text": "Each shot from this weapon consumes X ammunition rather than 1. Spending ammunition to increase damage also costs X ammunition for each additional Combat Die, up to the weapon's Fire Rate. Other effects that spend ammunition, such as Burst, also spend X ammunition instead of 1."
+      },
+      {
+        "id": "quality_bombard",
+        "text": "Bombard works like Blast, with one addition: you may spend extra ammunition to affect additional zones. Each additional zone costs 2 ammunition, must be adjacent to the original zone, and counts against the weapon's Fire Rate."
+      },
+      {
+        "id": "quality_delay_x",
+        "text": "A weapon with Delay X has a timer or delayed fuse and does not explode immediately. Delay (1) explodes at the start of the first round after it is thrown or activated; Delay (2) explodes at the start of the second round, and so on."
+      },
+      {
+        "id": "quality_placed",
+        "page_break_before": true,
+        "text": "A Placed explosive is set in a chosen location and prepared to detonate, often with Delay X or remote control. Setting it requires a PER + Explosives test at difficulty 1, or difficulty 2 if you have been attacked since your last turn. On a failure, the bomb is placed incorrectly and does not explode; a Complication may instead leave it defective and able to detonate unpredictably."
+      },
+      {
+        "id": "quality_recoil_x",
+        "text": "If the shooter's STR is lower than X, increase the difficulty of all attacks with this weapon by 1. This can be ignored by holding the weapon with two hands, or by bracing an already Two-Handed weapon against a solid object or bipod."
+      },
+      {
+        "id": "quality_surge",
+        "text": "The weapon is especially effective against machines such as robots and power armor. It gains the Vicious damage effect when attacking robots, power-armored opponents, and other mechanical or electronic targets such as turrets."
+      },
+      {
+        "id": "quality_fuel_x",
+        "label": "Fuel X",
+        "source_only": true,
+        "text": "A weapon with Fuel X must be loaded with the specified ammunition type. To operate, it must be loaded with ammunition equal to its base damage. If a Complication is rolled, it consumes its fuel and must be reloaded with a minor action before it can be used again."
+      },
+      {
+        "id": "quality_thrown",
+        "text": "A Thrown (Close) weapon can be thrown accurately to Close range; a Thrown (Medium) weapon can be thrown accurately to Medium range. Attacks use AGI + Throwing, according to the weapon type."
+      },
+      {
+        "id": "quality_underwater",
+        "text": "When attacking with this weapon underwater, do not apply the normal penalties for underwater attacks."
+      },
+      {
+        "id": "quality_tranq_x",
+        "text": "A Tranquilizer weapon deals damage but does not inflict Injuries. When damage would cause an Injury, the target must pass an END + Survival or BODY + Other test at difficulty X or fall unconscious for one hour. If damage reduces the target to 0 HP and would cause an Injury, this test automatically fails. The effect does not affect poison-immune targets or characters in full power armor."
+      },
+      {
+        "id": "quality_re-roll_hit_location",
+        "text": "Companion lists this as a modification quality. The available Publisher export does not contain a detailed rule entry for it, so no additional rule has been inferred here."
+      },
+      {
+        "id": "quality_bayonet",
+        "text": "Companion lists this as a modification quality. The available Publisher export does not contain a detailed rule entry for it, so no additional rule has been inferred here."
+      },
+      {
+        "id": "quality_crank_x",
+        "text": "Companion lists this as a modification quality. The available Publisher export does not contain a detailed rule entry for it, so no additional rule has been inferred here."
+      },
+      {
+        "id": "quality_shredder",
+        "text": "Companion lists this as a modification quality. The available Publisher export does not contain a detailed rule entry for it, so no additional rule has been inferred here."
+      },
+      {
+        "id": "quality_disarm",
+        "text": "Companion lists this as a modification quality. The available Publisher export does not contain a detailed rule entry for it, so no additional rule has been inferred here."
+      },
+      {
+        "id": "quality_sneak_attack",
+        "text": "Companion lists this as a modification quality. The available Publisher export does not contain a detailed rule entry for it, so no additional rule has been inferred here."
+      },
+      {
+        "id": "quality_targetting_computer",
+        "text": "Companion lists this as a modification quality. The available Publisher export does not contain a detailed rule entry for it, so no additional rule has been inferred here."
+      }
+    ]
+  }
+}

@@ -14,6 +14,11 @@ from weapon_mods_table import HEADERS, COL_WIDTHS
 REGULAR = str(Path(w.FONT_DIR) / 'Carlito-Regular.ttf')
 BOLD = str(Path(w.FONT_DIR) / 'Carlito-Bold.ttf')
 SIZE, LEADING = 10, 13
+# A table must never make a word unreadable by breaking it character by
+# character.  Long unbroken identifiers are instead set a little smaller; if
+# even this minimum cannot fit, rendering fails loudly rather than creating an
+# overflowing or hyphenated-looking cell.
+MIN_SIZE = 6.0
 TABLE_TOP, HEADER_H, CATEGORY_H, PAGE_BOTTOM = 100, 23, 23, 803
 BEIGE, ORANGE = (1, .922, .804), (1, .776, .455)
 BLACK, WHITE, BORDER = (0, 0, 0), (1, 1, 1), (.65, .65, .65)
@@ -33,25 +38,37 @@ def damage_tokens(text):
 
 
 def wrap(text, font, width, size=SIZE):
-    """Wrap at words, including long words, without discarding characters."""
+    """Wrap at spaces only; an individual word is never split into letters."""
     lines = []
     for paragraph in text.split('\n'):
         line = ''
         for word in paragraph.split():
             candidate = (line + ' ' + word).strip()
-            if inline_width(candidate, font, size) <= width:
+            if not line or inline_width(candidate, font, size) <= width:
                 line = candidate
                 continue
-            if line:
-                lines.append(line)
-                line = ''
-            for char in word:
-                if line and inline_width(line + char, font, size) > width:
-                    lines.append(line)
-                    line = ''
-                line += char
+            lines.append(line)
+            line = word
         lines.append(line)
     return lines or ['']
+
+
+def fitted_size(value, font, width, default=SIZE, minimum=MIN_SIZE):
+    """Find a readable size at which every unbroken word fits in its cell.
+
+    We deliberately do not fall back to splitting words.  A value that cannot
+    fit even at the documented minimum is a layout error the caller must fix.
+    """
+    words = [word for paragraph in value.split('\n') for word in paragraph.split()]
+    if not words:
+        return default
+    size = float(default)
+    while size >= minimum:
+        if all(inline_width(word, font, size) <= width for word in words):
+            return size
+        size -= .25
+    widest = max(words, key=lambda word: inline_width(word, font, minimum))
+    raise ValueError(f'Слово не помещается в ячейку без разбиения: {widest}')
 
 
 def render(data, output, page_start=10):
@@ -81,21 +98,23 @@ def render(data, output, page_start=10):
     def text(page, x, baseline, value, name='body', size=SIZE, color=BLACK):
         page.insert_text((x, baseline), value, fontname=name, fontsize=size, color=color)
 
-    def inline_text(page, x, baseline, line):
+    def inline_text(page, x, baseline, line, size=SIZE):
         nonlocal icon_xref
         parts = line.split(DAMAGE_MARK)
+        icon_size = DAMAGE_SIZE * (size / SIZE)
+        gap = DAMAGE_GAP * (size / SIZE)
         for i, part in enumerate(parts):
             if part:
-                text(page, x, baseline, part)
-                x += regular.text_length(part, fontsize=SIZE)
+                text(page, x, baseline, part, size=size)
+                x += regular.text_length(part, fontsize=size)
             if i < len(parts) - 1:
                 if not Path(w.DAMAGE_ICON).is_file():
                     raise ValueError(f'Не найдена иконка урона: {w.DAMAGE_ICON}')
-                rect = pymupdf.Rect(x, baseline - DAMAGE_SIZE * .85,
-                                    x + DAMAGE_SIZE, baseline + DAMAGE_SIZE * .15)
+                rect = pymupdf.Rect(x, baseline - icon_size * .85,
+                                    x + icon_size, baseline + icon_size * .15)
                 icon_xref = page.insert_image(rect, filename=w.DAMAGE_ICON if not icon_xref else None,
                                               xref=icon_xref, keep_proportion=True)
-                x += DAMAGE_SIZE + DAMAGE_GAP
+                x += icon_size + gap
 
     def centered(page, rect, lines, font, name, size, leading, color=BLACK):
         block = (len(lines) - 1) * leading + size
@@ -146,8 +165,12 @@ def render(data, output, page_start=10):
     for section in sections:
         category_name = section['category']
         for index, row in enumerate(section['rows']):
-            lines = [wrap(damage_tokens(value) if col == 2 else value, regular, width - 6)
-                     for col, (value, width) in enumerate(zip(row, table_widths))]
+            values = [damage_tokens(value) if col == 2 else value
+                      for col, value in enumerate(row)]
+            sizes = [fitted_size(value, regular, width - 6)
+                     for value, width in zip(values, table_widths)]
+            lines = [wrap(value, regular, width - 6, size)
+                     for value, width, size in zip(values, table_widths, sizes)]
             height = max(len(cell) for cell in lines) * LEADING + 6
             if height > PAGE_BOTTOM - (TABLE_TOP + HEADER_H + CATEGORY_H):
                 doc.close()
@@ -160,15 +183,15 @@ def render(data, output, page_start=10):
             elif index == 0:
                 y = draw_category(page, y + gap, category_name)
             x = w.MARGIN_L
-            for col, (width, cell) in enumerate(zip(table_widths, lines)):
+            for col, (width, cell, size) in enumerate(zip(table_widths, lines, sizes)):
                 rect = pymupdf.Rect(x, y, x + width, y + height)
                 page.draw_rect(rect, color=BORDER, fill=BEIGE if index % 2 == 0 else ORANGE, width=.25)
                 if col >= 3:
-                    centered(page, rect, cell, regular, 'body', SIZE, LEADING)
+                    centered(page, rect, cell, regular, 'body', size, LEADING)
                 else:
-                    baseline = y + (height - ((len(cell) - 1) * LEADING + SIZE)) / 2 + SIZE * .85
+                    baseline = y + (height - ((len(cell) - 1) * LEADING + size)) / 2 + size * .85
                     for line in cell:
-                        inline_text(page, x + 3, baseline, line)
+                        inline_text(page, x + 3, baseline, line, size=size)
                         baseline += LEADING
                 x += width
             y += height

@@ -1,4 +1,4 @@
-"""Tests for the English catalogue assembler."""
+"""Tests for the complete English weapon-book assembler."""
 
 import hashlib
 import json
@@ -14,11 +14,27 @@ import weapon2pdf as w
 
 
 class EnglishCatalogBuildTests(unittest.TestCase):
-    def test_catalog_uses_english_labels_outline_and_exact_id_artwork(self):
+    @staticmethod
+    def _publisher_fixture(path: Path) -> None:
+        """Make a 106-page source-shaped PDF with numbered source footers."""
+        document = pymupdf.open()
+        try:
+            for number in range(1, 107):
+                page = document.new_page(width=w.PAGE_W, height=w.PAGE_H)
+                # Match the source convention closely enough for the strict
+                # renumbering code: one unique number below y=800.
+                x = 39 if number % 2 == 0 else 546
+                page.insert_text((x, 819), str(number), fontsize=9.96,
+                                 fontname="helv", color=(0, 0, 0))
+            document.save(path, garbage=4, deflate=True)
+        finally:
+            document.close()
+
+    def test_complete_catalog_has_front_matter_references_toc_and_exact_id_artwork(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             source = root / "publisher.pdf"
-            source.write_bytes(b"exact-Publisher-source-fixture")
+            self._publisher_fixture(source)
             asset = root / "art.png"
             Image.new("RGBA", (20, 10), (180, 40, 20, 200)).save(asset)
             manifest = root / "artwork-manifest.json"
@@ -45,32 +61,59 @@ class EnglishCatalogBuildTests(unittest.TestCase):
                 }],
             }), encoding="utf-8")
             output = root / "english.pdf"
+            coverage = root / "coverage.json"
             result = catalog.build(source, output, artwork_manifest=manifest,
-                                   artwork_root=root)
-            self.assertEqual(result["pages"], 146)
+                                   artwork_root=root, artwork_coverage=coverage)
+            self.assertEqual(result["pages"], 180)
+            self.assertEqual(result["pages"] % 4, 0)
             self.assertEqual(result["cards"], 146)
-            self.assertEqual(result["outline_entries"], 154)
+            self.assertEqual(result["toc_pages"], 2)
+            self.assertEqual(result["outline_entries"], 178)
             self.assertEqual(result["artwork"]["counts"], {
                 "no-manifest-page": 145, "replayed": 1,
             })
-            with pymupdf.open(output) as document:
-                self.assertEqual(document.page_count, 146)
-                outline = document.get_toc(simple=True)
-                self.assertEqual(outline[0], [1, "Light Weapons", 1])
-                self.assertEqual(outline[1], [2, ".357 Magnum Revolver", 1])
-                self.assertIn([2, "10mm Pistol", 3], outline)
-                text = document[0].get_text()
-                self.assertIn("Weight:", text)
-                self.assertIn("DAMAGE", text)
-                self.assertIn("SUPPORTED MODIFICATIONS", text)
-                self.assertNotIn("Вес:", text)
-                self.assertNotIn("ПОДДЕРЖИВАЕМЫЕ", text)
+            self.assertTrue(coverage.is_file())
+            self.assertEqual(len(result["references"]["damage_effects"]), 2)
+            self.assertEqual(len(result["references"]["weapon_qualities"]), 3)
+            self.assertEqual(len(result["modifications"]), 20)
+            self.assertEqual(len(result["categories"]), 8)
+            self.assertEqual(len(result["card_pages"]), 146)
 
-                # The exact-ID match is page 3 in English ordering. It retains
-                # the manifest matrix; page 1 must not borrow it by position.
+            with pymupdf.open(output) as document:
+                self.assertEqual(document.page_count, 180)
+                outline = document.get_toc(simple=True)
+                self.assertEqual(outline[0], [1, "DAMAGE EFFECTS", 6])
+                self.assertIn([1, "WEAPON MODIFICATIONS", 12], outline)
+                self.assertIn([1, "SMALL GUNS", 20], outline)
+                self.assertIn([2, "10mm Pistol", result["card_pages"]["weapon_10mm_pistol"]],
+                              outline)
+                self.assertEqual(len(outline), 178)
+
+                cover = document[0].get_text()
+                self.assertIn("BROTHERHOOD FIELD GUIDE", cover)
+                self.assertIn("WASTELAND ARSENAL", cover)
+                self.assertNotIn("РУКОВОДСТВО", cover)
+                toc = document[3].get_text()
+                self.assertIn("TABLE OF CONTENTS", toc)
+                self.assertIn("DAMAGE EFFECTS", toc)
+                effects = document[result["references"]["damage_effects"][0] - 1].get_text()
+                qualities = document[result["references"]["weapon_qualities"][0] - 1].get_text()
+                mods = document[result["modifications"]["RECEIVER MODIFICATIONS"] - 1].get_text()
+                self.assertIn("DAMAGE EFFECTS", effects)
+                self.assertIn("BURST", effects)
+                self.assertIn("WEAPON QUALITIES", qualities)
+                self.assertIn("ACCURATE", qualities)
+                self.assertIn("WEAPON MODIFICATIONS", mods)
+                self.assertIn("MODIFICATION", mods)
+                self.assertIn(".308 Receiver", mods)
+
+                # The exact-ID match retains its manifest matrix. An earlier
+                # card must remain artless rather than borrowing it by position.
+                no_art_page = result["card_pages"]["weapon_357_magnum_revolver"] - 1
                 self.assertFalse(any(item["width"] == 20 and item["height"] == 10
-                                     for item in document[0].get_image_info(xrefs=True)))
-                art = next(item for item in document[2].get_image_info(xrefs=True)
+                                     for item in document[no_art_page].get_image_info(xrefs=True)))
+                art_page = result["card_pages"]["weapon_10mm_pistol"] - 1
+                art = next(item for item in document[art_page].get_image_info(xrefs=True)
                            if item["width"] == 20 and item["height"] == 10)
                 expected = (100, 20, -10, 80, 50, 270)
                 for actual, wanted in zip(art["transform"], expected):

@@ -108,11 +108,12 @@ class UnicodeTableTests(unittest.TestCase):
         self.assertEqual(' '.join(lines), text)
         self.assertTrue(all(table.inline_width(line, font) <= 55 for line in lines))
 
-    def test_long_word_is_not_truncated(self):
+    def test_long_word_is_never_split_into_letters(self):
         font = pymupdf.Font(fontfile=table.REGULAR)
         value = 'Длинноесловобезпробелов'
-        self.assertEqual(''.join(table.wrap(value, font, 35)), value)
-        self.assertTrue(all(font.text_length(line, fontsize=table.SIZE) <= 35 for line in table.wrap(value, font, 35)))
+        self.assertEqual(table.wrap(value, font, 35), [value])
+        with self.assertRaisesRegex(ValueError, 'без разбиения'):
+            table.fitted_size(value, font, 35)
 
     def test_rejects_oversize_row(self):
         data = {'title': 'Тест', 'category': 'Ресивер', 'rows': [['слово ' * 10000, '', '', '', '', '']]}
