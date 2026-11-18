@@ -20,7 +20,7 @@
   },
   "counts": {
     "manifest-page-without-exported-artwork": 6,
-    "no-manifest-page": 60,
+    "no-manifest-page": 61,
     "replayed": 77
   },
   "weapons": {
@@ -1055,6 +1055,9 @@
       "status": "no-manifest-page"
     },
     "weapon_tomahawk": {
+      "status": "no-manifest-page"
+    },
+    "weapon_unarmed_attack": {
       "status": "no-manifest-page"
     },
     "weapon_underwater_gun": {

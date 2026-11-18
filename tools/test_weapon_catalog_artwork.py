@@ -116,6 +116,17 @@ class PublisherPage24RegressionTests(unittest.TestCase):
             self.assertTrue(matching[0]['has-mask'])
             self.assertIn(b'W*', page.read_contents())
 
+    def test_institute_laser_has_no_substitute_publisher_layer(self):
+        """A missing exact ID stays blank rather than borrowing Laser Gun art."""
+        resolver = ArtworkResolver(MANIFEST, ART_ROOT, SOURCE)
+        self.assertIsNone(resolver.layer_for('weapon_institute_laser'))
+        coverage = resolver.coverage()
+        self.assertEqual(coverage['weapons']['weapon_institute_laser']['status'],
+                         'no-manifest-page')
+        laser_gun = resolver.layer_for('weapon_laser_gun')
+        self.assertIsNotNone(laser_gun)
+        self.assertEqual(laser_gun.page['weapon_id'], 'weapon_laser_gun')
+
 
 if __name__ == '__main__':
     unittest.main()

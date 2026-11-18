@@ -234,11 +234,14 @@ Image `/SMask` уже запечён в экспортированном RGBA PN
 
 `tools/build_weapon_catalog.py` собирает `book-weapon-catalog.pdf` из
 редактируемых данных и исходного Publisher PDF. В книге 176 страниц (кратно
-4), печатное оглавление занимает страницы 4–5, а 143 карточки распределены
+4), печатное оглавление занимает страницы 4–5, а 144 карточки распределены
 по стрелковому, тяжёлому, энергетическому, ближнему, рукопашному,
 метательному оружию и взрывчатке. Заголовки, таблицы и описания генерируются
 из `data/weapon-book/companion/` и override-файлов `data/weapons/`; не нужно
-ручным способом править сотни неоднородных Publisher-таблиц.
+ручным способом править сотни неоднородных Publisher-таблиц. «Рукопашная
+атака» включена отдельной карточкой. «Голова ассаултрона» и «Опасная бритва»
+не являются самостоятельным оружием и не включаются; отдельная карточка
+«Головной лазер Штурмотрона» сохранена.
 
 Для полной книги действует более строгий режим, чем для единичной карточки:
 `tools/weapon_catalog_artwork.py` разрешает слой art **только** при точном
@@ -248,6 +251,14 @@ Image `/SMask` уже запечён в экспортированном RGBA PN
 сверяется перед сборкой; отсутствующий asset или несовместимый графический
 state прекращают сборку с ошибкой. Отчёт coverage фиксирует для каждой
 карточки либо source page/xref/asset, либо честный статус отсутствия art.
+У `weapon_institute_laser` в этом Publisher manifest нет exact-ID страницы:
+карточка намеренно публикуется пустой (`no-manifest-page`), без заимствования
+рисунка `weapon_laser_gun`.
+
+Для опубликованной версии после вёрстки используется `--rasterize-cover`:
+только первая страница заменяется одним непрозрачным RGB JPEG 300 DPI с
+quality 92. Это фиксирует все слои исходной Publisher-обложки в её финальном
+виде; остальные 175 страниц canonical PDF остаются векторными/слойными.
 
 ```bash
 # 1. Снять manifest и RGBA artwork именно с используемого Publisher PDF.
@@ -260,22 +271,24 @@ python3 tools/build_weapon_catalog.py "Справочник оружия.pdf" \
   --report docs/render/out/book-weapon-catalog-report.md \
   --artwork-manifest docs/render/pdf-extract/publisher-art/artwork-manifest.json \
   --artwork-root docs/render/pdf-extract/publisher-art \
-  --artwork-coverage docs/render/samples/book-weapon-catalog-artwork-coverage.json
+  --artwork-coverage docs/render/samples/book-weapon-catalog-artwork-coverage.json \
+  --rasterize-cover --cover-dpi 300 --cover-jpeg-quality 92
 ```
 
 В проверенной сборке 77 карточек используют точные размещения Publisher; у
-шести исходных страниц не оказалось экспортируемого raster placement, а у 60
-добавленных или не представленных в исходнике карточек нет manifest page.
-Эти 66 карточек остаются без иллюстрации, а не получают artwork другого
+шести исходных страниц не оказалось экспортируемого raster placement, а у 61
+добавленной или не представленной в исходнике карточки нет manifest page.
+Эти 67 карточек остаются без иллюстрации, а не получают artwork другого
 оружия. В частности, контроль страницы 24 (`weapon_double_barrel_shotgun`,
 xref 468) подтверждает точные matrix `[434.73, -85.906, 62.688, 317.24,
 36.9, 520.84]`, custom crop и `/SMask` в готовой книге.
 
 ### Резервная мобильная растровая версия
 
-`book-weapon-catalog.pdf` остаётся канонической печатной версией: в ней
-сохранены отдельные RGBA иллюстрации, Publisher affine matrix, crop и alpha.
-Если определённый мобильный viewer ошибочно композитит эти PDF-слои, из
+`book-weapon-catalog.pdf` остаётся канонической печатной версией: после
+сведения JPG-обложки в ней сохранены отдельные RGBA иллюстрации, Publisher
+affine matrix, crop и alpha на остальных страницах. Если определённый мобильный
+viewer ошибочно композитит эти PDF-слои, из
 готового канонического файла создаётся отдельный
 `book-weapon-catalog-mobile-raster.pdf`:
 

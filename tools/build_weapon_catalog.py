@@ -14,6 +14,7 @@ import weapon_heavy_preview as heavy
 import weapon_melee_preview as melee
 import weapon_mod_policy as policy
 import weapon_book_toc as toc_render
+import rasterize_pdf
 from weapon_catalog_artwork import ArtworkResolver
 from weapons2cards import Companion, build_card
 
@@ -132,7 +133,11 @@ def _run_chain(source, output, toc, toc_pdf, report, artwork=None):
             # printing, so extra blank pages go before the back cover.
             padding = (-(len(result) + 1)) % 4
             for i in range(padding):
-                blank_pno = len(result) + 1 + i
+                # `len(result)` increases after every insertion.  Derive the
+                # next printed number from the current document rather than
+                # adding the loop index again, otherwise three padding pages
+                # would visibly skip numbers.
+                blank_pno = len(result) + 1
                 blank_pdf = tmp / f'pad-blank-{i}.pdf'
                 toc_render.make_blank_page(blank_pno, blank_pdf)
                 with pymupdf.open(blank_pdf) as bdoc:
@@ -157,11 +162,11 @@ def _run_chain(source, output, toc, toc_pdf, report, artwork=None):
                 'не имеют экспортированного растрового placement; замены не используются.'
             )
         lines = ['# Полный рабочий каталог: оставшиеся категории', '',
-                 'Этот отчёт описывает состав и ограничения данных оставшихся категорий; он не является перечнем незавершённых действий по финальному PDF. Сборка и проверки актуальной русской версии описаны в `docs/weapon-russian-status.md`. Отдельные источнико-зависимые расхождения остаются открытыми и перечислены в `docs/weapon-discrepancies.md`.', '',
+                 'Этот отчёт описывает состав и ограничения данных оставшихся категорий; он не является перечнем незавершённых действий по финальному PDF. Воспроизводимая сборка и проверки актуальной русской версии описаны в `docs/weapon-pdf.md`.', '',
                  f'Всего страниц: {total}. Таблицы дополнений: {references}. Страницы оружия: {pages}. Завершающие страницы оригинала: {closing}.', '',
                  'Добавлены доступные записи Companion: пистолет института, безоружное, метательное и взрывчатка. Порядок — data/weapons/remaining-order.json. Шесть оригинальных и 25 дополнительных оружий ближнего боя описаны отдельно в weapon-melee-report.md. Данные не являются проверкой всех книг или сайта.', '',
-                 '- Кулаки и Unarmed Attack объединены как подтверждённый пользователем дубль; выбрана запись unarmed_human. Опасная бритва не включена как ссылка на другое оружие.',
-                 '- Голова штурмотрона не добавлена второй раз: возможный дубль головного лазера пока не подтверждён. Это не утверждение, что записи полностью идентичны.',
+                 '- Кулаки и Рукопашная атака показаны отдельными карточками по подтверждению пользователя. Опасная бритва не включена: это ссылка на другое оружие.',
+                 '- Голова ассаултрона не включена: это не самостоятельное оружие. Головной лазер Штурмотрона остаётся отдельной карточкой с подтверждённым Publisher artwork.',
                  '- У плазменной мины в Companion указан тяжёлый ствол; это сомнительно для мины, поэтому на странице он не заявлен как подтверждённый. Требуется проверка по книге.',
                  '- Для баллистического кулака и перчатки-вытеснителя Companion не содержит слотов, а проверенные статьи сайта не публикуют списки модификаций.',
                  '- Дополнительная таблица энергетических модов построена по записям слотов Companion для weapon_institute_laser, а не по физическим страницам 78–79; её применимость и характеристики не сверены с книгой.',
@@ -178,7 +183,9 @@ def _run_chain(source, output, toc, toc_pdf, report, artwork=None):
 
 
 def build(source, output, report=None, with_toc=True, artwork_manifest=None,
-          artwork_root=None, artwork_coverage=None):
+          artwork_root=None, artwork_coverage=None, rasterize_cover=False,
+          cover_dpi=rasterize_pdf.DEFAULT_COVER_DPI,
+          cover_jpeg_quality=rasterize_pdf.DEFAULT_COVER_JPEG_QUALITY):
     """Build the complete Russian weapon catalogue.
 
     With the printed table of contents (default) this runs the chain twice:
@@ -190,7 +197,9 @@ def build(source, output, report=None, with_toc=True, artwork_manifest=None,
     If ``artwork_manifest`` is supplied, the final pass replays only artwork
     that has an exact ``weapon_id`` match in that manifest.  The fast first
     pass deliberately omits it because it is used solely to calculate page
-    numbers.  No final-page fallback or substitute image is permitted.
+    numbers.  No final-page fallback or substitute image is permitted.  When
+    ``rasterize_cover`` is set, only the complete Publisher cover is rendered
+    as one opaque RGB JPEG after the verified vector book is assembled.
     """
     source, output = Path(source), Path(output)
     artwork = ArtworkResolver(artwork_manifest, artwork_root, source)
@@ -198,6 +207,12 @@ def build(source, output, report=None, with_toc=True, artwork_manifest=None,
     def finish(stats):
         if artwork.enabled:
             artwork.assert_all_available_layers_requested()
+        if rasterize_cover:
+            stats['cover'] = rasterize_pdf.rasterize_cover_page(
+                output, output, dpi=cover_dpi, jpeg_quality=cover_jpeg_quality
+            )
+        else:
+            stats['cover'] = {'rasterized': False}
         coverage = artwork.coverage()
         if artwork_coverage is not None:
             artwork.write_coverage(artwork_coverage)
@@ -246,10 +261,20 @@ def main():
                    help='каталог экспортированных PNG (по умолчанию рядом с manifest)')
     p.add_argument('--artwork-coverage', type=Path,
                    help='куда записать проверяемый JSON coverage artwork')
+    p.add_argument('--rasterize-cover', action='store_true',
+                   help='после сборки заменить только обложку одним непрозрачным RGB JPEG')
+    p.add_argument('--cover-dpi', type=int, default=rasterize_pdf.DEFAULT_COVER_DPI,
+                   help=f'DPI JPEG-обложки (по умолчанию {rasterize_pdf.DEFAULT_COVER_DPI})')
+    p.add_argument('--cover-jpeg-quality', type=int,
+                   default=rasterize_pdf.DEFAULT_COVER_JPEG_QUALITY,
+                   help=('качество JPEG-обложки от 1 до 100 '
+                         f'(по умолчанию {rasterize_pdf.DEFAULT_COVER_JPEG_QUALITY})'))
     args = p.parse_args()
     print(build(args.source, args.out, args.report, with_toc=not args.no_toc,
                 artwork_manifest=args.artwork_manifest, artwork_root=args.artwork_root,
-                artwork_coverage=args.artwork_coverage))
+                artwork_coverage=args.artwork_coverage,
+                rasterize_cover=args.rasterize_cover, cover_dpi=args.cover_dpi,
+                cover_jpeg_quality=args.cover_jpeg_quality))
 
 if __name__ == '__main__':
     main()

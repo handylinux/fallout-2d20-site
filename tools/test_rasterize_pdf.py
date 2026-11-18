@@ -77,6 +77,36 @@ class RasterizePdfTests(unittest.TestCase):
                 self.assertEqual(image["ext"], "jpeg")
                 self.assertFalse(image.get("smask", 0))
 
+    def test_cover_only_becomes_one_opaque_jpeg_and_rest_stays_vector(self):
+        stats = rasterize_pdf.rasterize_cover_page(
+            self.source, self.output, dpi=144, jpeg_quality=88
+        )
+        self.assertTrue(stats["rasterized"])
+        self.assertEqual(stats["pages"], 2)
+        self.assertEqual(stats["dpi"], 144)
+        self.assertEqual(stats["jpeg_quality"], 88)
+        self.assertTrue(stats["source_sha256"])
+        self.assertTrue(stats["output_sha256"])
+        self.assertGreater(stats["output_bytes"], 1_000)
+        self.assertEqual(rasterize_pdf.assert_rasterized_cover(self.output), 2)
+
+        with pymupdf.open(self.source) as source, pymupdf.open(self.output) as output:
+            cover = output[0]
+            self.assertEqual(cover.get_text(), "")
+            self.assertEqual(cover.get_fonts(full=True), [])
+            self.assertEqual(cover.get_drawings(), [])
+            cover_images = cover.get_images(full=True)
+            self.assertEqual(len(cover_images), 1)
+            image = output.extract_image(cover_images[0][0])
+            self.assertEqual(image["ext"], "jpeg")
+            self.assertEqual(image["colorspace"], 3)
+            self.assertFalse(image.get("smask", 0))
+            # Only the selected cover was flattened; the book body preserves
+            # its original vectors, text and transparent image resources.
+            self.assertEqual(output[1].get_text(), source[1].get_text())
+            self.assertTrue(output[1].get_drawings())
+            self.assertTrue(output[1].get_fonts(full=True))
+
     def test_invalid_output_or_settings_fail_before_rendering(self):
         with self.assertRaisesRegex(rasterize_pdf.RasterPdfError, "совпадать"):
             rasterize_pdf.rasterize_pdf(self.source, self.source)

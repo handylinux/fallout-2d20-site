@@ -4,21 +4,28 @@ import unittest
 from pathlib import Path
 import pymupdf
 import build_weapon_catalog as book
+import rasterize_pdf
 from weapons2cards import Companion
 
 
 class CompleteWorkingCatalogTest(unittest.TestCase):
-    def test_catalog_and_intentional_exclusions(self):
+    def test_catalog_and_explicit_non_weapon_exclusions(self):
         source = Path('Справочник оружия.pdf')
         if not source.exists():
             self.skipTest('Source PDF not present')
         with tempfile.TemporaryDirectory() as temp:
             output = Path(temp) / 'catalog.pdf'
-            info = book.build(source, output)
+            info = book.build(source, output, rasterize_cover=True)
             self.assertEqual(info['pages'], 176)
             self.assertEqual(info['pages'] % 4, 0)
+            self.assertTrue(info['cover']['rasterized'])
+            self.assertEqual(info['cover']['dpi'], rasterize_pdf.DEFAULT_COVER_DPI)
+            self.assertEqual(info['cover']['jpeg_quality'],
+                             rasterize_pdf.DEFAULT_COVER_JPEG_QUALITY)
+            self.assertEqual(rasterize_pdf.assert_rasterized_cover(output), 176)
             self.assertEqual(info['toc_pages'], 2)
-            self.assertEqual(info['closing'], [171, 172, 173, 174, 176])
+            self.assertEqual(info['closing'], [172, 173, 174, 175, 176])
+            self.assertEqual(info['padding'], 0)
             with pymupdf.open(output) as doc:
                 text = lambda n: doc[n-1].get_text()
                 # Printed TOC sits on pages 4-5, right after the STAND BY spread
@@ -27,7 +34,7 @@ class CompleteWorkingCatalogTest(unittest.TestCase):
                 toc_text = ''.join(doc[n-1].get_text() for n in toc_pages)
                 weapon_entries = [(t, p) for lvl, t, p in info['toc']
                                   if lvl == 2 and 'МОДИФИКАЦИИ' not in t]
-                self.assertEqual(len(weapon_entries), 143)
+                self.assertEqual(len(weapon_entries), 144)
                 for title, _page in weapon_entries:
                     self.assertIn(title, toc_text)
                 self.assertIn('Камень', toc_text)
@@ -37,9 +44,15 @@ class CompleteWorkingCatalogTest(unittest.TestCase):
                 lines = [l.strip() for l in toc_text.splitlines() if l.strip()]
                 idx = next(i for i, l in enumerate(lines) if 'Гатлинг-плазма' in l)
                 self.assertRegex(lines[idx + 1], r'^\d+$')
-                self.assertEqual(int(lines[idx + 1]),
-                                 dict((t, p) for _l, t, p in info['toc'])['Гатлинг-плазма'])
+                toc_lookup = dict((title, page) for _level, title, page in info['toc'])
+                self.assertEqual(int(lines[idx + 1]), toc_lookup['Гатлинг-плазма'])
+                head_laser = text(toc_lookup['Головной лазер Штурмотрона'])
+                self.assertIn('ГОЛОВНОЙ ЛАЗЕР ШТУРМОТРОНА', head_laser)
+                mugnum = text(toc_lookup['Мугнумномикон'])
+                self.assertIn('МУГНУМНОМИКОН', mugnum)
+                self.assertNotIn('Магнумномикон', toc_text)
 
+                self.assertEqual(len(info['weapons']['energy']), 1)
                 self.assertIn('ЛАЗЕРНЫЙ ПИСТОЛЕТ ИНСТИТУТА', text(info['weapons']['energy'][0]))
                 energy_first = text(info['references']['energy'][0])
                 energy_second = text(info['references']['energy'][1])
@@ -50,7 +63,11 @@ class CompleteWorkingCatalogTest(unittest.TestCase):
                              'Фотонная мешалка', 'Возбудитель фотонов'):
                     self.assertIn(name, energy_second_compact)
                 self.assertIn('КУЛАКИ', text(info['weapons']['unarmed'][0]))
-                glove = text(info['weapons']['unarmed'][2])
+                unarmed_attack = text(info['weapons']['unarmed'][1])
+                self.assertIn('РУКОПАШНАЯ АТАКА', unarmed_attack)
+                self.assertIn('НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ', unarmed_attack)
+                self.assertNotIn('Unarmed Attack', unarmed_attack)
+                glove = text(info['weapons']['unarmed'][3])
                 self.assertIn('ПЕРЧАТКА', glove)
                 self.assertIn('Свинцовая', glove)
                 self.assertIn('Кузнец', glove)
@@ -100,7 +117,7 @@ class CompleteWorkingCatalogTest(unittest.TestCase):
         included = set(sum([json.loads((root / name).read_text(encoding='utf-8')) for name in filenames], []))
         included.update(sum(json.loads((root / 'remaining-order.json').read_text(encoding='utf-8')).values(), []))
         self.assertEqual(set(Companion().weapons) - included,
-                         {'weapon_unarmed_attack', 'weapon_straight_razor', 'weapon_assaultron_head'})
+                         {'weapon_straight_razor', 'weapon_assaultron_head'})
 
 if __name__ == '__main__':
     unittest.main()

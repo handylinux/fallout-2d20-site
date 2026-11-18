@@ -4,6 +4,7 @@
   ],
   "unarmed": [
     "unarmed_human",
+    "weapon_unarmed_attack",
     "weapon_ballistic_fist",
     "weapon_boxing_glove",
     "weapon_knuckles",
