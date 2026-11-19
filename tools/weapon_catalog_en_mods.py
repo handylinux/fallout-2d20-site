@@ -64,3 +64,22 @@ def table_data(title: str, rows: list[Row], *, gap: int = 18) -> dict:
     for section in sections[1:]:
         section["gap_before"] = gap
     return {"title": title, "headers": list(mods.HEADERS), "sections": sections}
+
+
+def card_mod_names(companion: Companion, rows: list[Row]) -> list[dict]:
+    by_slot = defaultdict(list)
+    for slot, name, *_ in rows:
+        if name not in by_slot[slot]:
+            by_slot[slot].append(name)
+    return [{"slot": companion.slot_label(slot), "items": names} for slot, names in by_slot.items()]
+
+
+def specific_section(title: str, rows: list[Row], *, unverified: bool = False) -> dict:
+    """Identify the weapon, without presenting its rows as chapter-wide options."""
+    ambiguous = defaultdict(set)
+    for slot, name, *_ in rows:
+        ambiguous[name].add(slot)
+    cells = [[f"{name} ({slot})" if len(ambiguous[name]) > 1 else name, *values]
+             for slot, name, *values in rows]
+    suffix = " — COMPATIBILITY NEEDS CLARIFICATION" if unverified else ""
+    return {"category": title.upper() + suffix, "rows": cells, "gap_before": 8}

@@ -26,6 +26,7 @@ import weapon2pdf as w
 import weapon_book_cover as book_cover
 import weapon_book_toc as toc_render
 import weapon_heavy_preview as detailed_card
+import weapon_energy_preview as publisher_energy
 import weapon_catalog_en_mods as catalogue_mods
 import weapon_mods_table_unicode as mod_tables
 from weapon_catalog_artwork import ArtworkResolver
@@ -352,47 +353,97 @@ def _category_cards(cards: list[dict[str, Any]]) -> dict[str, list[dict[str, Any
     return grouped
 
 
+# A compact English table is the default for dense inventories. Where the
+# Publisher card actually had a parameter table, preserve that layout for
+# slightly longer lists as long as type and prose still fit on the card.
+SPARSE_MOD_LIMIT = 6
+PUBLISHER_DETAIL_LIMIT = 8
+PUBLISHER_MOD_CARD_PAGES = {
+    "weapon_crossbow": 55,
+    "weapon_bow": 56,
+    **detailed_card.SOURCE_PAGES,
+    **publisher_energy.SOURCE_PAGES,
+}
+
+
+def _render_detailed_weapon(companion: Companion, card: dict[str, Any], path: Path,
+                            rows: list[catalogue_mods.Row], layer=None) -> None:
+    detailed_card.render_heavy(
+        companion, card["id"], card["page"], {}, path, card=card,
+        rows=[(slot, values) for slot, *values in rows],
+        mod_table_headers=("SLOT", *companion_mods_en.HEADERS),
+        document_title_suffix="weapon catalogue", artwork=layer, shared_mods=[], fit_all_rows=True,
+    )
+
+
+def _detailed_cards(source: Path, companion: Companion, grouped: dict[str, list[dict[str, Any]]],
+                    rows_by_weapon: dict[str, list[catalogue_mods.Row]], trial: Path) -> set[str]:
+    """Keep sparse, weapon-specific tables only if the actual card has room."""
+    with pymupdf.open(source) as original:
+        publisher_detailed = {wid for wid, number in PUBLISHER_MOD_CARD_PAGES.items()
+                              if "ПРЕФИКС" in original[number - 1].get_text().split()}
+    result = set()
+    w.register_fonts()
+    for cards in grouped.values():
+        shared = set(catalogue_mods.shared_rows((card["id"] for card in cards), rows_by_weapon))
+        for card in cards:
+            wid = card["id"]
+            rows = rows_by_weapon[wid]
+            limit = PUBLISHER_DETAIL_LIMIT if wid in publisher_detailed else SPARSE_MOD_LIMIT
+            if (wid in catalogue_mods.UNVERIFIED_WEAPON_IDS or len(rows) > limit
+                    or not set(rows) - shared):
+                continue
+            try:
+                _render_detailed_weapon(companion, card, trial, rows)
+            except detailed_card.DetailedModsLayoutError:
+                continue
+            result.add(wid)
+    return result
+
+
 def _category_mod_data(grouped: dict[str, list[dict[str, Any]]],
-                       rows_by_weapon: dict[str, list[catalogue_mods.Row]]) -> dict[str, dict[str, Any]]:
+                       rows_by_weapon: dict[str, list[catalogue_mods.Row]],
+                       detailed_ids: set[str]) -> dict[str, list[dict[str, Any]]]:
+    """Every name-only row has either a shared reference or a specific entry."""
     tables = {}
     for category, cards in grouped.items():
-        rows = catalogue_mods.shared_rows((card["id"] for card in cards), rows_by_weapon)
-        if rows:
-            title = f"{CATEGORY_PRESENTATION[category]['title']} MODIFICATIONS"
-            tables[category] = catalogue_mods.table_data(title, sorted(rows))
+        shared = set(catalogue_mods.shared_rows((card["id"] for card in cards), rows_by_weapon))
+        compact = [card for card in cards if card["id"] not in detailed_ids]
+        title = CATEGORY_PRESENTATION[category]["title"]
+        chapter_tables = []
+        cited = {row for card in compact if card["id"] not in catalogue_mods.UNVERIFIED_WEAPON_IDS
+                 for row in rows_by_weapon[card["id"]]} & shared
+        if cited:
+            chapter_tables.append(catalogue_mods.table_data(f"{title} MODIFICATIONS", sorted(cited)))
+        specific = []
+        for card in compact:
+            wid = card["id"]
+            unverified = wid in catalogue_mods.UNVERIFIED_WEAPON_IDS
+            own = [row for row in rows_by_weapon[wid] if unverified or row not in shared]
+            if own:
+                specific.append(catalogue_mods.specific_section(card["title"], own, unverified=unverified))
+        if specific:
+            chapter_tables.append({"title": f"{title} — SPECIFIC MODIFICATIONS",
+                                   "headers": list(companion_mods_en.HEADERS), "sections": specific, "specific": True})
+        if chapter_tables:
+            tables[category] = chapter_tables
     return tables
 
 
 def _render_weapon(companion: Companion, card: dict[str, Any], path: Path,
-                   artwork: ArtworkResolver | None, rows: list[catalogue_mods.Row]) -> Path | None:
-    """Render one full table; if it cannot fit, render that table beside the card."""
-    weapon_id = card["id"]
-    layer = artwork.layer_for(weapon_id) if artwork is not None and artwork.enabled else None
-    if weapon_id in catalogue_mods.UNVERIFIED_WEAPON_IDS:
-        card = {**card, "labels": {**card["labels"],
-                                  "mods_heading": "MODIFICATIONS — COMPATIBILITY NEEDS CLARIFICATION"}}
-    if not rows:
-        w.render_card(card, str(path), artwork=layer)
-        return None
-
-    try:
-        detailed_card.render_heavy(
-            companion, weapon_id, card["page"], {}, path, card=card,
-            rows=[(slot, values) for slot, *values in rows],
-            mod_table_headers=("SLOT", *companion_mods_en.HEADERS),
-            document_title_suffix="weapon catalogue", artwork=layer, shared_mods=[], fit_all_rows=True,
-        )
-        return None
-    except detailed_card.DetailedModsLayoutError:
-        pass  # Keep one full table immediately after its card, not a second names-only block.
-
-    linked = {**card, "mods": [], "labels": {**card["labels"],
-                                           "no_mods": "MODIFICATIONS — SEE NEXT PAGE"}}
-    w.render_card(linked, str(path), artwork=layer)
-    continuation = path.with_name(f"{path.stem}-modifications.pdf")
-    data = catalogue_mods.table_data(f"{card['title'].upper()} — MODIFICATIONS", rows, gap=0)
-    mod_tables.render(data, continuation, page_start=card["page"] + 1)
-    return continuation
+                   artwork: ArtworkResolver | None, rows: list[catalogue_mods.Row], *,
+                   detailed: bool) -> None:
+    """Render exactly one modification block on each weapon page."""
+    wid = card["id"]
+    layer = artwork.layer_for(wid) if artwork is not None and artwork.enabled else None
+    if detailed:
+        _render_detailed_weapon(companion, card, path, rows, layer)
+    else:
+        labels = dict(card["labels"])
+        if wid in catalogue_mods.UNVERIFIED_WEAPON_IDS:
+            labels["mods_heading"] = "MODIFICATIONS — COMPATIBILITY NEEDS CLARIFICATION"
+        compact = {**card, "labels": labels, "mods": catalogue_mods.card_mod_names(companion, rows)}
+        w.render_card(compact, str(path), artwork=layer)
 
 
 def _append_pdf(result: pymupdf.Document, path: Path) -> int:
@@ -403,7 +454,8 @@ def _append_pdf(result: pymupdf.Document, path: Path) -> int:
 
 def _assemble(source: Path, output: Path, companion: Companion,
               grouped: dict[str, list[dict[str, Any]]], reference: dict[str, Any],
-              mod_data: dict[str, dict[str, Any]], rows_by_weapon: dict[str, list[catalogue_mods.Row]],
+              mod_data: dict[str, list[dict[str, Any]]], rows_by_weapon: dict[str, list[catalogue_mods.Row]],
+              detailed_ids: set[str],
               *, toc_pdf: Path | None,
               artwork: ArtworkResolver | None) -> dict[str, Any]:
     """Assemble one pass and return the stable printed/outline contents map."""
@@ -412,7 +464,7 @@ def _assemble(source: Path, output: Path, companion: Companion,
     reference_pages: dict[str, list[int]] = {}
     mod_pages: dict[str, int] = {}
     card_pages: dict[str, int] = {}
-    continuation_pages: dict[str, list[int]] = {}
+    specific_pages: dict[str, int] = {}
     card_count = sum(map(len, grouped.values()))
 
     with tempfile.TemporaryDirectory() as directory:
@@ -456,27 +508,24 @@ def _assemble(source: Path, output: Path, companion: Companion,
                     divider_page = _append_generated_divider(result, title, temp)
                 category_pages[category] = divider_page
                 entries.append([1, title, divider_page])
-                if category in mod_data:
-                    data = mod_data[category]
+                for data in mod_data.get(category, []):
                     mod_start = len(result) + 1
                     mod_path = temp / f"mods-{mod_start}.pdf"
                     mod_tables.render(data, mod_path, page_start=mod_start)
                     _append_pdf(result, mod_path)
-                    mod_pages[category] = mod_start
+                    page_map = specific_pages if data.get("specific") else mod_pages
+                    page_map[category] = mod_start
                     entries.append([2, data["title"], mod_start])
                 for card in grouped[category]:
                     number = len(result) + 1
                     rendered_card = dict(card)
                     rendered_card["page"] = number
                     path = temp / f"card-{number:03d}.pdf"
-                    continuation = _render_weapon(companion, rendered_card, path, artwork,
-                                                  rows_by_weapon[card["id"]])
+                    _render_weapon(companion, rendered_card, path, artwork, rows_by_weapon[card["id"]],
+                                   detailed=card["id"] in detailed_ids)
                     _append_pdf(result, path)
                     card_pages[str(card["id"])] = number
                     entries.append([2, str(card["title"]), number])
-                    if continuation is not None:
-                        count = _append_pdf(result, continuation)
-                        continuation_pages[card["id"]] = list(range(number + 1, number + count + 1))
 
             closing: list[int] = []
             for source_page in range(102, 106):
@@ -526,7 +575,8 @@ def _assemble(source: Path, output: Path, companion: Companion,
         "modifications": mod_pages,
         "categories": category_pages,
         "card_pages": card_pages,
-        "continuation_pages": continuation_pages,
+        "specific_modifications": specific_pages,
+        "detailed_cards": sorted(detailed_ids),
         "closing": closing,
     }
 
@@ -564,17 +614,18 @@ def build(
     _validate_reference_data(reference, companion)
     grouped = _category_cards(cards)
     rows_by_weapon = catalogue_mods.weapon_rows(companion, card_ids)
-    mod_data = _category_mod_data(grouped, rows_by_weapon)
 
     with tempfile.TemporaryDirectory() as directory:
         temp = Path(directory)
+        detailed_ids = _detailed_cards(source, companion, grouped, rows_by_weapon, temp / "fit.pdf")
+        mod_data = _category_mod_data(grouped, rows_by_weapon, detailed_ids)
         if with_toc:
             # First pass establishes references, table pagination and card
             # locations without giving an artwork resolver a chance to record
             # a non-final pass.  The printed TOC is then iterated to a stable
             # page count just like the Russian book builder.
             preliminary = _assemble(source, temp / "preliminary.pdf", companion, grouped,
-                                    reference, mod_data, rows_by_weapon, toc_pdf=None, artwork=None)
+                                    reference, mod_data, rows_by_weapon, detailed_ids, toc_pdf=None, artwork=None)
             toc_without_offset = preliminary["toc"]
             toc_pdf = temp / "toc.pdf"
             offset = 0
@@ -599,7 +650,7 @@ def build(
             expected_toc = []
 
         artwork = ArtworkResolver(artwork_manifest, artwork_root, source)
-        stats = _assemble(source, output, companion, grouped, reference, mod_data, rows_by_weapon,
+        stats = _assemble(source, output, companion, grouped, reference, mod_data, rows_by_weapon, detailed_ids,
                           toc_pdf=toc_pdf, artwork=artwork)
         if with_toc and stats["toc"] != expected_toc:
             raise EnglishCatalogError("English TOC numbering changed between assembly passes")
