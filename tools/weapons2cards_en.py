@@ -44,6 +44,10 @@ CATALOG_EXCLUDED_IDS = frozenset({
     "weapon_assaultron_head",
     "weapon_straight_razor",
 })
+# Publisher / Helper catalogue placement approved for these two records.
+CATEGORY_OVERRIDES = {"weapon_gauss_pistol": "Light", "weapon_gauss_rifle": "Light"}
+
+
 LABELS = {
     "weight": "Weight",
     "cost": "Cost",
@@ -195,7 +199,7 @@ class Companion:
                     f"Missing confirmed English range label for {weapon_id}: {range_name!r}"
                 )
             range_name = mapped_range
-        weapon_type = str(weapon.get("weaponType") or "Other")
+        weapon_type = CATEGORY_OVERRIDES.get(weapon_id, str(weapon.get("weaponType") or "Other"))
         return {
             "id": weapon_id,
             "title": str(title),
@@ -220,11 +224,11 @@ class Companion:
 def ordered_cards(companion: Companion | None = None) -> list[dict[str, Any]]:
     """Return the stable confirmed 144-card English catalogue order."""
     companion = companion or Companion()
-    rank = {category: index for index, category in enumerate(CATEGORY_ORDER)}
+    rank = {CATEGORY_TITLES[category]: index for index, category in enumerate(CATEGORY_ORDER)}
     cards = [companion.card(weapon_id) for weapon_id in companion.weapons
              if weapon_id not in CATALOG_EXCLUDED_IDS]
     cards.sort(key=lambda card: (
-        rank.get(str((companion.weapons[card["id"]].get("weaponType") or "Other")), 99),
+        rank.get(card["category"], 99),
         str(card["title"]).casefold(),
         str(card["id"]),
     ))

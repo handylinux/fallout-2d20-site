@@ -1,0 +1,39 @@
+{
+  "weapon_broadsider": {
+    "publisher_page": 67,
+    "rows": [
+      ["Barrel", "mod_long_barrel", "Long Barrel", "Long", "Range: +1 zone", "3", "135", "Gun Nut 3"],
+      ["Barrel", "mod_light_barrel", "Light Barrel", "Fluted", "Damage: +2 DC; Remove Quality: Blast", "2", "45", "Gun Nut 4"],
+      ["Canister", "mod_multi_shot_canister", "Multi Shot Canister", "Repeating", "Fire Rate: +1; Add Quality: Inaccurate", "-3", "135", "Gun Nut 4"],
+      ["Launcher", "mod_m79_launcher", "M79 Launcher", "Converted", "Range: +1 zone; Ammo: 40mm Grenade", "—", "3", "Science! 1"]
+    ]
+  },
+  "weapon_gatling_gun": {
+    "publisher_page": 68,
+    "rows": [
+      ["Receiver", "mod_speedy_receiver", "Speedy Receiver", "—", "Fire Rate: +2", "1", "35", "Gun Nut 3"],
+      ["Barrel", "mod_long", "Long", "Long", "Range: +1 zone", "2", "158", "Gun Nut 4"],
+      ["Grip", "mod_comfort_grip", "Comfort Grip", "Comfort", "Remove Quality: Recoil 6", "3", "90", "Gun Nut 4"],
+      ["Magazine", "mod_extra_large_magazine", "Extra-Large Magazine", "—", "Fire Rate: +1; Add Quality: Unreliable", "2", "24", "Gun Nut 4"],
+      ["Sight", "mod_front_sight_ring", "Front Sight Ring", "Sighted", "Remove Quality: Unreliable", "2", "158", "Gun Nut 4"],
+      ["Muzzle", "mod_large_bayonet", "Large Bayonet", "Bayoneted", "Melee attack: 5 DC physical damage; Piercing 1", "5", "18", "Gun Nut 4"]
+    ]
+  },
+  "weapon_harpoon_gun": {
+    "publisher_page": 73,
+    "rows": [
+      ["Magazine", "mod_barbed_harpoon", "Barbed Harpoon", "Barbed", "Add Effect: Vicious; Add Effect: Persistent", "—", "21", "—"],
+      ["Magazine", "mod_flechette_darts", "Flechette Darts", "Low-Capacity", "Range: -1 zone; Add Effect: Spread", "—", "15", "Gun Nut 2"],
+      ["Stock", "mod_recoil_compensating_stock", "Recoil Compensating Stock", "Recoil-Compensated", "Fire Rate: +1", "15", "45", "—"],
+      ["Sight", "mod_reflex_sight", "Reflex Sight", "Tactical", "Add Quality: Re-roll Hit Location", "—", "17", "—"],
+      ["Sight", "mod_short_scope", "Short Scope", "Sighted", "Add Quality: Reliable", "1", "28", "Gun Nut 1"]
+    ]
+  },
+  "weapon_eugene": {
+    "publisher_page": 75,
+    "rows": [
+      ["Barrel", "mod_tri_barrel", "Tri-Barrel", "Tri-Barrel", "Fire Rate: +1", "3", "75", "Gun Nut 3"],
+      ["Sight", "mod_gunner_sight", "Gunner Sight", "Tactical", "Add Quality: Re-roll Hit Location", "1", "5", "—"]
+    ]
+  }
+}

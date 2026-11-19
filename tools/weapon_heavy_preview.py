@@ -98,14 +98,14 @@ class DetailedModsLayoutError(ValueError):
     """The complete modifications and description exceed the space on a card."""
 
 
-def render_heavy(comp, wid, page_num, prefixes, out, extra_description='', card_overrides=None, unique_slots=(), unique_mods=(), mod_overrides=None, slot_labels=None, site_mod_rows=None, card=None, rows=None, mod_table_headers=('', 'НАЗВАНИЕ', 'ПРЕФИКС', 'ЭФФЕКТЫ', 'ВЕС', 'ЦЕНА', 'ПЕРКИ'), unique_suffix=' УНИКАЛЬНЫЙ', unverified_heading='МОДИФИКАЦИИ ТРЕБУЮТ ПРОВЕРКИ', document_title_suffix='справочник оружия', artwork=None, *, shared_mods=None):
+def render_heavy(comp, wid, page_num, prefixes, out, extra_description='', card_overrides=None, unique_slots=(), unique_mods=(), mod_overrides=None, slot_labels=None, site_mod_rows=None, card=None, rows=None, mod_table_headers=('', 'НАЗВАНИЕ', 'ПРЕФИКС', 'ЭФФЕКТЫ', 'ВЕС', 'ЦЕНА', 'ПЕРКИ'), unique_suffix=' УНИКАЛЬНЫЙ', unverified_heading='МОДИФИКАЦИИ ТРЕБУЮТ ПРОВЕРКИ', document_title_suffix='справочник оружия', artwork=None, *, shared_mods=None, fit_all_rows=False):
     card = dict(card) if card is not None else build_card(comp, wid, page=page_num, image='')
     card['page'] = page_num
     if card_overrides:
         card.update(card_overrides)
     if extra_description:
         card['description'] = (card.get('description', '') + '\n\n' + extra_description).strip()
-    if wid == 'weapon_gatling_plasma' and site_mod_rows is None:
+    if wid == 'weapon_gatling_plasma' and site_mod_rows is None and rows is None:
         # The slot list conflicts with applies_to_ids; do not claim it has no mods.
         c = canvas.Canvas(str(out), pagesize=(w.artwork_page_size(artwork)
                                               if artwork is not None else (w.PAGE_W, w.PAGE_H)))
@@ -125,7 +125,7 @@ def render_heavy(comp, wid, page_num, prefixes, out, extra_description='', card_
     if not rows:
         w.render_card(card, str(out), artwork=artwork)
         return {'mode': 'none', 'font_size': None, 'mod_count': 0}
-    if len(rows) > MAX_DETAILED_MODS:
+    if len(rows) > MAX_DETAILED_MODS and not fit_all_rows:
         if not custom_rows and site_mod_rows is None:
             missing = [mid for ids in (comp.slots.get(wid) or {}).values()
                        for mid in policy.catalog_mod_ids(ids)
@@ -177,7 +177,7 @@ def render_heavy(comp, wid, page_num, prefixes, out, extra_description='', card_
                         ('TOPPADDING', (0, 0), (-1, -1), padding), ('BOTTOMPADDING', (0, 0), (-1, -1), padding)]
             prev, group_start, group_index = None, 1, -1
             for index, (slot, values) in enumerate(rows, 1):
-                is_unique = slot in unique_slots or ids_in_order[index - 1] in unique_mods
+                is_unique = slot in unique_slots or (bool(unique_mods) and ids_in_order[index - 1] in unique_mods)
                 group = (slot, is_unique)
                 if group != prev:
                     if prev is not None:

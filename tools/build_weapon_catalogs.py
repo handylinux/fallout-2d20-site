@@ -48,7 +48,7 @@ EXPECTED_ARTWORK_COUNTS = {
 }
 EXPECTED_CARDS = 144
 EXPECTED_RUSSIAN_PAGES = 176
-EXPECTED_ENGLISH_PAGES = 176
+EXPECTED_ENGLISH_PAGES = 184
 EXPECTED_ENGLISH_METADATA = {
     "title": "Fallout 2d20 Wasteland Arsenal — English Edition",
     "creator": "tools/build_weapon_catalog_en.py",
@@ -286,14 +286,15 @@ def _validate_english(vector: Path) -> None:
                      f"English canonical metadata {key!r} is not {expected!r}")
         outline = _validate_contents(document, "TABLE OF CONTENTS", {
             title: (f"{title} MODIFICATIONS",)
-            for title in ("SMALL GUNS", "HEAVY GUNS", "ENERGY GUNS", "MELEE WEAPONS", "UNARMED WEAPONS")
+            for title in ("SMALL GUNS", "ENERGY GUNS", "MELEE WEAPONS")
         })
         titles = [title for _level, title, _page in outline]
-        _require(len(outline) == 159, f"English outline has {len(outline)} entries, expected 159")
-        for title in ("Assaultron Head", "Straight Razor", "OTHER WEAPONS", "WEAPON MODIFICATIONS"):
+        _require(len(outline) == 157, f"English outline has {len(outline)} entries, expected 157")
+        for title in ("Assaultron Head", "Straight Razor", "OTHER WEAPONS", "WEAPON MODIFICATIONS",
+                      "HEAVY GUNS MODIFICATIONS", "UNARMED WEAPONS MODIFICATIONS"):
             _require(title not in titles, f"English outline unexpectedly contains {title!r}")
-        for title, page in (("Assaultron Head Laser", 80), ("Institute Laser", 91),
-                            ("Unarmed Attack", 170)):
+        for title, page in (("Assaultron Head Laser", 90), ("Institute Laser", 99),
+                            ("Unarmed Attack", 177)):
             _require([2, title, page] in outline,
                      f"English outline is missing {title!r} on page {page}")
 
