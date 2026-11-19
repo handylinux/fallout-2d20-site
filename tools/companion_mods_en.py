@@ -197,9 +197,24 @@ def perks_text(mod: dict[str, Any]) -> str:
     return ", ".join(perks) if perks else "—"
 
 
+def mod_row(companion: Companion, mod_id: str, prefixes: dict[str, str]) -> list[str]:
+    """Use identical English rule text on weapon cards and in chapter tables."""
+    mod = companion.base_mods[mod_id]
+    return [
+        str(companion.mods_en[mod_id]["name"]),
+        prefixes[mod_id],
+        effect_text(mod, companion),
+        display_number(mod.get("weight")),
+        display_number(mod.get("cost")),
+        perks_text(mod),
+    ]
+
+
 def make_mod_data(companion: Companion | None = None,
-                  prefixes: dict[str, str] | None = None) -> tuple[dict[str, Any], list[str]]:
-    """Return editable English table data for every published modification.
+                  prefixes: dict[str, str] | None = None, *,
+                  mod_ids: set[str] | None = None,
+                  title: str = "WEAPON MODIFICATIONS") -> tuple[dict[str, Any], list[str]]:
+    """Return editable English table data for the selected published modifications.
 
     Raw Companion records are passed through the shared publication policy
     before row selection, so an audited suppression applies in both books.
@@ -210,7 +225,8 @@ def make_mod_data(companion: Companion | None = None,
     companion = companion or Companion()
     prefixes = prefixes or load_prefixes()
     mods = {mod_id: mod for mod_id, mod in companion.base_mods.items()
-            if mod_id not in mod_policy.CATALOG_EXCLUDED_MOD_IDS}
+            if mod_id not in mod_policy.CATALOG_EXCLUDED_MOD_IDS
+            and (mod_ids is None or mod_id in mod_ids)}
     missing_names = sorted(mod_id for mod_id in mods
                            if not isinstance((companion.mods_en.get(mod_id) or {}).get("name"), str)
                            or not (companion.mods_en.get(mod_id) or {}).get("name"))
@@ -243,15 +259,8 @@ def make_mod_data(companion: Companion | None = None,
             by_slot[slot],
             key=lambda pair: (str(companion.mods_en[pair[0]]["name"]).casefold(), pair[0]),
         )
-        for mod_id, mod in items:
-            rows.append([
-                str(companion.mods_en[mod_id]["name"]),
-                prefixes[mod_id],
-                effect_text(mod, companion),
-                display_number(mod.get("weight")),
-                display_number(mod.get("cost")),
-                perks_text(mod),
-            ])
+        for mod_id, _ in items:
+            rows.append(mod_row(companion, mod_id, prefixes))
         section: dict[str, Any] = {
             "category": SLOT_TITLES[slot],
             "rows": rows,
@@ -265,7 +274,7 @@ def make_mod_data(companion: Companion | None = None,
     if sum(len(section["rows"]) for section in sections) != len(mods):
         raise EnglishModificationError("Modification-table rows do not cover every Companion mod")
     return {
-        "title": "WEAPON MODIFICATIONS",
+        "title": title,
         "headers": list(HEADERS),
         "sections": sections,
     }, diagnostics

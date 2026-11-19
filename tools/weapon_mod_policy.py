@@ -26,6 +26,10 @@ CATALOG_RUSSIAN_MOD_NAMES = {
     RECOIL_COMPENSATING_CANONICAL_ID: "Ложа с компенсатором отдачи",
 }
 
+# In both Companion cross-links this mine is listed as having a barrel,
+# but the source does not support any plasma mine modifications.
+CATALOG_EXCLUDED_MOD_LINKS = frozenset({('weapon_plasma_mine', 'mod_heavy_barrel')})
+
 # Above this total, detailed rows compete with the name grid and description.
 MAX_DETAILED_MODS = 8
 
@@ -37,6 +41,12 @@ def catalog_mod_ids(mod_ids):
     changing the Companion snapshot or guessing replacements from names.
     """
     return [mod_id for mod_id in mod_ids if mod_id not in CATALOG_EXCLUDED_MOD_IDS]
+
+
+def published_slot_mod_ids(weapon_id, mod_ids):
+    """Filter both globally suppressed records and audited incompatible links."""
+    return [mid for mid in catalog_mod_ids(mod_ids)
+            if (weapon_id, mid) not in CATALOG_EXCLUDED_MOD_LINKS]
 
 
 def specific_mods(comp, weapon_id):

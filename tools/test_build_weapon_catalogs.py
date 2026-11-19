@@ -10,7 +10,7 @@ import build_weapon_catalogs as release
 
 
 ROOT = Path(__file__).resolve().parent.parent
-PUBLISHED_DIR = ROOT / "docs" / "render" / "samples"
+PUBLISHER = ROOT / "Справочник оружия.pdf"
 
 
 class SynchronizedCatalogueReleaseTests(unittest.TestCase):
@@ -68,7 +68,7 @@ class SynchronizedCatalogueReleaseTests(unittest.TestCase):
                 self.assertEqual(kwargs["artwork_root"], kwargs["artwork_manifest"].parent)
                 vector.write_bytes(b"new-english-vector")
                 kwargs["artwork_coverage"].write_text("{}", encoding="utf-8")
-                return {"pages": 176, "cards": 144, "toc_pages": 2, "outline_entries": 175}
+                return {"pages": 176, "cards": 144, "toc_pages": 2, "outline_entries": 159}
 
             def fake_raster(source_path: Path, mobile: Path, **kwargs):
                 locale = kwargs["metadata_locale"]
@@ -123,12 +123,12 @@ class SynchronizedCatalogueReleaseTests(unittest.TestCase):
                              b"new-en-mobile")
             self.assertEqual(report.read_text(encoding="utf-8"), "new Russian review report")
 
-    @unittest.skipUnless(all((PUBLISHED_DIR / name).is_file()
-                             for name in release.PUBLISHED_ARTIFACTS),
-                         "published paired catalogue artifacts are not present")
-    def test_current_published_pair_meets_the_release_contract(self):
-        result = release.validate_release(PUBLISHED_DIR)
-        self.assertEqual(result["pages"], release.EXPECTED_PAGES)
+    @unittest.skipUnless(PUBLISHER.is_file(), "Publisher source is not present")
+    def test_fresh_pair_meets_the_release_contract(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            result = release.build_catalogues(PUBLISHER, root / "books", root / "report.md")["validation"]
+        self.assertEqual(result["pages"], {"ru": 176, "en": 176})
         self.assertEqual(result["cards"], release.EXPECTED_CARDS)
         self.assertEqual(result["artwork"], release.EXPECTED_ARTWORK_COUNTS)
         self.assertEqual(set(result["sha256"]), set(release.PUBLISHED_ARTIFACTS))

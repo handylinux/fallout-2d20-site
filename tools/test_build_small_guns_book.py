@@ -68,7 +68,7 @@ class SmallGunsBookTests(unittest.TestCase):
         result = book.build('Справочник оружия.pdf', output, report)
         self.assertEqual(result['mods_pages'], 4)
         with pymupdf.open(output) as doc:
-            reference = ' '.join(p.get_text() for p in doc[9:13])
+            reference = ' '.join(p.get_text() for p in doc[10:14])
             self.assertNotIn('Аэродинамический', reference)
             self.assertNotIn('МОДИФИКАЦИИ ЛЕБЁДКИ', reference)
             text = next(p.get_text() for p in doc if 'АБОРДАЖНЫЙ ПИСТОЛЕТ' in p.get_text())
@@ -121,12 +121,13 @@ class SmallGunsBookTests(unittest.TestCase):
         with pymupdf.open(output) as doc:
             self.assertEqual(len(doc), result['pages'])
             div = result['divider']
-            self.assertEqual(div, 9 + result['mods_pages'] + 1)
+            self.assertEqual(div, 10)
             divider_words = [w[4] for w in doc[div - 1].get_text('words')]
             self.assertEqual(divider_words, [str(div)])
-            self.assertIn('10-ММ ПИСТОЛЕТ', doc[div].get_text())
-            self.assertIn(str(div + 1), doc[div].get_text().split())
-            self.assertIn('РЕВОЛЬВЕР КАЛИБРА .44', doc[div + 1].get_text())
+            first_card = div + result['mods_pages']
+            self.assertIn('10-ММ ПИСТОЛЕТ', doc[first_card].get_text())
+            self.assertIn(str(first_card + 1), doc[first_card].get_text().split())
+            self.assertIn('РЕВОЛЬВЕР КАЛИБРА .44', doc[first_card + 1].get_text())
         self.assertIn('Разделитель', report.read_text(encoding='utf-8'))
 
 

@@ -38,7 +38,7 @@ def make_blank_page(page_num: int, out_path: Path):
 
 
 def _toc_entry_font(level: int, title: str) -> str:
-    if level == 1 or title.endswith('Modifications') or title.endswith('МОДИФИКАЦИИ'):
+    if level == 1 or 'MODIFICATIONS' in title.upper() or 'МОДИФИКАЦИИ' in title:
         return 'Carlito-Bold'
     return 'Carlito'
 

@@ -21,7 +21,7 @@ SLOT_LABELS = ROOT / 'data/weapons/melee-slot-labels.json'
 MOD_OVERRIDES = ROOT / 'data/weapons/melee-site-mod-overrides.json'
 
 
-def build(source, output, report=None, toc=None, toc_pdf=None, artwork=None):
+def build(source, output, report=None, toc=None, toc_pdf=None, artwork=None, *, extend_energy=None):
     source, output = Path(source), Path(output)
     if source.resolve() == output.resolve():
         raise ValueError('Выходной файл не должен совпадать с оригиналом')
@@ -45,12 +45,14 @@ def build(source, output, report=None, toc=None, toc_pdf=None, artwork=None):
         base = tmp / 'energy.pdf'
         energy.build(source, base, full=True, toc=toc, toc_pdf=toc_pdf, artwork=artwork)
         with pymupdf.open(base) as result, pymupdf.open(source) as original:
+            if extend_energy is not None:
+                extend_energy(result, tmp)
             references = []
             result.insert_pdf(original, from_page=94, to_page=94)
             divider = len(result)
             small.renumber_divider(result[-1], divider, source_number=95)
             if toc is not None:
-                toc.append([1, 'ОРУЖИЕ БЛИЖНЕЙ БОЙ', divider])
+                toc.append([1, 'ОРУЖИЕ БЛИЖНЕГО БОЯ', divider])
             pages = []
             for wid in ids:
                 pagefile = tmp / f'{wid}.pdf'

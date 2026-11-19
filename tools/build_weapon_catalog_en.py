@@ -12,6 +12,7 @@ exact same ``weapon_id`` appears in the supplied extraction manifest.
 from __future__ import annotations
 
 import argparse
+from collections import Counter
 import json
 import tempfile
 from pathlib import Path
@@ -24,6 +25,8 @@ from reportlab.pdfgen import canvas
 import companion_mods_en
 import weapon2pdf as w
 import weapon_book_toc as toc_render
+import weapon_heavy_preview as detailed_card
+import weapon_mod_policy as mod_policy
 import weapon_mods_table_unicode as mod_tables
 from weapon_catalog_artwork import ArtworkResolver
 from weapons2cards_en import CATALOG_EXCLUDED_IDS, Companion, ordered_cards
@@ -400,19 +403,81 @@ def _category_cards(cards: list[dict[str, Any]]) -> dict[str, list[dict[str, Any
     return grouped
 
 
-def _mod_category_pages(document: pymupdf.Document, data: dict[str, Any], start: int) -> dict[str, int]:
-    pages: dict[str, int] = {}
-    for index, page in enumerate(document):
-        text = page.get_text()
-        for section in data["sections"]:
-            category = str(section["category"])
-            if category in text and category not in pages:
-                pages[category] = start + index
-    missing = [str(section["category"]) for section in data["sections"]
-               if str(section["category"]) not in pages]
-    if missing:
-        raise EnglishCatalogError("Rendered modification categories are missing: " + ", ".join(missing))
-    return pages
+def _published_mod_ids(companion: Companion, weapon_id: str) -> set[str]:
+    return {mid for ids in (companion.slots.get(weapon_id) or {}).values()
+            for mid in mod_policy.published_slot_mod_ids(weapon_id, ids)}
+
+
+def _rare_mod_ids(companion: Companion, cards: list[dict[str, Any]]) -> set[str]:
+    """Count distinct published cards, not slot rows, chapters or the slot 'Unique'."""
+    counts = Counter(mid for card in cards for mid in _published_mod_ids(companion, card["id"]))
+    return {mid for mid, count in counts.items() if count <= 2}
+
+
+def _category_mod_data(
+    companion: Companion, grouped: dict[str, list[dict[str, Any]]],
+    rare_mods: set[str], prefixes: dict[str, str],
+) -> dict[str, dict[str, Any]]:
+    """Publish a shared mod once per applicable weapon category."""
+    tables = {}
+    for category, cards in grouped.items():
+        mod_ids = {mid for card in cards for mid in _published_mod_ids(companion, card["id"])}
+        mod_ids -= rare_mods
+        if not mod_ids:
+            continue
+        title = f"{CATEGORY_PRESENTATION[category]['title']} MODIFICATIONS"
+        data, diagnostics = companion_mods_en.make_mod_data(
+            companion, prefixes, mod_ids=mod_ids, title=title,
+        )
+        if diagnostics:
+            raise EnglishCatalogError("English modification diagnostics: " + "; ".join(diagnostics))
+        tables[category] = data
+    return tables
+
+
+def _render_weapon(companion: Companion, card: dict[str, Any], path: Path,
+                   artwork: ArtworkResolver | None, rare_mods: set[str],
+                   prefixes: dict[str, str]) -> Path | None:
+    """Render one weapon card, returning a same-weapon continuation if needed."""
+    weapon_id = card["id"]
+    layer = artwork.layer_for(weapon_id) if artwork is not None and artwork.enabled else None
+    mod_ids = _published_mod_ids(companion, weapon_id) & rare_mods
+    if not mod_ids:
+        w.render_card(card, str(path), artwork=layer)
+        return None
+
+    slots = companion.slots[weapon_id]
+    slot_order = [slot for slot in companion_mods_en.SLOT_ORDER if slot in slots]
+    slot_order.extend(sorted(set(slots) - set(slot_order)))
+    rows = [(slot, companion_mods_en.mod_row(companion, mid, prefixes))
+            for slot in slot_order
+            for mid in mod_policy.published_slot_mod_ids(weapon_id, slots[slot])
+            if mid in mod_ids]
+    detailed = {**card, "labels": {**card["labels"], "mods_heading": "DETAILED MODIFICATIONS"}}
+    shared = companion.mod_rows(weapon_id, exclude=mod_ids)
+    if len(rows) <= mod_policy.MAX_DETAILED_MODS:
+        try:
+            status = detailed_card.render_heavy(
+                companion, weapon_id, card["page"], prefixes, path, card=detailed, rows=rows,
+                mod_table_headers=("SLOT", *companion_mods_en.HEADERS),
+                document_title_suffix="weapon catalogue", artwork=layer, shared_mods=shared,
+            )
+            if status["mode"] == "detailed":
+                return None
+        except detailed_card.DetailedModsLayoutError:
+            pass  # Keep the complete details beside the weapon, not in the chapter index.
+
+    linked = {**card, "labels": {**card["labels"],
+                                 "mods_heading": "SUPPORTED MODIFICATIONS — DETAILS ON NEXT PAGE"}}
+    w.render_card(linked, str(path), artwork=layer)
+    continuation = path.with_name(f"{path.stem}-modifications.pdf")
+    data, diagnostics = companion_mods_en.make_mod_data(
+        companion, prefixes, mod_ids=mod_ids, title=f"{card['title'].upper()} — MODIFICATIONS",
+    )
+    if diagnostics:
+        raise EnglishCatalogError("English modification diagnostics: " + "; ".join(diagnostics))
+    mod_tables.render(data, continuation, page_start=card["page"] + 1)
+    return continuation
 
 
 def _append_pdf(result: pymupdf.Document, path: Path) -> int:
@@ -422,8 +487,9 @@ def _append_pdf(result: pymupdf.Document, path: Path) -> int:
 
 
 def _assemble(source: Path, output: Path, companion: Companion,
-              cards: list[dict[str, Any]], reference: dict[str, Any],
-              mod_data: dict[str, Any], *, toc_pdf: Path | None,
+              grouped: dict[str, list[dict[str, Any]]], reference: dict[str, Any],
+              mod_data: dict[str, dict[str, Any]], rare_mods: set[str], prefixes: dict[str, str],
+              *, toc_pdf: Path | None,
               artwork: ArtworkResolver | None) -> dict[str, Any]:
     """Assemble one pass and return the stable printed/outline contents map."""
     entries: list[list[Any]] = []
@@ -431,7 +497,8 @@ def _assemble(source: Path, output: Path, companion: Companion,
     reference_pages: dict[str, list[int]] = {}
     mod_pages: dict[str, int] = {}
     card_pages: dict[str, int] = {}
-    grouped = _category_cards(cards)
+    continuation_pages: dict[str, list[int]] = {}
+    card_count = sum(map(len, grouped.values()))
 
     with tempfile.TemporaryDirectory() as directory:
         temp = Path(directory)
@@ -461,17 +528,6 @@ def _assemble(source: Path, output: Path, companion: Companion,
             arsenal_page = _append_source_page(result, original, 9)
             entries.append([1, "ARSENAL", arsenal_page])
 
-            mod_path = temp / "weapon-modifications.pdf"
-            mod_start = len(result) + 1
-            mod_tables.render(mod_data, mod_path, page_start=mod_start)
-            with pymupdf.open(mod_path) as rendered_mods:
-                mod_pages = _mod_category_pages(rendered_mods, mod_data, mod_start)
-            _append_pdf(result, mod_path)
-            entries.append([1, "WEAPON MODIFICATIONS", mod_start])
-            for section in mod_data["sections"]:
-                title = str(section["category"])
-                entries.append([2, title, mod_pages[title]])
-
             for category in CATEGORY_PRESENTATION:
                 if not grouped[category]:
                     continue
@@ -484,17 +540,27 @@ def _assemble(source: Path, output: Path, companion: Companion,
                     divider_page = _append_generated_divider(result, title, temp)
                 category_pages[category] = divider_page
                 entries.append([1, title, divider_page])
+                if category in mod_data:
+                    data = mod_data[category]
+                    mod_start = len(result) + 1
+                    mod_path = temp / f"mods-{mod_start}.pdf"
+                    mod_tables.render(data, mod_path, page_start=mod_start)
+                    _append_pdf(result, mod_path)
+                    mod_pages[category] = mod_start
+                    entries.append([2, data["title"], mod_start])
                 for card in grouped[category]:
                     number = len(result) + 1
                     rendered_card = dict(card)
                     rendered_card["page"] = number
-                    layer = (artwork.layer_for(str(card["id"]))
-                             if artwork is not None and artwork.enabled else None)
                     path = temp / f"card-{number:03d}.pdf"
-                    w.render_card(rendered_card, str(path), artwork=layer)
+                    continuation = _render_weapon(companion, rendered_card, path, artwork,
+                                                  rare_mods, prefixes)
                     _append_pdf(result, path)
                     card_pages[str(card["id"])] = number
                     entries.append([2, str(card["title"]), number])
+                    if continuation is not None:
+                        count = _append_pdf(result, continuation)
+                        continuation_pages[card["id"]] = list(range(number + 1, number + count + 1))
 
             closing: list[int] = []
             for source_page in range(102, 106):
@@ -509,7 +575,7 @@ def _assemble(source: Path, output: Path, companion: Companion,
                 _append_pdf(result, blank)
             closing.append(_append_source_page(result, original, 106))
 
-            if len(card_pages) != len(cards):
+            if len(card_pages) != card_count:
                 raise EnglishCatalogError("Not every English weapon card was rendered")
             if len(result) % 4:
                 raise EnglishCatalogError("Complete English book must end on a multiple of four pages")
@@ -537,13 +603,14 @@ def _assemble(source: Path, output: Path, companion: Companion,
             toc_pages = rendered_toc.page_count
     return {
         "pages": total,
-        "cards": len(cards),
+        "cards": card_count,
         "toc": entries,
         "toc_pages": toc_pages,
         "references": reference_pages,
         "modifications": mod_pages,
         "categories": category_pages,
         "card_pages": card_pages,
+        "continuation_pages": continuation_pages,
         "closing": closing,
     }
 
@@ -579,9 +646,10 @@ def build(
         raise EnglishCatalogError("English card adapter emitted Cyrillic visible text")
     reference = _load_reference_data()
     _validate_reference_data(reference, companion)
-    mod_data, diagnostics = companion_mods_en.make_mod_data(companion)
-    if diagnostics:
-        raise EnglishCatalogError("English modification diagnostics: " + "; ".join(diagnostics))
+    grouped = _category_cards(cards)
+    rare_mods = _rare_mod_ids(companion, cards)
+    prefixes = companion_mods_en.load_prefixes()
+    mod_data = _category_mod_data(companion, grouped, rare_mods, prefixes)
 
     with tempfile.TemporaryDirectory() as directory:
         temp = Path(directory)
@@ -590,8 +658,8 @@ def build(
             # locations without giving an artwork resolver a chance to record
             # a non-final pass.  The printed TOC is then iterated to a stable
             # page count just like the Russian book builder.
-            preliminary = _assemble(source, temp / "preliminary.pdf", companion, cards,
-                                    reference, mod_data, toc_pdf=None, artwork=None)
+            preliminary = _assemble(source, temp / "preliminary.pdf", companion, grouped,
+                                    reference, mod_data, rare_mods, prefixes, toc_pdf=None, artwork=None)
             toc_without_offset = preliminary["toc"]
             toc_pdf = temp / "toc.pdf"
             offset = 0
@@ -616,7 +684,7 @@ def build(
             expected_toc = []
 
         artwork = ArtworkResolver(artwork_manifest, artwork_root, source)
-        stats = _assemble(source, output, companion, cards, reference, mod_data,
+        stats = _assemble(source, output, companion, grouped, reference, mod_data, rare_mods, prefixes,
                           toc_pdf=toc_pdf, artwork=artwork)
         if with_toc and stats["toc"] != expected_toc:
             raise EnglishCatalogError("English TOC numbering changed between assembly passes")

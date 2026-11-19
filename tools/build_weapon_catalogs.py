@@ -47,7 +47,8 @@ EXPECTED_ARTWORK_COUNTS = {
     "replayed": 77,
 }
 EXPECTED_CARDS = 144
-EXPECTED_PAGES = 176
+EXPECTED_RUSSIAN_PAGES = 176
+EXPECTED_ENGLISH_PAGES = 176
 EXPECTED_ENGLISH_METADATA = {
     "title": "Fallout 2d20 Wasteland Arsenal — English Edition",
     "creator": "tools/build_weapon_catalog_en.py",
@@ -207,15 +208,50 @@ def _toc_lines(document: pymupdf.Document, pages: tuple[int, ...]) -> list[str]:
     ]
 
 
+def _validate_contents(document: pymupdf.Document, title: str,
+                       sections: dict[str, tuple[str, ...]]) -> list[list]:
+    """Require the printed map, bookmarks and modification-page headings to agree."""
+    lines = _toc_lines(document, (4, 5))
+    _require(lines.count(title) == 2, f"Missing printed {title} on pages 4–5")
+    printed = [line for line in lines if line != title and line.replace(" ", "").strip(".")]
+    outline = document.get_toc(simple=True)
+    targets = [page for _, _, page in outline]
+    _require(printed == [value for _, name, page in outline for value in (name, str(page))],
+             f"Printed {title} differs from PDF bookmarks")
+    _require(targets == sorted(targets), f"{title} jumps backwards between chapters")
+    chapter = None
+    found = {name: [] for name in sections}
+    mod_headings = {heading for headings in sections.values() for heading in headings}
+    for level, name, page in outline:
+        if level == 1:
+            chapter = name
+        if name in mod_headings:
+            _require(level == 2 and chapter in sections,
+                     f"{name!r} is not nested under a weapon chapter")
+            _require(name in document[page - 1].get_text(),
+                     f"{name!r} does not start on its advertised page {page}")
+            found[chapter].append(name)
+    _require(all(found[name] == list(headings) for name, headings in sections.items()),
+             f"Incorrect modification subsections in {title}: {found}")
+    return outline
+
+
 def _validate_russian(vector: Path) -> None:
     _require(
-        rasterize_pdf.assert_rasterized_cover(vector) == EXPECTED_PAGES,
+        rasterize_pdf.assert_rasterized_cover(vector) == EXPECTED_RUSSIAN_PAGES,
         "Russian catalogue must use the approved single-JPEG cover policy",
     )
     with pymupdf.open(vector) as document:
-        _require(document.page_count == EXPECTED_PAGES,
-                 f"Russian catalogue has {document.page_count} pages, expected {EXPECTED_PAGES}")
-        lines = _toc_lines(document, (4, 5))
+        _require(document.page_count == EXPECTED_RUSSIAN_PAGES,
+                 f"Russian catalogue has {document.page_count} pages, expected {EXPECTED_RUSSIAN_PAGES}")
+        outline = _validate_contents(document, "ОГЛАВЛЕНИЕ", {
+            "СТРЕЛКОВОЕ ОРУЖИЕ": ("МОДИФИКАЦИИ СТРЕЛКОВОГО ОРУЖИЯ",),
+            "ЭНЕРГЕТИЧЕСКОЕ ОРУЖИЕ": (
+                "МОДИФИКАЦИИ ЭНЕРГЕТИЧЕСКОГО ОРУЖИЯ",
+                russian.TITLES["energy"],
+            ),
+        })
+        lines = [name for _, name, _ in outline]
         for title in ("Рукопашная атака", "Головной лазер Штурмотрона", "Мугнумномикон"):
             _require(title in lines, f"Russian printed TOC is missing {title!r}")
         for title in ("Голова ассаултрона", "Опасная бритва", "Магнумномикон"):
@@ -228,8 +264,8 @@ def _validate_russian(vector: Path) -> None:
 
 def _validate_english(vector: Path) -> None:
     with pymupdf.open(vector) as document:
-        _require(document.page_count == EXPECTED_PAGES,
-                 f"English catalogue has {document.page_count} pages, expected {EXPECTED_PAGES}")
+        _require(document.page_count == EXPECTED_ENGLISH_PAGES,
+                 f"English catalogue has {document.page_count} pages, expected {EXPECTED_ENGLISH_PAGES}")
         cover_page = document[0]
         cover = cover_page.get_text()
         _require("BROTHERHOOD FIELD GUIDE" in cover and "WASTELAND ARSENAL" in cover,
@@ -239,12 +275,15 @@ def _validate_english(vector: Path) -> None:
         for key, expected in EXPECTED_ENGLISH_METADATA.items():
             _require(document.metadata.get(key) == expected,
                      f"English canonical metadata {key!r} is not {expected!r}")
-        outline = document.get_toc(simple=True)
+        outline = _validate_contents(document, "TABLE OF CONTENTS", {
+            title: (f"{title} MODIFICATIONS",)
+            for title in ("SMALL GUNS", "HEAVY GUNS", "ENERGY GUNS", "MELEE WEAPONS", "UNARMED WEAPONS")
+        })
         titles = [title for _level, title, _page in outline]
-        _require(len(outline) == 175, f"English outline has {len(outline)} entries, expected 175")
-        for title in ("Assaultron Head", "Straight Razor", "OTHER WEAPONS"):
+        _require(len(outline) == 159, f"English outline has {len(outline)} entries, expected 159")
+        for title in ("Assaultron Head", "Straight Razor", "OTHER WEAPONS", "WEAPON MODIFICATIONS"):
             _require(title not in titles, f"English outline unexpectedly contains {title!r}")
-        for title, page in (("Assaultron Head Laser", 82), ("Institute Laser", 93),
+        for title, page in (("Assaultron Head Laser", 80), ("Institute Laser", 91),
                             ("Unarmed Attack", 170)):
             _require([2, title, page] in outline,
                      f"English outline is missing {title!r} on page {page}")
@@ -274,17 +313,17 @@ def validate_release(output_dir: Path | str = DEFAULT_OUTPUT_DIR) -> dict[str, A
     _validate_russian(paths[RUSSIAN_VECTOR])
     _validate_english(paths[ENGLISH_VECTOR])
     _require(
-        rasterize_pdf.assert_raster_only(paths[RUSSIAN_MOBILE]) == EXPECTED_PAGES,
+        rasterize_pdf.assert_raster_only(paths[RUSSIAN_MOBILE]) == EXPECTED_RUSSIAN_PAGES,
         "Russian mobile catalogue does not meet the raster-only contract",
     )
     _require(
-        rasterize_pdf.assert_raster_only(paths[ENGLISH_MOBILE]) == EXPECTED_PAGES,
+        rasterize_pdf.assert_raster_only(paths[ENGLISH_MOBILE]) == EXPECTED_ENGLISH_PAGES,
         "English mobile catalogue does not meet the raster-only contract",
     )
     _validate_mobile_metadata(paths[RUSSIAN_MOBILE], "ru")
     _validate_mobile_metadata(paths[ENGLISH_MOBILE], "en")
     return {
-        "pages": EXPECTED_PAGES,
+        "pages": {"ru": EXPECTED_RUSSIAN_PAGES, "en": EXPECTED_ENGLISH_PAGES},
         "cards": EXPECTED_CARDS,
         "artwork": EXPECTED_ARTWORK_COUNTS,
         "sha256": {name: sha256_file(path) for name, path in paths.items()},

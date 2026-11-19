@@ -10,14 +10,14 @@ class EnergyPreviewTest(unittest.TestCase):
             output = Path(tmp) / 'book.pdf'
             report = Path(tmp) / 'report.md'
             result = energy.build('Справочник оружия.pdf', output, report)
-            self.assertEqual(result, {'pages': 87, 'references': [81, 82, 83], 'divider': 84, 'weapons': [85, 86, 87]})
+            self.assertEqual(result, {'pages': 87, 'references': [82, 83, 84], 'divider': 81, 'weapons': [85, 86, 87]})
             with pymupdf.open(output) as doc:
-                self.assertIn('МОДИФИКАЦИИ ЭНЕРГЕТИЧЕСКОГО ОРУЖИЯ', doc[80].get_text())
-                reference = doc[82].get_text()
+                self.assertIn('МОДИФИКАЦИИ ЭНЕРГЕТИЧЕСКОГО ОРУЖИЯ', doc[81].get_text())
+                reference = doc[83].get_text()
                 self.assertIn('УНИКАЛЬНЫЙ КОНДЕНСАТОР', reference)
                 for value in ('3-зарядный', '4-зарядный', '5-зарядный', '6-зарядный'):
                     self.assertIn(value, reference)
-                self.assertEqual(doc[83].get_text().strip(), '84')
+                self.assertEqual(doc[80].get_text().strip(), '81')
                 for index, title in enumerate(['ЛАЗЕРНЫЙ МУШКЕТ', 'ЛАЗЕРНЫЙ ПИСТОЛЕТ', 'ПЛАЗМЕННЫЙ ПИСТОЛЕТ']):
                     text = doc[84 + index].get_text()
                     self.assertIn(title, text)
@@ -48,11 +48,11 @@ class EnergyPreviewTest(unittest.TestCase):
             output = Path(tmp) / 'full.pdf'
             result = energy.build('Справочник оружия.pdf', output, full=True)
             self.assertEqual(result['pages'], 98)
-            self.assertEqual(result['divider'], 84)
+            self.assertEqual(result['divider'], 81)
             ids = json.loads(energy.ORDER.read_text(encoding='utf8'))
             comp = Companion()
             with pymupdf.open(output) as doc:
-                ref = doc[82].get_text()
+                ref = doc[83].get_text()
                 for value in ('ЛАЗЕРНЫЙ МУШКЕТ', 'Термоядерный магазин'):
                     self.assertIn(re.sub(r'\s+', '', value), re.sub(r'\s+', '', ref))
                 self.assertNotIn('ГОЛОВНОЙ ЛАЗЕР ШТУРМОТРОНА', ref)

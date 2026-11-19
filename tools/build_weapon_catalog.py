@@ -22,7 +22,8 @@ ROOT = Path(__file__).resolve().parent.parent
 ORDER = ROOT / 'data/weapons/remaining-order.json'
 OVERRIDES = ROOT / 'data/weapons/remaining-card-overrides.json'
 TITLES = {'energy': 'ДОПОЛНИТЕЛЬНЫЕ ЭНЕРГЕТИЧЕСКИЕ МОДИФИКАЦИИ',
-          'unarmed': 'МОДИФИКАЦИИ ДЛЯ БЕЗОРУЖНОГО БОЯ'}
+          'thrown': 'МОДИФИКАЦИИ МЕТАТЕЛЬНОГО ОРУЖИЯ',
+          'explosives': 'МОДИФИКАЦИИ ВЗРЫВЧАТКИ'}
 
 
 def _run_chain(source, output, toc, toc_pdf, report, artwork=None):
@@ -48,83 +49,82 @@ def _run_chain(source, output, toc, toc_pdf, report, artwork=None):
     problems = []
     pages = {}
     references = {}
-    mods_starts = {}
-    energy_header_done = False
+
+    def append_group(result, tmp, group):
+        ids = groups[group]
+        if group in ('unarmed', 'thrown', 'explosives'):
+            title = {'unarmed': 'РУКОПАШНОЕ ОРУЖИЕ', 'thrown': 'МЕТАТЕЛЬНОЕ ОРУЖИЕ',
+                     'explosives': 'ВЗРЫВЧАТКА'}[group]
+            divider_file = tmp / (group + '-divider.pdf')
+            c = canvas.Canvas(str(divider_file), pagesize=(w.PAGE_W, w.PAGE_H))
+            w.draw_paper(c)
+            w.draw_center_line(c, 360, title, 'Carlito-Bold', w.TITLE_SIZE)
+            w.draw_page_number(c, len(result) + 1)
+            c.showPage(); c.save()
+            with pymupdf.open(divider_file) as divider:
+                result.insert_pdf(divider)
+            if toc is not None:
+                toc.append([1, title, len(result)])
+        specific = {wid: policy.specific_mods(comp, wid) for wid in ids}
+        pairs = {(slot, mid) for wid in ids
+                 for slot, mids in (comp.slots.get(wid) or {}).items()
+                 for mid in policy.published_slot_mod_ids(wid, mids)}
+        allowed = pairs - (set().union(*specific.values()) if specific else set())
+        if allowed and group != 'unarmed':
+            data, warnings = small.make_mod_data(comp, ids, prefixes, allowed=allowed,
+                                       title=TITLES[group])
+            for section in data['sections']:
+                if section['category'] == 'МОДИФИКАЦИИ УНИКАЛЬНЫЕ':
+                    section['category'] = 'МОДИФИКАЦИИ ДЛЯ РАЗНЫХ ВИДОВ ОРУЖИЯ'
+                if group == 'energy' and section['category'] == 'МОДИФИКАЦИИ КОНДЕНСАТОРА':
+                    # Keep this category together instead of orphaning its last rows.
+                    section['page_break_before'] = True
+            problems.extend(warnings)
+            tablefile = tmp / (group + '-mods.pdf')
+            small.tables.render(data, tablefile, page_start=len(result)+1)
+            start = len(result) + 1
+            with pymupdf.open(tablefile) as table:
+                result.insert_pdf(table)
+            references[group] = list(range(start, len(result)+1))
+            if toc is not None:
+                toc.append([2, data['title'], start])
+        pages[group] = []
+        for wid in ids:
+            pagefile = tmp / (wid + '.pdf')
+            card_override = dict(overrides.get(wid, {}))
+            # The generated card can supply a confirmed Russian title
+            # when Companion's localisation still contains an English
+            # placeholder (for example Rock / Pulse Mine).
+            toc_title = card_override.get('title') or comp.weapon_name(wid)
+            layer = artwork.layer_for(wid) if artwork is not None else None
+            if group == 'unarmed':
+                card_override['range'] = '-'
+            if wid == 'weapon_plasma_mine':
+                card = build_card(comp, wid, page=len(result)+1, image='')
+                card.update(card_override)
+                card['mods'] = []
+                w.render_card(card, str(pagefile), artwork=layer)
+            else:
+                heavy.render_heavy(comp, wid, len(result)+1, prefixes, pagefile,
+                                   unique_mods=specific[wid], card_overrides=card_override,
+                                   mod_overrides=mod_overrides.get(wid),
+                                   slot_labels={'Unique': slot_labels.get(wid, 'НЕ УТОЧНЁН')},
+                                   artwork=layer)
+            with pymupdf.open(pagefile) as page:
+                result.insert_pdf(page)
+            pages[group].append(len(result))
+            if toc is not None:
+                toc.append([2, toc_title, len(result)])
+
     with tempfile.TemporaryDirectory() as tmp:
         tmp = Path(tmp)
         base = tmp / 'melee.pdf'
-        melee.build(source, base, toc=toc, toc_pdf=toc_pdf, artwork=artwork)
+        melee.build(source, base, toc=toc, toc_pdf=toc_pdf, artwork=artwork,
+                    extend_energy=lambda result, work: append_group(result, work, 'energy'))
         with pymupdf.open(base) as result, pymupdf.open(source) as original:
-            for group, ids in groups.items():
-                specific = {wid: policy.specific_mods(comp, wid) for wid in ids}
-                # The plasma mine's "heavy barrel" is inconsistent with the
-                # item type even though both Companion cross-links agree.
-                pairs = {(slot, mid) for wid in ids if wid != 'weapon_plasma_mine'
-                         for slot, mids in (comp.slots.get(wid) or {}).items()
-                         for mid in policy.catalog_mod_ids(mids)}
-                allowed = pairs - (set().union(*specific.values()) if specific else set())
-                if allowed and group != 'unarmed':
-                    data, warnings = small.make_mod_data(comp, ids, prefixes, allowed=allowed,
-                                               title=TITLES.get(group, 'МОДИФИКАЦИИ ОРУЖИЯ'))
-                    for section in data['sections']:
-                        if section['category'] == 'МОДИФИКАЦИИ УНИКАЛЬНЫЕ':
-                            section['category'] = 'МОДИФИКАЦИИ ДЛЯ РАЗНЫХ ВИДОВ ОРУЖИЯ'
-                        if group == 'energy' and section['category'] == 'МОДИФИКАЦИИ КОНДЕНСАТОРА':
-                            # Keep this category together instead of orphaning its last rows.
-                            section['page_break_before'] = True
-                    problems.extend(warnings)
-                    tablefile = tmp / (group + '-mods.pdf')
-                    small.tables.render(data, tablefile, page_start=len(result)+1)
-                    start = len(result) + 1
-                    with pymupdf.open(tablefile) as table:
-                        result.insert_pdf(table)
-                    references[group] = list(range(start, len(result)+1))
-                    if toc is not None:
-                        mods_starts[group] = start
-                if group in ('unarmed', 'thrown', 'explosives'):
-                    title = {'unarmed': 'РУКОПАШНОЕ ОРУЖИЕ', 'thrown': 'МЕТАТЕЛЬНОЕ ОРУЖИЕ',
-                             'explosives': 'ВЗРЫВЧАТКА'}[group]
-                    divider_file = tmp / (group + '-divider.pdf')
-                    c = canvas.Canvas(str(divider_file), pagesize=(w.PAGE_W, w.PAGE_H))
-                    w.draw_paper(c)
-                    w.draw_center_line(c, 360, title, 'Carlito-Bold', w.TITLE_SIZE)
-                    w.draw_page_number(c, len(result) + 1)
-                    c.showPage(); c.save()
-                    with pymupdf.open(divider_file) as divider:
-                        result.insert_pdf(divider)
-                    if toc is not None:
-                        toc.append([1, title, len(result)])
-                pages[group] = []
-                for wid in ids:
-                    pagefile = tmp / (wid + '.pdf')
-                    card_override = dict(overrides.get(wid, {}))
-                    # The generated card can supply a confirmed Russian title
-                    # when Companion's localisation still contains an English
-                    # placeholder (for example Rock / Pulse Mine).
-                    toc_title = card_override.get('title') or comp.weapon_name(wid)
-                    layer = artwork.layer_for(wid) if artwork is not None else None
-                    if group == 'unarmed':
-                        card_override['range'] = '-'
-                    if wid == 'weapon_plasma_mine':
-                        card = build_card(comp, wid, page=len(result)+1, image='')
-                        card.update(card_override)
-                        card['mods'] = []
-                        w.render_card(card, str(pagefile), artwork=layer)
-                    else:
-                        heavy.render_heavy(comp, wid, len(result)+1, prefixes, pagefile,
-                                           unique_mods=specific[wid], card_overrides=card_override,
-                                           mod_overrides=mod_overrides.get(wid),
-                                           slot_labels={'Unique': slot_labels.get(wid, 'НЕ УТОЧНЁН')},
-                                           artwork=layer)
-                    with pymupdf.open(pagefile) as page:
-                        result.insert_pdf(page)
-                    pages[group].append(len(result))
-                    if toc is not None:
-                        if group == 'energy' and not energy_header_done:
-                            toc.append([1, 'ДОПОЛНИТЕЛЬНОЕ ЭНЕРГЕТИЧЕСКОЕ ОРУЖИЕ', len(result)])
-                            toc.append([2, TITLES['energy'], mods_starts['energy']])
-                            energy_header_done = True
-                        toc.append([2, toc_title, len(result)])
+            for group in groups:
+                if group != 'energy':
+                    append_group(result, tmp, group)
             closing = []
             for source_page in range(102, 106):
                 result.insert_pdf(original, from_page=source_page-1, to_page=source_page-1)
@@ -146,6 +146,8 @@ def _run_chain(source, output, toc, toc_pdf, report, artwork=None):
             result.insert_pdf(original, from_page=105, to_page=105)
             small.renumber_divider(result[-1], len(result), source_number=106)
             closing.append(len(result))
+            if toc is not None:
+                result.set_toc(toc)
             output.parent.mkdir(parents=True, exist_ok=True)
             result.save(output, garbage=4, deflate=True)
             total = len(result)
@@ -235,7 +237,8 @@ def build(source, output, report=None, with_toc=True, artwork_manifest=None,
                 [[lvl, title, page + offset] for lvl, title, page in toc1],
                 toc_pdf, title=toc_render.TOC_TITLE_RU,
             )
-            pages = pymupdf.open(toc_pdf).page_count
+            with pymupdf.open(toc_pdf) as printed:
+                pages = printed.page_count
             if pages == offset:
                 break
             offset = pages

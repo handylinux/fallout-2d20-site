@@ -126,13 +126,18 @@ def build(source, output, report=None, full=False, toc=None, toc_pdf=None, artwo
         with pymupdf.open(source) as original, pymupdf.open(base) as result:
             if len(original) < max(page for _, page in weapons):
                 raise ValueError('В исходном PDF отсутствуют требуемые страницы')
+            result.insert_pdf(original, from_page=79, to_page=79)
+            divider = len(result)
+            small.renumber_divider(result[-1], divider, source_number=80)
+            if toc is not None:
+                toc.append([1, 'ЭНЕРГЕТИЧЕСКОЕ ОРУЖИЕ', divider])
             references = []
             for source_number in (78, 79):
                 result.insert_pdf(original, from_page=source_number-1, to_page=source_number-1)
                 small.renumber_divider(result[-1], len(result), source_number=source_number)
                 references.append(len(result))
             if toc is not None:
-                toc.append([2, 'ДОПОЛНИТЕЛЬНЫЕ ЭНЕРГЕТИЧЕСКИЕ МОДИФИКАЦИИ', references[0]])
+                toc.append([2, 'МОДИФИКАЦИИ ЭНЕРГЕТИЧЕСКОГО ОРУЖИЯ', references[0]])
             # Continuation of the common reference, not a second weapon-page table.
             prefixes = conv.load(conv.PREFIXES)
             mod_data, problems = musket_reference(comp, prefixes)
@@ -148,11 +153,6 @@ def build(source, output, report=None, full=False, toc=None, toc_pdf=None, artwo
                 for i in range(len(additional)):
                     result.insert_pdf(additional, from_page=i, to_page=i)
                     references.append(len(result))
-            result.insert_pdf(original, from_page=79, to_page=79)
-            divider = len(result)
-            small.renumber_divider(result[-1], divider, source_number=80)
-            if toc is not None:
-                toc.append([1, 'ЭНЕРГЕТИЧЕСКОЕ ОРУЖИЕ', divider])
             pages = []
             for wid, source_page in weapons:
                 file = Path(tmp) / (wid+'.pdf')

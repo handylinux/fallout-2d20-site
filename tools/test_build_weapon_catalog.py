@@ -46,6 +46,14 @@ class CompleteWorkingCatalogTest(unittest.TestCase):
                 self.assertRegex(lines[idx + 1], r'^\d+$')
                 toc_lookup = dict((title, page) for _level, title, page in info['toc'])
                 self.assertEqual(int(lines[idx + 1]), toc_lookup['Гатлинг-плазма'])
+                self.assertEqual(info['toc'], doc.get_toc())
+                self.assertEqual([p for _, _, p in info['toc']], sorted(p for _, _, p in info['toc']))
+                self.assertLess(toc_lookup['СТРЕЛКОВОЕ ОРУЖИЕ'],
+                                toc_lookup['МОДИФИКАЦИИ СТРЕЛКОВОГО ОРУЖИЯ'])
+                self.assertLess(toc_lookup['ЭНЕРГЕТИЧЕСКОЕ ОРУЖИЕ'],
+                                toc_lookup['МОДИФИКАЦИИ ЭНЕРГЕТИЧЕСКОГО ОРУЖИЯ'])
+                self.assertLess(toc_lookup['Лазерный пистолет института'],
+                                toc_lookup['ОРУЖИЕ БЛИЖНЕГО БОЯ'])
                 head_laser = text(toc_lookup['Головной лазер Штурмотрона'])
                 self.assertIn('ГОЛОВНОЙ ЛАЗЕР ШТУРМОТРОНА', head_laser)
                 mugnum = text(toc_lookup['Мугнумномикон'])
@@ -103,7 +111,7 @@ class CompleteWorkingCatalogTest(unittest.TestCase):
                 self.assertIn('ПЛАЗМЕННАЯ МИНА', mine)
                 self.assertIn('НЕТ ПОДДЕРЖИВАЕМЫХ МОДИФИКАЦИЙ', mine)
                 self.assertNotIn('Тяжёлый ствол', mine)
-                words = doc[84].get_text('words')
+                words = doc[85].get_text('words')
                 capacitor = next(x for x in words if x[4] == '6-зарядный')
                 magazine = next(x for x in words if x[4] == 'МАГАЗИНА')
                 self.assertGreater(magazine[1] - capacitor[3], 15)

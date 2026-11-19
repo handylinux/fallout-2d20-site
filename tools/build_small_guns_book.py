@@ -175,15 +175,15 @@ def build(source, output, report=None, toc_pdf=None, toc=None, artwork=None):
                 toc.append([1, 'ЭФФЕКТЫ УРОНА', front_start])
                 toc.append([1, 'КАЧЕСТВА ОРУЖИЯ', front_start + 2])
                 toc.append([1, 'АРСЕНАЛ', front_start + 5])
+            result.insert_pdf(original, from_page=12, to_page=12)
+            divider_number = len(result)
+            renumber_divider(result[-1], divider_number)
             mod_file = Path(tmp) / 'mods.pdf'
             tables.render(data, mod_file, page_start=len(result) + 1)
             with pymupdf.open(mod_file) as mod_pdf:
                 mod_pages = mod_pdf.page_count
                 mod_start = len(result) + 1
                 result.insert_pdf(mod_pdf)
-            result.insert_pdf(original, from_page=12, to_page=12)
-            divider_number = len(result)
-            renumber_divider(result[-1], divider_number)
             if toc is not None:
                 toc.append([1, 'СТРЕЛКОВОЕ ОРУЖИЕ', divider_number])
                 toc.append([2, 'МОДИФИКАЦИИ СТРЕЛКОВОГО ОРУЖИЯ', mod_start])

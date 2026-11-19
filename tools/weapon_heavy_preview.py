@@ -94,7 +94,11 @@ def render_source_heavy(comp, wid, page_num, source, source_page, out, extra_des
     return {'mode': 'source', 'font_size': None, 'mod_count': None}
 
 
-def render_heavy(comp, wid, page_num, prefixes, out, extra_description='', card_overrides=None, unique_slots=(), unique_mods=(), mod_overrides=None, slot_labels=None, site_mod_rows=None, card=None, rows=None, mod_table_headers=('', 'НАЗВАНИЕ', 'ПРЕФИКС', 'ЭФФЕКТЫ', 'ВЕС', 'ЦЕНА', 'ПЕРКИ'), unique_suffix=' УНИКАЛЬНЫЙ', unverified_heading='МОДИФИКАЦИИ ТРЕБУЮТ ПРОВЕРКИ', document_title_suffix='справочник оружия', artwork=None):
+class DetailedModsLayoutError(ValueError):
+    """The complete modifications and description exceed the space on a card."""
+
+
+def render_heavy(comp, wid, page_num, prefixes, out, extra_description='', card_overrides=None, unique_slots=(), unique_mods=(), mod_overrides=None, slot_labels=None, site_mod_rows=None, card=None, rows=None, mod_table_headers=('', 'НАЗВАНИЕ', 'ПРЕФИКС', 'ЭФФЕКТЫ', 'ВЕС', 'ЦЕНА', 'ПЕРКИ'), unique_suffix=' УНИКАЛЬНЫЙ', unverified_heading='МОДИФИКАЦИИ ТРЕБУЮТ ПРОВЕРКИ', document_title_suffix='справочник оружия', artwork=None, *, shared_mods=None):
     card = dict(card) if card is not None else build_card(comp, wid, page=page_num, image='')
     card['page'] = page_num
     if card_overrides:
@@ -200,16 +204,35 @@ def render_heavy(comp, wid, page_num, prefixes, out, extra_description='', card_
             _, height = table.wrap(w.CONTENT_W, w.PAGE_H)
             return table, height
 
-        description = (card.get('description') or '').strip()
-        minimum_bottom = w.DESC_TOP + len(w.wrap_text(description, 'Carlito', 10, w.DESC_RIGHT - w.DESC_LEFT)) * 15 if description else w.DESC_TOP
+        shared_card = None
+        if shared_mods is None:
+            description = (card.get('description') or '').strip()
+            minimum_bottom = (w.DESC_TOP + len(w.wrap_text(
+                description, 'Carlito', 10, w.DESC_RIGHT - w.DESC_LEFT)) * 15
+                if description else w.DESC_TOP)
+        if shared_mods:
+            shared_card = {**card, 'mods': shared_mods, 'labels': {
+                **card.get('labels', {}), 'mods_heading': 'OTHER SUPPORTED MODIFICATIONS',
+            }}
+            shared_rows, shared_height, shared_cols = w.mods_layout(shared_card)
+
         for font_size, padding in [(8.4, 3), (8.0, 2), (7.5, 1), (7.0, 1), (6.5, .5)]:
             table, height = make_table(font_size, padding)
             top = w.MODS_BOTTOM - height
             available = top - w.MODS_HEADING_GAP - 10
-            if minimum_bottom <= available:
-                break
+            if shared_card is not None:
+                shared_bottom = available
+                shared_top = shared_bottom - shared_height
+                available = shared_top - w.MODS_HEADING_GAP - 10
+            if available < w.DESC_TOP or (shared_mods is None and minimum_bottom > available):
+                continue
+            try:
+                description_layout = w.description_layout(card, max_bottom=available)
+            except ValueError:
+                continue
+            break
         else:
-            raise ValueError(f'{wid}: таблица и описание не помещаются на одну страницу')
+            raise DetailedModsLayoutError(f'{wid}: таблица и описание не помещаются на одну страницу')
         c = canvas.Canvas(str(out), pagesize=(w.artwork_page_size(artwork)
                                               if artwork is not None else (w.PAGE_W, w.PAGE_H)))
         c.setTitle(f"{card['title']} — {document_title_suffix}")
@@ -217,7 +240,9 @@ def render_heavy(comp, wid, page_num, prefixes, out, extra_description='', card_
         w.draw_image(c, card, artwork)
         w.draw_title(c, card)
         w.draw_stats(c, card)
-        w.draw_description(c, card, max_bottom=available)
+        w.draw_description(c, card, layout=description_layout)
+        if shared_card is not None:
+            w.draw_mods(c, shared_card, (shared_rows, shared_top, shared_cols), bottom=shared_bottom)
         mods_heading = (card.get('labels') or {}).get('mods_heading', w.MODS_HEADING)
         w.draw_center_line(c, top - w.MODS_HEADING_GAP, mods_heading, 'Carlito-Bold', w.MODS_HEADING_SIZE)
         table.drawOn(c, w.MARGIN_L, w.y_from_top(w.MODS_BOTTOM))

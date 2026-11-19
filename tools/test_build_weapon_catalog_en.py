@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from PIL import Image
 import pymupdf
@@ -29,6 +30,50 @@ class EnglishCatalogBuildTests(unittest.TestCase):
             document.save(path, garbage=4, deflate=True)
         finally:
             document.close()
+
+    def test_tables_follow_compatibility_not_mod_names(self):
+        companion = catalog.Companion()
+        cards = catalog.ordered_cards(companion)
+        rare = catalog._rare_mod_ids(companion, cards)
+        prefixes = catalog.companion_mods_en.load_prefixes()
+        tables = catalog._category_mod_data(companion, catalog._category_cards(cards), rare, prefixes)
+        names = {category: {row[0] for section in table["sections"] for row in section["rows"]}
+                 for category, table in tables.items()}
+        self.assertIn(".308 Receiver", names["Light Weapons"])
+        self.assertNotIn(".308 Receiver", names["Melee Weapons"])
+        self.assertIn("Recoil Compensating Stock", names["Energy Weapons"])
+        self.assertNotIn("Explosive Weapons", names)
+        self.assertNotIn("Thrown Weapons", names)
+        self.assertFalse(companion.mod_rows("weapon_plasma_mine"))
+
+    def test_rarity_counts_distinct_published_weapons_not_slot_or_chapter(self):
+        companion = catalog.Companion()
+        cards = catalog.ordered_cards(companion)
+        rare = catalog._rare_mod_ids(companion, cards)
+        self.assertEqual(len(rare), 91)
+        self.assertIn("mod_25mm_receiver", rare)  # One published weapon.
+        self.assertIn("mod_heavy_barrel", rare)  # Two published weapons, not the plasma mine.
+        self.assertNotIn("mod_recoil_compensating_stock", rare)
+        self.assertNotIn("mod_recoil_compensating", rare)
+
+    def test_overflow_keeps_details_immediately_after_the_card(self):
+        companion = catalog.Companion()
+        card = companion.card("weapon_auto_grenade_launcher")
+        card["page"] = 42
+        rare = catalog._rare_mod_ids(companion, catalog.ordered_cards(companion))
+        prefixes = catalog.companion_mods_en.load_prefixes()
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "weapon.pdf"
+            with patch.object(catalog.detailed_card, "render_heavy",
+                              side_effect=catalog.detailed_card.DetailedModsLayoutError):
+                continuation = catalog._render_weapon(companion, card, path, None, rare, prefixes)
+            with pymupdf.open(path) as main, pymupdf.open(continuation) as detail:
+                self.assertIn("DETAILS ON NEXT PAGE", main[0].get_text())
+                text = detail[0].get_text()
+                self.assertIn("AUTO GRENADE LAUNCHER — MODIFICATIONS", text)
+                self.assertIn("25mm Receiver", text)
+                self.assertIn("Heavy Barrel", text)
+                self.assertIn("43", text.splitlines())
 
     def test_complete_catalog_has_front_matter_references_toc_and_exact_id_artwork(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -68,14 +113,14 @@ class EnglishCatalogBuildTests(unittest.TestCase):
             self.assertEqual(result["pages"] % 4, 0)
             self.assertEqual(result["cards"], 144)
             self.assertEqual(result["toc_pages"], 2)
-            self.assertEqual(result["outline_entries"], 175)
+            self.assertEqual(result["outline_entries"], 159)
             self.assertEqual(result["artwork"]["counts"], {
                 "no-manifest-page": 143, "replayed": 1,
             })
             self.assertTrue(coverage.is_file())
             self.assertEqual(len(result["references"]["damage_effects"]), 2)
             self.assertEqual(len(result["references"]["weapon_qualities"]), 3)
-            self.assertEqual(len(result["modifications"]), 20)
+            self.assertEqual(len(result["modifications"]), 5)
             self.assertEqual(len(result["categories"]), 7)
             self.assertNotIn("Other Weapons", result["categories"])
             self.assertEqual(len(result["card_pages"]), 144)
@@ -92,8 +137,18 @@ class EnglishCatalogBuildTests(unittest.TestCase):
                 self.assertNotIn("/ID", document.pdf_trailer())
                 outline = document.get_toc(simple=True)
                 self.assertEqual(outline[0], [1, "DAMAGE EFFECTS", 6])
-                self.assertIn([1, "WEAPON MODIFICATIONS", 12], outline)
-                self.assertIn([1, "SMALL GUNS", 20], outline)
+                self.assertIn([1, "SMALL GUNS", 12], outline)
+                self.assertNotIn("WEAPON MODIFICATIONS", [entry[1] for entry in outline])
+                self.assertEqual(outline, result["toc"])
+                for category, start in result["modifications"].items():
+                    title = catalog.CATEGORY_PRESENTATION[category]["title"]
+                    divider = result["categories"][category]
+                    self.assertEqual(start, divider + 1)
+                    index = outline.index([1, title, divider])
+                    self.assertEqual(outline[index + 1], [2, f"{title} MODIFICATIONS", start])
+                    self.assertIn(f"{title} MODIFICATIONS", document[start - 1].get_text())
+                self.assertNotIn("Explosive Weapons", result["modifications"])
+                self.assertNotIn("Thrown Weapons", result["modifications"])
                 self.assertIn([2, "10mm Pistol", result["card_pages"]["weapon_10mm_pistol"]],
                               outline)
                 self.assertIn([2, "Assaultron Head Laser",
@@ -104,7 +159,7 @@ class EnglishCatalogBuildTests(unittest.TestCase):
                 self.assertNotIn("Assaultron Head", outline_titles)
                 self.assertNotIn("Straight Razor", outline_titles)
                 self.assertNotIn("OTHER WEAPONS", outline_titles)
-                self.assertEqual(len(outline), 175)
+                self.assertEqual(len(outline), 159)
 
                 cover = document[0].get_text()
                 self.assertIn("BROTHERHOOD FIELD GUIDE", cover)
@@ -115,29 +170,27 @@ class EnglishCatalogBuildTests(unittest.TestCase):
                 self.assertIn("DAMAGE EFFECTS", toc)
                 effects = document[result["references"]["damage_effects"][0] - 1].get_text()
                 qualities = document[result["references"]["weapon_qualities"][0] - 1].get_text()
-                mods = document[result["modifications"]["RECEIVER MODIFICATIONS"] - 1].get_text()
+                mods = document[result["modifications"]["Light Weapons"] - 1].get_text()
                 self.assertIn("DAMAGE EFFECTS", effects)
                 self.assertIn("BURST", effects)
                 self.assertIn("WEAPON QUALITIES", qualities)
                 self.assertIn("ACCURATE", qualities)
-                self.assertIn("WEAPON MODIFICATIONS", mods)
+                self.assertIn("SMALL GUNS MODIFICATIONS", mods)
                 self.assertIn("MODIFICATION", mods)
                 self.assertIn(".308 Receiver", mods)
 
-                stock_mods = " ".join(document[
-                    result["modifications"]["STOCK MODIFICATIONS"] - 1
-                ].get_text().split())
-                self.assertIn(
-                    "Recoil Compensating Stock Recoil-Compensated Fire Rate: +1; "
-                    "Add Quality: Two-Handed; Remove Quality: Inaccurate",
-                    stock_mods,
-                )
-                self.assertNotIn("Recoil-Compensating", stock_mods)
-                self.assertNotIn(
-                    "Range: +1 zone; Add Quality: Two-Handed; Remove Quality: Inaccurate; "
-                    "Add Quality: Close Quarters",
-                    stock_mods,
-                )
+                for category, first_card in (("Light Weapons", ".357 Magnum Revolver"),
+                                             ("Heavy Weapons", ".50 Cal Machine Gun"),
+                                             ("Energy Weapons", "Acid Soaker")):
+                    start = result["modifications"][category]
+                    end = next(page for _, name, page in outline if name == first_card)
+                    stock_mods = " ".join("".join(
+                        document[page - 1].get_text() for page in range(start, end)
+                    ).split())
+                    self.assertEqual(stock_mods.count("Recoil Compensating Stock"), 1)
+                    self.assertIn("Recoil Compensating Stock Recoil-Compensated Fire Rate: +1; "
+                                  "Add Quality: Two-Handed; Remove Quality: Inaccurate", stock_mods)
+                    self.assertNotIn("Recoil-Compensating", stock_mods)
                 for weapon_id in ("weapon_gauss_rifle", "weapon_light_machine_gun",
                                   "weapon_pump_action_shotgun"):
                     stock_card = " ".join(document[result["card_pages"][weapon_id] - 1]
@@ -145,6 +198,35 @@ class EnglishCatalogBuildTests(unittest.TestCase):
                     self.assertEqual(stock_card.count("Recoil Compensating"), 1)
                     self.assertIn("Recoil Compensating Stock", stock_card)
                     self.assertNotIn("Close Quarters", stock_card)
+
+                self.assertEqual(result["continuation_pages"], {})
+                companion = catalog.Companion()
+                rare = catalog._rare_mod_ids(companion, catalog.ordered_cards(companion))
+                detailed_count = 0
+                for weapon_id, page in result["card_pages"].items():
+                    expected = catalog._published_mod_ids(companion, weapon_id) & rare
+                    if not expected:
+                        continue
+                    detailed_count += 1
+                    text = " ".join(document[page - 1].get_text().split())
+                    self.assertIn("DETAILED MODIFICATIONS", text)
+                    for mid in expected:
+                        self.assertIn(companion.mods_en[mid]["name"], text, weapon_id)
+                self.assertEqual(detailed_count, 47)
+
+                def card_text(weapon_id):
+                    return " ".join(document[result["card_pages"][weapon_id] - 1].get_text().split())
+
+                launcher = card_text("weapon_auto_grenade_launcher")
+                self.assertIn("OTHER SUPPORTED MODIFICATIONS BARREL Long", launcher)
+                self.assertIn("25mm Receiver 25mm Damage: 4", launcher)
+                self.assertIn("Gun Nut 3, Science! 1", launcher)
+                for weapon_id in ("weapon_auto_grenade_launcher", "weapon_50_cal_machine_gun"):
+                    self.assertIn("Heavy Barrel Heavy Damage: +1 ; Add Effect: Vicious 3 35 Gun Nut 2",
+                                  card_text(weapon_id))
+                heavy_mods = document[result["modifications"]["Heavy Weapons"] - 1].get_text()
+                self.assertNotIn("Heavy Barrel", heavy_mods)
+                self.assertNotIn("25mm Receiver", heavy_mods)
 
                 # The exact-ID match retains its manifest matrix. An earlier
                 # card must remain artless rather than borrowing it by position.

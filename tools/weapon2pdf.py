@@ -968,7 +968,7 @@ def mods_layout(card) -> tuple[list[dict], float, int]:
     return rows, sum(r["h"] for r in rows), ncols
 
 
-def draw_mods(c, card, block=None, no_mods_heading_top=None) -> None:
+def draw_mods(c, card, block=None, no_mods_heading_top=None, *, bottom=MODS_BOTTOM) -> None:
     mods = card.get("mods") or []
 
     if block is None:
@@ -981,7 +981,6 @@ def draw_mods(c, card, block=None, no_mods_heading_top=None) -> None:
 
     rows, top, ncols = block
     edges = mods_edges(ncols)
-    bottom = MODS_BOTTOM
     # The heading follows the table, so short tables do not leave a hole.
     draw_center_line(c, top - MODS_HEADING_GAP,
                      card_label(card, "mods_heading", DEFAULT_LABELS["mods_heading"]),

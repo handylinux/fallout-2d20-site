@@ -157,16 +157,18 @@ class Companion:
             result.append(str(name))
         return result
 
-    def mod_rows(self, weapon_id: str) -> list[dict[str, Any]]:
+    def mod_rows(self, weapon_id: str, *, exclude: set[str] | frozenset[str] = frozenset()) -> list[dict[str, Any]]:
         slot_map = self.slots.get(weapon_id) or {}
         order = [slot for slot in SLOT_ORDER
-                 if mod_policy.catalog_mod_ids(slot_map.get(slot) or [])]
+                 if mod_policy.published_slot_mod_ids(weapon_id, slot_map.get(slot) or [])]
         order.extend(sorted(slot for slot in slot_map if slot not in SLOT_ORDER
-                            and mod_policy.catalog_mod_ids(slot_map[slot])))
+                            and mod_policy.published_slot_mod_ids(weapon_id, slot_map[slot])))
         rows = []
         for slot in order:
             names = []
-            for mod_id in mod_policy.catalog_mod_ids(slot_map[slot]):
+            for mod_id in mod_policy.published_slot_mod_ids(weapon_id, slot_map[slot]):
+                if mod_id in exclude:
+                    continue
                 if mod_id not in self.base_mods:
                     raise ValueError(f"Unknown mod {mod_id} for {weapon_id} ({slot})")
                 name = (self.mods_en.get(mod_id) or {}).get("name")
