@@ -44,15 +44,20 @@ def weapon_rows(companion: Companion, weapon_ids: set[str]) -> dict[str, list[Ro
     return rows_by_weapon
 
 
-def shared_rows(weapon_ids: Iterable[str], rows_by_weapon: dict[str, list[Row]]) -> list[Row]:
-    """Count a complete identical row once per distinct weapon in this chapter."""
+def variant_weapons(weapon_ids: Iterable[str], rows_by_weapon: dict[str, list[Row]]) -> dict[Row, set[str]]:
+    """Index complete identical rows by distinct verified weapons in this chapter."""
     weapons_by_variant: dict[Row, set[str]] = defaultdict(set)
     for weapon_id in weapon_ids:
         if weapon_id in UNVERIFIED_WEAPON_IDS:
             continue
         for row in rows_by_weapon[weapon_id]:
             weapons_by_variant[row].add(weapon_id)
-    return [row for row, weapons in weapons_by_variant.items() if len(weapons) >= MIN_SHARED_WEAPONS]
+    return weapons_by_variant
+
+
+def shared_rows(weapon_ids: Iterable[str], rows_by_weapon: dict[str, list[Row]]) -> list[Row]:
+    return [row for row, weapons in variant_weapons(weapon_ids, rows_by_weapon).items()
+            if len(weapons) >= MIN_SHARED_WEAPONS]
 
 
 def table_data(title: str, rows: list[Row], *, gap: int = 18) -> dict:

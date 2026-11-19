@@ -68,7 +68,7 @@ class SynchronizedCatalogueReleaseTests(unittest.TestCase):
                 self.assertEqual(kwargs["artwork_root"], kwargs["artwork_manifest"].parent)
                 vector.write_bytes(b"new-english-vector")
                 kwargs["artwork_coverage"].write_text("{}", encoding="utf-8")
-                return {"pages": 180, "cards": 144, "toc_pages": 2, "outline_entries": 160}
+                return {"pages": 180, "cards": 144, "toc_pages": 2, "outline_entries": 161}
 
             def fake_raster(source_path: Path, mobile: Path, **kwargs):
                 locale = kwargs["metadata_locale"]

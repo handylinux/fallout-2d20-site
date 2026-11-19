@@ -288,15 +288,15 @@ def _validate_english(vector: Path) -> None:
             "SMALL GUNS": ("SMALL GUNS MODIFICATIONS", "SMALL GUNS — SPECIFIC MODIFICATIONS"),
             "HEAVY GUNS": ("HEAVY GUNS — SPECIFIC MODIFICATIONS",),
             "ENERGY GUNS": ("ENERGY GUNS MODIFICATIONS", "ENERGY GUNS — SPECIFIC MODIFICATIONS"),
-            "MELEE WEAPONS": ("MELEE WEAPONS MODIFICATIONS",),
+            "MELEE WEAPONS": ("MELEE WEAPONS MODIFICATIONS", "MELEE WEAPONS — SPECIFIC MODIFICATIONS"),
         })
         titles = [title for _level, title, _page in outline]
-        _require(len(outline) == 160, f"English outline has {len(outline)} entries, expected 160")
+        _require(len(outline) == 161, f"English outline has {len(outline)} entries, expected 161")
         for title in ("Assaultron Head", "Straight Razor", "OTHER WEAPONS", "WEAPON MODIFICATIONS",
                       "HEAVY GUNS MODIFICATIONS", "UNARMED WEAPONS MODIFICATIONS"):
             _require(title not in titles, f"English outline unexpectedly contains {title!r}")
-        for title, page in (("Assaultron Head Laser", 86), ("Institute Laser", 95),
-                            ("Unarmed Attack", 173)):
+        for title, page in (("Assaultron Head Laser", 87), ("Institute Laser", 96),
+                            ("Unarmed Attack", 175)):
             _require([2, title, page] in outline,
                      f"English outline is missing {title!r} on page {page}")
 

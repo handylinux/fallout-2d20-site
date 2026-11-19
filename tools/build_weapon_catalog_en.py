@@ -26,7 +26,6 @@ import weapon2pdf as w
 import weapon_book_cover as book_cover
 import weapon_book_toc as toc_render
 import weapon_heavy_preview as detailed_card
-import weapon_energy_preview as publisher_energy
 import weapon_catalog_en_mods as catalogue_mods
 import weapon_mods_table_unicode as mod_tables
 from weapon_catalog_artwork import ArtworkResolver
@@ -353,19 +352,6 @@ def _category_cards(cards: list[dict[str, Any]]) -> dict[str, list[dict[str, Any
     return grouped
 
 
-# A compact English table is the default for dense inventories. Where the
-# Publisher card actually had a parameter table, preserve that layout for
-# slightly longer lists as long as type and prose still fit on the card.
-SPARSE_MOD_LIMIT = 6
-PUBLISHER_DETAIL_LIMIT = 8
-PUBLISHER_MOD_CARD_PAGES = {
-    "weapon_crossbow": 55,
-    "weapon_bow": 56,
-    **detailed_card.SOURCE_PAGES,
-    **publisher_energy.SOURCE_PAGES,
-}
-
-
 def _render_detailed_weapon(companion: Companion, card: dict[str, Any], path: Path,
                             rows: list[catalogue_mods.Row], layer=None) -> None:
     detailed_card.render_heavy(
@@ -376,34 +362,31 @@ def _render_detailed_weapon(companion: Companion, card: dict[str, Any], path: Pa
     )
 
 
-def _detailed_cards(source: Path, companion: Companion, grouped: dict[str, list[dict[str, Any]]],
-                    rows_by_weapon: dict[str, list[catalogue_mods.Row]], trial: Path) -> set[str]:
-    """Keep sparse, weapon-specific tables only if the actual card has room."""
-    with pymupdf.open(source) as original:
-        publisher_detailed = {wid for wid, number in PUBLISHER_MOD_CARD_PAGES.items()
-                              if "ПРЕФИКС" in original[number - 1].get_text().split()}
-    result = set()
+def _weapon_mod_layouts(companion: Companion, grouped: dict[str, list[dict[str, Any]]],
+                        rows_by_weapon: dict[str, list[catalogue_mods.Row]],
+                        trial: Path) -> tuple[set[str], set[str]]:
+    """A singleton variant triggers a complete table, on-card if it fits."""
+    detailed, full_reference = set(), set()
     w.register_fonts()
     for cards in grouped.values():
-        shared = set(catalogue_mods.shared_rows((card["id"] for card in cards), rows_by_weapon))
+        variants = catalogue_mods.variant_weapons((card["id"] for card in cards), rows_by_weapon)
+        weapons_with_unique = {next(iter(weapons)) for weapons in variants.values() if len(weapons) == 1}
         for card in cards:
             wid = card["id"]
-            rows = rows_by_weapon[wid]
-            limit = PUBLISHER_DETAIL_LIMIT if wid in publisher_detailed else SPARSE_MOD_LIMIT
-            if (wid in catalogue_mods.UNVERIFIED_WEAPON_IDS or len(rows) > limit
-                    or not set(rows) - shared):
+            if wid not in weapons_with_unique:
                 continue
             try:
-                _render_detailed_weapon(companion, card, trial, rows)
+                _render_detailed_weapon(companion, card, trial, rows_by_weapon[wid])
             except detailed_card.DetailedModsLayoutError:
-                continue
-            result.add(wid)
-    return result
+                full_reference.add(wid)
+            else:
+                detailed.add(wid)
+    return detailed, full_reference
 
 
 def _category_mod_data(grouped: dict[str, list[dict[str, Any]]],
                        rows_by_weapon: dict[str, list[catalogue_mods.Row]],
-                       detailed_ids: set[str]) -> dict[str, list[dict[str, Any]]]:
+                       detailed_ids: set[str], full_reference_ids: set[str]) -> dict[str, list[dict[str, Any]]]:
     """Every name-only row has either a shared reference or a specific entry."""
     tables = {}
     for category, cards in grouped.items():
@@ -411,7 +394,8 @@ def _category_mod_data(grouped: dict[str, list[dict[str, Any]]],
         compact = [card for card in cards if card["id"] not in detailed_ids]
         title = CATEGORY_PRESENTATION[category]["title"]
         chapter_tables = []
-        cited = {row for card in compact if card["id"] not in catalogue_mods.UNVERIFIED_WEAPON_IDS
+        cited = {row for card in compact
+                 if card["id"] not in catalogue_mods.UNVERIFIED_WEAPON_IDS | full_reference_ids
                  for row in rows_by_weapon[card["id"]]} & shared
         if cited:
             chapter_tables.append(catalogue_mods.table_data(f"{title} MODIFICATIONS", sorted(cited)))
@@ -419,7 +403,7 @@ def _category_mod_data(grouped: dict[str, list[dict[str, Any]]],
         for card in compact:
             wid = card["id"]
             unverified = wid in catalogue_mods.UNVERIFIED_WEAPON_IDS
-            own = [row for row in rows_by_weapon[wid] if unverified or row not in shared]
+            own = [row for row in rows_by_weapon[wid] if unverified or wid in full_reference_ids or row not in shared]
             if own:
                 specific.append(catalogue_mods.specific_section(card["title"], own, unverified=unverified))
         if specific:
@@ -617,8 +601,8 @@ def build(
 
     with tempfile.TemporaryDirectory() as directory:
         temp = Path(directory)
-        detailed_ids = _detailed_cards(source, companion, grouped, rows_by_weapon, temp / "fit.pdf")
-        mod_data = _category_mod_data(grouped, rows_by_weapon, detailed_ids)
+        detailed_ids, full_reference = _weapon_mod_layouts(companion, grouped, rows_by_weapon, temp / "fit.pdf")
+        mod_data = _category_mod_data(grouped, rows_by_weapon, detailed_ids, full_reference)
         if with_toc:
             # First pass establishes references, table pagination and card
             # locations without giving an artwork resolver a chance to record
@@ -660,6 +644,7 @@ def build(
     coverage = artwork.coverage()
     if artwork_coverage is not None:
         artwork.write_coverage(artwork_coverage)
+    stats["full_mod_reference_cards"] = sorted(full_reference)
     stats["toc_pages"] = offset
     stats["outline_entries"] = len(stats["toc"])
     stats["artwork"] = coverage

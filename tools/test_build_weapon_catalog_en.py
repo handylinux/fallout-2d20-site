@@ -23,13 +23,8 @@ class EnglishCatalogBuildTests(unittest.TestCase):
             with pymupdf.open(catalog.ROOT / "Справочник оружия.pdf") as original:
                 document.insert_pdf(original, from_page=0, to_page=0)
                 catalog.book_cover.restore_transparency_group(original[0], document[0])
-                detailed_pages = {number for number in catalog.PUBLISHER_MOD_CARD_PAGES.values()
-                                  if "ПРЕФИКС" in original[number - 1].get_text().split()}
             for number in range(2, 107):
                 page = document.new_page(width=w.PAGE_W, height=w.PAGE_H)
-                if number in detailed_pages:
-                    page.insert_font(fontname="carlito", fontfile=str(Path(w.FONT_DIR) / "Carlito-Regular.ttf"))
-                    page.insert_text((40, 400), "ПРЕФИКС", fontname="carlito")
                 # Match the source convention closely enough for the strict
                 # renumbering code: one unique number below y=800.
                 x = 39 if number % 2 == 0 else 546
@@ -90,33 +85,36 @@ class EnglishCatalogBuildTests(unittest.TestCase):
         card = companion.card("weapon_auto_grenade_launcher")
         card["page"] = 42
         rows = catalog.catalogue_mods.weapon_rows(companion, {card["id"]})
-        grouped = {"Heavy Weapons": [card]}
+        shared = rows[card["id"]][0]
+        others = [{"id": wid, "title": wid} for wid in "abc"]
+        rows.update({other["id"]: [shared] for other in others})
+        grouped = {"Heavy Weapons": [card, *others]}
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "weapon.pdf"
             with patch.object(catalog.detailed_card, "render_heavy",
                               side_effect=catalog.detailed_card.DetailedModsLayoutError):
-                detailed = catalog._detailed_cards(catalog.ROOT / "Справочник оружия.pdf",
-                                                  companion, grouped, rows, path)
+                detailed, full_reference = catalog._weapon_mod_layouts(companion, grouped, rows, path)
             self.assertEqual(detailed, set())
+            self.assertEqual(full_reference, {card["id"]})
             catalog._render_weapon(companion, card, path, None, rows[card["id"]], detailed=False)
             with pymupdf.open(path) as main:
                 text = main[0].get_text()
                 self.assertIn("SUPPORTED MODIFICATIONS", text)
                 self.assertIn("25mm Receiver", text)
                 self.assertNotIn("PREFIX", text)
-        tables = catalog._category_mod_data(grouped, rows, detailed)["Heavy Weapons"]
-        self.assertEqual(len(tables), 1)
-        self.assertEqual(tables[0]["sections"][0]["category"], "AUTO GRENADE LAUNCHER")
-        self.assertEqual(tables[0]["sections"][0]["rows"], [list(row[1:]) for row in rows[card["id"]]])
+        standard, specific = catalog._category_mod_data(grouped, rows, detailed, full_reference)["Heavy Weapons"]
+        self.assertEqual(standard["sections"][0]["rows"], [list(shared[1:])])
+        self.assertEqual(specific["sections"][0]["category"], "AUTO GRENADE LAUNCHER")
+        self.assertEqual(specific["sections"][0]["rows"], [list(row[1:]) for row in rows[card["id"]]])
 
     def test_compact_references_separate_shared_from_identically_named_variants(self):
         common = ("Barrel", "Long", "Long", "Range: +1 zone", "1", "20", "Gun Nut 1")
         rare = (*common[:-2], "25", "Gun Nut 2")
         cards = [{"id": wid, "title": wid} for wid in "abcdef"]
         rows = {card["id"]: [rare if card["id"] in "ef" else common] for card in cards}
-        shared, specific = catalog._category_mod_data({"Light Weapons": cards}, rows, {"f"})["Light Weapons"]
+        shared, specific = catalog._category_mod_data({"Light Weapons": cards}, rows, set(), set())["Light Weapons"]
         self.assertEqual(shared["sections"][0]["rows"], [list(common[1:])])
-        self.assertEqual([section["category"] for section in specific["sections"]], ["E"])
+        self.assertEqual([section["category"] for section in specific["sections"]], ["E", "F"])
         self.assertEqual(specific["sections"][0]["rows"], [list(rare[1:])])
 
     def test_undocumented_qualities_are_audited_separately_from_known_rules(self):
@@ -169,7 +167,7 @@ class EnglishCatalogBuildTests(unittest.TestCase):
             self.assertEqual(result["pages"] % 4, 0)
             self.assertEqual(result["cards"], 144)
             self.assertEqual(result["toc_pages"], 2)
-            self.assertEqual(result["outline_entries"], 160)
+            self.assertEqual(result["outline_entries"], 161)
             self.assertEqual(result["artwork"]["counts"], {
                 "no-manifest-page": 143, "replayed": 1,
             })
@@ -184,7 +182,7 @@ class EnglishCatalogBuildTests(unittest.TestCase):
             self.assertNotIn("weapon_straight_razor", result["card_pages"])
             self.assertIn("weapon_assaultron_head_laser", result["card_pages"])
             self.assertIn("weapon_unarmed_attack", result["card_pages"])
-            self.assertEqual(result["closing"], [174, 175, 176, 177, 180])
+            self.assertEqual(result["closing"], [176, 177, 178, 179, 180])
 
             with pymupdf.open(output) as document:
                 self.assertEqual(document.page_count, 180)
@@ -215,7 +213,7 @@ class EnglishCatalogBuildTests(unittest.TestCase):
                 self.assertNotIn("Assaultron Head", outline_titles)
                 self.assertNotIn("Straight Razor", outline_titles)
                 self.assertNotIn("OTHER WEAPONS", outline_titles)
-                self.assertEqual(len(outline), 160)
+                self.assertEqual(len(outline), 161)
 
                 cover = document[0].get_text()
                 self.assertIn("BROTHERHOOD FIELD GUIDE", cover)
@@ -250,23 +248,25 @@ class EnglishCatalogBuildTests(unittest.TestCase):
                     self.assertIn([2, heading, page], outline)
                     self.assertIn(heading, document[page - 1].get_text())
                 self.assertEqual(set(result["specific_modifications"]), {
-                    "Light Weapons", "Heavy Weapons", "Energy Weapons",
+                    "Light Weapons", "Heavy Weapons", "Energy Weapons", "Melee Weapons",
                 })
-                self.assertTrue({"weapon_bow", "weapon_crossbow", "weapon_missile_launcher"}
+                self.assertTrue({"weapon_laser_musket", "weapon_missile_launcher"}
                                 <= set(result["detailed_cards"]))
-                self.assertNotIn("weapon_laser_musket", result["detailed_cards"])
+                self.assertTrue({"weapon_bow", "weapon_crossbow"}.isdisjoint(result["detailed_cards"]))
+                self.assertEqual(result["full_mod_reference_cards"], ["weapon_pipe_gun"])
 
                 def card_text(weapon_id):
                     return " ".join(document[result["card_pages"][weapon_id] - 1].get_text().split())
 
                 musket = card_text("weapon_laser_musket")
                 self.assertIn("Four-Crank Capacitor", musket)
-                self.assertNotIn("PREFIX", musket)
-                energy_refs = " ".join(" ".join(page.get_text().split()) for page in document.pages(
-                    result["specific_modifications"]["Energy Weapons"] - 1,
-                    result["card_pages"]["weapon_alien_atomizer"] - 1))
-                self.assertIn("LASER MUSKET", energy_refs)
-                self.assertIn("Four-Crank Capacitor", energy_refs)
+                self.assertIn("PREFIX", musket)
+                self.assertIn("Short Scope Scoped Add Quality: Accurate", musket)
+                self.assertEqual(musket.count("SUPPORTED MODIFICATIONS"), 1)
+                bow = card_text("weapon_bow")
+                self.assertIn("Block Frame", bow)
+                self.assertNotIn("PREFIX", bow)
+                self.assertNotIn("PREFIX", card_text("weapon_pipe_gun"))
 
                 for weapon_id in ("weapon_gauss_pistol", "weapon_gauss_rifle"):
                     self.assertGreater(result["card_pages"][weapon_id], result["categories"]["Light Weapons"])
