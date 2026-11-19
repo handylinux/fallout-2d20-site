@@ -24,6 +24,7 @@ from reportlab.pdfgen import canvas
 
 import companion_mods_en
 import weapon2pdf as w
+import weapon_book_cover as book_cover
 import weapon_book_toc as toc_render
 import weapon_heavy_preview as detailed_card
 import weapon_mod_policy as mod_policy
@@ -298,69 +299,6 @@ def _append_source_page(result: pymupdf.Document, original: pymupdf.Document,
     return len(result)
 
 
-def _make_localized_cover(source: Path, output: Path) -> None:
-    """Retain Publisher cover art while replacing the three Russian text areas."""
-    with pymupdf.open(source) as original, pymupdf.open() as cover:
-        cover.insert_pdf(original, from_page=0, to_page=0)
-        page = cover[0]
-        # The source cover has only Russian volume/title/subtitle text plus its
-        # footer number.  Removing exact Cyrillic words is safer than hiding an
-        # arbitrary rectangle over the illustration.
-        for word in page.get_text("words"):
-            if _has_cyrillic(word[4]):
-                rect = pymupdf.Rect(word[:4])
-                rect.x0 -= 1.5; rect.x1 += 1.5
-                rect.y0 -= 1.5; rect.y1 += 1.5
-                page.add_redact_annot(rect, fill=False, cross_out=False)
-        page.apply_redactions(images=0, graphics=0, text=0)
-        # Replace the original footer number too; it is part of the book's
-        # pagination rather than decorative cover copy.
-        number_words = [word for word in page.get_text("words")
-                        if word[4] == "1" and word[1] > 800]
-        if len(number_words) != 1:
-            raise EnglishCatalogError("Cannot locate the source cover page number")
-        page.add_redact_annot(pymupdf.Rect(number_words[0][:4]), fill=False, cross_out=False)
-        page.apply_redactions(images=0, graphics=0, text=0)
-
-        # Publisher flattened the large Russian cover typography into the
-        # illustrated layer, so text redaction alone cannot remove it.  These
-        # intentional English title panels cover only that typography, leaving
-        # the source pistol and Brotherhood insignia untouched.
-        page.draw_rect(pymupdf.Rect(210, 26, 385, 75), color=None,
-                       fill=(.20, .45, .67), overlay=True)
-        page.draw_rect(pymupdf.Rect(24, 80, page.rect.width - 15, 160), color=None,
-                       fill=(.07, .23, .37), overlay=True)
-        page.draw_line((55, 83), (page.rect.width - 55, 83), color=(.92, .92, .88),
-                       width=1.0, overlay=True)
-        page.draw_line((55, 157), (page.rect.width - 55, 157), color=(.92, .92, .88),
-                       width=1.0, overlay=True)
-        page.draw_rect(pymupdf.Rect(70, 727, page.rect.width - 70, 802), color=None,
-                       fill=(.93, .92, .87), overlay=True)
-
-        page.insert_font(fontname="coverregular", fontfile=mod_tables.REGULAR)
-        page.insert_font(fontname="coverbold", fontfile=mod_tables.BOLD)
-        regular = pymupdf.Font(fontfile=mod_tables.REGULAR)
-        bold = pymupdf.Font(fontfile=mod_tables.BOLD)
-
-        def centered(text: str, y_baseline: float, size: float, boldface: bool = True,
-                     color: tuple[float, float, float] = (.94, .73, .18)) -> None:
-            font = bold if boldface else regular
-            width = font.text_length(text, fontsize=size)
-            page.insert_text(((page.rect.width - width) / 2.0, y_baseline), text,
-                             fontname="coverbold" if boldface else "coverregular",
-                             fontsize=size, color=color)
-
-        centered("VOLUME 1", 58, 20, False, (.91, .77, .30))
-        centered("BROTHERHOOD FIELD GUIDE", 135, 27, True, (.95, .76, .18))
-        centered("WASTELAND ARSENAL", 782, 34, True, (.06, .06, .06))
-        label = "1"
-        x = w.CONTENT_R - 2.57 - regular.text_length(label, fontsize=9.96)
-        page.insert_text((x, w.PAGE_NUMBER_TOP + 9.96 * .75), label,
-                         fontname="coverregular", fontsize=9.96, color=(0, 0, 0))
-        output.parent.mkdir(parents=True, exist_ok=True)
-        cover.save(str(output), garbage=4, deflate=True)
-
-
 def _render_generated_divider(title: str, page_number: int, output: Path) -> None:
     """Render a Companion-only category divider without borrowing weapon art."""
     w.register_fonts()
@@ -513,11 +451,12 @@ def _assemble(source: Path, output: Path, companion: Companion,
     with tempfile.TemporaryDirectory() as directory:
         temp = Path(directory)
         cover = temp / "cover-en.pdf"
-        _make_localized_cover(source, cover)
+        book_cover.make_localized_cover(source, cover)
         with pymupdf.open(source) as original, pymupdf.open() as result:
             if original.page_count < 106:
                 raise EnglishCatalogError("Publisher source PDF needs all 106 pages")
             _append_pdf(result, cover)
+            book_cover.restore_transparency_group(original[0], result[0])
             for source_page in (2, 3):
                 _append_source_page(result, original, source_page)
             if toc_pdf is not None:

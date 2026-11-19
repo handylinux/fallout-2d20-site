@@ -258,10 +258,9 @@ state прекращают сборку с ошибкой. Отчёт coverage �
 карточка намеренно публикуется пустой (`no-manifest-page`), без заимствования
 рисунка `weapon_laser_gun`.
 
-Для опубликованной версии после вёрстки используется `--rasterize-cover`:
-только первая страница заменяется одним непрозрачным RGB JPEG 300 DPI с
-quality 92. Это фиксирует все слои исходной Publisher-обложки в её финальном
-виде; остальные 175 страниц canonical PDF остаются векторными/слойными.
+В опубликованной версии русская обложка вставляется прямо из Publisher PDF:
+сохраняются исходная группа прозрачности страницы, маски и отдельные слои.
+`--rasterize-cover` доступен только как дополнительный, непубликуемый режим.
 
 ```bash
 # 1. Снять manifest и RGBA artwork именно с используемого Publisher PDF.
@@ -274,8 +273,7 @@ python3 tools/build_weapon_catalog.py "Справочник оружия.pdf" \
   --report docs/render/out/book-weapon-catalog-report.md \
   --artwork-manifest docs/render/pdf-extract/publisher-art/artwork-manifest.json \
   --artwork-root docs/render/pdf-extract/publisher-art \
-  --artwork-coverage docs/render/samples/book-weapon-catalog-artwork-coverage.json \
-  --rasterize-cover --cover-dpi 300 --cover-jpeg-quality 92
+  --artwork-coverage docs/render/samples/book-weapon-catalog-artwork-coverage.json
 ```
 
 В проверенной сборке 77 карточек используют точные размещения Publisher; у
@@ -288,9 +286,9 @@ xref 468) подтверждает точные matrix `[434.73, -85.906, 62.688
 
 ### Резервная мобильная растровая версия
 
-`book-weapon-catalog.pdf` остаётся канонической печатной версией: после
-сведения JPG-обложки в ней сохранены отдельные RGBA иллюстрации, Publisher
-affine matrix, crop и alpha на остальных страницах. Если определённый мобильный
+`book-weapon-catalog.pdf` остаётся канонической печатной версией: в нём
+сохранены слои обложки, а также отдельные RGBA иллюстрации, Publisher affine
+matrix, crop и alpha на остальных страницах. Если определённый мобильный
 viewer ошибочно композитит эти PDF-слои, из
 готового канонического файла создаётся отдельный
 `book-weapon-catalog-mobile-raster.pdf`:

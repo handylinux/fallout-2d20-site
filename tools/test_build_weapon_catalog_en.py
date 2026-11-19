@@ -20,7 +20,10 @@ class EnglishCatalogBuildTests(unittest.TestCase):
         """Make a 106-page source-shaped PDF with numbered source footers."""
         document = pymupdf.open()
         try:
-            for number in range(1, 107):
+            with pymupdf.open(catalog.ROOT / "Справочник оружия.pdf") as original:
+                document.insert_pdf(original, from_page=0, to_page=0)
+                catalog.book_cover.restore_transparency_group(original[0], document[0])
+            for number in range(2, 107):
                 page = document.new_page(width=w.PAGE_W, height=w.PAGE_H)
                 # Match the source convention closely enough for the strict
                 # renumbering code: one unique number below y=800.
@@ -30,6 +33,35 @@ class EnglishCatalogBuildTests(unittest.TestCase):
             document.save(path, garbage=4, deflate=True)
         finally:
             document.close()
+
+    def test_publisher_cover_localization_preserves_art_and_transparency(self):
+        source = catalog.ROOT / "Справочник оружия.pdf"
+        with tempfile.TemporaryDirectory() as directory:
+            proof = Path(directory) / "cover.pdf"
+            catalog.book_cover.make_localized_cover(source, proof)
+            with pymupdf.open(source) as original, pymupdf.open(proof) as localized:
+                raw, page = original[0], localized[0]
+                self.assertEqual(raw.rect, page.rect)
+                self.assertEqual(original.xref_get_key(raw.xref, "Group"),
+                                 localized.xref_get_key(page.xref, "Group"))
+                # Compare the actual artwork and original graphical elements,
+                # excluding title bands and sequence numbers.
+                art = pymupdf.Rect(0, 180, raw.rect.width, 725)
+                self.assertEqual(raw.get_pixmap(clip=art).samples, page.get_pixmap(clip=art).samples)
+                self.assertEqual([{k: v for k, v in item.items() if k != "seqno"}
+                                  for item in raw.get_drawings()],
+                                 [{k: v for k, v in item.items() if k != "seqno"}
+                                  for item in page.get_drawings()])
+                visible = page.get_text()
+                self.assertFalse(catalog._has_cyrillic(visible))
+                for title in ("VOLUME 1", "BROTHERHOOD FIELD GUIDE", "WASTELAND ARSENAL"):
+                    self.assertEqual(visible.count(title), 1)
+                # Three title shadows with soft masks are placed before the
+                # original final grain image, not above it.
+                drawn = page.get_image_info(xrefs=True)
+                by_id = {item[0]: item[1] for item in page.get_images()}
+                self.assertEqual(len(drawn), 10)  # 7 retained placements and 3 shadows.
+                self.assertTrue(all(by_id[item["xref"]] for item in drawn[-4:-1]))
 
     def test_tables_follow_compatibility_not_mod_names(self):
         companion = catalog.Companion()

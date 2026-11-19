@@ -429,8 +429,7 @@ python3 tools/build_weapon_catalog.py "Справочник оружия.pdf" \
   --report docs/render/out/book-weapon-catalog-report.md \
   --artwork-manifest docs/render/pdf-extract/publisher-art/artwork-manifest.json \
   --artwork-root docs/render/pdf-extract/publisher-art \
-  --artwork-coverage docs/render/samples/book-weapon-catalog-artwork-coverage.json \
-  --rasterize-cover --cover-dpi 300 --cover-jpeg-quality 92
+  --artwork-coverage docs/render/samples/book-weapon-catalog-artwork-coverage.json
 ```
 
 Сборщик сравнивает SHA-256 source PDF, записанный в manifest, и прекращает
@@ -449,10 +448,9 @@ manifest page остаются без заменяющей иллюстраци�
 самостоятельным оружием и не включаются; Головной лазер Штурмотрона остаётся
 отдельной исходной картой.
 
-`--rasterize-cover` выполняется после полной проверки книги и заменяет только
-первую страницу одним непрозрачным RGB JPEG 300 DPI (quality 92). Это
-намеренно фиксирует Publisher-обложку, оставляя остальные 175 страниц
-канонического PDF векторными/слойными.
+Печатная книга сохраняет исходную Publisher-обложку со слоями и прозрачностью.
+Дополнительный `--rasterize-cover` заменяет только первую страницу одним
+непрозрачным RGB JPEG 300 DPI (quality 92); каноническая сборка его не использует.
 
 Для viewer, который неправильно отображает отдельные прозрачные PDF-слои,
 есть дополнительный полностью растровый файл. Он строится **после** основной

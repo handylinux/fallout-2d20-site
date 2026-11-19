@@ -14,6 +14,7 @@ import weapon_heavy_preview as heavy
 import weapon_melee_preview as melee
 import weapon_mod_policy as policy
 import weapon_book_toc as toc_render
+from weapon_book_cover import restore_transparency_group
 import rasterize_pdf
 from weapon_catalog_artwork import ArtworkResolver
 from weapons2cards import Companion, build_card
@@ -149,6 +150,7 @@ def _run_chain(source, output, toc, toc_pdf, report, artwork=None):
             if toc is not None:
                 result.set_toc(toc)
             output.parent.mkdir(parents=True, exist_ok=True)
+            restore_transparency_group(original[0], result[0])
             result.save(output, garbage=4, deflate=True)
             total = len(result)
     if report:

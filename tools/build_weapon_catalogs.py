@@ -236,14 +236,23 @@ def _validate_contents(document: pymupdf.Document, title: str,
     return outline
 
 
+def _validate_layered_cover(page: pymupdf.Page, locale: str) -> None:
+    kind, group = page.parent.xref_get_key(page.xref, "Group")
+    _require(kind == "dict" and "/Transparency" in group,
+             f"{locale} cover is missing its Publisher transparency group")
+    _require(any(image[1] for image in page.get_images(full=True)),
+             f"{locale} cover is missing its soft masks (SMask)")
+    _require(len(page.get_drawings()) == 5,
+             f"{locale} cover does not preserve the original rules and panels")
+
+
 def _validate_russian(vector: Path) -> None:
-    _require(
-        rasterize_pdf.assert_rasterized_cover(vector) == EXPECTED_RUSSIAN_PAGES,
-        "Russian catalogue must use the approved single-JPEG cover policy",
-    )
     with pymupdf.open(vector) as document:
         _require(document.page_count == EXPECTED_RUSSIAN_PAGES,
                  f"Russian catalogue has {document.page_count} pages, expected {EXPECTED_RUSSIAN_PAGES}")
+        _validate_layered_cover(document[0], "Russian")
+        _require("РУКОВОДСТВО БРАТСТВА" in document[0].get_text(),
+                 "Russian Publisher cover text is missing")
         outline = _validate_contents(document, "ОГЛАВЛЕНИЕ", {
             "СТРЕЛКОВОЕ ОРУЖИЕ": ("МОДИФИКАЦИИ СТРЕЛКОВОГО ОРУЖИЯ",),
             "ЭНЕРГЕТИЧЕСКОЕ ОРУЖИЕ": (
@@ -267,11 +276,11 @@ def _validate_english(vector: Path) -> None:
         _require(document.page_count == EXPECTED_ENGLISH_PAGES,
                  f"English catalogue has {document.page_count} pages, expected {EXPECTED_ENGLISH_PAGES}")
         cover_page = document[0]
+        _validate_layered_cover(cover_page, "English")
         cover = cover_page.get_text()
         _require("BROTHERHOOD FIELD GUIDE" in cover and "WASTELAND ARSENAL" in cover,
                  "English localised cover text is missing")
-        _require(bool(cover_page.get_fonts(full=True)),
-                 "English cover was unexpectedly rasterized")
+        _require(not english._has_cyrillic(cover), "English cover still contains Russian text")
         for key, expected in EXPECTED_ENGLISH_METADATA.items():
             _require(document.metadata.get(key) == expected,
                      f"English canonical metadata {key!r} is not {expected!r}")
@@ -390,7 +399,7 @@ def build_catalogues(source: Path | str = DEFAULT_SOURCE,
             artwork_manifest=manifest,
             artwork_root=artwork_dir,
             artwork_coverage=staging / RUSSIAN_COVERAGE,
-            rasterize_cover=True,
+            rasterize_cover=False,
         )
         english_stats = english.build(
             source,

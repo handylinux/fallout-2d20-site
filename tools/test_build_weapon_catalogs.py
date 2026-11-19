@@ -54,12 +54,12 @@ class SynchronizedCatalogueReleaseTests(unittest.TestCase):
                 self.assertEqual(source_path, source)
                 self.assertEqual(kwargs["artwork_manifest"].name, "artwork-manifest.json")
                 self.assertEqual(kwargs["artwork_root"], kwargs["artwork_manifest"].parent)
-                self.assertTrue(kwargs["rasterize_cover"])
+                self.assertFalse(kwargs["rasterize_cover"])
                 self.assertEqual(kwargs["report"].name, release.RUSSIAN_REPORT)
                 vector.write_bytes(b"new-russian-vector")
                 kwargs["artwork_coverage"].write_text("{}", encoding="utf-8")
                 kwargs["report"].write_text("new Russian review report", encoding="utf-8")
-                return {"pages": 176, "toc_pages": 2, "cover": {"rasterized": True}}
+                return {"pages": 176, "toc_pages": 2, "cover": {"rasterized": False}}
 
             def fake_english(source_path: Path, vector: Path, **kwargs):
                 events.append("english")
