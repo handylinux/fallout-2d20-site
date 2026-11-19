@@ -118,8 +118,18 @@ def _reference_label(identifier: str, item: dict[str, Any], companion: Companion
 
 def _validate_reference_data(reference: dict[str, Any], companion: Companion) -> None:
     effect_ids = {entry["id"] for entry in reference["damage_effects"]["entries"]}
-    quality_ids = {entry["id"] for entry in reference["weapon_qualities"]["entries"]
+    quality_section = reference["weapon_qualities"]
+    quality_ids = {entry["id"] for entry in quality_section["entries"]
                    if not entry.get("source_only")}
+    # Companion also has names used by modifications with no verified rule
+    # prose. Audit them as data, but don't render them as glossary entries.
+    undocumented = quality_section.get("undocumented_ids", [])
+    if not isinstance(undocumented, list) or any(not isinstance(item, str) for item in undocumented):
+        raise EnglishCatalogError("Undocumented quality IDs must be a list of strings")
+    undocumented_ids = set(undocumented)
+    if len(undocumented_ids) != len(undocumented) or quality_ids & undocumented_ids:
+        raise EnglishCatalogError("Undocumented quality IDs are duplicate or already defined")
+    quality_ids |= undocumented_ids
     missing_effects = set(companion.effects) - effect_ids
     extra_effects = effect_ids - set(companion.effects)
     missing_qualities = set(companion.qualities) - quality_ids

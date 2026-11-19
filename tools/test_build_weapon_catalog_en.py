@@ -75,6 +75,18 @@ class EnglishCatalogBuildTests(unittest.TestCase):
                 self.assertIn("Heavy Barrel", text)
                 self.assertIn("43", text.splitlines())
 
+    def test_undocumented_qualities_are_audited_but_not_printed_as_rules(self):
+        companion = catalog.Companion()
+        reference = catalog._load_reference_data()
+        catalog._validate_reference_data(reference, companion)
+        section = reference["weapon_qualities"]
+        defined = {item["id"] for item in section["entries"]}
+        self.assertEqual(defined & set(section["undocumented_ids"]), set())
+        self.assertEqual(len(section["undocumented_ids"]), 5)
+        section["undocumented_ids"].append("quality_bayonet")
+        with self.assertRaisesRegex(catalog.EnglishCatalogError, "already defined"):
+            catalog._validate_reference_data(reference, companion)
+
     def test_complete_catalog_has_front_matter_references_toc_and_exact_id_artwork(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -169,7 +181,14 @@ class EnglishCatalogBuildTests(unittest.TestCase):
                 self.assertIn("TABLE OF CONTENTS", toc)
                 self.assertIn("DAMAGE EFFECTS", toc)
                 effects = document[result["references"]["damage_effects"][0] - 1].get_text()
-                qualities = document[result["references"]["weapon_qualities"][0] - 1].get_text()
+                qualities = " ".join(" ".join(document[page - 1].get_text().split())
+                                     for page in result["references"]["weapon_qualities"])
+                self.assertIn("RE-ROLL HIT LOCATION You may re-roll the hit location die.", qualities)
+                self.assertIn("BAYONET A bayonet can be used for a melee attack", qualities)
+                self.assertIn("Large Bayonet instead deals 5 Combat Dice", qualities)
+                self.assertNotIn("Companion lists this as a modification quality", qualities)
+                self.assertNotIn("Publisher export", qualities)
+                self.assertNotIn("SHREDDER", qualities)
                 mods = document[result["modifications"]["Light Weapons"] - 1].get_text()
                 self.assertIn("DAMAGE EFFECTS", effects)
                 self.assertIn("BURST", effects)

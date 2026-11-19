@@ -48,7 +48,7 @@
   },
   "weapon_qualities": {
     "title": "WEAPON QUALITIES",
-    "intro": "Weapon qualities describe how a weapon operates and distinguish it from other weapon types. Names match the vendored English Companion localization wherever it provides one; Fuel X is translated from the supplied Publisher page because that localization has no matching entry.",
+    "intro": "Weapon qualities describe how a weapon operates and distinguish it from other weapon types.",
     "entries": [
       {
         "id": "quality_accurate",
@@ -160,32 +160,27 @@
       },
       {
         "id": "quality_re-roll_hit_location",
-        "text": "Companion lists this as a modification quality. The available Publisher export does not contain a detailed rule entry for it, so no additional rule has been inferred here."
+        "text": "You may re-roll the hit location die.",
+        "publisher_pages": [
+          12,
+          62
+        ]
       },
       {
         "id": "quality_bayonet",
-        "text": "Companion lists this as a modification quality. The available Publisher export does not contain a detailed rule entry for it, so no additional rule has been inferred here."
-      },
-      {
-        "id": "quality_crank_x",
-        "text": "Companion lists this as a modification quality. The available Publisher export does not contain a detailed rule entry for it, so no additional rule has been inferred here."
-      },
-      {
-        "id": "quality_shredder",
-        "text": "Companion lists this as a modification quality. The available Publisher export does not contain a detailed rule entry for it, so no additional rule has been inferred here."
-      },
-      {
-        "id": "quality_disarm",
-        "text": "Companion lists this as a modification quality. The available Publisher export does not contain a detailed rule entry for it, so no additional rule has been inferred here."
-      },
-      {
-        "id": "quality_sneak_attack",
-        "text": "Companion lists this as a modification quality. The available Publisher export does not contain a detailed rule entry for it, so no additional rule has been inferred here."
-      },
-      {
-        "id": "quality_targetting_computer",
-        "text": "Companion lists this as a modification quality. The available Publisher export does not contain a detailed rule entry for it, so no additional rule has been inferred here."
+        "text": "A bayonet can be used for a melee attack that deals 4 Combat Dice of physical damage with Piercing 1. A Large Bayonet instead deals 5 Combat Dice of physical damage with Piercing 1.",
+        "publisher_pages": [
+          12,
+          68
+        ]
       }
+    ],
+    "undocumented_ids": [
+      "quality_crank_x",
+      "quality_shredder",
+      "quality_disarm",
+      "quality_sneak_attack",
+      "quality_targetting_computer"
     ]
   }
 }
